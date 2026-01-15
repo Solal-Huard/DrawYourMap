@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw Your Map - Interactive World Map Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0d0d12;
+            --bg-panel: #151520;
+            --bg-elevated: #1c1c2a;
+            --bg-hover: #252538;
+            --accent-primary: #6366f1;
+            --accent-secondary: #818cf8;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --text-primary: #f1f1f4;
+            --text-secondary: #9494a8;
+            --text-muted: #5e5e72;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(99, 102, 241, 0.5);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .sidebar-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: var(--bg-hover);
+            border-radius: 3px;
+        }
+
+        /* Selected Country Display */
+        .selected-display {
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover));
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .selected-display.has-country {
+            border-color: var(--border-accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .selected-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .selected-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .selected-color-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .color-swatch-large {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid var(--border-subtle);
+        }
+
+        .color-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            padding-left: 4px;
+        }
+
+        /* Search Select */
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-select {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-select:hover {
+            border-color: var(--border-accent);
+        }
+
+        .search-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* Buttons */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-accent);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+                var(--bg-dark);
+            overflow: hidden;
+        }
+
+        #worldMap {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+
+        #worldMap:active {
+            cursor: grabbing;
+        }
+
+        #worldMap path {
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 0.5;
+            stroke-linejoin: round;
+            transition: filter 0.15s, stroke 0.15s;
+        }
+
+        #worldMap path:hover {
+            stroke: var(--accent-primary);
+            stroke-width: 1;
+            filter: brightness(1.3);
+            cursor: pointer;
+        }
+
+        #worldMap path.selected {
+            stroke: var(--accent-secondary);
+            stroke-width: 2;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+        }
+
+        /* Zoom Controls */
+        .zoom-controls {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 50;
+        }
+
+        .zoom-btn {
+            width: 44px;
+            height: 44px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .zoom-btn:hover {
+            background: var(--bg-elevated);
+            border-color: var(--border-accent);
+            color: var(--accent-primary);
+        }
+
+        /* ==================== COLOR PICKER POPUP ==================== */
+        .color-picker-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .color-picker-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .color-picker-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            width: 580px;
+            max-width: 95vw;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 
+                0 24px 80px rgba(0, 0, 0, 0.5),
+                0 0 1px rgba(255, 255, 255, 0.1) inset;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .color-picker-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-panel) 100%);
+        }
+
+        .popup-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .popup-title h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .popup-country-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--accent-primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .popup-close {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .popup-close:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .popup-body {
+            padding: 20px 24px;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+
+        .popup-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .popup-body::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        .popup-body::-webkit-scrollbar-thumb {
+            background: var(--bg-hover);
+            border-radius: 4px;
+        }
+
+        /* Color Category */
+        .color-category {
+            margin-bottom: 24px;
+        }
+
+        .color-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .category-icon {
+            font-size: 1.1rem;
+        }
+
+        .category-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .category-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        /* Color Grid */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+            gap: 8px;
+        }
+
+        .color-cell {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+            border: 2px solid transparent;
+        }
+
+        .color-cell:hover {
+            transform: scale(1.15);
+            z-index: 10;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .color-cell:active {
+            transform: scale(1.05);
+        }
+
+        .color-cell::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+        }
+
+        .color-cell.selected {
+            border-color: white;
+            box-shadow: 0 0 0 3px var(--accent-primary);
+        }
+
+        /* Gradient Row */
+        .gradient-row {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .gradient-row .color-cell {
+            flex: 1;
+            height: 36px;
+            border-radius: 6px;
+        }
+
+        /* Custom Color Section */
+        .custom-color-section {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .custom-color-input-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .custom-picker {
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: none;
+            padding: 0;
+        }
+
+        .custom-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .custom-picker::-webkit-color-swatch {
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+        }
+
+        .custom-hex-input {
+            flex: 1;
+            padding: 14px 16px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+        }
+
+        .custom-hex-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .apply-custom-btn {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .apply-custom-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        /* Recent Colors */
+        .recent-colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .recent-color {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .recent-color:hover {
+            transform: scale(1.15);
+            border-color: white;
+        }
+
+        .no-recent {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Popup Footer */
+        .popup-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+        }
+
+        .current-color-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .current-swatch {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            border: 2px solid var(--border-subtle);
+        }
+
+        .current-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .remove-color-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            color: var(--danger);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .remove-color-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 35vh;
+            }
+
+            .color-picker-popup {
+                width: 95vw;
+                max-height: 85vh;
+            }
+
+            .color-grid {
+                grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🗺️</div>
+                    <span>Draw Your Map</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Selected Country Display -->
+                <div class="selected-display" id="selectedDisplay">
+                    <div class="selected-label">Selected Country</div>
+                    <div class="selected-name" id="selectedCountryName">Click on a country</div>
+                    <div class="selected-color-preview" id="selectedColorPreview" style="display: none;">
+                        <div class="color-swatch-large" id="selectedColorSwatch"></div>
+                        <div class="color-info" id="selectedColorHex"></div>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="section">
+                    <div class="section-title">🔍 Search Country</div>
+                    <div class="search-wrapper">
+                        <select class="search-select" id="countrySearch" onchange="selectCountryByCode(this.value)">
+                            <option value="">-- Select a country --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Background Color -->
+                <div class="section">
+                    <div class="section-title">🎨 Background</div>
+                    <div class="btn-group" style="margin-bottom: 8px;">
+                        <button class="btn btn-secondary" onclick="setBackground('#0d0d12')">Dark</button>
+                        <button class="btn btn-secondary" onclick="setBackground('#1a1a2e')">Navy</button>
+                        <button class="btn btn-secondary" onclick="setBackground('#f8fafc')">Light</button>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="color" id="bgColorPicker" value="#0d0d12" style="width: 50px; height: 38px; border: none; border-radius: 8px; cursor: pointer;">
+                        <button class="btn btn-secondary" style="flex: 1;" onclick="applyBackgroundFromPicker()">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="section">
+                    <div class="section-title">⚙️ Actions</div>
+                    <button class="btn btn-secondary" onclick="resetMap()" style="margin-bottom: 8px;">🔄 Reset All Colors</button>
+                    <div class="btn-group" style="margin-bottom: 8px;">
+                        <button class="btn btn-secondary" onclick="exportColors()">📤 Export</button>
+                        <button class="btn btn-secondary" onclick="importColors()">📥 Import</button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="exportAsImage()">📸 PNG</button>
+                        <button class="btn btn-primary" onclick="exportAsSVG()">📄 SVG</button>
+                    </div>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+        </div>
+
+        <div class="map-container" id="mapContainer">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomIn()" title="Zoom in">+</button>
+                <button class="zoom-btn" onclick="zoomOut()" title="Zoom out">−</button>
+                <button class="zoom-btn" onclick="resetZoom()" title="Reset">⟲</button>
+            </div>
+            <svg id="worldMap" viewBox="0 0 2000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+    </div>
+
+    <!-- Color Picker Popup -->
+    <div class="color-picker-overlay" id="colorPickerOverlay" onclick="closeColorPicker()"></div>
+    <div class="color-picker-popup" id="colorPickerPopup">
+        <div class="popup-header">
+            <div class="popup-title">
+                <h2>🎨 Choose Color</h2>
+                <div class="popup-country-name" id="popupCountryName">Country</div>
+            </div>
+            <button class="popup-close" onclick="closeColorPicker()">×</button>
+        </div>
+        
+        <div class="popup-body">
+            <!-- Recent Colors -->
+            <div class="color-category" id="recentColorsCategory">
+                <div class="category-header">
+                    <span class="category-icon">🕐</span>
+                    <span class="category-title">Recent Colors</span>
+                </div>
+                <div class="recent-colors" id="recentColors">
+                    <span class="no-recent">No recent colors yet</span>
+                </div>
+            </div>
+
+            <!-- Data Visualization - Sequential -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">📊</span>
+                    <span class="category-title">Sequential (Low → High)</span>
+                    <span class="category-subtitle">Perfect for data ranges</span>
+                </div>
+                <!-- Blues -->
+                <div class="gradient-row">
+                    <div class="color-cell" style="background: #f7fbff;" onclick="applyColor('#f7fbff')"></div>
+                    <div class="color-cell" style="background: #deebf7;" onclick="applyColor('#deebf7')"></div>
+                    <div class="color-cell" style="background: #c6dbef;" onclick="applyColor('#c6dbef')"></div>
+                    <div class="color-cell" style="background: #9ecae1;" onclick="applyColor('#9ecae1')"></div>
+                    <div class="color-cell" style="background: #6baed6;" onclick="applyColor('#6baed6')"></div>
+                    <div class="color-cell" style="background: #4292c6;" onclick="applyColor('#4292c6')"></div>
+                    <div class="color-cell" style="background: #2171b5;" onclick="applyColor('#2171b5')"></div>
+                    <div class="color-cell" style="background: #08519c;" onclick="applyColor('#08519c')"></div>
+                    <div class="color-cell" style="background: #08306b;" onclick="applyColor('#08306b')"></div>
+                </div>
+                <!-- Greens -->
+                <div class="gradient-row">
+                    <div class="color-cell" style="background: #f7fcf5;" onclick="applyColor('#f7fcf5')"></div>
+                    <div class="color-cell" style="background: #e5f5e0;" onclick="applyColor('#e5f5e0')"></div>
+                    <div class="color-cell" style="background: #c7e9c0;" onclick="applyColor('#c7e9c0')"></div>
+                    <div class="color-cell" style="background: #a1d99b;" onclick="applyColor('#a1d99b')"></div>
+                    <div class="color-cell" style="background: #74c476;" onclick="applyColor('#74c476')"></div>
+                    <div class="color-cell" style="background: #41ab5d;" onclick="applyColor('#41ab5d')"></div>
+                    <div class="color-cell" style="background: #238b45;" onclick="applyColor('#238b45')"></div>
+                    <div class="color-cell" style="background: #006d2c;" onclick="applyColor('#006d2c')"></div>
+                    <div class="color-cell" style="background: #00441b;" onclick="applyColor('#00441b')"></div>
+                </div>
+                <!-- Reds -->
+                <div class="gradient-row">
+                    <div class="color-cell" style="background: #fff5f0;" onclick="applyColor('#fff5f0')"></div>
+                    <div class="color-cell" style="background: #fee0d2;" onclick="applyColor('#fee0d2')"></div>
+                    <div class="color-cell" style="background: #fcbba1;" onclick="applyColor('#fcbba1')"></div>
+                    <div class="color-cell" style="background: #fc9272;" onclick="applyColor('#fc9272')"></div>
+                    <div class="color-cell" style="background: #fb6a4a;" onclick="applyColor('#fb6a4a')"></div>
+                    <div class="color-cell" style="background: #ef3b2c;" onclick="applyColor('#ef3b2c')"></div>
+                    <div class="color-cell" style="background: #cb181d;" onclick="applyColor('#cb181d')"></div>
+                    <div class="color-cell" style="background: #a50f15;" onclick="applyColor('#a50f15')"></div>
+                    <div class="color-cell" style="background: #67000d;" onclick="applyColor('#67000d')"></div>
+                </div>
+                <!-- Purples -->
+                <div class="gradient-row">
+                    <div class="color-cell" style="background: #fcfbfd;" onclick="applyColor('#fcfbfd')"></div>
+                    <div class="color-cell" style="background: #efedf5;" onclick="applyColor('#efedf5')"></div>
+                    <div class="color-cell" style="background: #dadaeb;" onclick="applyColor('#dadaeb')"></div>
+                    <div class="color-cell" style="background: #bcbddc;" onclick="applyColor('#bcbddc')"></div>
+                    <div class="color-cell" style="background: #9e9ac8;" onclick="applyColor('#9e9ac8')"></div>
+                    <div class="color-cell" style="background: #807dba;" onclick="applyColor('#807dba')"></div>
+                    <div class="color-cell" style="background: #6a51a3;" onclick="applyColor('#6a51a3')"></div>
+                    <div class="color-cell" style="background: #54278f;" onclick="applyColor('#54278f')"></div>
+                    <div class="color-cell" style="background: #3f007d;" onclick="applyColor('#3f007d')"></div>
+                </div>
+                <!-- Oranges -->
+                <div class="gradient-row" style="margin-bottom: 0;">
+                    <div class="color-cell" style="background: #fff5eb;" onclick="applyColor('#fff5eb')"></div>
+                    <div class="color-cell" style="background: #fee6ce;" onclick="applyColor('#fee6ce')"></div>
+                    <div class="color-cell" style="background: #fdd0a2;" onclick="applyColor('#fdd0a2')"></div>
+                    <div class="color-cell" style="background: #fdae6b;" onclick="applyColor('#fdae6b')"></div>
+                    <div class="color-cell" style="background: #fd8d3c;" onclick="applyColor('#fd8d3c')"></div>
+                    <div class="color-cell" style="background: #f16913;" onclick="applyColor('#f16913')"></div>
+                    <div class="color-cell" style="background: #d94801;" onclick="applyColor('#d94801')"></div>
+                    <div class="color-cell" style="background: #a63603;" onclick="applyColor('#a63603')"></div>
+                    <div class="color-cell" style="background: #7f2704;" onclick="applyColor('#7f2704')"></div>
+                </div>
+            </div>
+
+            <!-- Diverging -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">↔️</span>
+                    <span class="category-title">Diverging</span>
+                    <span class="category-subtitle">For positive/negative values</span>
+                </div>
+                <!-- Red-Blue -->
+                <div class="gradient-row">
+                    <div class="color-cell" style="background: #67001f;" onclick="applyColor('#67001f')"></div>
+                    <div class="color-cell" style="background: #b2182b;" onclick="applyColor('#b2182b')"></div>
+                    <div class="color-cell" style="background: #d6604d;" onclick="applyColor('#d6604d')"></div>
+                    <div class="color-cell" style="background: #f4a582;" onclick="applyColor('#f4a582')"></div>
+                    <div class="color-cell" style="background: #fddbc7;" onclick="applyColor('#fddbc7')"></div>
+                    <div class="color-cell" style="background: #f7f7f7;" onclick="applyColor('#f7f7f7')"></div>
+                    <div class="color-cell" style="background: #d1e5f0;" onclick="applyColor('#d1e5f0')"></div>
+                    <div class="color-cell" style="background: #92c5de;" onclick="applyColor('#92c5de')"></div>
+                    <div class="color-cell" style="background: #4393c3;" onclick="applyColor('#4393c3')"></div>
+                    <div class="color-cell" style="background: #2166ac;" onclick="applyColor('#2166ac')"></div>
+                    <div class="color-cell" style="background: #053061;" onclick="applyColor('#053061')"></div>
+                </div>
+                <!-- Brown-Teal -->
+                <div class="gradient-row">
+                    <div class="color-cell" style="background: #543005;" onclick="applyColor('#543005')"></div>
+                    <div class="color-cell" style="background: #8c510a;" onclick="applyColor('#8c510a')"></div>
+                    <div class="color-cell" style="background: #bf812d;" onclick="applyColor('#bf812d')"></div>
+                    <div class="color-cell" style="background: #dfc27d;" onclick="applyColor('#dfc27d')"></div>
+                    <div class="color-cell" style="background: #f6e8c3;" onclick="applyColor('#f6e8c3')"></div>
+                    <div class="color-cell" style="background: #f5f5f5;" onclick="applyColor('#f5f5f5')"></div>
+                    <div class="color-cell" style="background: #c7eae5;" onclick="applyColor('#c7eae5')"></div>
+                    <div class="color-cell" style="background: #80cdc1;" onclick="applyColor('#80cdc1')"></div>
+                    <div class="color-cell" style="background: #35978f;" onclick="applyColor('#35978f')"></div>
+                    <div class="color-cell" style="background: #01665e;" onclick="applyColor('#01665e')"></div>
+                    <div class="color-cell" style="background: #003c30;" onclick="applyColor('#003c30')"></div>
+                </div>
+                <!-- Purple-Green -->
+                <div class="gradient-row" style="margin-bottom: 0;">
+                    <div class="color-cell" style="background: #40004b;" onclick="applyColor('#40004b')"></div>
+                    <div class="color-cell" style="background: #762a83;" onclick="applyColor('#762a83')"></div>
+                    <div class="color-cell" style="background: #9970ab;" onclick="applyColor('#9970ab')"></div>
+                    <div class="color-cell" style="background: #c2a5cf;" onclick="applyColor('#c2a5cf')"></div>
+                    <div class="color-cell" style="background: #e7d4e8;" onclick="applyColor('#e7d4e8')"></div>
+                    <div class="color-cell" style="background: #f7f7f7;" onclick="applyColor('#f7f7f7')"></div>
+                    <div class="color-cell" style="background: #d9f0d3;" onclick="applyColor('#d9f0d3')"></div>
+                    <div class="color-cell" style="background: #a6dba0;" onclick="applyColor('#a6dba0')"></div>
+                    <div class="color-cell" style="background: #5aae61;" onclick="applyColor('#5aae61')"></div>
+                    <div class="color-cell" style="background: #1b7837;" onclick="applyColor('#1b7837')"></div>
+                    <div class="color-cell" style="background: #00441b;" onclick="applyColor('#00441b')"></div>
+                </div>
+            </div>
+
+            <!-- Categorical Colors -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">🏷️</span>
+                    <span class="category-title">Categorical</span>
+                    <span class="category-subtitle">For distinct categories</span>
+                </div>
+                <div class="color-grid">
+                    <!-- Tableau 10 -->
+                    <div class="color-cell" style="background: #4e79a7;" onclick="applyColor('#4e79a7')"></div>
+                    <div class="color-cell" style="background: #f28e2b;" onclick="applyColor('#f28e2b')"></div>
+                    <div class="color-cell" style="background: #e15759;" onclick="applyColor('#e15759')"></div>
+                    <div class="color-cell" style="background: #76b7b2;" onclick="applyColor('#76b7b2')"></div>
+                    <div class="color-cell" style="background: #59a14f;" onclick="applyColor('#59a14f')"></div>
+                    <div class="color-cell" style="background: #edc948;" onclick="applyColor('#edc948')"></div>
+                    <div class="color-cell" style="background: #b07aa1;" onclick="applyColor('#b07aa1')"></div>
+                    <div class="color-cell" style="background: #ff9da7;" onclick="applyColor('#ff9da7')"></div>
+                    <div class="color-cell" style="background: #9c755f;" onclick="applyColor('#9c755f')"></div>
+                    <div class="color-cell" style="background: #bab0ac;" onclick="applyColor('#bab0ac')"></div>
+                    <!-- D3 Category -->
+                    <div class="color-cell" style="background: #1f77b4;" onclick="applyColor('#1f77b4')"></div>
+                    <div class="color-cell" style="background: #ff7f0e;" onclick="applyColor('#ff7f0e')"></div>
+                    <div class="color-cell" style="background: #2ca02c;" onclick="applyColor('#2ca02c')"></div>
+                    <div class="color-cell" style="background: #d62728;" onclick="applyColor('#d62728')"></div>
+                    <div class="color-cell" style="background: #9467bd;" onclick="applyColor('#9467bd')"></div>
+                    <div class="color-cell" style="background: #8c564b;" onclick="applyColor('#8c564b')"></div>
+                    <div class="color-cell" style="background: #e377c2;" onclick="applyColor('#e377c2')"></div>
+                    <div class="color-cell" style="background: #7f7f7f;" onclick="applyColor('#7f7f7f')"></div>
+                    <div class="color-cell" style="background: #bcbd22;" onclick="applyColor('#bcbd22')"></div>
+                    <div class="color-cell" style="background: #17becf;" onclick="applyColor('#17becf')"></div>
+                </div>
+            </div>
+
+            <!-- World Map Colors -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">🌍</span>
+                    <span class="category-title">Map Colors</span>
+                    <span class="category-subtitle">Classic cartography</span>
+                </div>
+                <div class="color-grid">
+                    <!-- Land colors -->
+                    <div class="color-cell" style="background: #f5f5dc;" onclick="applyColor('#f5f5dc')"></div>
+                    <div class="color-cell" style="background: #deb887;" onclick="applyColor('#deb887')"></div>
+                    <div class="color-cell" style="background: #d2b48c;" onclick="applyColor('#d2b48c')"></div>
+                    <div class="color-cell" style="background: #c4a474;" onclick="applyColor('#c4a474')"></div>
+                    <div class="color-cell" style="background: #a0826d;" onclick="applyColor('#a0826d')"></div>
+                    <div class="color-cell" style="background: #8b7355;" onclick="applyColor('#8b7355')"></div>
+                    <!-- Greens for vegetation -->
+                    <div class="color-cell" style="background: #98d182;" onclick="applyColor('#98d182')"></div>
+                    <div class="color-cell" style="background: #78b062;" onclick="applyColor('#78b062')"></div>
+                    <div class="color-cell" style="background: #588f42;" onclick="applyColor('#588f42')"></div>
+                    <div class="color-cell" style="background: #3a6f26;" onclick="applyColor('#3a6f26')"></div>
+                    <div class="color-cell" style="background: #2d5a1e;" onclick="applyColor('#2d5a1e')"></div>
+                    <div class="color-cell" style="background: #1a4314;" onclick="applyColor('#1a4314')"></div>
+                    <!-- Water colors -->
+                    <div class="color-cell" style="background: #b3d9ff;" onclick="applyColor('#b3d9ff')"></div>
+                    <div class="color-cell" style="background: #87ceeb;" onclick="applyColor('#87ceeb')"></div>
+                    <div class="color-cell" style="background: #6bb3e0;" onclick="applyColor('#6bb3e0')"></div>
+                    <div class="color-cell" style="background: #4a90c2;" onclick="applyColor('#4a90c2')"></div>
+                    <div class="color-cell" style="background: #2f6da4;" onclick="applyColor('#2f6da4')"></div>
+                    <div class="color-cell" style="background: #1a4b7a;" onclick="applyColor('#1a4b7a')"></div>
+                </div>
+            </div>
+
+            <!-- Vibrant Colors -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">✨</span>
+                    <span class="category-title">Vibrant</span>
+                    <span class="category-subtitle">Eye-catching colors</span>
+                </div>
+                <div class="color-grid">
+                    <div class="color-cell" style="background: #ff6b6b;" onclick="applyColor('#ff6b6b')"></div>
+                    <div class="color-cell" style="background: #ee5253;" onclick="applyColor('#ee5253')"></div>
+                    <div class="color-cell" style="background: #ff9ff3;" onclick="applyColor('#ff9ff3')"></div>
+                    <div class="color-cell" style="background: #f368e0;" onclick="applyColor('#f368e0')"></div>
+                    <div class="color-cell" style="background: #ff9f43;" onclick="applyColor('#ff9f43')"></div>
+                    <div class="color-cell" style="background: #feca57;" onclick="applyColor('#feca57')"></div>
+                    <div class="color-cell" style="background: #48dbfb;" onclick="applyColor('#48dbfb')"></div>
+                    <div class="color-cell" style="background: #0abde3;" onclick="applyColor('#0abde3')"></div>
+                    <div class="color-cell" style="background: #1dd1a1;" onclick="applyColor('#1dd1a1')"></div>
+                    <div class="color-cell" style="background: #10ac84;" onclick="applyColor('#10ac84')"></div>
+                    <div class="color-cell" style="background: #5f27cd;" onclick="applyColor('#5f27cd')"></div>
+                    <div class="color-cell" style="background: #341f97;" onclick="applyColor('#341f97')"></div>
+                    <div class="color-cell" style="background: #2e86de;" onclick="applyColor('#2e86de')"></div>
+                    <div class="color-cell" style="background: #54a0ff;" onclick="applyColor('#54a0ff')"></div>
+                    <div class="color-cell" style="background: #00d2d3;" onclick="applyColor('#00d2d3')"></div>
+                    <div class="color-cell" style="background: #01a3a4;" onclick="applyColor('#01a3a4')"></div>
+                </div>
+            </div>
+
+            <!-- Pastels -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">🌸</span>
+                    <span class="category-title">Pastel</span>
+                    <span class="category-subtitle">Soft & gentle</span>
+                </div>
+                <div class="color-grid">
+                    <div class="color-cell" style="background: #ffeaa7;" onclick="applyColor('#ffeaa7')"></div>
+                    <div class="color-cell" style="background: #dfe6e9;" onclick="applyColor('#dfe6e9')"></div>
+                    <div class="color-cell" style="background: #fab1a0;" onclick="applyColor('#fab1a0')"></div>
+                    <div class="color-cell" style="background: #e17055;" onclick="applyColor('#e17055')"></div>
+                    <div class="color-cell" style="background: #fdcb6e;" onclick="applyColor('#fdcb6e')"></div>
+                    <div class="color-cell" style="background: #f6e58d;" onclick="applyColor('#f6e58d')"></div>
+                    <div class="color-cell" style="background: #badc58;" onclick="applyColor('#badc58')"></div>
+                    <div class="color-cell" style="background: #7ed6df;" onclick="applyColor('#7ed6df')"></div>
+                    <div class="color-cell" style="background: #74b9ff;" onclick="applyColor('#74b9ff')"></div>
+                    <div class="color-cell" style="background: #a29bfe;" onclick="applyColor('#a29bfe')"></div>
+                    <div class="color-cell" style="background: #fd79a8;" onclick="applyColor('#fd79a8')"></div>
+                    <div class="color-cell" style="background: #e84393;" onclick="applyColor('#e84393')"></div>
+                </div>
+            </div>
+
+            <!-- Neutrals & Grays -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">⬜</span>
+                    <span class="category-title">Neutrals</span>
+                    <span class="category-subtitle">Grays & basics</span>
+                </div>
+                <div class="color-grid">
+                    <div class="color-cell" style="background: #ffffff;" onclick="applyColor('#ffffff')"></div>
+                    <div class="color-cell" style="background: #f8f9fa;" onclick="applyColor('#f8f9fa')"></div>
+                    <div class="color-cell" style="background: #e9ecef;" onclick="applyColor('#e9ecef')"></div>
+                    <div class="color-cell" style="background: #dee2e6;" onclick="applyColor('#dee2e6')"></div>
+                    <div class="color-cell" style="background: #ced4da;" onclick="applyColor('#ced4da')"></div>
+                    <div class="color-cell" style="background: #adb5bd;" onclick="applyColor('#adb5bd')"></div>
+                    <div class="color-cell" style="background: #868e96;" onclick="applyColor('#868e96')"></div>
+                    <div class="color-cell" style="background: #495057;" onclick="applyColor('#495057')"></div>
+                    <div class="color-cell" style="background: #343a40;" onclick="applyColor('#343a40')"></div>
+                    <div class="color-cell" style="background: #212529;" onclick="applyColor('#212529')"></div>
+                    <div class="color-cell" style="background: #1a1a1a;" onclick="applyColor('#1a1a1a')"></div>
+                    <div class="color-cell" style="background: #000000;" onclick="applyColor('#000000')"></div>
+                </div>
+            </div>
+
+            <!-- Flag Colors -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">🏳️</span>
+                    <span class="category-title">Flag Colors</span>
+                    <span class="category-subtitle">Common national colors</span>
+                </div>
+                <div class="color-grid">
+                    <!-- Blues -->
+                    <div class="color-cell" style="background: #002395;" onclick="applyColor('#002395')"></div>
+                    <div class="color-cell" style="background: #00247d;" onclick="applyColor('#00247d')"></div>
+                    <div class="color-cell" style="background: #003580;" onclick="applyColor('#003580')"></div>
+                    <!-- Reds -->
+                    <div class="color-cell" style="background: #ed2939;" onclick="applyColor('#ed2939')"></div>
+                    <div class="color-cell" style="background: #cf142b;" onclick="applyColor('#cf142b')"></div>
+                    <div class="color-cell" style="background: #c8102e;" onclick="applyColor('#c8102e')"></div>
+                    <!-- Greens -->
+                    <div class="color-cell" style="background: #006847;" onclick="applyColor('#006847')"></div>
+                    <div class="color-cell" style="background: #009739;" onclick="applyColor('#009739')"></div>
+                    <div class="color-cell" style="background: #007a33;" onclick="applyColor('#007a33')"></div>
+                    <!-- Yellows/Golds -->
+                    <div class="color-cell" style="background: #ffc72c;" onclick="applyColor('#ffc72c')"></div>
+                    <div class="color-cell" style="background: #fcd116;" onclick="applyColor('#fcd116')"></div>
+                    <div class="color-cell" style="background: #ffcc00;" onclick="applyColor('#ffcc00')"></div>
+                </div>
+            </div>
+
+            <!-- Custom Color -->
+            <div class="color-category">
+                <div class="category-header">
+                    <span class="category-icon">🎯</span>
+                    <span class="category-title">Custom Color</span>
+                    <span class="category-subtitle">Pick any color</span>
+                </div>
+                <div class="custom-color-section">
+                    <div class="custom-color-input-wrapper">
+                        <input type="color" class="custom-picker" id="customColorPicker" value="#6366f1">
+                        <input type="text" class="custom-hex-input" id="customHexInput" placeholder="#6366f1" value="#6366f1">
+                    </div>
+                    <button class="apply-custom-btn" onclick="applyCustomColor()">Apply</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-footer">
+            <div class="current-color-display">
+                <div class="current-swatch" id="currentColorSwatch" style="background: #3a3a4d;"></div>
+                <div class="current-info">
+                    <div>Current: <span id="currentColorHex">#3a3a4d</span></div>
+                </div>
+            </div>
+            <button class="remove-color-btn" onclick="removeColor()">🗑️ Reset to Default</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    
+    <script>
+        let selectedCountry = null;
+        let countryColors = {};
+        let recentColors = [];
+        let svg, g, projection, path;
+        let countriesData = [];
+        const MAX_RECENT_COLORS = 12;
+        const DEFAULT_COLOR = '#3a3a4d';
+
+        // Initialize map
+        async function initMap() {
+            svg = d3.select("#worldMap");
+            g = svg.append("g");
+
+            // Mercator projection
+            projection = d3.geoMercator()
+                .scale(320)
+                .translate([1000, 650]);
+
+            path = d3.geoPath().projection(projection);
+
+            try {
+                const world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
+                const countries = topojson.feature(world, world.objects.countries);
+                
+                g.selectAll("path")
+                    .data(countries.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .style("fill", DEFAULT_COLOR)
+                    .attr("id", d => "country_" + d.id)
+                    .attr("data-id", d => d.id)
+                    .attr("data-name", d => d.properties.name || "Unknown")
+                    .on("click", function(event, d) {
+                        event.stopPropagation();
+                        selectCountryAndOpenPicker(this, d);
+                    })
+                    .append("title")
+                    .text(d => d.properties.name || "Unknown");
+
+                countriesData = countries.features;
+                populateCountrySearch();
+                setupZoom();
+                loadFromLocalStorage();
+                
+            } catch (error) {
+                console.error("Error loading map:", error);
+                alert("Error loading map. Please check your internet connection.");
+            }
+
+            setupCustomColorSync();
+        }
+
+        function populateCountrySearch() {
+            const select = document.getElementById('countrySearch');
+            const sortedCountries = countriesData
+                .map(d => ({ id: d.id, name: d.properties.name || "Unknown" }))
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            sortedCountries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.id;
+                option.textContent = country.name;
+                select.appendChild(option);
+            });
+        }
+
+        function selectCountryByCode(countryId) {
+            if (!countryId) return;
+            
+            const countryElement = document.querySelector(`[data-id="${countryId}"]`);
+            if (countryElement) {
+                const countryData = countriesData.find(d => d.id == countryId);
+                selectCountryAndOpenPicker(countryElement, countryData);
+            }
+        }
+
+        function selectCountryAndOpenPicker(element, data) {
+            // Remove previous selection
+            if (selectedCountry) {
+                d3.select(selectedCountry).classed("selected", false);
+            }
+
+            // Select new country
+            selectedCountry = element;
+            d3.select(selectedCountry).classed("selected", true);
+
+            const countryName = data.properties.name || "Unknown";
+            const currentColor = d3.select(element).style('fill');
+
+            // Update sidebar display
+            document.getElementById('selectedCountryName').textContent = countryName;
+            document.getElementById('selectedDisplay').classList.add('has-country');
+            document.getElementById('selectedColorPreview').style.display = 'flex';
+            document.getElementById('selectedColorSwatch').style.background = currentColor;
+            document.getElementById('selectedColorHex').textContent = currentColor;
+            document.getElementById('countrySearch').value = data.id;
+
+            // Open color picker popup
+            openColorPicker(countryName, currentColor);
+        }
+
+        function openColorPicker(countryName, currentColor) {
+            document.getElementById('popupCountryName').textContent = countryName;
+            document.getElementById('currentColorSwatch').style.background = currentColor;
+            document.getElementById('currentColorHex').textContent = currentColor;
+            document.getElementById('customColorPicker').value = currentColor.startsWith('#') ? currentColor : rgbToHex(currentColor);
+            document.getElementById('customHexInput').value = currentColor.startsWith('#') ? currentColor : rgbToHex(currentColor);
+            
+            updateRecentColorsDisplay();
+            
+            document.getElementById('colorPickerOverlay').classList.add('active');
+            document.getElementById('colorPickerPopup').classList.add('active');
+        }
+
+        function closeColorPicker() {
+            document.getElementById('colorPickerOverlay').classList.remove('active');
+            document.getElementById('colorPickerPopup').classList.remove('active');
+        }
+
+        function applyColor(color) {
+            if (!selectedCountry) return;
+
+            d3.select(selectedCountry).style('fill', color);
+            const countryId = d3.select(selectedCountry).attr('data-id');
+            countryColors[countryId] = color;
+
+            // Update displays
+            document.getElementById('currentColorSwatch').style.background = color;
+            document.getElementById('currentColorHex').textContent = color;
+            document.getElementById('selectedColorSwatch').style.background = color;
+            document.getElementById('selectedColorHex').textContent = color;
+            document.getElementById('customColorPicker').value = color;
+            document.getElementById('customHexInput').value = color;
+
+            // Add to recent colors
+            addToRecentColors(color);
+            
+            // Save to local storage
+            saveToLocalStorage();
+        }
+
+        function applyCustomColor() {
+            const color = document.getElementById('customHexInput').value.trim();
+            if (isValidColor(color)) {
+                applyColor(color);
+            } else {
+                alert('Invalid color format. Please use #RRGGBB format.');
+            }
+        }
+
+        function removeColor() {
+            if (!selectedCountry) return;
+            
+            d3.select(selectedCountry).style('fill', DEFAULT_COLOR);
+            const countryId = d3.select(selectedCountry).attr('data-id');
+            delete countryColors[countryId];
+
+            document.getElementById('currentColorSwatch').style.background = DEFAULT_COLOR;
+            document.getElementById('currentColorHex').textContent = DEFAULT_COLOR;
+            document.getElementById('selectedColorSwatch').style.background = DEFAULT_COLOR;
+            document.getElementById('selectedColorHex').textContent = DEFAULT_COLOR;
+            
+            saveToLocalStorage();
+        }
+
+        function addToRecentColors(color) {
+            // Remove if already exists
+            recentColors = recentColors.filter(c => c.toLowerCase() !== color.toLowerCase());
+            // Add to front
+            recentColors.unshift(color);
+            // Limit size
+            if (recentColors.length > MAX_RECENT_COLORS) {
+                recentColors = recentColors.slice(0, MAX_RECENT_COLORS);
+            }
+            updateRecentColorsDisplay();
+            saveToLocalStorage();
+        }
+
+        function updateRecentColorsDisplay() {
+            const container = document.getElementById('recentColors');
+            if (recentColors.length === 0) {
+                container.innerHTML = '<span class="no-recent">No recent colors yet</span>';
+                return;
+            }
+
+            container.innerHTML = recentColors.map(color => 
+                `<div class="recent-color" style="background: ${color};" onclick="applyColor('${color}')" title="${color}"></div>`
+            ).join('');
+        }
+
+        function setupCustomColorSync() {
+            const picker = document.getElementById('customColorPicker');
+            const input = document.getElementById('customHexInput');
+
+            picker.addEventListener('input', (e) => {
+                input.value = e.target.value;
+            });
+
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                if (isValidColor(value)) {
+                    picker.value = value;
+                }
+            });
+
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    applyCustomColor();
+                }
+            });
+        }
+
+        function isValidColor(color) {
+            return /^#[0-9A-Fa-f]{6}$/.test(color);
+        }
+
+        function rgbToHex(color) {
+            if (!color) return '#000000';
+            if (color.startsWith('#')) return color;
+            
+            // Handle rgb(r, g, b) format with flexible spacing
+            const rgbMatch = color.match(/rgb\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/i);
+            if (rgbMatch) {
+                const r = parseInt(rgbMatch[1]).toString(16).padStart(2, '0');
+                const g = parseInt(rgbMatch[2]).toString(16).padStart(2, '0');
+                const b = parseInt(rgbMatch[3]).toString(16).padStart(2, '0');
+                return `#${r}${g}${b}`;
+            }
+            
+            return color; // Return original if can't parse
+        }
+
+        // Background functions
+        function setBackground(color) {
+            document.getElementById('mapContainer').style.background = color;
+            document.getElementById('bgColorPicker').value = color;
+            saveToLocalStorage();
+        }
+
+        function applyBackgroundFromPicker() {
+            const color = document.getElementById('bgColorPicker').value;
+            setBackground(color);
+        }
+
+        // Local storage
+        function saveToLocalStorage() {
+            const data = {
+                countryColors,
+                recentColors,
+                backgroundColor: document.getElementById('mapContainer').style.background
+            };
+            localStorage.setItem('drawYourMapData', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('drawYourMapData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    
+                    if (data.countryColors) {
+                        countryColors = data.countryColors;
+                        Object.keys(countryColors).forEach(id => {
+                            const el = document.querySelector(`[data-id="${id}"]`);
+                            if (el) d3.select(el).style('fill', countryColors[id]);
+                        });
+                    }
+                    
+                    if (data.recentColors) {
+                        recentColors = data.recentColors;
+                    }
+                    
+                    if (data.backgroundColor) {
+                        document.getElementById('mapContainer').style.background = data.backgroundColor;
+                        document.getElementById('bgColorPicker').value = rgbToHex(data.backgroundColor);
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading saved data:', e);
+            }
+        }
+
+        // Reset
+        function resetMap() {
+            if (confirm('Are you sure you want to reset all colors?')) {
+                g.selectAll("path").style('fill', DEFAULT_COLOR);
+                countryColors = {};
+                selectedCountry = null;
+                
+                document.getElementById('selectedCountryName').textContent = 'Click on a country';
+                document.getElementById('selectedDisplay').classList.remove('has-country');
+                document.getElementById('selectedColorPreview').style.display = 'none';
+                document.getElementById('countrySearch').value = '';
+                
+                setBackground('#0d0d12');
+                saveToLocalStorage();
+                closeColorPicker();
+            }
+        }
+
+        // Export/Import
+        function exportColors() {
+            const data = {
+                backgroundColor: document.getElementById('mapContainer').style.background || '#0d0d12',
+                countries: countryColors,
+                recentColors,
+                timestamp: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'my-map-' + Date.now() + '.json';
+            a.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        function importColors() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.backgroundColor) {
+                        setBackground(data.backgroundColor);
+                    }
+                    
+                    if (data.countries) {
+                        countryColors = data.countries;
+                        Object.keys(data.countries).forEach(countryId => {
+                            const element = document.querySelector(`[data-id="${countryId}"]`);
+                            if (element) {
+                                d3.select(element).style('fill', data.countries[countryId]);
+                            }
+                        });
+                    }
+                    
+                    if (data.recentColors) {
+                        recentColors = data.recentColors;
+                        updateRecentColorsDisplay();
+                    }
+                    
+                    saveToLocalStorage();
+                    alert('Map imported successfully!');
+                } catch (error) {
+                    alert('Error importing file');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Zoom
+        let zoom;
+
+        function setupZoom() {
+            zoom = d3.zoom()
+                .scaleExtent([1, 8])
+                .on("zoom", (event) => {
+                    g.attr("transform", event.transform);
+                });
+
+            svg.call(zoom);
+        }
+
+        function zoomIn() {
+            svg.transition().call(zoom.scaleBy, 1.5);
+        }
+
+        function zoomOut() {
+            svg.transition().call(zoom.scaleBy, 0.67);
+        }
+
+        function resetZoom() {
+            svg.transition().call(zoom.transform, d3.zoomIdentity);
+        }
+
+        // Export as PNG
+        function exportAsImage() {
+            const svgElement = document.getElementById('worldMap');
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const viewBox = svgElement.getAttribute('viewBox').split(' ').map(Number);
+            
+            canvas.width = viewBox[2] * 2;
+            canvas.height = viewBox[3] * 2;
+            
+            const bgColor = getComputedStyle(document.getElementById('mapContainer')).background || '#0d0d12';
+            ctx.fillStyle = bgColor.split(')')[0] + ')' || '#0d0d12';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const img = new Image();
+            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                URL.revokeObjectURL(url);
+                
+                canvas.toBlob(function(blob) {
+                    const link = document.createElement('a');
+                    link.download = 'my-map-' + Date.now() + '.png';
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                });
+            };
+            
+            img.src = url;
+        }
+
+        // Export as SVG
+        function exportAsSVG() {
+            const svgElement = document.getElementById('worldMap');
+            const svgClone = svgElement.cloneNode(true);
+            
+            const bgColor = getComputedStyle(document.getElementById('mapContainer')).backgroundColor || '#0d0d12';
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('width', '100%');
+            rect.setAttribute('height', '100%');
+            rect.setAttribute('fill', bgColor);
+            svgClone.insertBefore(rect, svgClone.firstChild);
+            
+            const gElement = svgClone.querySelector('g');
+            if (gElement) {
+                gElement.removeAttribute('transform');
+            }
+            
+            const svgData = new XMLSerializer().serializeToString(svgClone);
+            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+            
+            const link = document.createElement('a');
+            link.download = 'my-map-' + Date.now() + '.svg';
+            link.href = url;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeColorPicker();
+            }
+        });
+
+        // Initialize
+        initMap();
+    </script>
+</body>
+</html>
