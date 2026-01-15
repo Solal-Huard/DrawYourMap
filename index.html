@@ -343,6 +343,48 @@
             font-family: 'DM Sans', sans-serif;
         }
 
+        /* Leaflet control styling */
+        .leaflet-control-layers {
+            background: var(--bg-panel) !important;
+            border: 1px solid var(--border-subtle) !important;
+            border-radius: 10px !important;
+            color: var(--text-primary) !important;
+        }
+
+        .leaflet-control-layers-expanded {
+            padding: 10px 14px !important;
+        }
+
+        .leaflet-control-layers label {
+            color: var(--text-primary) !important;
+            font-size: 0.85rem;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: var(--bg-panel) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .leaflet-popup-content {
+            color: var(--text-primary) !important;
+            margin: 12px 14px !important;
+        }
+
+        .leaflet-popup-tip {
+            background: var(--bg-panel) !important;
+        }
+
+        .leaflet-control-attribution {
+            background: rgba(21, 21, 32, 0.8) !important;
+            color: var(--text-muted) !important;
+            font-size: 0.65rem !important;
+        }
+
+        .leaflet-control-attribution a {
+            color: var(--accent-secondary) !important;
+        }
+
         /* Zoom Controls */
         .zoom-controls {
             position: absolute;
@@ -453,6 +495,137 @@
         .road-tag.scenic { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
         .road-tag.adventure { background: rgba(249, 115, 22, 0.2); color: #f97316; }
         .road-tag.camping { background: rgba(20, 184, 166, 0.2); color: #14b8a6; }
+        .road-tag.fourx4 { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .road-tag.wildlife { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+
+        .road-trip-card.personal {
+            border-left: 3px solid var(--success);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), transparent);
+        }
+
+        .personal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: var(--success);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Rental Provider Card */
+        .rental-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+        }
+
+        .rental-card:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .rental-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .rental-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .rental-name a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+        }
+
+        .rental-name a:hover {
+            text-decoration: underline;
+        }
+
+        .rental-rating {
+            font-size: 0.75rem;
+        }
+
+        .rental-note {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Camping Site Card */
+        .camping-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .camping-card:hover {
+            border-color: var(--serendipity);
+            transform: translateX(4px);
+        }
+
+        .camping-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
+        .camping-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .camping-type {
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+
+        .camping-type.nwr {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .camping-type.private {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+
+        .camping-location {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .camping-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+        }
+
+        .camping-price {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .camping-facilities {
+            color: var(--text-muted);
+            font-style: italic;
+        }
 
         /* Vanlifer Info Panel */
         .vanlifer-info {
@@ -1011,6 +1184,18 @@
                         </div>
                     </div>
 
+                    <!-- Route Details Panel (for selected route) -->
+                    <div id="routeDetailsPanel" style="display: none;">
+                        <div class="section">
+                            <div class="section-title">🚗 Location 4x4 avec tente de toit</div>
+                            <div id="rentalProvidersList"></div>
+                        </div>
+                        <div class="section">
+                            <div class="section-title">🏕️ Campings sur la route</div>
+                            <div id="campingSitesList"></div>
+                        </div>
+                    </div>
+
                     <!-- Community Alerts -->
                     <div class="section community-alerts">
                         <div class="section-title">⚠️ Community Alerts</div>
@@ -1093,6 +1278,53 @@
 
         // ==================== ICONIC ROAD TRIPS DATABASE ====================
         const roadTrips = [
+            {
+                id: 'namibia_highlights',
+                name: 'Namibia Highlights',
+                icon: '🇳🇦',
+                country: 'Namibia',
+                distance: '3500 km',
+                duration: '12-16 days',
+                coordinates: [[-22.5609, 17.0658], [-24.7275, 15.7390]],
+                waypoints: [
+                    [-22.5609, 17.0658, 'Windhoek'],
+                    [-22.6792, 14.5272, 'Swakopmund'],
+                    [-23.1061, 14.4361, 'Walvis Bay'],
+                    [-24.7275, 15.7390, 'Sossusvlei'],
+                    [-24.4628, 15.9446, 'Sesriem Canyon'],
+                    [-23.3425, 15.9369, 'Solitaire'],
+                    [-19.1738, 15.9494, 'Twyfelfontein'],
+                    [-19.5833, 13.1000, 'Skeleton Coast'],
+                    [-19.0154, 15.9150, 'Palmwag'],
+                    [-18.8558, 16.1568, 'Etosha (Okaukuejo)'],
+                    [-18.7878, 16.9306, 'Etosha (Halali)'],
+                    [-18.8111, 17.0667, 'Etosha (Namutoni)'],
+                    [-22.5609, 17.0658, 'Windhoek']
+                ],
+                tags: ['fourx4', 'adventure', 'camping', 'wildlife'],
+                description: 'L\'aventure ultime en Namibie: dunes rouges de Sossusvlei, côte des squelettes, faune d\'Etosha.',
+                tips: 'Location 4x4 avec tente de toit obligatoire. Réserver les campings NWR à l\'avance!',
+                personalTrip: true,
+                tripDate: 'Il y a 3 mois',
+                rentalProviders: [
+                    { name: 'ASCO Car Hire', url: 'https://ascocarhire.com', rating: '⭐⭐⭐⭐⭐', note: 'Excellent, véhicules bien entretenus' },
+                    { name: 'Namibia2Go', url: 'https://namibia2go.com', rating: '⭐⭐⭐⭐', note: 'Bon rapport qualité/prix' },
+                    { name: 'Britz Namibia', url: 'https://britz.co.za', rating: '⭐⭐⭐⭐', note: 'Grande flotte, pro' },
+                    { name: 'Camping Car Hire', url: 'https://campingcarhire.com', rating: '⭐⭐⭐⭐⭐', note: 'Spécialiste camping' },
+                    { name: 'Safari Car Rental', url: 'https://safaricarrental.com', rating: '⭐⭐⭐⭐', note: 'Service client top' }
+                ],
+                campingSites: [
+                    { name: 'Urban Camp Windhoek', location: 'Windhoek', type: 'Privé', price: '~250 NAD', facilities: 'Piscine, bar, wifi', coords: [-22.5700, 17.0800] },
+                    { name: 'Alte Brücke', location: 'Swakopmund', type: 'Privé', price: '~300 NAD', facilities: 'Près centre-ville, propre', coords: [-22.6850, 14.5350] },
+                    { name: 'Sesriem Campsite (NWR)', location: 'Sossusvlei', type: 'NWR', price: '~350 NAD', facilities: 'Accès dunes au lever du soleil!', coords: [-24.4800, 15.8300] },
+                    { name: 'Sossus Oasis', location: 'Sesriem', type: 'Privé', price: '~400 NAD', facilities: 'Piscine, restaurant', coords: [-24.4700, 15.8200] },
+                    { name: 'Solitaire Guest Farm', location: 'Solitaire', type: 'Privé', price: '~350 NAD', facilities: 'Apfelstrudel légendaire!', coords: [-23.8900, 16.0100] },
+                    { name: 'Palmwag Lodge Camp', location: 'Palmwag', type: 'Privé', price: '~400 NAD', facilities: 'Rhinos, éléphants', coords: [-19.8800, 13.9500] },
+                    { name: 'Okaukuejo (NWR)', location: 'Etosha', type: 'NWR', price: '~450 NAD', facilities: 'Waterhole illuminé la nuit!', coords: [-18.9000, 15.9200] },
+                    { name: 'Halali (NWR)', location: 'Etosha', type: 'NWR', price: '~400 NAD', facilities: 'Central, waterhole', coords: [-18.7600, 16.5000] },
+                    { name: 'Namutoni (NWR)', location: 'Etosha', type: 'NWR', price: '~450 NAD', facilities: 'Fort historique, waterhole', coords: [-18.8100, 16.9300] }
+                ]
+            },
             {
                 id: 'route66',
                 name: 'Route 66',
@@ -1262,7 +1494,8 @@
             'New Zealand': { tolls: 'Very Few', tollClass: 'good', camping: 'Freedom OK', campingClass: 'good', fuel: '$1.70/L', fuelClass: 'moderate', visa: '3 months', roadQuality: 'Excellent', waterAccess: 'Easy' },
             'South Africa': { tolls: 'Moderate', tollClass: 'moderate', camping: 'Variable', campingClass: 'moderate', fuel: '$1.10/L', fuelClass: 'good', visa: '90 days', roadQuality: 'Good', waterAccess: 'Variable' },
             'Morocco': { tolls: 'Cheap', tollClass: 'good', camping: 'Very Easy', campingClass: 'good', fuel: '$1.20/L', fuelClass: 'good', visa: '90 days', roadQuality: 'Variable', waterAccess: 'Moderate' },
-            'Japan': { tolls: 'Very High', tollClass: 'bad', camping: 'Michi-no-Eki', campingClass: 'moderate', fuel: '$1.40/L', fuelClass: 'good', visa: '90 days', roadQuality: 'Excellent', waterAccess: 'Easy' }
+            'Japan': { tolls: 'Very High', tollClass: 'bad', camping: 'Michi-no-Eki', campingClass: 'moderate', fuel: '$1.40/L', fuelClass: 'good', visa: '90 days', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Namibia': { tolls: 'None!', tollClass: 'good', camping: 'Excellent', campingClass: 'good', fuel: '~$1.10/L', fuelClass: 'good', visa: '90 days free', roadQuality: 'Gravel roads', waterAccess: 'Plan ahead', special: '4x4 + rooftop tent recommended. Book NWR camps early!' }
         };
 
         // Default vanlifer info
@@ -1332,31 +1565,66 @@
                 zoomControl: false
             });
 
-            // Dark theme tiles
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            // Base dark layer
+            const darkBase = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
                 attribution: '© OpenStreetMap, © CARTO',
                 maxZoom: 19
-            }).addTo(roadMap);
+            });
+
+            // Roads overlay - this shows highways prominently!
+            const roadsOverlay = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            });
+
+            // Alternative: OpenStreetMap style showing roads better
+            const osmRoads = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap',
+                maxZoom: 19,
+                className: 'osm-roads-layer'
+            });
+
+            // Stamen terrain for adventure feel
+            const stamenTerrain = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png', {
+                attribution: '© Stadia Maps, © OpenStreetMap',
+                maxZoom: 18
+            });
+
+            // Default: Dark with roads
+            darkBase.addTo(roadMap);
+            roadsOverlay.addTo(roadMap);
+
+            // Layer control
+            const baseLayers = {
+                "🌙 Dark Mode": darkBase,
+                "🗺️ Terrain": stamenTerrain,
+                "🛣️ OpenStreetMap": osmRoads
+            };
+            L.control.layers(baseLayers, null, { position: 'topright' }).addTo(roadMap);
 
             // Add road trip routes
             roadTrips.forEach(trip => {
                 if (trip.waypoints && trip.waypoints.length > 1) {
                     const coords = trip.waypoints.map(w => [w[0], w[1]]);
                     
-                    // Draw route line
+                    // Draw route line - different color for personal trips
+                    const routeColor = trip.personalTrip ? '#22c55e' : '#f472b6';
                     const routeLine = L.polyline(coords, {
-                        color: '#f472b6',
-                        weight: 3,
-                        opacity: 0.8,
-                        dashArray: '10, 5'
+                        color: routeColor,
+                        weight: trip.personalTrip ? 4 : 3,
+                        opacity: 0.9,
+                        dashArray: trip.personalTrip ? null : '10, 5'
                     }).addTo(roadMap);
 
                     // Add markers for waypoints
                     trip.waypoints.forEach((wp, idx) => {
+                        const isStart = idx === 0;
+                        const isEnd = idx === trip.waypoints.length - 1;
+                        const markerIcon = isStart ? '🚗' : (isEnd ? '🏁' : '📍');
+                        
                         const marker = L.marker([wp[0], wp[1]], {
                             icon: L.divIcon({
-                                className: 'custom-marker poi-marker',
-                                html: idx === 0 ? '🚗' : (idx === trip.waypoints.length - 1 ? '🏁' : '📍'),
+                                className: `custom-marker ${trip.personalTrip ? 'poi-marker' : 'poi-marker'}`,
+                                html: markerIcon,
                                 iconSize: [30, 30]
                             })
                         }).addTo(roadMap);
@@ -1364,13 +1632,45 @@
                         marker.bindPopup(`
                             <div class="route-popup">
                                 <h4>${wp[2]}</h4>
-                                <p>${trip.name}</p>
+                                <p><strong>${trip.icon} ${trip.name}</strong></p>
+                                ${trip.personalTrip ? '<div style="color: #22c55e; font-size: 0.8rem;">✓ Visité</div>' : ''}
                                 <div style="font-size: 0.8rem; color: #9494a8;">${trip.description}</div>
                             </div>
                         `);
                     });
 
-                    routeLine.bindPopup(`<div class="route-popup"><h4>${trip.icon} ${trip.name}</h4><p>${trip.distance} • ${trip.duration}</p></div>`);
+                    // Add camping markers for trips that have them
+                    if (trip.campingSites) {
+                        trip.campingSites.forEach(camp => {
+                            if (camp.coords) {
+                                const campMarker = L.marker(camp.coords, {
+                                    icon: L.divIcon({
+                                        className: 'custom-marker',
+                                        html: '🏕️',
+                                        iconSize: [26, 26]
+                                    })
+                                }).addTo(roadMap);
+
+                                campMarker.bindPopup(`
+                                    <div class="route-popup">
+                                        <h4>🏕️ ${camp.name}</h4>
+                                        <p><strong>${camp.type}</strong> - ${camp.location}</p>
+                                        <div style="color: #22c55e; font-weight: bold;">${camp.price}/nuit</div>
+                                        <div style="font-size: 0.8rem; color: #9494a8; margin-top: 4px;">${camp.facilities}</div>
+                                    </div>
+                                `);
+                            }
+                        });
+                    }
+
+                    routeLine.bindPopup(`
+                        <div class="route-popup">
+                            <h4>${trip.icon} ${trip.name}</h4>
+                            <p>${trip.distance} • ${trip.duration}</p>
+                            ${trip.personalTrip ? '<div style="color: #22c55e;">✓ Mon voyage - ' + trip.tripDate + '</div>' : ''}
+                            <div style="font-size: 0.8rem; margin-top: 8px;">${trip.tips}</div>
+                        </div>
+                    `);
                 }
             });
 
@@ -1496,18 +1796,20 @@
         function renderRoadTrips() {
             const container = document.getElementById('roadTripsList');
             container.innerHTML = roadTrips.map(trip => `
-                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''}" onclick="selectRoute('${trip.id}')">
+                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''}" onclick="selectRoute('${trip.id}')">
                     <div class="road-trip-header">
                         <span class="road-trip-icon">${trip.icon}</span>
                         <span class="road-trip-name">${trip.name}</span>
+                        ${trip.personalTrip ? `<span class="personal-badge">✓ Mon voyage</span>` : ''}
                     </div>
                     <div class="road-trip-meta">
                         <span>📍 ${trip.country}</span>
                         <span>📏 ${trip.distance}</span>
                         <span>⏱️ ${trip.duration}</span>
                     </div>
+                    ${trip.tripDate ? `<div style="font-size: 0.7rem; color: var(--success); margin-top: 4px;">📅 ${trip.tripDate}</div>` : ''}
                     <div class="road-trip-tags">
-                        ${trip.tags.map(t => `<span class="road-tag ${t}">${t}</span>`).join('')}
+                        ${trip.tags.map(t => `<span class="road-tag ${t}">${t === 'fourx4' ? '4x4' : t}</span>`).join('')}
                     </div>
                 </div>
             `).join('');
@@ -1521,6 +1823,65 @@
             if (trip && roadMap && trip.waypoints) {
                 const bounds = L.latLngBounds(trip.waypoints.map(w => [w[0], w[1]]));
                 roadMap.fitBounds(bounds, { padding: [50, 50] });
+                
+                // Show route details panel if route has rental/camping info
+                const detailsPanel = document.getElementById('routeDetailsPanel');
+                if (trip.rentalProviders || trip.campingSites) {
+                    detailsPanel.style.display = 'block';
+                    renderRouteDetails(trip);
+                } else {
+                    detailsPanel.style.display = 'none';
+                }
+            }
+            
+            updateStats();
+        }
+
+        function renderRouteDetails(trip) {
+            // Render rental providers
+            const rentalContainer = document.getElementById('rentalProvidersList');
+            if (trip.rentalProviders && trip.rentalProviders.length > 0) {
+                rentalContainer.innerHTML = trip.rentalProviders.map(r => `
+                    <div class="rental-card">
+                        <div class="rental-header">
+                            <span class="rental-name"><a href="${r.url}" target="_blank">🚙 ${r.name}</a></span>
+                            <span class="rental-rating">${r.rating}</span>
+                        </div>
+                        <div class="rental-note">${r.note}</div>
+                    </div>
+                `).join('');
+            } else {
+                rentalContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">Pas d\'info disponible</p>';
+            }
+
+            // Render camping sites
+            const campingContainer = document.getElementById('campingSitesList');
+            if (trip.campingSites && trip.campingSites.length > 0) {
+                campingContainer.innerHTML = trip.campingSites.map(c => `
+                    <div class="camping-card" onclick="focusOnCamping(${c.coords[0]}, ${c.coords[1]}, '${c.name}')">
+                        <div class="camping-header">
+                            <span class="camping-name">🏕️ ${c.name}</span>
+                            <span class="camping-type ${c.type.toLowerCase()}">${c.type}</span>
+                        </div>
+                        <div class="camping-location">📍 ${c.location}</div>
+                        <div class="camping-info">
+                            <span class="camping-price">💰 ${c.price}/nuit</span>
+                            <span class="camping-facilities">${c.facilities}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                campingContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">Pas d\'info disponible</p>';
+            }
+        }
+
+        function focusOnCamping(lat, lng, name) {
+            if (roadMap) {
+                roadMap.setView([lat, lng], 12);
+                L.popup()
+                    .setLatLng([lat, lng])
+                    .setContent(`<div class="route-popup"><h4>🏕️ ${name}</h4></div>`)
+                    .openOn(roadMap);
             }
         }
 
@@ -1531,9 +1892,14 @@
             // Default sample alerts
             if (communityAlerts.length === 0) {
                 communityAlerts = [
-                    { id: 1, type: 'road_work', title: 'Road Construction', description: 'I-40 near Flagstaff, expect delays', location: 'Route 66, Arizona', date: '2 hours ago', lat: 35.2, lng: -111.6 },
-                    { id: 2, type: 'camping', title: 'Great Free Spot', description: 'BLM land just off Route 66, beautiful sunset views', location: 'Near Seligman, AZ', date: '1 day ago', lat: 35.3, lng: -112.9 },
-                    { id: 3, type: 'hazard', title: 'Pothole Warning', description: 'Large potholes after km marker 245', location: 'Transfăgărășan, Romania', date: '3 days ago', lat: 45.6, lng: 24.6 }
+                    { id: 1, type: 'tip', title: 'Dune 45 Lever du soleil', description: 'Arrivez avant 5h30 pour le lever de soleil sur Dune 45. Magique! Prévoir lampe frontale.', location: 'Sossusvlei, Namibie', date: '1 semaine', lat: -24.7275, lng: 15.4739 },
+                    { id: 2, type: 'camping', title: 'Sesriem = Accès prioritaire', description: 'Dormir au camp NWR Sesriem permet d\'entrer dans le parc 1h avant les autres visiteurs!', location: 'Sesriem, Namibie', date: '2 semaines', lat: -24.4800, lng: 15.8300 },
+                    { id: 3, type: 'hazard', title: 'Piste sableuse D707', description: 'Route très sableuse entre Solitaire et Walvis Bay. 4x4 indispensable, réduire pression pneus.', location: 'D707, Namibie', date: '3 semaines', lat: -23.5500, lng: 15.2000 },
+                    { id: 4, type: 'fuel', title: 'Dernière station avant Sossusvlei', description: 'Faites le plein à Solitaire! Prochaine station à 200km.', location: 'Solitaire, Namibie', date: '1 mois', lat: -23.8900, lng: 16.0100 },
+                    { id: 5, type: 'tip', title: 'Éléphants du désert à Palmwag', description: 'Game drive matinal à Palmwag = quasi garanti de voir les éléphants du désert!', location: 'Palmwag, Namibie', date: '1 mois', lat: -19.8800, lng: 13.9500 },
+                    { id: 6, type: 'camping', title: 'Okaukuejo Waterhole', description: 'Le waterhole d\'Okaukuejo est illuminé la nuit. Rhinos noirs réguliers après 22h!', location: 'Etosha, Namibie', date: '1 mois', lat: -18.9000, lng: 15.9200 },
+                    { id: 7, type: 'road_work', title: 'Road Construction', description: 'I-40 near Flagstaff, expect delays', location: 'Route 66, Arizona', date: '2 hours ago', lat: 35.2, lng: -111.6 },
+                    { id: 8, type: 'hazard', title: 'Pothole Warning', description: 'Large potholes after km marker 245', location: 'Transfăgărășan, Romania', date: '3 days ago', lat: 45.6, lng: 24.6 }
                 ];
             }
 
