@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draw Your Map - Interactive World Map Designer</title>
+    <title>Draw Your Map - Travel Diary & Road Trip Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for road maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * {
             margin: 0;
@@ -30,6 +32,8 @@
             --success: #22c55e;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --serendipity: #f472b6;
+            --road-primary: #fbbf24;
         }
 
         body {
@@ -47,16 +51,17 @@
 
         /* Sidebar */
         .sidebar {
-            width: 300px;
+            width: 320px;
             background: var(--bg-panel);
             border-right: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
             z-index: 100;
+            transition: transform 0.3s;
         }
 
         .sidebar-header {
-            padding: 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
@@ -64,7 +69,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-primary);
         }
@@ -80,6 +85,49 @@
             font-size: 1.25rem;
         }
 
+        .logo-icon.serendipity-mode {
+            background: linear-gradient(135deg, var(--serendipity), var(--road-primary));
+        }
+
+        /* Mode Tabs */
+        .mode-tabs {
+            display: flex;
+            padding: 12px;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .mode-tab:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .mode-tab.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .mode-tab.serendipity.active {
+            background: linear-gradient(135deg, var(--serendipity), var(--road-primary));
+            border-color: var(--serendipity);
+        }
+
         .sidebar-content {
             flex: 1;
             overflow-y: auto;
@@ -90,63 +138,9 @@
             width: 6px;
         }
 
-        .sidebar-content::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
         .sidebar-content::-webkit-scrollbar-thumb {
             background: var(--bg-hover);
             border-radius: 3px;
-        }
-
-        /* Selected Country Display */
-        .selected-display {
-            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover));
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        .selected-display.has-country {
-            border-color: var(--border-accent);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .selected-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .selected-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .selected-color-preview {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .color-swatch-large {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            border: 2px solid var(--border-subtle);
-        }
-
-        .color-info {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
         }
 
         /* Section */
@@ -155,7 +149,7 @@
         }
 
         .section-title {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -164,32 +158,31 @@
             padding-left: 4px;
         }
 
-        /* Search Select */
-        .search-wrapper {
-            position: relative;
+        /* Stats */
+        .travel-stats {
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover));
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
         }
 
-        .search-select {
-            width: 100%;
-            padding: 12px 14px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
+        .stat-box {
+            text-align: center;
         }
 
-        .search-select:hover {
-            border-color: var(--border-accent);
+        .stat-box .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-primary);
         }
 
-        .search-select:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px var(--accent-glow);
+        .stat-box .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
         }
 
         /* Buttons */
@@ -203,7 +196,7 @@
             border: none;
             border-radius: 8px;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
@@ -230,6 +223,17 @@
             border-color: var(--border-accent);
         }
 
+        .btn-serendipity {
+            background: linear-gradient(135deg, var(--serendipity), var(--road-primary));
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-serendipity:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.4);
+        }
+
         .btn-group {
             display: flex;
             gap: 8px;
@@ -239,14 +243,57 @@
             flex: 1;
         }
 
+        /* Selected Display */
+        .selected-display {
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover));
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .selected-display.has-selection {
+            border-color: var(--border-accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .selected-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .selected-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Search */
+        .search-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .search-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
         /* Map Container */
         .map-container {
             flex: 1;
             position: relative;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
-                var(--bg-dark);
+            background: var(--bg-dark);
             overflow: hidden;
         }
 
@@ -263,7 +310,6 @@
         #worldMap path {
             stroke: rgba(255, 255, 255, 0.2);
             stroke-width: 0.5;
-            stroke-linejoin: round;
             transition: filter 0.15s, stroke 0.15s;
         }
 
@@ -280,6 +326,23 @@
             filter: drop-shadow(0 0 8px var(--accent-glow));
         }
 
+        /* Leaflet Road Map */
+        #roadMap {
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: #1a1a2e;
+        }
+
+        #roadMap.active {
+            display: block;
+        }
+
+        .leaflet-container {
+            background: #1a1a2e;
+            font-family: 'DM Sans', sans-serif;
+        }
+
         /* Zoom Controls */
         .zoom-controls {
             position: absolute;
@@ -292,13 +355,13 @@
         }
 
         .zoom-btn {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: var(--bg-panel);
             border: 1px solid var(--border-subtle);
-            border-radius: 10px;
+            border-radius: 8px;
             color: var(--text-primary);
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -308,355 +371,467 @@
 
         .zoom-btn:hover {
             background: var(--bg-elevated);
-            border-color: var(--border-accent);
+            border-color: var(--accent-primary);
             color: var(--accent-primary);
         }
 
-        /* ==================== COLOR PICKER POPUP ==================== */
-        .color-picker-overlay {
+        /* ==================== SERENDIPITY PANEL ==================== */
+        .serendipity-content {
+            display: none;
+        }
+
+        .serendipity-content.active {
+            display: block;
+        }
+
+        .road-trip-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .road-trip-card:hover {
+            border-color: var(--serendipity);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.2);
+        }
+
+        .road-trip-card.active {
+            border-color: var(--serendipity);
+            background: rgba(244, 114, 182, 0.1);
+        }
+
+        .road-trip-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .road-trip-icon {
+            font-size: 1.5rem;
+        }
+
+        .road-trip-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .road-trip-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .road-trip-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .road-trip-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .road-tag {
+            padding: 4px 10px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .road-tag.toll-free { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .road-tag.scenic { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+        .road-tag.adventure { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+        .road-tag.camping { background: rgba(20, 184, 166, 0.2); color: #14b8a6; }
+
+        /* Vanlifer Info Panel */
+        .vanlifer-info {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .vanlifer-info h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .info-item {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .info-item .icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .info-item .label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .info-item .value {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .info-item.good .value { color: var(--success); }
+        .info-item.warning .value { color: var(--warning); }
+        .info-item.bad .value { color: var(--danger); }
+
+        /* Community Alerts */
+        .community-alerts {
+            margin-top: 16px;
+        }
+
+        .alert-item {
+            display: flex;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--warning);
+        }
+
+        .alert-item.danger { border-left-color: var(--danger); }
+        .alert-item.info { border-left-color: var(--accent-primary); }
+        .alert-item.success { border-left-color: var(--success); }
+
+        .alert-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .alert-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .alert-meta {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Add Alert Button */
+        .add-alert-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px dashed var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-alert-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* Alert Modal */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(4px);
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.25s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
         }
 
-        .color-picker-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        .modal-overlay.active {
+            display: flex;
         }
 
-        .color-picker-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
+        .modal {
             background: var(--bg-panel);
             border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            width: 580px;
+            border-radius: 16px;
+            width: 450px;
             max-width: 95vw;
             max-height: 90vh;
             overflow: hidden;
-            box-shadow: 
-                0 24px 80px rgba(0, 0, 0, 0.5),
-                0 0 1px rgba(255, 255, 255, 0.1) inset;
-            z-index: 1001;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .color-picker-popup.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .popup-header {
+        .modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 24px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--border-subtle);
-            background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-panel) 100%);
         }
 
-        .popup-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .popup-title h2 {
-            font-size: 1.1rem;
+        .modal-header h3 {
+            font-size: 1rem;
             font-weight: 600;
         }
 
-        .popup-country-name {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            background: var(--accent-primary);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .popup-close {
-            width: 36px;
-            height: 36px;
+        .modal-close {
+            width: 32px;
+            height: 32px;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
-            border-radius: 10px;
+            border-radius: 8px;
             color: var(--text-secondary);
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
         }
 
-        .popup-close:hover {
+        .modal-close:hover {
             background: var(--danger);
-            border-color: var(--danger);
             color: white;
         }
 
-        .popup-body {
-            padding: 20px 24px;
-            max-height: 65vh;
-            overflow-y: auto;
+        .modal-body {
+            padding: 20px;
         }
 
-        .popup-body::-webkit-scrollbar {
-            width: 8px;
+        .form-group {
+            margin-bottom: 16px;
         }
 
-        .popup-body::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-
-        .popup-body::-webkit-scrollbar-thumb {
-            background: var(--bg-hover);
-            border-radius: 4px;
-        }
-
-        /* Color Category */
-        .color-category {
-            margin-bottom: 24px;
-        }
-
-        .color-category:last-child {
-            margin-bottom: 0;
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .category-icon {
-            font-size: 1.1rem;
-        }
-
-        .category-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .category-subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-left: auto;
-        }
-
-        /* Color Grid */
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
-            gap: 8px;
-        }
-
-        .color-cell {
-            aspect-ratio: 1;
-            border-radius: 10px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.15s ease;
-            border: 2px solid transparent;
-        }
-
-        .color-cell:hover {
-            transform: scale(1.15);
-            z-index: 10;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-
-        .color-cell:active {
-            transform: scale(1.05);
-        }
-
-        .color-cell::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            pointer-events: none;
-        }
-
-        .color-cell.selected {
-            border-color: white;
-            box-shadow: 0 0 0 3px var(--accent-primary);
-        }
-
-        /* Gradient Row */
-        .gradient-row {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 12px;
-        }
-
-        .gradient-row .color-cell {
-            flex: 1;
-            height: 36px;
-            border-radius: 6px;
-        }
-
-        /* Custom Color Section */
-        .custom-color-section {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            padding: 16px;
-            background: var(--bg-elevated);
-            border-radius: 12px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .custom-color-input-wrapper {
-            flex: 1;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .custom-picker {
-            width: 60px;
-            height: 60px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            background: none;
-            padding: 0;
-        }
-
-        .custom-picker::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        .custom-picker::-webkit-color-swatch {
-            border: 2px solid var(--border-subtle);
-            border-radius: 12px;
-        }
-
-        .custom-hex-input {
-            flex: 1;
-            padding: 14px 16px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.95rem;
-        }
-
-        .custom-hex-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-
-        .apply-custom-btn {
-            padding: 14px 24px;
-            background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-family: inherit;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .apply-custom-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px var(--accent-glow);
-        }
-
-        /* Recent Colors */
-        .recent-colors {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .recent-color {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.15s;
-        }
-
-        .recent-color:hover {
-            transform: scale(1.15);
-            border-color: white;
-        }
-
-        .no-recent {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-style: italic;
-        }
-
-        /* Popup Footer */
-        .popup-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 24px;
-            border-top: 1px solid var(--border-subtle);
-            background: var(--bg-elevated);
-        }
-
-        .current-color-display {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .current-swatch {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            border: 2px solid var(--border-subtle);
-        }
-
-        .current-info {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 6px;
             color: var(--text-secondary);
         }
 
-        .remove-color-btn {
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--danger);
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
             border-radius: 8px;
-            color: var(--danger);
+            color: var(--text-primary);
             font-family: inherit;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
+            font-size: 0.9rem;
         }
 
-        .remove-color-btn:hover {
-            background: var(--danger);
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        textarea.form-input {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Route Info Popup */
+        .route-popup {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            padding: 16px;
+            min-width: 280px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .route-popup h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .route-popup p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        /* Marker Icons */
+        .custom-marker {
+            background: var(--bg-panel);
+            border: 2px solid var(--serendipity);
+            border-radius: 50%;
+            width: 30px !important;
+            height: 30px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-marker.alert-marker {
+            border-color: var(--warning);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .custom-marker.danger-marker {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .custom-marker.poi-marker {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.2);
+        }
+
+        /* Reddit Tips */
+        .reddit-tips {
+            background: linear-gradient(135deg, #ff4500, #ff6b35);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .reddit-tips h4 {
             color: white;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reddit-tip {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .reddit-tip:last-child {
+            margin-bottom: 0;
+        }
+
+        .reddit-tip .tip-text {
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .reddit-tip .tip-source {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        /* Country Info for Vanlifers */
+        .country-vanlifer-info {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .country-vanlifer-header {
+            padding: 14px;
+            background: linear-gradient(135deg, var(--bg-hover), var(--bg-elevated));
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .country-vanlifer-header h4 {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vanlifer-details {
+            padding: 14px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .detail-value {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .detail-value.good { color: var(--success); }
+        .detail-value.moderate { color: var(--warning); }
+        .detail-value.bad { color: var(--danger); }
+
+        /* Hidden content */
+        .hidden {
+            display: none !important;
         }
 
         /* Responsive */
@@ -667,17 +842,16 @@
             
             .sidebar {
                 width: 100%;
-                height: auto;
-                max-height: 35vh;
+                max-height: 45vh;
             }
 
-            .color-picker-popup {
-                width: 95vw;
-                max-height: 85vh;
+            .mode-tabs {
+                padding: 8px;
             }
 
-            .color-grid {
-                grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+            .mode-tab {
+                padding: 8px;
+                font-size: 0.7rem;
             }
         }
 
@@ -690,6 +864,20 @@
         .loading {
             animation: pulse 1.5s infinite;
         }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease;
+        }
+
+        /* File input */
+        .hidden-input {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -697,427 +885,405 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <div class="logo-icon">🗺️</div>
-                    <span>Draw Your Map</span>
+                    <div class="logo-icon" id="logoIcon">🗺️</div>
+                    <span id="logoText">Travel Diary</span>
                 </div>
             </div>
 
-            <div class="sidebar-content">
-                <!-- Selected Country Display -->
-                <div class="selected-display" id="selectedDisplay">
-                    <div class="selected-label">Selected Country</div>
-                    <div class="selected-name" id="selectedCountryName">Click on a country</div>
-                    <div class="selected-color-preview" id="selectedColorPreview" style="display: none;">
-                        <div class="color-swatch-large" id="selectedColorSwatch"></div>
-                        <div class="color-info" id="selectedColorHex"></div>
-                    </div>
-                </div>
+            <!-- Mode Tabs -->
+            <div class="mode-tabs">
+                <button class="mode-tab active" onclick="switchMode('diary')" id="diaryModeTab">📔 Diary</button>
+                <button class="mode-tab serendipity" onclick="switchMode('serendipity')" id="serendipityModeTab">🛣️ Serendipity</button>
+            </div>
 
-                <!-- Search -->
-                <div class="section">
-                    <div class="section-title">🔍 Search Country</div>
-                    <div class="search-wrapper">
+            <div class="sidebar-content">
+                <!-- ==================== DIARY MODE CONTENT ==================== -->
+                <div id="diaryContent" class="mode-content">
+                    <!-- Travel Stats -->
+                    <div class="travel-stats">
+                        <div class="stat-box">
+                            <div class="stat-value" id="countriesVisited">0</div>
+                            <div class="stat-label">Countries</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="continentsExplored">0</div>
+                            <div class="stat-label">Continents</div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Country -->
+                    <div class="selected-display" id="selectedDisplay">
+                        <div class="selected-label">Selected</div>
+                        <div class="selected-name" id="selectedCountryName">Click a country</div>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="section">
+                        <div class="section-title">🔍 Search</div>
                         <select class="search-select" id="countrySearch" onchange="selectCountryByCode(this.value)">
-                            <option value="">-- Select a country --</option>
+                            <option value="">-- Select country --</option>
                         </select>
                     </div>
+
+                    <!-- Quick Actions -->
+                    <div class="section">
+                        <div class="section-title">⚡ Quick Actions</div>
+                        <button class="btn btn-primary" onclick="markAsVisited()" style="margin-bottom: 8px;">✅ Mark Visited</button>
+                        <button class="btn btn-secondary" onclick="resetMap()">🔄 Reset All</button>
+                    </div>
+
+                    <!-- Export -->
+                    <div class="section">
+                        <div class="section-title">💾 Save/Load</div>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary" onclick="exportData()">📤 Export</button>
+                            <button class="btn btn-secondary" onclick="importData()">📥 Import</button>
+                        </div>
+                        <input type="file" id="fileInput" class="hidden-input" accept=".json" onchange="handleImport(event)">
+                    </div>
                 </div>
 
-                <!-- Background Color -->
-                <div class="section">
-                    <div class="section-title">🎨 Background</div>
-                    <div class="btn-group" style="margin-bottom: 8px;">
-                        <button class="btn btn-secondary" onclick="setBackground('#0d0d12')">Dark</button>
-                        <button class="btn btn-secondary" onclick="setBackground('#1a1a2e')">Navy</button>
-                        <button class="btn btn-secondary" onclick="setBackground('#f8fafc')">Light</button>
+                <!-- ==================== SERENDIPITY MODE CONTENT ==================== -->
+                <div id="serendipityContent" class="mode-content serendipity-content">
+                    <!-- Serendipity Stats -->
+                    <div class="travel-stats" style="background: linear-gradient(135deg, rgba(244, 114, 182, 0.2), rgba(251, 191, 36, 0.2));">
+                        <div class="stat-box">
+                            <div class="stat-value" id="routesExplored">0</div>
+                            <div class="stat-label">Routes</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="kmTraveled">0</div>
+                            <div class="stat-label">KM Planned</div>
+                        </div>
                     </div>
-                    <div style="display: flex; gap: 8px;">
-                        <input type="color" id="bgColorPicker" value="#0d0d12" style="width: 50px; height: 38px; border: none; border-radius: 8px; cursor: pointer;">
-                        <button class="btn btn-secondary" style="flex: 1;" onclick="applyBackgroundFromPicker()">Apply</button>
-                    </div>
-                </div>
 
-                <!-- Actions -->
-                <div class="section">
-                    <div class="section-title">⚙️ Actions</div>
-                    <button class="btn btn-secondary" onclick="resetMap()" style="margin-bottom: 8px;">🔄 Reset All Colors</button>
-                    <div class="btn-group" style="margin-bottom: 8px;">
-                        <button class="btn btn-secondary" onclick="exportColors()">📤 Export</button>
-                        <button class="btn btn-secondary" onclick="importColors()">📥 Import</button>
+                    <!-- Reddit Tips -->
+                    <div class="reddit-tips">
+                        <h4>🔥 Hot from r/roadtrip</h4>
+                        <div class="reddit-tip">
+                            <div class="tip-text">"The Wild Atlantic Way in Ireland is absolutely breathtaking. Skip the Ring of Kerry crowds!"</div>
+                            <div class="tip-source">u/wanderlust_adventures • 2.4k upvotes</div>
+                        </div>
+                        <div class="reddit-tip">
+                            <div class="tip-text">"Pro tip: iOverlander app is essential for finding free camping spots in Europe"</div>
+                            <div class="tip-source">u/vanlife_europe • 1.8k upvotes</div>
+                        </div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="exportAsImage()">📸 PNG</button>
-                        <button class="btn btn-primary" onclick="exportAsSVG()">📄 SVG</button>
+
+                    <!-- Iconic Road Trips -->
+                    <div class="section">
+                        <div class="section-title">🛣️ Iconic Road Trips</div>
+                        <div id="roadTripsList">
+                            <!-- Populated dynamically -->
+                        </div>
                     </div>
-                    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+
+                    <!-- Vanlifer Country Info -->
+                    <div class="country-vanlifer-info" id="vanliferCountryInfo" style="display: none;">
+                        <div class="country-vanlifer-header">
+                            <h4>🚐 <span id="vanliferCountryName">Country</span> - Vanlifer Info</h4>
+                        </div>
+                        <div class="vanlifer-details">
+                            <div class="detail-row">
+                                <span class="detail-label">🛣️ Tolls</span>
+                                <span class="detail-value" id="tollInfo">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">⛺ Wild Camping</span>
+                                <span class="detail-value" id="campingInfo">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">⛽ Fuel Cost</span>
+                                <span class="detail-value" id="fuelInfo">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">📋 Visa (EU)</span>
+                                <span class="detail-value" id="visaInfo">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">🚗 Road Quality</span>
+                                <span class="detail-value" id="roadQualityInfo">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">💧 Water Access</span>
+                                <span class="detail-value" id="waterInfo">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Community Alerts -->
+                    <div class="section community-alerts">
+                        <div class="section-title">⚠️ Community Alerts</div>
+                        <div id="alertsList">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <button class="add-alert-btn" onclick="openAlertModal()">+ Add Road Alert</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="map-container" id="mapContainer">
-            <div class="zoom-controls">
+            <div class="zoom-controls" id="zoomControls">
                 <button class="zoom-btn" onclick="zoomIn()" title="Zoom in">+</button>
                 <button class="zoom-btn" onclick="zoomOut()" title="Zoom out">−</button>
                 <button class="zoom-btn" onclick="resetZoom()" title="Reset">⟲</button>
             </div>
+            <!-- D3 World Map -->
             <svg id="worldMap" viewBox="0 0 2000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+            <!-- Leaflet Road Map -->
+            <div id="roadMap"></div>
         </div>
     </div>
 
-    <!-- Color Picker Popup -->
-    <div class="color-picker-overlay" id="colorPickerOverlay" onclick="closeColorPicker()"></div>
-    <div class="color-picker-popup" id="colorPickerPopup">
-        <div class="popup-header">
-            <div class="popup-title">
-                <h2>🎨 Choose Color</h2>
-                <div class="popup-country-name" id="popupCountryName">Country</div>
+    <!-- Alert Modal -->
+    <div class="modal-overlay" id="alertModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🚨 Report Road Alert</h3>
+                <button class="modal-close" onclick="closeAlertModal()">×</button>
             </div>
-            <button class="popup-close" onclick="closeColorPicker()">×</button>
-        </div>
-        
-        <div class="popup-body">
-            <!-- Recent Colors -->
-            <div class="color-category" id="recentColorsCategory">
-                <div class="category-header">
-                    <span class="category-icon">🕐</span>
-                    <span class="category-title">Recent Colors</span>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Alert Type</label>
+                    <select class="form-select" id="alertType">
+                        <option value="road_work">🚧 Road Work / Closure</option>
+                        <option value="hazard">⚠️ Road Hazard</option>
+                        <option value="police">👮 Police Control</option>
+                        <option value="fuel">⛽ Fuel Station Issue</option>
+                        <option value="camping">🏕️ Camping Spot Update</option>
+                        <option value="tip">💡 Helpful Tip</option>
+                    </select>
                 </div>
-                <div class="recent-colors" id="recentColors">
-                    <span class="no-recent">No recent colors yet</span>
+                <div class="form-group">
+                    <label>Location / Route</label>
+                    <input type="text" class="form-input" id="alertLocation" placeholder="e.g., Route 66, near Flagstaff">
                 </div>
-            </div>
-
-            <!-- Data Visualization - Sequential -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">📊</span>
-                    <span class="category-title">Sequential (Low → High)</span>
-                    <span class="category-subtitle">Perfect for data ranges</span>
-                </div>
-                <!-- Blues -->
-                <div class="gradient-row">
-                    <div class="color-cell" style="background: #f7fbff;" onclick="applyColor('#f7fbff')"></div>
-                    <div class="color-cell" style="background: #deebf7;" onclick="applyColor('#deebf7')"></div>
-                    <div class="color-cell" style="background: #c6dbef;" onclick="applyColor('#c6dbef')"></div>
-                    <div class="color-cell" style="background: #9ecae1;" onclick="applyColor('#9ecae1')"></div>
-                    <div class="color-cell" style="background: #6baed6;" onclick="applyColor('#6baed6')"></div>
-                    <div class="color-cell" style="background: #4292c6;" onclick="applyColor('#4292c6')"></div>
-                    <div class="color-cell" style="background: #2171b5;" onclick="applyColor('#2171b5')"></div>
-                    <div class="color-cell" style="background: #08519c;" onclick="applyColor('#08519c')"></div>
-                    <div class="color-cell" style="background: #08306b;" onclick="applyColor('#08306b')"></div>
-                </div>
-                <!-- Greens -->
-                <div class="gradient-row">
-                    <div class="color-cell" style="background: #f7fcf5;" onclick="applyColor('#f7fcf5')"></div>
-                    <div class="color-cell" style="background: #e5f5e0;" onclick="applyColor('#e5f5e0')"></div>
-                    <div class="color-cell" style="background: #c7e9c0;" onclick="applyColor('#c7e9c0')"></div>
-                    <div class="color-cell" style="background: #a1d99b;" onclick="applyColor('#a1d99b')"></div>
-                    <div class="color-cell" style="background: #74c476;" onclick="applyColor('#74c476')"></div>
-                    <div class="color-cell" style="background: #41ab5d;" onclick="applyColor('#41ab5d')"></div>
-                    <div class="color-cell" style="background: #238b45;" onclick="applyColor('#238b45')"></div>
-                    <div class="color-cell" style="background: #006d2c;" onclick="applyColor('#006d2c')"></div>
-                    <div class="color-cell" style="background: #00441b;" onclick="applyColor('#00441b')"></div>
-                </div>
-                <!-- Reds -->
-                <div class="gradient-row">
-                    <div class="color-cell" style="background: #fff5f0;" onclick="applyColor('#fff5f0')"></div>
-                    <div class="color-cell" style="background: #fee0d2;" onclick="applyColor('#fee0d2')"></div>
-                    <div class="color-cell" style="background: #fcbba1;" onclick="applyColor('#fcbba1')"></div>
-                    <div class="color-cell" style="background: #fc9272;" onclick="applyColor('#fc9272')"></div>
-                    <div class="color-cell" style="background: #fb6a4a;" onclick="applyColor('#fb6a4a')"></div>
-                    <div class="color-cell" style="background: #ef3b2c;" onclick="applyColor('#ef3b2c')"></div>
-                    <div class="color-cell" style="background: #cb181d;" onclick="applyColor('#cb181d')"></div>
-                    <div class="color-cell" style="background: #a50f15;" onclick="applyColor('#a50f15')"></div>
-                    <div class="color-cell" style="background: #67000d;" onclick="applyColor('#67000d')"></div>
-                </div>
-                <!-- Purples -->
-                <div class="gradient-row">
-                    <div class="color-cell" style="background: #fcfbfd;" onclick="applyColor('#fcfbfd')"></div>
-                    <div class="color-cell" style="background: #efedf5;" onclick="applyColor('#efedf5')"></div>
-                    <div class="color-cell" style="background: #dadaeb;" onclick="applyColor('#dadaeb')"></div>
-                    <div class="color-cell" style="background: #bcbddc;" onclick="applyColor('#bcbddc')"></div>
-                    <div class="color-cell" style="background: #9e9ac8;" onclick="applyColor('#9e9ac8')"></div>
-                    <div class="color-cell" style="background: #807dba;" onclick="applyColor('#807dba')"></div>
-                    <div class="color-cell" style="background: #6a51a3;" onclick="applyColor('#6a51a3')"></div>
-                    <div class="color-cell" style="background: #54278f;" onclick="applyColor('#54278f')"></div>
-                    <div class="color-cell" style="background: #3f007d;" onclick="applyColor('#3f007d')"></div>
-                </div>
-                <!-- Oranges -->
-                <div class="gradient-row" style="margin-bottom: 0;">
-                    <div class="color-cell" style="background: #fff5eb;" onclick="applyColor('#fff5eb')"></div>
-                    <div class="color-cell" style="background: #fee6ce;" onclick="applyColor('#fee6ce')"></div>
-                    <div class="color-cell" style="background: #fdd0a2;" onclick="applyColor('#fdd0a2')"></div>
-                    <div class="color-cell" style="background: #fdae6b;" onclick="applyColor('#fdae6b')"></div>
-                    <div class="color-cell" style="background: #fd8d3c;" onclick="applyColor('#fd8d3c')"></div>
-                    <div class="color-cell" style="background: #f16913;" onclick="applyColor('#f16913')"></div>
-                    <div class="color-cell" style="background: #d94801;" onclick="applyColor('#d94801')"></div>
-                    <div class="color-cell" style="background: #a63603;" onclick="applyColor('#a63603')"></div>
-                    <div class="color-cell" style="background: #7f2704;" onclick="applyColor('#7f2704')"></div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-input" id="alertDescription" placeholder="Describe the situation..."></textarea>
                 </div>
             </div>
-
-            <!-- Diverging -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">↔️</span>
-                    <span class="category-title">Diverging</span>
-                    <span class="category-subtitle">For positive/negative values</span>
-                </div>
-                <!-- Red-Blue -->
-                <div class="gradient-row">
-                    <div class="color-cell" style="background: #67001f;" onclick="applyColor('#67001f')"></div>
-                    <div class="color-cell" style="background: #b2182b;" onclick="applyColor('#b2182b')"></div>
-                    <div class="color-cell" style="background: #d6604d;" onclick="applyColor('#d6604d')"></div>
-                    <div class="color-cell" style="background: #f4a582;" onclick="applyColor('#f4a582')"></div>
-                    <div class="color-cell" style="background: #fddbc7;" onclick="applyColor('#fddbc7')"></div>
-                    <div class="color-cell" style="background: #f7f7f7;" onclick="applyColor('#f7f7f7')"></div>
-                    <div class="color-cell" style="background: #d1e5f0;" onclick="applyColor('#d1e5f0')"></div>
-                    <div class="color-cell" style="background: #92c5de;" onclick="applyColor('#92c5de')"></div>
-                    <div class="color-cell" style="background: #4393c3;" onclick="applyColor('#4393c3')"></div>
-                    <div class="color-cell" style="background: #2166ac;" onclick="applyColor('#2166ac')"></div>
-                    <div class="color-cell" style="background: #053061;" onclick="applyColor('#053061')"></div>
-                </div>
-                <!-- Brown-Teal -->
-                <div class="gradient-row">
-                    <div class="color-cell" style="background: #543005;" onclick="applyColor('#543005')"></div>
-                    <div class="color-cell" style="background: #8c510a;" onclick="applyColor('#8c510a')"></div>
-                    <div class="color-cell" style="background: #bf812d;" onclick="applyColor('#bf812d')"></div>
-                    <div class="color-cell" style="background: #dfc27d;" onclick="applyColor('#dfc27d')"></div>
-                    <div class="color-cell" style="background: #f6e8c3;" onclick="applyColor('#f6e8c3')"></div>
-                    <div class="color-cell" style="background: #f5f5f5;" onclick="applyColor('#f5f5f5')"></div>
-                    <div class="color-cell" style="background: #c7eae5;" onclick="applyColor('#c7eae5')"></div>
-                    <div class="color-cell" style="background: #80cdc1;" onclick="applyColor('#80cdc1')"></div>
-                    <div class="color-cell" style="background: #35978f;" onclick="applyColor('#35978f')"></div>
-                    <div class="color-cell" style="background: #01665e;" onclick="applyColor('#01665e')"></div>
-                    <div class="color-cell" style="background: #003c30;" onclick="applyColor('#003c30')"></div>
-                </div>
-                <!-- Purple-Green -->
-                <div class="gradient-row" style="margin-bottom: 0;">
-                    <div class="color-cell" style="background: #40004b;" onclick="applyColor('#40004b')"></div>
-                    <div class="color-cell" style="background: #762a83;" onclick="applyColor('#762a83')"></div>
-                    <div class="color-cell" style="background: #9970ab;" onclick="applyColor('#9970ab')"></div>
-                    <div class="color-cell" style="background: #c2a5cf;" onclick="applyColor('#c2a5cf')"></div>
-                    <div class="color-cell" style="background: #e7d4e8;" onclick="applyColor('#e7d4e8')"></div>
-                    <div class="color-cell" style="background: #f7f7f7;" onclick="applyColor('#f7f7f7')"></div>
-                    <div class="color-cell" style="background: #d9f0d3;" onclick="applyColor('#d9f0d3')"></div>
-                    <div class="color-cell" style="background: #a6dba0;" onclick="applyColor('#a6dba0')"></div>
-                    <div class="color-cell" style="background: #5aae61;" onclick="applyColor('#5aae61')"></div>
-                    <div class="color-cell" style="background: #1b7837;" onclick="applyColor('#1b7837')"></div>
-                    <div class="color-cell" style="background: #00441b;" onclick="applyColor('#00441b')"></div>
-                </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" style="width: auto;" onclick="closeAlertModal()">Cancel</button>
+                <button class="btn btn-serendipity" style="width: auto;" onclick="submitAlert()">Submit Alert</button>
             </div>
-
-            <!-- Categorical Colors -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">🏷️</span>
-                    <span class="category-title">Categorical</span>
-                    <span class="category-subtitle">For distinct categories</span>
-                </div>
-                <div class="color-grid">
-                    <!-- Tableau 10 -->
-                    <div class="color-cell" style="background: #4e79a7;" onclick="applyColor('#4e79a7')"></div>
-                    <div class="color-cell" style="background: #f28e2b;" onclick="applyColor('#f28e2b')"></div>
-                    <div class="color-cell" style="background: #e15759;" onclick="applyColor('#e15759')"></div>
-                    <div class="color-cell" style="background: #76b7b2;" onclick="applyColor('#76b7b2')"></div>
-                    <div class="color-cell" style="background: #59a14f;" onclick="applyColor('#59a14f')"></div>
-                    <div class="color-cell" style="background: #edc948;" onclick="applyColor('#edc948')"></div>
-                    <div class="color-cell" style="background: #b07aa1;" onclick="applyColor('#b07aa1')"></div>
-                    <div class="color-cell" style="background: #ff9da7;" onclick="applyColor('#ff9da7')"></div>
-                    <div class="color-cell" style="background: #9c755f;" onclick="applyColor('#9c755f')"></div>
-                    <div class="color-cell" style="background: #bab0ac;" onclick="applyColor('#bab0ac')"></div>
-                    <!-- D3 Category -->
-                    <div class="color-cell" style="background: #1f77b4;" onclick="applyColor('#1f77b4')"></div>
-                    <div class="color-cell" style="background: #ff7f0e;" onclick="applyColor('#ff7f0e')"></div>
-                    <div class="color-cell" style="background: #2ca02c;" onclick="applyColor('#2ca02c')"></div>
-                    <div class="color-cell" style="background: #d62728;" onclick="applyColor('#d62728')"></div>
-                    <div class="color-cell" style="background: #9467bd;" onclick="applyColor('#9467bd')"></div>
-                    <div class="color-cell" style="background: #8c564b;" onclick="applyColor('#8c564b')"></div>
-                    <div class="color-cell" style="background: #e377c2;" onclick="applyColor('#e377c2')"></div>
-                    <div class="color-cell" style="background: #7f7f7f;" onclick="applyColor('#7f7f7f')"></div>
-                    <div class="color-cell" style="background: #bcbd22;" onclick="applyColor('#bcbd22')"></div>
-                    <div class="color-cell" style="background: #17becf;" onclick="applyColor('#17becf')"></div>
-                </div>
-            </div>
-
-            <!-- World Map Colors -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">🌍</span>
-                    <span class="category-title">Map Colors</span>
-                    <span class="category-subtitle">Classic cartography</span>
-                </div>
-                <div class="color-grid">
-                    <!-- Land colors -->
-                    <div class="color-cell" style="background: #f5f5dc;" onclick="applyColor('#f5f5dc')"></div>
-                    <div class="color-cell" style="background: #deb887;" onclick="applyColor('#deb887')"></div>
-                    <div class="color-cell" style="background: #d2b48c;" onclick="applyColor('#d2b48c')"></div>
-                    <div class="color-cell" style="background: #c4a474;" onclick="applyColor('#c4a474')"></div>
-                    <div class="color-cell" style="background: #a0826d;" onclick="applyColor('#a0826d')"></div>
-                    <div class="color-cell" style="background: #8b7355;" onclick="applyColor('#8b7355')"></div>
-                    <!-- Greens for vegetation -->
-                    <div class="color-cell" style="background: #98d182;" onclick="applyColor('#98d182')"></div>
-                    <div class="color-cell" style="background: #78b062;" onclick="applyColor('#78b062')"></div>
-                    <div class="color-cell" style="background: #588f42;" onclick="applyColor('#588f42')"></div>
-                    <div class="color-cell" style="background: #3a6f26;" onclick="applyColor('#3a6f26')"></div>
-                    <div class="color-cell" style="background: #2d5a1e;" onclick="applyColor('#2d5a1e')"></div>
-                    <div class="color-cell" style="background: #1a4314;" onclick="applyColor('#1a4314')"></div>
-                    <!-- Water colors -->
-                    <div class="color-cell" style="background: #b3d9ff;" onclick="applyColor('#b3d9ff')"></div>
-                    <div class="color-cell" style="background: #87ceeb;" onclick="applyColor('#87ceeb')"></div>
-                    <div class="color-cell" style="background: #6bb3e0;" onclick="applyColor('#6bb3e0')"></div>
-                    <div class="color-cell" style="background: #4a90c2;" onclick="applyColor('#4a90c2')"></div>
-                    <div class="color-cell" style="background: #2f6da4;" onclick="applyColor('#2f6da4')"></div>
-                    <div class="color-cell" style="background: #1a4b7a;" onclick="applyColor('#1a4b7a')"></div>
-                </div>
-            </div>
-
-            <!-- Vibrant Colors -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">✨</span>
-                    <span class="category-title">Vibrant</span>
-                    <span class="category-subtitle">Eye-catching colors</span>
-                </div>
-                <div class="color-grid">
-                    <div class="color-cell" style="background: #ff6b6b;" onclick="applyColor('#ff6b6b')"></div>
-                    <div class="color-cell" style="background: #ee5253;" onclick="applyColor('#ee5253')"></div>
-                    <div class="color-cell" style="background: #ff9ff3;" onclick="applyColor('#ff9ff3')"></div>
-                    <div class="color-cell" style="background: #f368e0;" onclick="applyColor('#f368e0')"></div>
-                    <div class="color-cell" style="background: #ff9f43;" onclick="applyColor('#ff9f43')"></div>
-                    <div class="color-cell" style="background: #feca57;" onclick="applyColor('#feca57')"></div>
-                    <div class="color-cell" style="background: #48dbfb;" onclick="applyColor('#48dbfb')"></div>
-                    <div class="color-cell" style="background: #0abde3;" onclick="applyColor('#0abde3')"></div>
-                    <div class="color-cell" style="background: #1dd1a1;" onclick="applyColor('#1dd1a1')"></div>
-                    <div class="color-cell" style="background: #10ac84;" onclick="applyColor('#10ac84')"></div>
-                    <div class="color-cell" style="background: #5f27cd;" onclick="applyColor('#5f27cd')"></div>
-                    <div class="color-cell" style="background: #341f97;" onclick="applyColor('#341f97')"></div>
-                    <div class="color-cell" style="background: #2e86de;" onclick="applyColor('#2e86de')"></div>
-                    <div class="color-cell" style="background: #54a0ff;" onclick="applyColor('#54a0ff')"></div>
-                    <div class="color-cell" style="background: #00d2d3;" onclick="applyColor('#00d2d3')"></div>
-                    <div class="color-cell" style="background: #01a3a4;" onclick="applyColor('#01a3a4')"></div>
-                </div>
-            </div>
-
-            <!-- Pastels -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">🌸</span>
-                    <span class="category-title">Pastel</span>
-                    <span class="category-subtitle">Soft & gentle</span>
-                </div>
-                <div class="color-grid">
-                    <div class="color-cell" style="background: #ffeaa7;" onclick="applyColor('#ffeaa7')"></div>
-                    <div class="color-cell" style="background: #dfe6e9;" onclick="applyColor('#dfe6e9')"></div>
-                    <div class="color-cell" style="background: #fab1a0;" onclick="applyColor('#fab1a0')"></div>
-                    <div class="color-cell" style="background: #e17055;" onclick="applyColor('#e17055')"></div>
-                    <div class="color-cell" style="background: #fdcb6e;" onclick="applyColor('#fdcb6e')"></div>
-                    <div class="color-cell" style="background: #f6e58d;" onclick="applyColor('#f6e58d')"></div>
-                    <div class="color-cell" style="background: #badc58;" onclick="applyColor('#badc58')"></div>
-                    <div class="color-cell" style="background: #7ed6df;" onclick="applyColor('#7ed6df')"></div>
-                    <div class="color-cell" style="background: #74b9ff;" onclick="applyColor('#74b9ff')"></div>
-                    <div class="color-cell" style="background: #a29bfe;" onclick="applyColor('#a29bfe')"></div>
-                    <div class="color-cell" style="background: #fd79a8;" onclick="applyColor('#fd79a8')"></div>
-                    <div class="color-cell" style="background: #e84393;" onclick="applyColor('#e84393')"></div>
-                </div>
-            </div>
-
-            <!-- Neutrals & Grays -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">⬜</span>
-                    <span class="category-title">Neutrals</span>
-                    <span class="category-subtitle">Grays & basics</span>
-                </div>
-                <div class="color-grid">
-                    <div class="color-cell" style="background: #ffffff;" onclick="applyColor('#ffffff')"></div>
-                    <div class="color-cell" style="background: #f8f9fa;" onclick="applyColor('#f8f9fa')"></div>
-                    <div class="color-cell" style="background: #e9ecef;" onclick="applyColor('#e9ecef')"></div>
-                    <div class="color-cell" style="background: #dee2e6;" onclick="applyColor('#dee2e6')"></div>
-                    <div class="color-cell" style="background: #ced4da;" onclick="applyColor('#ced4da')"></div>
-                    <div class="color-cell" style="background: #adb5bd;" onclick="applyColor('#adb5bd')"></div>
-                    <div class="color-cell" style="background: #868e96;" onclick="applyColor('#868e96')"></div>
-                    <div class="color-cell" style="background: #495057;" onclick="applyColor('#495057')"></div>
-                    <div class="color-cell" style="background: #343a40;" onclick="applyColor('#343a40')"></div>
-                    <div class="color-cell" style="background: #212529;" onclick="applyColor('#212529')"></div>
-                    <div class="color-cell" style="background: #1a1a1a;" onclick="applyColor('#1a1a1a')"></div>
-                    <div class="color-cell" style="background: #000000;" onclick="applyColor('#000000')"></div>
-                </div>
-            </div>
-
-            <!-- Flag Colors -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">🏳️</span>
-                    <span class="category-title">Flag Colors</span>
-                    <span class="category-subtitle">Common national colors</span>
-                </div>
-                <div class="color-grid">
-                    <!-- Blues -->
-                    <div class="color-cell" style="background: #002395;" onclick="applyColor('#002395')"></div>
-                    <div class="color-cell" style="background: #00247d;" onclick="applyColor('#00247d')"></div>
-                    <div class="color-cell" style="background: #003580;" onclick="applyColor('#003580')"></div>
-                    <!-- Reds -->
-                    <div class="color-cell" style="background: #ed2939;" onclick="applyColor('#ed2939')"></div>
-                    <div class="color-cell" style="background: #cf142b;" onclick="applyColor('#cf142b')"></div>
-                    <div class="color-cell" style="background: #c8102e;" onclick="applyColor('#c8102e')"></div>
-                    <!-- Greens -->
-                    <div class="color-cell" style="background: #006847;" onclick="applyColor('#006847')"></div>
-                    <div class="color-cell" style="background: #009739;" onclick="applyColor('#009739')"></div>
-                    <div class="color-cell" style="background: #007a33;" onclick="applyColor('#007a33')"></div>
-                    <!-- Yellows/Golds -->
-                    <div class="color-cell" style="background: #ffc72c;" onclick="applyColor('#ffc72c')"></div>
-                    <div class="color-cell" style="background: #fcd116;" onclick="applyColor('#fcd116')"></div>
-                    <div class="color-cell" style="background: #ffcc00;" onclick="applyColor('#ffcc00')"></div>
-                </div>
-            </div>
-
-            <!-- Custom Color -->
-            <div class="color-category">
-                <div class="category-header">
-                    <span class="category-icon">🎯</span>
-                    <span class="category-title">Custom Color</span>
-                    <span class="category-subtitle">Pick any color</span>
-                </div>
-                <div class="custom-color-section">
-                    <div class="custom-color-input-wrapper">
-                        <input type="color" class="custom-picker" id="customColorPicker" value="#6366f1">
-                        <input type="text" class="custom-hex-input" id="customHexInput" placeholder="#6366f1" value="#6366f1">
-                    </div>
-                    <button class="apply-custom-btn" onclick="applyCustomColor()">Apply</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="popup-footer">
-            <div class="current-color-display">
-                <div class="current-swatch" id="currentColorSwatch" style="background: #3a3a4d;"></div>
-                <div class="current-info">
-                    <div>Current: <span id="currentColorHex">#3a3a4d</span></div>
-                </div>
-            </div>
-            <button class="remove-color-btn" onclick="removeColor()">🗑️ Reset to Default</button>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
+        // ==================== GLOBAL STATE ====================
+        let currentMode = 'diary';
         let selectedCountry = null;
+        let currentCountryId = null;
+        let currentCountryName = '';
         let countryColors = {};
-        let recentColors = [];
         let svg, g, projection, path;
         let countriesData = [];
-        const MAX_RECENT_COLORS = 12;
+        let roadMap = null;
+        let activeRoute = null;
+        let communityAlerts = [];
         const DEFAULT_COLOR = '#3a3a4d';
+        const VISITED_COLOR = '#22c55e';
 
-        // Initialize map
+        // ==================== ICONIC ROAD TRIPS DATABASE ====================
+        const roadTrips = [
+            {
+                id: 'route66',
+                name: 'Route 66',
+                icon: '🇺🇸',
+                country: 'USA',
+                distance: '3940 km',
+                duration: '2-3 weeks',
+                coordinates: [[34.0522, -118.2437], [41.8781, -87.6298]],
+                waypoints: [
+                    [34.0522, -118.2437, 'Los Angeles'],
+                    [35.2226, -101.8313, 'Amarillo'],
+                    [35.0844, -106.6504, 'Albuquerque'],
+                    [36.1627, -86.7816, 'Nashville'],
+                    [41.8781, -87.6298, 'Chicago']
+                ],
+                tags: ['scenic', 'adventure'],
+                description: 'The quintessential American road trip from Chicago to LA through the heart of America.',
+                tips: 'Best in spring or fall. Many original motels and diners still open.'
+            },
+            {
+                id: 'panamerican',
+                name: 'Pan-American Highway',
+                icon: '🌎',
+                country: 'Multi',
+                distance: '30000 km',
+                duration: '6-12 months',
+                coordinates: [[-54.8019, -68.3030], [64.8378, -147.7164]],
+                waypoints: [
+                    [-54.8019, -68.3030, 'Ushuaia'],
+                    [-33.4489, -70.6693, 'Santiago'],
+                    [-12.0464, -77.0428, 'Lima'],
+                    [19.4326, -99.1332, 'Mexico City'],
+                    [64.8378, -147.7164, 'Fairbanks']
+                ],
+                tags: ['adventure', 'epic'],
+                description: 'The ultimate road trip spanning the Americas from Argentina to Alaska.',
+                tips: 'Darien Gap requires shipping vehicle. Plan border crossings carefully.'
+            },
+            {
+                id: 'wildatlantic',
+                name: 'Wild Atlantic Way',
+                icon: '🇮🇪',
+                country: 'Ireland',
+                distance: '2500 km',
+                duration: '2 weeks',
+                coordinates: [[51.8985, -8.4756], [55.2408, -7.3074]],
+                waypoints: [
+                    [51.8985, -8.4756, 'Cork'],
+                    [52.2593, -9.7066, 'Dingle'],
+                    [53.2707, -9.0568, 'Galway'],
+                    [54.2766, -8.4761, 'Sligo'],
+                    [55.2408, -7.3074, 'Malin Head']
+                ],
+                tags: ['scenic', 'toll-free', 'camping'],
+                description: 'Stunning coastal route along Ireland\'s rugged Atlantic coast.',
+                tips: 'Wild camping legal. Weather unpredictable - pack layers!'
+            },
+            {
+                id: 'nc500',
+                name: 'North Coast 500',
+                icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+                country: 'Scotland',
+                distance: '830 km',
+                duration: '5-7 days',
+                coordinates: [[57.4778, -4.2247], [58.6373, -3.0689]],
+                waypoints: [
+                    [57.4778, -4.2247, 'Inverness'],
+                    [57.8690, -5.0960, 'Applecross'],
+                    [58.4374, -4.9943, 'Durness'],
+                    [58.4397, -3.0943, 'John o\' Groats'],
+                    [57.4778, -4.2247, 'Inverness']
+                ],
+                tags: ['scenic', 'toll-free', 'camping'],
+                description: 'Scotland\'s answer to Route 66. Breathtaking Highland scenery.',
+                tips: 'Single track roads require patience. Book accommodation in summer.'
+            },
+            {
+                id: 'greatocean',
+                name: 'Great Ocean Road',
+                icon: '🇦🇺',
+                country: 'Australia',
+                distance: '243 km',
+                duration: '2-3 days',
+                coordinates: [[-38.1499, 144.3617], [-38.6805, 143.1051]],
+                waypoints: [
+                    [-38.1499, 144.3617, 'Torquay'],
+                    [-38.4089, 144.0033, 'Lorne'],
+                    [-38.6639, 143.1044, '12 Apostles'],
+                    [-38.7833, 143.0833, 'Port Campbell']
+                ],
+                tags: ['scenic', 'toll-free'],
+                description: 'One of the world\'s most scenic coastal drives.',
+                tips: 'Best light for 12 Apostles at sunrise/sunset. Watch for koalas!'
+            },
+            {
+                id: 'transfagarasan',
+                name: 'Transfăgărășan',
+                icon: '🇷🇴',
+                country: 'Romania',
+                distance: '151 km',
+                duration: '1-2 days',
+                coordinates: [[45.5989, 24.6224], [45.3523, 24.6189]],
+                waypoints: [
+                    [45.5989, 24.6224, 'Curtea de Argeș'],
+                    [45.6042, 24.6150, 'Balea Lake'],
+                    [45.3523, 24.6189, 'Sibiu']
+                ],
+                tags: ['scenic', 'adventure', 'toll-free'],
+                description: 'Called "the best road in the world" by Top Gear.',
+                tips: 'Only open June-October. Arrive early to avoid crowds.'
+            },
+            {
+                id: 'garden_route',
+                name: 'Garden Route',
+                icon: '🇿🇦',
+                country: 'South Africa',
+                distance: '300 km',
+                duration: '5-7 days',
+                coordinates: [[-34.0373, 23.0471], [-33.9580, 22.4610]],
+                waypoints: [
+                    [-34.0373, 23.0471, 'Storms River'],
+                    [-34.0355, 23.3695, 'Plettenberg Bay'],
+                    [-33.9580, 22.4610, 'George']
+                ],
+                tags: ['scenic', 'adventure', 'camping'],
+                description: 'Lush forests, lagoons, and stunning coastline.',
+                tips: 'Great for wildlife. Bungee jump at Bloukrans Bridge!'
+            },
+            {
+                id: 'ring_road',
+                name: 'Ring Road',
+                icon: '🇮🇸',
+                country: 'Iceland',
+                distance: '1332 km',
+                duration: '7-10 days',
+                coordinates: [[64.1466, -21.9426], [65.6835, -18.0878]],
+                waypoints: [
+                    [64.1466, -21.9426, 'Reykjavik'],
+                    [64.3260, -20.1210, 'Geysir'],
+                    [63.5320, -19.5110, 'Vik'],
+                    [65.6835, -18.0878, 'Akureyri']
+                ],
+                tags: ['scenic', 'adventure', 'toll-free'],
+                description: 'Circle Iceland through volcanoes, glaciers and waterfalls.',
+                tips: 'F-roads need 4x4. Summer has 24hr daylight. Expensive but incredible!'
+            }
+        ];
+
+        // ==================== VANLIFER COUNTRY INFO DATABASE ====================
+        const vanliferInfo = {
+            'United States of America': { tolls: 'Varies', tollClass: 'moderate', camping: 'BLM Land Free', campingClass: 'good', fuel: '$0.90/L', fuelClass: 'good', visa: '90 days ESTA', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Canada': { tolls: 'Few', tollClass: 'good', camping: 'Crown Land Free', campingClass: 'good', fuel: '$1.60/L', fuelClass: 'moderate', visa: '6 months eTA', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Mexico': { tolls: 'Expensive', tollClass: 'bad', camping: 'Informal OK', campingClass: 'moderate', fuel: '$1.20/L', fuelClass: 'good', visa: '180 days free', roadQuality: 'Variable', waterAccess: 'Moderate' },
+            'France': { tolls: 'Very High', tollClass: 'bad', camping: 'Restricted', campingClass: 'bad', fuel: '$1.90/L', fuelClass: 'bad', visa: 'EU/90 days', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Spain': { tolls: 'Moderate', tollClass: 'moderate', camping: 'Gray Area', campingClass: 'moderate', fuel: '$1.60/L', fuelClass: 'moderate', visa: 'EU/90 days', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Portugal': { tolls: 'Moderate', tollClass: 'moderate', camping: 'Tolerated', campingClass: 'moderate', fuel: '$1.70/L', fuelClass: 'moderate', visa: 'EU/90 days', roadQuality: 'Good', waterAccess: 'Easy' },
+            'Germany': { tolls: 'Free (cars)', tollClass: 'good', camping: 'Restricted', campingClass: 'bad', fuel: '$1.80/L', fuelClass: 'bad', visa: 'EU/90 days', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Italy': { tolls: 'Very High', tollClass: 'bad', camping: 'Restricted', campingClass: 'bad', fuel: '$1.85/L', fuelClass: 'bad', visa: 'EU/90 days', roadQuality: 'Good', waterAccess: 'Moderate' },
+            'United Kingdom': { tolls: 'Few', tollClass: 'good', camping: 'Scotland OK', campingClass: 'moderate', fuel: '$1.95/L', fuelClass: 'bad', visa: '6 months', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Ireland': { tolls: 'Few', tollClass: 'good', camping: 'Tolerated', campingClass: 'good', fuel: '$1.80/L', fuelClass: 'bad', visa: '90 days', roadQuality: 'Good', waterAccess: 'Easy' },
+            'Norway': { tolls: 'High', tollClass: 'bad', camping: 'Legal!', campingClass: 'good', fuel: '$2.20/L', fuelClass: 'bad', visa: 'EU/90 days', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Sweden': { tolls: 'Few', tollClass: 'good', camping: 'Legal!', campingClass: 'good', fuel: '$1.90/L', fuelClass: 'bad', visa: 'EU/90 days', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'Iceland': { tolls: 'None', tollClass: 'good', camping: 'Designated', campingClass: 'moderate', fuel: '$2.30/L', fuelClass: 'bad', visa: 'EU/90 days', roadQuality: 'Variable', waterAccess: 'Moderate' },
+            'Romania': { tolls: 'Cheap', tollClass: 'good', camping: 'Tolerated', campingClass: 'good', fuel: '$1.40/L', fuelClass: 'good', visa: 'EU/90 days', roadQuality: 'Variable', waterAccess: 'Moderate' },
+            'Greece': { tolls: 'Moderate', tollClass: 'moderate', camping: 'Restricted', campingClass: 'bad', fuel: '$1.85/L', fuelClass: 'bad', visa: 'EU/90 days', roadQuality: 'Good', waterAccess: 'Moderate' },
+            'Australia': { tolls: 'City Only', tollClass: 'good', camping: 'Outback Free', campingClass: 'good', fuel: '$1.50/L', fuelClass: 'moderate', visa: 'eVisitor', roadQuality: 'Excellent', waterAccess: 'Variable' },
+            'New Zealand': { tolls: 'Very Few', tollClass: 'good', camping: 'Freedom OK', campingClass: 'good', fuel: '$1.70/L', fuelClass: 'moderate', visa: '3 months', roadQuality: 'Excellent', waterAccess: 'Easy' },
+            'South Africa': { tolls: 'Moderate', tollClass: 'moderate', camping: 'Variable', campingClass: 'moderate', fuel: '$1.10/L', fuelClass: 'good', visa: '90 days', roadQuality: 'Good', waterAccess: 'Variable' },
+            'Morocco': { tolls: 'Cheap', tollClass: 'good', camping: 'Very Easy', campingClass: 'good', fuel: '$1.20/L', fuelClass: 'good', visa: '90 days', roadQuality: 'Variable', waterAccess: 'Moderate' },
+            'Japan': { tolls: 'Very High', tollClass: 'bad', camping: 'Michi-no-Eki', campingClass: 'moderate', fuel: '$1.40/L', fuelClass: 'good', visa: '90 days', roadQuality: 'Excellent', waterAccess: 'Easy' }
+        };
+
+        // Default vanlifer info
+        const defaultVanliferInfo = { tolls: 'Unknown', tollClass: 'moderate', camping: 'Research needed', campingClass: 'moderate', fuel: 'Varies', fuelClass: 'moderate', visa: 'Check requirements', roadQuality: 'Variable', waterAccess: 'Variable' };
+
+        // ==================== CONTINENT MAPPING ====================
+        const continentMapping = {
+            '840': 'North America', '124': 'North America', '484': 'North America',
+            '76': 'South America', '32': 'South America', '152': 'South America', '170': 'South America', '604': 'South America',
+            '250': 'Europe', '276': 'Europe', '380': 'Europe', '724': 'Europe', '620': 'Europe', '826': 'Europe', '372': 'Europe',
+            '752': 'Europe', '578': 'Europe', '352': 'Europe', '642': 'Europe', '300': 'Europe', '756': 'Europe',
+            '156': 'Asia', '392': 'Asia', '410': 'Asia', '764': 'Asia', '704': 'Asia', '356': 'Asia',
+            '36': 'Oceania', '554': 'Oceania',
+            '710': 'Africa', '504': 'Africa', '818': 'Africa', '404': 'Africa'
+        };
+
+        // ==================== INITIALIZE ====================
         async function initMap() {
             svg = d3.select("#worldMap");
             g = svg.append("g");
 
-            // Mercator projection
             projection = d3.geoMercator()
                 .scale(320)
                 .translate([1000, 650]);
@@ -1139,7 +1305,7 @@
                     .attr("data-name", d => d.properties.name || "Unknown")
                     .on("click", function(event, d) {
                         event.stopPropagation();
-                        selectCountryAndOpenPicker(this, d);
+                        selectCountry(this, d);
                     })
                     .append("title")
                     .text(d => d.properties.name || "Unknown");
@@ -1147,224 +1313,381 @@
                 countriesData = countries.features;
                 populateCountrySearch();
                 setupZoom();
-                loadFromLocalStorage();
+                loadFromStorage();
+                updateStats();
+                renderRoadTrips();
+                renderAlerts();
                 
             } catch (error) {
                 console.error("Error loading map:", error);
-                alert("Error loading map. Please check your internet connection.");
             }
-
-            setupCustomColorSync();
         }
 
-        function populateCountrySearch() {
-            const select = document.getElementById('countrySearch');
-            const sortedCountries = countriesData
-                .map(d => ({ id: d.id, name: d.properties.name || "Unknown" }))
-                .sort((a, b) => a.name.localeCompare(b.name));
+        function initRoadMap() {
+            if (roadMap) return;
+            
+            roadMap = L.map('roadMap', {
+                center: [30, 0],
+                zoom: 2,
+                zoomControl: false
+            });
 
-            sortedCountries.forEach(country => {
-                const option = document.createElement('option');
-                option.value = country.id;
-                option.textContent = country.name;
-                select.appendChild(option);
+            // Dark theme tiles
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CARTO',
+                maxZoom: 19
+            }).addTo(roadMap);
+
+            // Add road trip routes
+            roadTrips.forEach(trip => {
+                if (trip.waypoints && trip.waypoints.length > 1) {
+                    const coords = trip.waypoints.map(w => [w[0], w[1]]);
+                    
+                    // Draw route line
+                    const routeLine = L.polyline(coords, {
+                        color: '#f472b6',
+                        weight: 3,
+                        opacity: 0.8,
+                        dashArray: '10, 5'
+                    }).addTo(roadMap);
+
+                    // Add markers for waypoints
+                    trip.waypoints.forEach((wp, idx) => {
+                        const marker = L.marker([wp[0], wp[1]], {
+                            icon: L.divIcon({
+                                className: 'custom-marker poi-marker',
+                                html: idx === 0 ? '🚗' : (idx === trip.waypoints.length - 1 ? '🏁' : '📍'),
+                                iconSize: [30, 30]
+                            })
+                        }).addTo(roadMap);
+
+                        marker.bindPopup(`
+                            <div class="route-popup">
+                                <h4>${wp[2]}</h4>
+                                <p>${trip.name}</p>
+                                <div style="font-size: 0.8rem; color: #9494a8;">${trip.description}</div>
+                            </div>
+                        `);
+                    });
+
+                    routeLine.bindPopup(`<div class="route-popup"><h4>${trip.icon} ${trip.name}</h4><p>${trip.distance} • ${trip.duration}</p></div>`);
+                }
+            });
+
+            // Add community alert markers
+            communityAlerts.forEach(alert => {
+                if (alert.lat && alert.lng) {
+                    const alertIcon = L.divIcon({
+                        className: `custom-marker ${alert.type === 'hazard' ? 'danger-marker' : 'alert-marker'}`,
+                        html: getAlertIcon(alert.type),
+                        iconSize: [30, 30]
+                    });
+
+                    L.marker([alert.lat, alert.lng], { icon: alertIcon })
+                        .addTo(roadMap)
+                        .bindPopup(`<div class="route-popup"><h4>${alert.title}</h4><p>${alert.description}</p></div>`);
+                }
             });
         }
 
-        function selectCountryByCode(countryId) {
-            if (!countryId) return;
+        // ==================== MODE SWITCHING ====================
+        function switchMode(mode) {
+            currentMode = mode;
             
-            const countryElement = document.querySelector(`[data-id="${countryId}"]`);
-            if (countryElement) {
-                const countryData = countriesData.find(d => d.id == countryId);
-                selectCountryAndOpenPicker(countryElement, countryData);
+            // Update tabs
+            document.getElementById('diaryModeTab').classList.toggle('active', mode === 'diary');
+            document.getElementById('serendipityModeTab').classList.toggle('active', mode === 'serendipity');
+            
+            // Update content visibility
+            document.getElementById('diaryContent').classList.toggle('hidden', mode !== 'diary');
+            document.getElementById('serendipityContent').classList.toggle('active', mode === 'serendipity');
+            
+            // Update logo
+            const logoIcon = document.getElementById('logoIcon');
+            const logoText = document.getElementById('logoText');
+            
+            if (mode === 'serendipity') {
+                logoIcon.textContent = '🛣️';
+                logoIcon.classList.add('serendipity-mode');
+                logoText.textContent = 'Serendipity';
+                
+                // Show road map
+                document.getElementById('worldMap').style.display = 'none';
+                document.getElementById('roadMap').classList.add('active');
+                document.getElementById('zoomControls').style.display = 'none';
+                
+                initRoadMap();
+                setTimeout(() => roadMap.invalidateSize(), 100);
+            } else {
+                logoIcon.textContent = '🗺️';
+                logoIcon.classList.remove('serendipity-mode');
+                logoText.textContent = 'Travel Diary';
+                
+                // Show world map
+                document.getElementById('worldMap').style.display = 'block';
+                document.getElementById('roadMap').classList.remove('active');
+                document.getElementById('zoomControls').style.display = 'flex';
             }
         }
 
-        function selectCountryAndOpenPicker(element, data) {
-            // Remove previous selection
+        // ==================== COUNTRY SELECTION ====================
+        function populateCountrySearch() {
+            const select = document.getElementById('countrySearch');
+            const sorted = countriesData
+                .map(d => ({ id: d.id, name: d.properties.name || "Unknown" }))
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            sorted.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.name;
+                select.appendChild(opt);
+            });
+        }
+
+        function selectCountryByCode(id) {
+            if (!id) return;
+            const el = document.querySelector(`[data-id="${id}"]`);
+            if (el) {
+                const data = countriesData.find(d => d.id == id);
+                selectCountry(el, data);
+            }
+        }
+
+        function selectCountry(element, data) {
             if (selectedCountry) {
                 d3.select(selectedCountry).classed("selected", false);
             }
 
-            // Select new country
             selectedCountry = element;
+            currentCountryId = data.id;
+            currentCountryName = data.properties.name || "Unknown";
             d3.select(selectedCountry).classed("selected", true);
 
-            const countryName = data.properties.name || "Unknown";
-            const currentColor = d3.select(element).style('fill');
-
-            // Update sidebar display
-            document.getElementById('selectedCountryName').textContent = countryName;
-            document.getElementById('selectedDisplay').classList.add('has-country');
-            document.getElementById('selectedColorPreview').style.display = 'flex';
-            document.getElementById('selectedColorSwatch').style.background = currentColor;
-            document.getElementById('selectedColorHex').textContent = currentColor;
+            document.getElementById('selectedCountryName').textContent = currentCountryName;
+            document.getElementById('selectedDisplay').classList.add('has-selection');
             document.getElementById('countrySearch').value = data.id;
 
-            // Open color picker popup
-            openColorPicker(countryName, currentColor);
-        }
-
-        function openColorPicker(countryName, currentColor) {
-            document.getElementById('popupCountryName').textContent = countryName;
-            document.getElementById('currentColorSwatch').style.background = currentColor;
-            document.getElementById('currentColorHex').textContent = currentColor;
-            document.getElementById('customColorPicker').value = currentColor.startsWith('#') ? currentColor : rgbToHex(currentColor);
-            document.getElementById('customHexInput').value = currentColor.startsWith('#') ? currentColor : rgbToHex(currentColor);
-            
-            updateRecentColorsDisplay();
-            
-            document.getElementById('colorPickerOverlay').classList.add('active');
-            document.getElementById('colorPickerPopup').classList.add('active');
-        }
-
-        function closeColorPicker() {
-            document.getElementById('colorPickerOverlay').classList.remove('active');
-            document.getElementById('colorPickerPopup').classList.remove('active');
-        }
-
-        function applyColor(color) {
-            if (!selectedCountry) return;
-
-            d3.select(selectedCountry).style('fill', color);
-            const countryId = d3.select(selectedCountry).attr('data-id');
-            countryColors[countryId] = color;
-
-            // Update displays
-            document.getElementById('currentColorSwatch').style.background = color;
-            document.getElementById('currentColorHex').textContent = color;
-            document.getElementById('selectedColorSwatch').style.background = color;
-            document.getElementById('selectedColorHex').textContent = color;
-            document.getElementById('customColorPicker').value = color;
-            document.getElementById('customHexInput').value = color;
-
-            // Add to recent colors
-            addToRecentColors(color);
-            
-            // Save to local storage
-            saveToLocalStorage();
-        }
-
-        function applyCustomColor() {
-            const color = document.getElementById('customHexInput').value.trim();
-            if (isValidColor(color)) {
-                applyColor(color);
-            } else {
-                alert('Invalid color format. Please use #RRGGBB format.');
+            // Update vanlifer info if in serendipity mode
+            if (currentMode === 'serendipity') {
+                showVanliferInfo(currentCountryName);
             }
         }
 
-        function removeColor() {
-            if (!selectedCountry) return;
+        function showVanliferInfo(countryName) {
+            const info = vanliferInfo[countryName] || defaultVanliferInfo;
+            const panel = document.getElementById('vanliferCountryInfo');
             
-            d3.select(selectedCountry).style('fill', DEFAULT_COLOR);
-            const countryId = d3.select(selectedCountry).attr('data-id');
-            delete countryColors[countryId];
-
-            document.getElementById('currentColorSwatch').style.background = DEFAULT_COLOR;
-            document.getElementById('currentColorHex').textContent = DEFAULT_COLOR;
-            document.getElementById('selectedColorSwatch').style.background = DEFAULT_COLOR;
-            document.getElementById('selectedColorHex').textContent = DEFAULT_COLOR;
+            document.getElementById('vanliferCountryName').textContent = countryName;
+            document.getElementById('tollInfo').textContent = info.tolls;
+            document.getElementById('tollInfo').className = `detail-value ${info.tollClass}`;
+            document.getElementById('campingInfo').textContent = info.camping;
+            document.getElementById('campingInfo').className = `detail-value ${info.campingClass}`;
+            document.getElementById('fuelInfo').textContent = info.fuel;
+            document.getElementById('fuelInfo').className = `detail-value ${info.fuelClass}`;
+            document.getElementById('visaInfo').textContent = info.visa;
+            document.getElementById('roadQualityInfo').textContent = info.roadQuality;
+            document.getElementById('waterInfo').textContent = info.waterAccess;
             
-            saveToLocalStorage();
+            panel.style.display = 'block';
         }
 
-        function addToRecentColors(color) {
-            // Remove if already exists
-            recentColors = recentColors.filter(c => c.toLowerCase() !== color.toLowerCase());
-            // Add to front
-            recentColors.unshift(color);
-            // Limit size
-            if (recentColors.length > MAX_RECENT_COLORS) {
-                recentColors = recentColors.slice(0, MAX_RECENT_COLORS);
+        // ==================== ROAD TRIPS ====================
+        function renderRoadTrips() {
+            const container = document.getElementById('roadTripsList');
+            container.innerHTML = roadTrips.map(trip => `
+                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''}" onclick="selectRoute('${trip.id}')">
+                    <div class="road-trip-header">
+                        <span class="road-trip-icon">${trip.icon}</span>
+                        <span class="road-trip-name">${trip.name}</span>
+                    </div>
+                    <div class="road-trip-meta">
+                        <span>📍 ${trip.country}</span>
+                        <span>📏 ${trip.distance}</span>
+                        <span>⏱️ ${trip.duration}</span>
+                    </div>
+                    <div class="road-trip-tags">
+                        ${trip.tags.map(t => `<span class="road-tag ${t}">${t}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectRoute(routeId) {
+            activeRoute = routeId;
+            renderRoadTrips();
+            
+            const trip = roadTrips.find(t => t.id === routeId);
+            if (trip && roadMap && trip.waypoints) {
+                const bounds = L.latLngBounds(trip.waypoints.map(w => [w[0], w[1]]));
+                roadMap.fitBounds(bounds, { padding: [50, 50] });
             }
-            updateRecentColorsDisplay();
-            saveToLocalStorage();
         }
 
-        function updateRecentColorsDisplay() {
-            const container = document.getElementById('recentColors');
-            if (recentColors.length === 0) {
-                container.innerHTML = '<span class="no-recent">No recent colors yet</span>';
+        // ==================== COMMUNITY ALERTS ====================
+        function renderAlerts() {
+            const container = document.getElementById('alertsList');
+            
+            // Default sample alerts
+            if (communityAlerts.length === 0) {
+                communityAlerts = [
+                    { id: 1, type: 'road_work', title: 'Road Construction', description: 'I-40 near Flagstaff, expect delays', location: 'Route 66, Arizona', date: '2 hours ago', lat: 35.2, lng: -111.6 },
+                    { id: 2, type: 'camping', title: 'Great Free Spot', description: 'BLM land just off Route 66, beautiful sunset views', location: 'Near Seligman, AZ', date: '1 day ago', lat: 35.3, lng: -112.9 },
+                    { id: 3, type: 'hazard', title: 'Pothole Warning', description: 'Large potholes after km marker 245', location: 'Transfăgărășan, Romania', date: '3 days ago', lat: 45.6, lng: 24.6 }
+                ];
+            }
+
+            container.innerHTML = communityAlerts.map(alert => `
+                <div class="alert-item ${alert.type === 'hazard' ? 'danger' : (alert.type === 'camping' || alert.type === 'tip' ? 'success' : '')}">
+                    <span class="alert-icon">${getAlertIcon(alert.type)}</span>
+                    <div class="alert-content">
+                        <div class="alert-title">${alert.title}</div>
+                        <div class="alert-desc">${alert.description}</div>
+                        <div class="alert-meta">📍 ${alert.location} • ${alert.date}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getAlertIcon(type) {
+            const icons = {
+                'road_work': '🚧',
+                'hazard': '⚠️',
+                'police': '👮',
+                'fuel': '⛽',
+                'camping': '🏕️',
+                'tip': '💡'
+            };
+            return icons[type] || '📍';
+        }
+
+        function openAlertModal() {
+            document.getElementById('alertModal').classList.add('active');
+        }
+
+        function closeAlertModal() {
+            document.getElementById('alertModal').classList.remove('active');
+        }
+
+        function submitAlert() {
+            const type = document.getElementById('alertType').value;
+            const location = document.getElementById('alertLocation').value;
+            const description = document.getElementById('alertDescription').value;
+
+            if (!location || !description) {
+                alert('Please fill in all fields');
                 return;
             }
 
-            container.innerHTML = recentColors.map(color => 
-                `<div class="recent-color" style="background: ${color};" onclick="applyColor('${color}')" title="${color}"></div>`
-            ).join('');
+            const newAlert = {
+                id: Date.now(),
+                type: type,
+                title: document.getElementById('alertType').options[document.getElementById('alertType').selectedIndex].text.replace(/[^\w\s]/g, '').trim(),
+                description: description,
+                location: location,
+                date: 'Just now'
+            };
+
+            communityAlerts.unshift(newAlert);
+            renderAlerts();
+            closeAlertModal();
+            saveToStorage();
+
+            // Clear form
+            document.getElementById('alertLocation').value = '';
+            document.getElementById('alertDescription').value = '';
         }
 
-        function setupCustomColorSync() {
-            const picker = document.getElementById('customColorPicker');
-            const input = document.getElementById('customHexInput');
-
-            picker.addEventListener('input', (e) => {
-                input.value = e.target.value;
-            });
-
-            input.addEventListener('input', (e) => {
-                const value = e.target.value;
-                if (isValidColor(value)) {
-                    picker.value = value;
-                }
-            });
-
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    applyCustomColor();
-                }
-            });
-        }
-
-        function isValidColor(color) {
-            return /^#[0-9A-Fa-f]{6}$/.test(color);
-        }
-
-        function rgbToHex(color) {
-            if (!color) return '#000000';
-            if (color.startsWith('#')) return color;
-            
-            // Handle rgb(r, g, b) format with flexible spacing
-            const rgbMatch = color.match(/rgb\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/i);
-            if (rgbMatch) {
-                const r = parseInt(rgbMatch[1]).toString(16).padStart(2, '0');
-                const g = parseInt(rgbMatch[2]).toString(16).padStart(2, '0');
-                const b = parseInt(rgbMatch[3]).toString(16).padStart(2, '0');
-                return `#${r}${g}${b}`;
+        // ==================== MAP ACTIONS ====================
+        function markAsVisited() {
+            if (!selectedCountry) {
+                alert('Please select a country first');
+                return;
             }
-            
-            return color; // Return original if can't parse
+            d3.select(selectedCountry).style('fill', VISITED_COLOR);
+            countryColors[currentCountryId] = VISITED_COLOR;
+            saveToStorage();
+            updateStats();
         }
 
-        // Background functions
-        function setBackground(color) {
-            document.getElementById('mapContainer').style.background = color;
-            document.getElementById('bgColorPicker').value = color;
-            saveToLocalStorage();
+        function resetMap() {
+            if (confirm('Reset all progress?')) {
+                g.selectAll("path").style('fill', DEFAULT_COLOR);
+                countryColors = {};
+                selectedCountry = null;
+                document.getElementById('selectedCountryName').textContent = 'Click a country';
+                document.getElementById('selectedDisplay').classList.remove('has-selection');
+                document.getElementById('countrySearch').value = '';
+                saveToStorage();
+                updateStats();
+            }
         }
 
-        function applyBackgroundFromPicker() {
-            const color = document.getElementById('bgColorPicker').value;
-            setBackground(color);
+        function updateStats() {
+            const visited = Object.keys(countryColors).length;
+            document.getElementById('countriesVisited').textContent = visited;
+
+            const continents = new Set();
+            Object.keys(countryColors).forEach(id => {
+                if (continentMapping[id]) continents.add(continentMapping[id]);
+            });
+            document.getElementById('continentsExplored').textContent = continents.size;
+
+            // Update serendipity stats
+            document.getElementById('routesExplored').textContent = activeRoute ? 1 : 0;
+            document.getElementById('kmTraveled').textContent = activeRoute ? 
+                roadTrips.find(r => r.id === activeRoute)?.distance.replace(' km', '') || '0' : '0';
         }
 
-        // Local storage
-        function saveToLocalStorage() {
+        // ==================== ZOOM ====================
+        let zoom;
+
+        function setupZoom() {
+            zoom = d3.zoom()
+                .scaleExtent([1, 8])
+                .on("zoom", (event) => g.attr("transform", event.transform));
+            svg.call(zoom);
+        }
+
+        function zoomIn() {
+            if (currentMode === 'serendipity' && roadMap) {
+                roadMap.zoomIn();
+            } else {
+                svg.transition().call(zoom.scaleBy, 1.5);
+            }
+        }
+
+        function zoomOut() {
+            if (currentMode === 'serendipity' && roadMap) {
+                roadMap.zoomOut();
+            } else {
+                svg.transition().call(zoom.scaleBy, 0.67);
+            }
+        }
+
+        function resetZoom() {
+            if (currentMode === 'serendipity' && roadMap) {
+                roadMap.setView([30, 0], 2);
+            } else {
+                svg.transition().call(zoom.transform, d3.zoomIdentity);
+            }
+        }
+
+        // ==================== STORAGE ====================
+        function saveToStorage() {
             const data = {
                 countryColors,
-                recentColors,
-                backgroundColor: document.getElementById('mapContainer').style.background
+                communityAlerts,
+                activeRoute
             };
-            localStorage.setItem('drawYourMapData', JSON.stringify(data));
+            localStorage.setItem('travelDiarySerendipity', JSON.stringify(data));
         }
 
-        function loadFromLocalStorage() {
+        function loadFromStorage() {
             try {
-                const saved = localStorage.getItem('drawYourMapData');
+                const saved = localStorage.getItem('travelDiarySerendipity');
                 if (saved) {
                     const data = JSON.parse(saved);
-                    
                     if (data.countryColors) {
                         countryColors = data.countryColors;
                         Object.keys(countryColors).forEach(id => {
@@ -1372,64 +1695,36 @@
                             if (el) d3.select(el).style('fill', countryColors[id]);
                         });
                     }
-                    
-                    if (data.recentColors) {
-                        recentColors = data.recentColors;
-                    }
-                    
-                    if (data.backgroundColor) {
-                        document.getElementById('mapContainer').style.background = data.backgroundColor;
-                        document.getElementById('bgColorPicker').value = rgbToHex(data.backgroundColor);
-                    }
+                    if (data.communityAlerts) communityAlerts = data.communityAlerts;
+                    if (data.activeRoute) activeRoute = data.activeRoute;
                 }
             } catch (e) {
-                console.error('Error loading saved data:', e);
+                console.error('Error loading data:', e);
             }
         }
 
-        // Reset
-        function resetMap() {
-            if (confirm('Are you sure you want to reset all colors?')) {
-                g.selectAll("path").style('fill', DEFAULT_COLOR);
-                countryColors = {};
-                selectedCountry = null;
-                
-                document.getElementById('selectedCountryName').textContent = 'Click on a country';
-                document.getElementById('selectedDisplay').classList.remove('has-country');
-                document.getElementById('selectedColorPreview').style.display = 'none';
-                document.getElementById('countrySearch').value = '';
-                
-                setBackground('#0d0d12');
-                saveToLocalStorage();
-                closeColorPicker();
-            }
-        }
-
-        // Export/Import
-        function exportColors() {
+        // ==================== EXPORT/IMPORT ====================
+        function exportData() {
             const data = {
-                backgroundColor: document.getElementById('mapContainer').style.background || '#0d0d12',
-                countries: countryColors,
-                recentColors,
+                countryColors,
+                communityAlerts,
+                activeRoute,
                 timestamp: new Date().toISOString()
             };
-            
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'my-map-' + Date.now() + '.json';
+            a.download = 'travel-diary-' + Date.now() + '.json';
             a.click();
-            
             URL.revokeObjectURL(url);
         }
 
-        function importColors() {
+        function importData() {
             document.getElementById('fileInput').click();
         }
 
-        function handleFileUpload(event) {
+        function handleImport(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1437,136 +1732,34 @@
             reader.onload = function(e) {
                 try {
                     const data = JSON.parse(e.target.result);
-                    
-                    if (data.backgroundColor) {
-                        setBackground(data.backgroundColor);
-                    }
-                    
-                    if (data.countries) {
-                        countryColors = data.countries;
-                        Object.keys(data.countries).forEach(countryId => {
-                            const element = document.querySelector(`[data-id="${countryId}"]`);
-                            if (element) {
-                                d3.select(element).style('fill', data.countries[countryId]);
-                            }
+                    if (data.countryColors) {
+                        countryColors = data.countryColors;
+                        Object.keys(countryColors).forEach(id => {
+                            const el = document.querySelector(`[data-id="${id}"]`);
+                            if (el) d3.select(el).style('fill', countryColors[id]);
                         });
                     }
-                    
-                    if (data.recentColors) {
-                        recentColors = data.recentColors;
-                        updateRecentColorsDisplay();
+                    if (data.communityAlerts) {
+                        communityAlerts = data.communityAlerts;
+                        renderAlerts();
                     }
-                    
-                    saveToLocalStorage();
-                    alert('Map imported successfully!');
-                } catch (error) {
+                    saveToStorage();
+                    updateStats();
+                    alert('Data imported successfully!');
+                } catch (err) {
                     alert('Error importing file');
-                    console.error(error);
                 }
             };
             reader.readAsText(file);
             event.target.value = '';
         }
 
-        // Zoom
-        let zoom;
-
-        function setupZoom() {
-            zoom = d3.zoom()
-                .scaleExtent([1, 8])
-                .on("zoom", (event) => {
-                    g.attr("transform", event.transform);
-                });
-
-            svg.call(zoom);
-        }
-
-        function zoomIn() {
-            svg.transition().call(zoom.scaleBy, 1.5);
-        }
-
-        function zoomOut() {
-            svg.transition().call(zoom.scaleBy, 0.67);
-        }
-
-        function resetZoom() {
-            svg.transition().call(zoom.transform, d3.zoomIdentity);
-        }
-
-        // Export as PNG
-        function exportAsImage() {
-            const svgElement = document.getElementById('worldMap');
-            const svgData = new XMLSerializer().serializeToString(svgElement);
-            
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            const viewBox = svgElement.getAttribute('viewBox').split(' ').map(Number);
-            
-            canvas.width = viewBox[2] * 2;
-            canvas.height = viewBox[3] * 2;
-            
-            const bgColor = getComputedStyle(document.getElementById('mapContainer')).background || '#0d0d12';
-            ctx.fillStyle = bgColor.split(')')[0] + ')' || '#0d0d12';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            const img = new Image();
-            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(svgBlob);
-            
-            img.onload = function() {
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                URL.revokeObjectURL(url);
-                
-                canvas.toBlob(function(blob) {
-                    const link = document.createElement('a');
-                    link.download = 'my-map-' + Date.now() + '.png';
-                    link.href = URL.createObjectURL(blob);
-                    link.click();
-                    URL.revokeObjectURL(link.href);
-                });
-            };
-            
-            img.src = url;
-        }
-
-        // Export as SVG
-        function exportAsSVG() {
-            const svgElement = document.getElementById('worldMap');
-            const svgClone = svgElement.cloneNode(true);
-            
-            const bgColor = getComputedStyle(document.getElementById('mapContainer')).backgroundColor || '#0d0d12';
-            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-            rect.setAttribute('width', '100%');
-            rect.setAttribute('height', '100%');
-            rect.setAttribute('fill', bgColor);
-            svgClone.insertBefore(rect, svgClone.firstChild);
-            
-            const gElement = svgClone.querySelector('g');
-            if (gElement) {
-                gElement.removeAttribute('transform');
-            }
-            
-            const svgData = new XMLSerializer().serializeToString(svgClone);
-            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(svgBlob);
-            
-            const link = document.createElement('a');
-            link.download = 'my-map-' + Date.now() + '.svg';
-            link.href = url;
-            link.click();
-            
-            URL.revokeObjectURL(url);
-        }
-
-        // Close popup with Escape key
+        // ==================== KEYBOARD ====================
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeColorPicker();
-            }
+            if (e.key === 'Escape') closeAlertModal();
         });
 
-        // Initialize
+        // ==================== INIT ====================
         initMap();
     </script>
 </body>
