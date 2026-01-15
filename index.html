@@ -1470,7 +1470,324 @@
                 tags: ['scenic', 'adventure', 'toll-free'],
                 description: 'Circle Iceland through volcanoes, glaciers and waterfalls.',
                 tips: 'F-roads need 4x4. Summer has 24hr daylight. Expensive but incredible!'
+            },
+            // ==================== ASIA ROAD TRIPS ====================
+            {
+                id: 'karakoram',
+                name: 'Karakoram Highway',
+                icon: '🇵🇰',
+                country: 'Pakistan/China',
+                distance: '1300 km',
+                duration: '7-10 days',
+                coordinates: [[35.9208, 74.3082], [39.4704, 75.9893]],
+                waypoints: [
+                    [35.9208, 74.3082, 'Gilgit'],
+                    [36.3167, 74.6500, 'Karimabad (Hunza)'],
+                    [36.4500, 74.8667, 'Passu'],
+                    [36.8333, 75.4167, 'Khunjerab Pass (4693m)'],
+                    [39.4704, 75.9893, 'Kashgar']
+                ],
+                tags: ['adventure', 'scenic', 'epic'],
+                description: 'The 8th wonder of the world - highest paved international road crossing the Himalayas.',
+                tips: 'Permits required. Best May-October. Altitude sickness possible at Khunjerab.'
+            },
+            {
+                id: 'hai_van',
+                name: 'Hai Van Pass & Coastal Vietnam',
+                icon: '🇻🇳',
+                country: 'Vietnam',
+                distance: '1700 km',
+                duration: '10-14 days',
+                coordinates: [[10.7769, 106.7009], [21.0285, 105.8542]],
+                waypoints: [
+                    [10.7769, 106.7009, 'Ho Chi Minh City'],
+                    [11.9404, 108.4583, 'Da Lat'],
+                    [12.2388, 109.1967, 'Nha Trang'],
+                    [13.7563, 109.2225, 'Quy Nhon'],
+                    [15.8801, 108.3380, 'Hoi An'],
+                    [16.0544, 108.2022, 'Da Nang'],
+                    [16.4637, 107.5909, 'Hue'],
+                    [21.0285, 105.8542, 'Hanoi']
+                ],
+                tags: ['scenic', 'adventure', 'toll-free'],
+                description: 'Vietnam\'s legendary coastal route including the famous Hai Van Pass (Top Gear\'s best road).',
+                tips: 'Rent motorbike in HCMC, sell in Hanoi. Rainy season varies by region.'
+            },
+            {
+                id: 'hokkaido',
+                name: 'Hokkaido Circuit',
+                icon: '🇯🇵',
+                country: 'Japan',
+                distance: '1200 km',
+                duration: '7-10 days',
+                coordinates: [[43.0621, 141.3544], [43.7714, 142.3630]],
+                waypoints: [
+                    [43.0621, 141.3544, 'Sapporo'],
+                    [43.0587, 141.3570, 'Otaru'],
+                    [43.4564, 142.4847, 'Furano'],
+                    [43.7714, 142.3630, 'Biei (Blue Pond)'],
+                    [43.0618, 144.3589, 'Kushiro'],
+                    [44.0206, 145.1370, 'Shiretoko Peninsula'],
+                    [43.0621, 141.3544, 'Sapporo']
+                ],
+                tags: ['scenic', 'camping'],
+                description: 'Japan\'s wild north - lavender fields, volcanic lakes, and untamed wilderness.',
+                tips: 'Michi-no-Eki (road stations) allow overnight parking. Best July-September.'
+            },
+            {
+                id: 'golden_triangle',
+                name: 'Golden Triangle',
+                icon: '🇹🇭',
+                country: 'Thailand',
+                distance: '1900 km',
+                duration: '10-14 days',
+                coordinates: [[13.7563, 100.5018], [20.3500, 100.0833]],
+                waypoints: [
+                    [13.7563, 100.5018, 'Bangkok'],
+                    [14.3692, 99.9938, 'Kanchanaburi'],
+                    [18.7883, 98.9853, 'Chiang Mai'],
+                    [19.9071, 99.8309, 'Chiang Rai'],
+                    [20.3500, 100.0833, 'Golden Triangle'],
+                    [19.2966, 97.9684, 'Mae Hong Son Loop'],
+                    [18.7883, 98.9853, 'Chiang Mai']
+                ],
+                tags: ['scenic', 'adventure', 'toll-free'],
+                description: 'Northern Thailand loop through mountains, temples, and the legendary Mae Hong Son Loop.',
+                tips: '762 curves in Mae Hong Son Loop! Rent big bike in Chiang Mai.'
+            },
+            {
+                id: 'silk_road',
+                name: 'Silk Road (Central Asia)',
+                icon: '🐪',
+                country: 'Multi-country',
+                distance: '4000 km',
+                duration: '3-4 weeks',
+                coordinates: [[41.2995, 69.2401], [39.6542, 66.9597]],
+                waypoints: [
+                    [41.2995, 69.2401, 'Tashkent'],
+                    [39.6542, 66.9597, 'Samarkand'],
+                    [39.7747, 64.4286, 'Bukhara'],
+                    [41.3775, 60.3378, 'Khiva'],
+                    [42.4602, 59.6035, 'Nukus'],
+                    [37.9601, 58.3261, 'Mary (Merv)'],
+                    [37.9509, 58.3794, 'Ashgabat']
+                ],
+                tags: ['adventure', 'epic', 'historic'],
+                description: 'Follow the ancient trade route through Uzbekistan and Turkmenistan.',
+                tips: 'Visas can be complex. Best spring/autumn. Incredible Islamic architecture.'
+            },
+            {
+                id: 'rajasthan',
+                name: 'Rajasthan Royal Route',
+                icon: '🇮🇳',
+                country: 'India',
+                distance: '1200 km',
+                duration: '10-14 days',
+                coordinates: [[28.6139, 77.2090], [26.9124, 70.9021]],
+                waypoints: [
+                    [28.6139, 77.2090, 'Delhi'],
+                    [27.1767, 78.0081, 'Agra (Taj Mahal)'],
+                    [26.9124, 75.7873, 'Jaipur'],
+                    [26.4499, 74.6399, 'Pushkar'],
+                    [26.2967, 73.0167, 'Jodhpur'],
+                    [26.9124, 70.9021, 'Jaisalmer'],
+                    [24.5854, 72.7125, 'Udaipur']
+                ],
+                tags: ['historic', 'scenic', 'adventure'],
+                description: 'India\'s royal route through forts, palaces, and the Thar Desert.',
+                tips: 'Chaotic traffic! Best October-March. Hire driver or be very experienced.'
+            },
+            {
+                id: 'korea_coastal',
+                name: 'Korea Coastal Road',
+                icon: '🇰🇷',
+                country: 'South Korea',
+                distance: '1700 km',
+                duration: '7-10 days',
+                coordinates: [[35.1796, 129.0756], [38.2070, 128.5918]],
+                waypoints: [
+                    [35.1796, 129.0756, 'Busan'],
+                    [35.8714, 128.6014, 'Gyeongju'],
+                    [36.0190, 129.3435, 'Pohang'],
+                    [37.4563, 129.1658, 'Gangneung'],
+                    [38.2070, 128.5918, 'Sokcho'],
+                    [37.5665, 126.9780, 'Seoul']
+                ],
+                tags: ['scenic', 'toll-free', 'camping'],
+                description: 'Korea\'s stunning east coast from Busan to the DMZ area.',
+                tips: 'Excellent rest stops. Try the seafood! Camping at beaches possible.'
+            },
+            // ==================== AFRICA ROAD TRIPS ====================
+            {
+                id: 'morocco_atlas',
+                name: 'Morocco Grand Tour',
+                icon: '🇲🇦',
+                country: 'Morocco',
+                distance: '2200 km',
+                duration: '12-16 days',
+                coordinates: [[33.5731, -7.5898], [31.6295, -7.9811]],
+                waypoints: [
+                    [33.5731, -7.5898, 'Casablanca'],
+                    [33.9716, -6.8498, 'Rabat'],
+                    [34.0181, -5.0078, 'Fes'],
+                    [31.9314, -4.4288, 'Merzouga (Sahara)'],
+                    [31.1649, -4.0004, 'Todra Gorge'],
+                    [31.0482, -6.8388, 'Ait Benhaddou'],
+                    [31.6295, -7.9811, 'Marrakech'],
+                    [30.4278, -9.5981, 'Agadir'],
+                    [31.5085, -9.7595, 'Essaouira']
+                ],
+                tags: ['adventure', 'scenic', 'camping'],
+                description: 'From imperial cities to Sahara dunes, kasbahs and coastal charm.',
+                tips: 'Wild camping easy outside cities. Negotiate everything! Best spring/autumn.'
+            },
+            {
+                id: 'cape_town_kruger',
+                name: 'Cape Town to Kruger',
+                icon: '🇿🇦',
+                country: 'South Africa',
+                distance: '1800 km',
+                duration: '14-18 days',
+                coordinates: [[-33.9249, 18.4241], [-24.9916, 31.5430]],
+                waypoints: [
+                    [-33.9249, 18.4241, 'Cape Town'],
+                    [-33.9580, 22.4610, 'Garden Route Start'],
+                    [-33.4580, 26.5220, 'Addo Elephant Park'],
+                    [-29.8587, 31.0218, 'Durban'],
+                    [-25.7479, 28.2293, 'Pretoria'],
+                    [-24.9916, 31.5430, 'Kruger National Park']
+                ],
+                tags: ['scenic', 'wildlife', 'adventure'],
+                description: 'The ultimate South African road trip - coast, wildlife, and everything in between.',
+                tips: 'Book Kruger camps months ahead. Garden Route doable year-round.'
+            },
+            {
+                id: 'ethiopia_historic',
+                name: 'Ethiopian Historic Route',
+                icon: '🇪🇹',
+                country: 'Ethiopia',
+                distance: '1500 km',
+                duration: '10-14 days',
+                coordinates: [[9.0320, 38.7469], [14.1210, 38.7469]],
+                waypoints: [
+                    [9.0320, 38.7469, 'Addis Ababa'],
+                    [11.5936, 37.3908, 'Bahir Dar (Blue Nile Falls)'],
+                    [12.6000, 37.4667, 'Gondar'],
+                    [13.4910, 39.4750, 'Axum'],
+                    [12.0300, 39.0442, 'Lalibela'],
+                    [9.0320, 38.7469, 'Addis Ababa']
+                ],
+                tags: ['historic', 'adventure', 'fourx4'],
+                description: 'Ancient churches, castles, and the ark of the covenant route.',
+                tips: 'Roads improving but still challenging. Best October-March (dry season).'
+            },
+            {
+                id: 'tanzania_circuit',
+                name: 'Tanzania Northern Circuit',
+                icon: '🇹🇿',
+                country: 'Tanzania',
+                distance: '800 km',
+                duration: '7-10 days',
+                coordinates: [[-3.3869, 36.6830], [-2.3333, 34.8333]],
+                waypoints: [
+                    [-3.3869, 36.6830, 'Arusha'],
+                    [-3.0674, 37.3556, 'Moshi (Kilimanjaro)'],
+                    [-2.3333, 34.8333, 'Serengeti'],
+                    [-3.2400, 35.5320, 'Ngorongoro Crater'],
+                    [-3.5000, 35.7500, 'Lake Manyara'],
+                    [-4.0500, 35.7620, 'Tarangire'],
+                    [-3.3869, 36.6830, 'Arusha']
+                ],
+                tags: ['wildlife', 'adventure', 'fourx4'],
+                description: 'Safari paradise - Great Migration, Ngorongoro, and Kilimanjaro views.',
+                tips: 'June-October for migration. Book camps well in advance!'
+            },
+            {
+                id: 'senegal_dakar',
+                name: 'Senegal Adventure',
+                icon: '🇸🇳',
+                country: 'Senegal',
+                distance: '1200 km',
+                duration: '10-14 days',
+                coordinates: [[14.6928, -17.4467], [12.5833, -16.2719]],
+                waypoints: [
+                    [14.6928, -17.4467, 'Dakar'],
+                    [14.7500, -17.3600, 'Lac Rose'],
+                    [15.6178, -16.4181, 'Saint-Louis'],
+                    [13.4531, -16.5775, 'Sine-Saloum Delta'],
+                    [12.5833, -16.2719, 'Casamance'],
+                    [14.6928, -17.4467, 'Dakar']
+                ],
+                tags: ['adventure', 'scenic', 'toll-free'],
+                description: 'West African adventure - colonial history, pink lake, and tropical south.',
+                tips: 'Peugeot 504 sept-place for local experience! Casamance requires patience.'
+            },
+            {
+                id: 'madagascar_rn7',
+                name: 'Madagascar RN7',
+                icon: '🇲🇬',
+                country: 'Madagascar',
+                distance: '1000 km',
+                duration: '10-14 days',
+                coordinates: [[-18.8792, 47.5079], [-23.3516, 43.6854]],
+                waypoints: [
+                    [-18.8792, 47.5079, 'Antananarivo'],
+                    [-19.8659, 47.0333, 'Antsirabe'],
+                    [-20.5167, 46.5500, 'Ambositra'],
+                    [-21.4419, 47.0856, 'Ranomafana'],
+                    [-21.2500, 45.3667, 'Isalo'],
+                    [-23.3516, 43.6854, 'Toliara']
+                ],
+                tags: ['adventure', 'wildlife', 'scenic'],
+                description: 'Madagascar\'s most famous road - lemurs, baobabs, and otherworldly landscapes.',
+                tips: 'Roads very rough! 4x4 recommended. Best April-November.'
             }
+        ];
+
+        // ==================== WORLD VIEWPOINTS & HISTORICAL SITES (UNESCO + FAMOUS) ====================
+        const worldViewpoints = [
+            // Africa
+            { name: 'Pyramids of Giza', lat: 29.9792, lng: 31.1342, type: 'historic', icon: '🏛️', country: 'Egypt', unesco: true },
+            { name: 'Victoria Falls', lat: -17.9243, lng: 25.8572, type: 'viewpoint', icon: '💧', country: 'Zambia/Zimbabwe', unesco: true },
+            { name: 'Serengeti', lat: -2.3333, lng: 34.8333, type: 'nature', icon: '🦁', country: 'Tanzania', unesco: true },
+            { name: 'Medina of Fes', lat: 34.0181, lng: -5.0078, type: 'historic', icon: '🕌', country: 'Morocco', unesco: true },
+            { name: 'Rock Churches of Lalibela', lat: 12.0300, lng: 39.0442, type: 'historic', icon: '⛪', country: 'Ethiopia', unesco: true },
+            { name: 'Table Mountain', lat: -33.9628, lng: 18.4098, type: 'viewpoint', icon: '⛰️', country: 'South Africa' },
+            { name: 'Ngorongoro Crater', lat: -3.2400, lng: 35.5320, type: 'nature', icon: '🌋', country: 'Tanzania', unesco: true },
+            { name: 'Sossusvlei Dunes', lat: -24.7275, lng: 15.7390, type: 'viewpoint', icon: '🏜️', country: 'Namibia' },
+            // Asia
+            { name: 'Taj Mahal', lat: 27.1751, lng: 78.0421, type: 'historic', icon: '🕌', country: 'India', unesco: true },
+            { name: 'Great Wall of China', lat: 40.4319, lng: 116.5704, type: 'historic', icon: '🏯', country: 'China', unesco: true },
+            { name: 'Angkor Wat', lat: 13.4125, lng: 103.8670, type: 'historic', icon: '🛕', country: 'Cambodia', unesco: true },
+            { name: 'Mount Fuji', lat: 35.3606, lng: 138.7274, type: 'viewpoint', icon: '🗻', country: 'Japan', unesco: true },
+            { name: 'Ha Long Bay', lat: 20.9101, lng: 107.1839, type: 'nature', icon: '🌊', country: 'Vietnam', unesco: true },
+            { name: 'Petra', lat: 30.3285, lng: 35.4444, type: 'historic', icon: '🏛️', country: 'Jordan', unesco: true },
+            { name: 'Bagan Temples', lat: 21.1717, lng: 94.8585, type: 'historic', icon: '🛕', country: 'Myanmar', unesco: true },
+            { name: 'Hagia Sophia', lat: 41.0086, lng: 28.9802, type: 'historic', icon: '🕌', country: 'Turkey', unesco: true },
+            { name: 'Borobudur', lat: -7.6079, lng: 110.2038, type: 'historic', icon: '🛕', country: 'Indonesia', unesco: true },
+            { name: 'Terracotta Army', lat: 34.3848, lng: 109.2785, type: 'historic', icon: '🏺', country: 'China', unesco: true },
+            { name: 'Sigiriya Rock', lat: 7.9570, lng: 80.7603, type: 'historic', icon: '🏰', country: 'Sri Lanka', unesco: true },
+            { name: 'Khajuraho', lat: 24.8318, lng: 79.9199, type: 'historic', icon: '🛕', country: 'India', unesco: true },
+            // Europe
+            { name: 'Colosseum', lat: 41.8902, lng: 12.4922, type: 'historic', icon: '🏟️', country: 'Italy', unesco: true },
+            { name: 'Acropolis', lat: 37.9715, lng: 23.7257, type: 'historic', icon: '🏛️', country: 'Greece', unesco: true },
+            { name: 'Eiffel Tower', lat: 48.8584, lng: 2.2945, type: 'viewpoint', icon: '🗼', country: 'France' },
+            { name: 'Neuschwanstein Castle', lat: 47.5576, lng: 10.7498, type: 'historic', icon: '🏰', country: 'Germany' },
+            { name: 'Santorini Caldera', lat: 36.3932, lng: 25.4615, type: 'viewpoint', icon: '🌅', country: 'Greece' },
+            { name: 'Stonehenge', lat: 51.1789, lng: -1.8262, type: 'historic', icon: '🪨', country: 'UK', unesco: true },
+            { name: 'Alhambra', lat: 37.1760, lng: -3.5881, type: 'historic', icon: '🏰', country: 'Spain', unesco: true },
+            { name: 'Dubrovnik Old Town', lat: 42.6507, lng: 18.0944, type: 'historic', icon: '🏰', country: 'Croatia', unesco: true },
+            // Americas
+            { name: 'Machu Picchu', lat: -13.1631, lng: -72.5450, type: 'historic', icon: '🏔️', country: 'Peru', unesco: true },
+            { name: 'Grand Canyon', lat: 36.1069, lng: -112.1129, type: 'viewpoint', icon: '🏜️', country: 'USA', unesco: true },
+            { name: 'Chichen Itza', lat: 20.6843, lng: -88.5678, type: 'historic', icon: '🏛️', country: 'Mexico', unesco: true },
+            { name: 'Iguazu Falls', lat: -25.6953, lng: -54.4367, type: 'viewpoint', icon: '💧', country: 'Argentina/Brazil', unesco: true },
+            { name: 'Monument Valley', lat: 36.9980, lng: -110.0985, type: 'viewpoint', icon: '🏜️', country: 'USA' },
+            { name: 'Moai of Easter Island', lat: -27.1127, lng: -109.3497, type: 'historic', icon: '🗿', country: 'Chile', unesco: true },
+            // Oceania
+            { name: 'Great Barrier Reef', lat: -18.2871, lng: 147.6992, type: 'nature', icon: '🐠', country: 'Australia', unesco: true },
+            { name: 'Uluru', lat: -25.3444, lng: 131.0369, type: 'nature', icon: '🪨', country: 'Australia', unesco: true },
+            { name: 'Milford Sound', lat: -44.6414, lng: 167.8975, type: 'viewpoint', icon: '⛰️', country: 'New Zealand' }
         ];
 
         // ==================== VANLIFER COUNTRY INFO DATABASE ====================
