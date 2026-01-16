@@ -560,138 +560,325 @@
             opacity: 1;
         }
 
-        /* Trip Detail Modal */
-        .trip-detail-modal {
-            display: flex;
+        /* Trip Fullscreen Modal - New Design */
+        .trip-fullscreen-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-dark);
+            z-index: 10000;
+            display: none;
             flex-direction: column;
             overflow: hidden;
         }
 
-        .trip-detail-header {
+        .trip-fullscreen-modal.active {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--serendipity));
         }
 
-        .trip-detail-title {
+        /* Hero Header */
+        .trip-hero {
+            position: relative;
+            min-height: 280px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
             display: flex;
-            align-items: center;
-            gap: 16px;
+            align-items: flex-end;
+            padding: 40px 60px;
+            overflow: hidden;
         }
 
-        .trip-detail-icon {
-            font-size: 2.5rem;
-        }
-
-        .trip-detail-title h3 {
-            margin: 0;
-            font-size: 1.4rem;
-            color: white;
-        }
-
-        .trip-detail-subtitle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 4px;
-        }
-
-        .separator {
+        .trip-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
             opacity: 0.5;
         }
 
-        .trip-detail-content {
+        .trip-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
             display: flex;
-            flex: 1;
-            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
         }
 
-        .trip-detail-main {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
+        .trip-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
         }
 
-        .trip-detail-sidebar {
-            width: 320px;
+        .trip-hero-content {
+            position: relative;
+            z-index: 5;
+        }
+
+        .trip-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .hero-icon {
+            font-size: 3rem;
+        }
+
+        .trip-hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin: 0 0 12px 0;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .trip-hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 12px;
+        }
+
+        .hero-meta-divider {
+            opacity: 0.4;
+        }
+
+        .trip-hero-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .hero-stars {
+            font-size: 1.1rem;
+        }
+
+        .hero-rating-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .hero-reviews-count {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .trip-hero-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .trip-hero-tags .tag {
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Navigation Tabs */
+        .trip-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 60px;
             background: var(--bg-elevated);
-            border-left: 1px solid var(--border-subtle);
-            padding: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .trip-nav-tabs {
+            display: flex;
+            gap: 0;
+        }
+
+        .trip-nav-tab {
+            padding: 18px 28px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .trip-nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .trip-nav-tab.active {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .trip-nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .trip-action-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .trip-action-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* Tab Content */
+        .trip-content-container {
+            flex: 1;
             overflow-y: auto;
+            padding: 32px 60px;
+        }
+
+        .trip-tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .trip-tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Grid Layouts */
+        .trip-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
+        }
+
+        .trip-main-col, .trip-side-col {
             display: flex;
             flex-direction: column;
+            gap: 24px;
         }
 
-        .trip-meta-cards {
+        /* Stats Row */
+        .trip-stats-row {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
         }
 
-        .meta-card {
+        .trip-stat-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
+            border-radius: 16px;
         }
 
-        .meta-card .meta-icon {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
+        .trip-stat-card .stat-icon {
+            font-size: 2rem;
         }
 
-        .meta-card .meta-value {
-            font-size: 1rem;
+        .trip-stat-card .stat-value {
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-primary);
         }
 
-        .meta-card .meta-label {
-            font-size: 0.7rem;
+        .trip-stat-card .stat-label {
+            font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-top: 4px;
         }
 
-        .meta-card.rating-card .meta-value { color: #fbbf24; }
-        .meta-card.difficulty-card.easy .meta-value { color: #22c55e; }
-        .meta-card.difficulty-card.moderate .meta-value { color: #fbbf24; }
-        .meta-card.difficulty-card.challenging .meta-value { color: #f97316; }
-        .meta-card.difficulty-card.extreme .meta-value { color: #ef4444; }
-
-        .trip-section {
-            margin-bottom: 24px;
+        /* Trip Cards */
+        .trip-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
         }
 
-        .trip-section h4 {
-            font-size: 1rem;
+        .trip-card h3 {
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin: 0 0 16px 0;
             color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        }
+
+        .trip-card.warning-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(249, 115, 22, 0.1));
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .trip-card.recommendations-card {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 184, 166, 0.1));
+            border-color: rgba(34, 197, 94, 0.3);
         }
 
         .trip-description {
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 1.7;
             color: var(--text-secondary);
         }
 
-        .must-know-section {
-            background: rgba(251, 191, 36, 0.1);
-            border: 1px solid rgba(251, 191, 36, 0.2);
-            border-radius: 12px;
-            padding: 16px;
+        /* Highlights */
+        .trip-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
+        .trip-highlights .highlight-tag {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 25px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Must Know */
         .must-know-list {
             list-style: none;
             padding: 0;
@@ -699,20 +886,612 @@
         }
 
         .must-know-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-subtle);
-            font-size: 0.9rem;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+            font-size: 0.95rem;
             color: var(--text-secondary);
         }
 
         .must-know-list li:last-child {
             border-bottom: none;
+            padding-bottom: 0;
         }
 
-        .highlights-grid {
+        /* Recommendations */
+        .recommendations-list {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .recommendation-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+        }
+
+        .recommendation-item .rec-icon {
+            font-size: 1.5rem;
+        }
+
+        .recommendation-item .rec-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .recommendation-item .rec-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Packing List */
+        .packing-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
+        }
+
+        .packing-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .packing-item.essential {
+            border-left: 3px solid var(--warning);
+        }
+
+        /* Route Tab */
+        .route-card {
+            max-width: 800px;
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .route-header h3 {
+            margin: 0;
+        }
+
+        .stops-count {
+            padding: 6px 14px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .route-timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .route-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--serendipity));
+            border-radius: 2px;
+        }
+
+        .waypoint-item {
+            position: relative;
+            padding: 20px;
+            margin-bottom: 16px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+        }
+
+        .waypoint-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 24px;
+            width: 16px;
+            height: 16px;
+            background: var(--accent-primary);
+            border: 3px solid var(--bg-elevated);
+            border-radius: 50%;
+        }
+
+        .waypoint-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .waypoint-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Budget Tab */
+        .budget-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            max-width: 1000px;
+        }
+
+        .budget-breakdown, .budget-tips {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .budget-breakdown h3, .budget-tips h3 {
+            margin: 0 0 24px 0;
+            font-size: 1.2rem;
+        }
+
+        .budget-items {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .budget-item {
+            display: grid;
+            grid-template-columns: 50px 1fr 120px;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .budget-item-icon {
+            font-size: 1.8rem;
+        }
+
+        .budget-item-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .budget-item-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--success);
+            text-align: right;
+        }
+
+        .budget-item-bar {
+            grid-column: 1 / -1;
+            height: 6px;
+            background: var(--bg-dark);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .bar-fill.fuel { width: 25%; background: #f97316; }
+        .bar-fill.tolls { width: 5%; background: #8b5cf6; }
+        .bar-fill.accommodation { width: 45%; background: #3b82f6; }
+        .bar-fill.food { width: 25%; background: #22c55e; }
+
+        .budget-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin-top: 24px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(20, 184, 166, 0.2));
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .budget-total-value {
+            font-size: 1.5rem;
+            color: var(--success);
+        }
+
+        .budget-tips-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .budget-tip {
+            padding: 14px 16px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Planning Tab */
+        .planning-steps-container {
+            max-width: 800px;
+        }
+
+        .planning-steps-container h3 {
+            margin-bottom: 24px;
+        }
+
+        .planning-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .planning-step {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--serendipity));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Community Tab */
+        .community-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .community-reviews, .community-chat {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .reviews-header h3 {
+            margin: 0;
+        }
+
+        .reviews-summary {
+            text-align: center;
+        }
+
+        .big-rating {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fbbf24;
+        }
+
+        .reviews-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .review-item {
+            padding: 16px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .review-user {
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        .review-rating {
+            color: #fbbf24;
+        }
+
+        .review-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .review-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .add-review-box {
+            padding: 20px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+        }
+
+        .add-review-box h4 {
+            margin: 0 0 12px 0;
+            font-size: 0.95rem;
+        }
+
+        .rating-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .rating-star {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .rating-star:hover, .rating-star.active {
+            color: #fbbf24;
+        }
+
+        .review-textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            resize: none;
+            height: 80px;
+            margin-bottom: 12px;
+        }
+
+        .review-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .submit-review-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-review-btn:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Chat in Community */
+        .chat-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+        }
+
+        .online-badge {
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 12px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chat-message {
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            border-left: 3px solid var(--border-subtle);
+        }
+
+        .chat-message.question { border-left-color: var(--accent-primary); }
+        .chat-message.tip { border-left-color: var(--success); }
+        .chat-message.experience { border-left-color: var(--warning); }
+
+        .chat-msg-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .chat-msg-user {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+        }
+
+        .chat-msg-badge {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+        }
+
+        .chat-msg-badge.verified { background: var(--success); color: white; }
+        .chat-msg-badge.expert { background: var(--warning); color: var(--bg-dark); }
+
+        .chat-msg-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .chat-msg-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .chat-msg-reactions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-reaction {
+            cursor: pointer;
+            padding: 2px 8px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .chat-reaction:hover {
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .chat-replies {
+            margin-top: 10px;
+            padding-left: 12px;
+            border-left: 2px solid var(--border-subtle);
+        }
+
+        .chat-reply {
+            padding: 8px 12px;
+            margin-top: 8px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .chat-input-section {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .chat-type-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .chat-pill {
+            flex: 1;
+            padding: 8px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-pill:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .chat-pill.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-text-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 25px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .chat-text-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .chat-submit-btn {
+            padding: 12px 24px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-submit-btn:hover {
+            background: var(--accent-secondary);
         }
 
         .highlight-tag {
@@ -2974,158 +3753,221 @@
         </div>
     </div>
 
-    <!-- Road Trip Detail Modal -->
-    <div class="modal-overlay" id="tripDetailModal">
-        <div class="modal trip-detail-modal" style="max-width: 900px; max-height: 90vh;">
-            <div class="modal-header trip-detail-header">
-                <div class="trip-detail-title">
-                    <span class="trip-detail-icon" id="tripDetailIcon">🛣️</span>
-                    <div>
-                        <h3 id="tripDetailName">Road Trip Name</h3>
-                        <div class="trip-detail-subtitle">
-                            <span id="tripDetailCountry">Country</span>
-                            <span class="separator">•</span>
-                            <span id="tripDetailDistance">0 km</span>
-                            <span class="separator">•</span>
-                            <span id="tripDetailDuration">0 days</span>
-                        </div>
-                    </div>
+    <!-- Road Trip Detail Modal - Full Screen Experience -->
+    <div class="trip-fullscreen-modal" id="tripDetailModal">
+        <!-- Hero Header -->
+        <div class="trip-hero" id="tripHero">
+            <div class="trip-hero-overlay"></div>
+            <button class="trip-close-btn" onclick="closeTripDetailModal()">
+                <span>✕</span>
+            </button>
+            <div class="trip-hero-content">
+                <div class="trip-hero-badge" id="tripHeroBadge">
+                    <span class="hero-icon" id="tripDetailIcon">🛣️</span>
                 </div>
-                <button class="modal-close" onclick="closeTripDetailModal()">×</button>
+                <h1 class="trip-hero-title" id="tripDetailName">Road Trip Name</h1>
+                <div class="trip-hero-meta">
+                    <span class="hero-meta-item">📍 <span id="tripDetailCountry">Country</span></span>
+                    <span class="hero-meta-divider">|</span>
+                    <span class="hero-meta-item">📏 <span id="tripDetailDistance">0 km</span></span>
+                    <span class="hero-meta-divider">|</span>
+                    <span class="hero-meta-item">⏱️ <span id="tripDetailDuration">0 days</span></span>
+                </div>
+                <div class="trip-hero-rating">
+                    <span class="hero-stars" id="tripHeroStars">⭐⭐⭐⭐⭐</span>
+                    <span class="hero-rating-value" id="tripDetailRating">4.8</span>
+                    <span class="hero-reviews-count">(<span id="tripReviewsCount">0</span> reviews)</span>
+                </div>
+                <div class="trip-hero-tags" id="tripHeroTags"></div>
             </div>
-            
-            <div class="trip-detail-content">
-                <!-- Left Column -->
-                <div class="trip-detail-main">
-                    <!-- Rating & Difficulty -->
-                    <div class="trip-meta-cards">
-                        <div class="meta-card rating-card">
-                            <div class="meta-icon">⭐</div>
-                            <div class="meta-info">
-                                <div class="meta-value" id="tripDetailRating">4.5</div>
-                                <div class="meta-label">Rating</div>
-                            </div>
-                        </div>
-                        <div class="meta-card difficulty-card" id="tripDifficultyCard">
-                            <div class="meta-icon">💪</div>
-                            <div class="meta-info">
-                                <div class="meta-value" id="tripDetailDifficulty">Moderate</div>
-                                <div class="meta-label">Difficulty</div>
-                            </div>
-                        </div>
-                        <div class="meta-card season-card">
-                            <div class="meta-icon">📅</div>
-                            <div class="meta-info">
-                                <div class="meta-value" id="tripDetailSeason">Spring</div>
-                                <div class="meta-label">Best Season</div>
-                            </div>
-                        </div>
-                        <div class="meta-card budget-card">
-                            <div class="meta-icon">💰</div>
-                            <div class="meta-info">
-                                <div class="meta-value" id="tripDetailBudget">$2000</div>
-                                <div class="meta-label">Budget</div>
-                            </div>
-                        </div>
-                    </div>
+        </div>
 
-                    <!-- Description -->
-                    <div class="trip-section">
-                        <h4>📝 About This Trip</h4>
-                        <p id="tripDetailDescription" class="trip-description"></p>
-                    </div>
+        <!-- Navigation Tabs -->
+        <div class="trip-nav">
+            <div class="trip-nav-tabs">
+                <button class="trip-nav-tab active" data-tab="overview" onclick="switchTripTab('overview')">
+                    📋 Overview
+                </button>
+                <button class="trip-nav-tab" data-tab="route" onclick="switchTripTab('route')">
+                    🗺️ Route
+                </button>
+                <button class="trip-nav-tab" data-tab="budget" onclick="switchTripTab('budget')">
+                    💰 Budget
+                </button>
+                <button class="trip-nav-tab" data-tab="planning" onclick="switchTripTab('planning')">
+                    📝 Planning
+                </button>
+                <button class="trip-nav-tab" data-tab="community" onclick="switchTripTab('community')">
+                    💬 Community
+                </button>
+            </div>
+            <div class="trip-nav-actions">
+                <button class="trip-action-btn" onclick="viewTripOnMap()" title="View on Map">🗺️</button>
+                <button class="trip-action-btn" onclick="markCurrentTripCompleted()" title="Mark Done">✓</button>
+                <button class="trip-action-btn" onclick="shareTripLink()" title="Share">🔗</button>
+            </div>
+        </div>
 
-                    <!-- Cost Breakdown -->
-                    <div class="trip-section cost-section">
-                        <h4>💰 Estimated Costs</h4>
-                        <div class="cost-grid" id="tripCostGrid">
-                            <div class="cost-item">
-                                <div class="cost-icon">⛽</div>
-                                <div class="cost-info">
-                                    <div class="cost-label">Fuel</div>
-                                    <div class="cost-value" id="tripFuelCost">~$300</div>
+        <!-- Tab Content Container -->
+        <div class="trip-content-container">
+            <!-- Overview Tab -->
+            <div class="trip-tab-content active" id="tab-overview">
+                <div class="trip-grid">
+                    <!-- Left Column -->
+                    <div class="trip-main-col">
+                        <!-- Quick Stats -->
+                        <div class="trip-stats-row">
+                            <div class="trip-stat-card">
+                                <div class="stat-icon">💪</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="tripDetailDifficulty">Moderate</div>
+                                    <div class="stat-label">Difficulty</div>
                                 </div>
                             </div>
-                            <div class="cost-item">
-                                <div class="cost-icon">🛣️</div>
-                                <div class="cost-info">
-                                    <div class="cost-label">Tolls</div>
-                                    <div class="cost-value" id="tripTollCost">~$50</div>
+                            <div class="trip-stat-card">
+                                <div class="stat-icon">📅</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="tripDetailSeason">Spring</div>
+                                    <div class="stat-label">Best Season</div>
                                 </div>
                             </div>
-                            <div class="cost-item">
-                                <div class="cost-icon">🏨</div>
-                                <div class="cost-info">
-                                    <div class="cost-label">Accommodation</div>
-                                    <div class="cost-value" id="tripAccomCost">~$800</div>
-                                </div>
-                            </div>
-                            <div class="cost-item">
-                                <div class="cost-icon">🍽️</div>
-                                <div class="cost-info">
-                                    <div class="cost-label">Food</div>
-                                    <div class="cost-value" id="tripFoodCost">~$400</div>
+                            <div class="trip-stat-card">
+                                <div class="stat-icon">💰</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="tripDetailBudget">$2000</div>
+                                    <div class="stat-label">Est. Budget</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="cost-total">
-                            <span>Total Estimated Budget:</span>
-                            <span id="tripTotalCost" class="total-value">~$1,550</span>
+
+                        <!-- Description -->
+                        <div class="trip-card">
+                            <h3>📝 About This Trip</h3>
+                            <p class="trip-description" id="tripDetailDescription"></p>
+                        </div>
+
+                        <!-- Highlights -->
+                        <div class="trip-card">
+                            <h3>✨ Trip Highlights</h3>
+                            <div class="trip-highlights" id="tripDetailHighlights"></div>
+                        </div>
+
+                        <!-- Must Know -->
+                        <div class="trip-card warning-card">
+                            <h3>⚠️ Must Know Before You Go</h3>
+                            <ul class="must-know-list" id="tripDetailMustKnow"></ul>
                         </div>
                     </div>
 
-                    <!-- Planning Guide -->
-                    <div class="trip-section planning-section">
-                        <h4>📋 How to Plan This Trip</h4>
-                        <div class="planning-steps" id="tripPlanningSteps">
-                            <!-- Populated dynamically -->
+                    <!-- Right Column -->
+                    <div class="trip-side-col">
+                        <!-- Top Recommendations -->
+                        <div class="trip-card recommendations-card">
+                            <h3>🏆 Top Recommendations</h3>
+                            <div class="recommendations-list" id="tripRecommendations"></div>
                         </div>
-                    </div>
 
-                    <!-- Must Know -->
-                    <div class="trip-section must-know-section">
-                        <h4>⚠️ Must Know Before You Go</h4>
-                        <ul id="tripDetailMustKnow" class="must-know-list"></ul>
-                    </div>
-
-                    <!-- Top Recommendations -->
-                    <div class="trip-section recommendations-section">
-                        <h4>🏆 Top Recommendations</h4>
-                        <div id="tripRecommendations" class="recommendations-grid">
-                            <!-- Populated dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Highlights -->
-                    <div class="trip-section">
-                        <h4>✨ Highlights</h4>
-                        <div id="tripDetailHighlights" class="highlights-grid"></div>
-                    </div>
-
-                    <!-- Waypoints / Itinerary -->
-                    <div class="trip-section">
-                        <h4>🗺️ Route & Stops (<span id="waypointsCount">0</span> stops)</h4>
-                        <div id="tripDetailWaypoints" class="waypoints-timeline"></div>
-                    </div>
-
-                    <!-- Packing List -->
-                    <div class="trip-section packing-section">
-                        <h4>🎒 Packing Essentials</h4>
-                        <div id="tripPackingList" class="packing-grid">
-                            <!-- Populated dynamically -->
+                        <!-- Packing Essentials -->
+                        <div class="trip-card">
+                            <h3>🎒 Packing Essentials</h3>
+                            <div class="packing-list" id="tripPackingList"></div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Right Column - Reviews -->
-                <div class="trip-detail-sidebar">
-                    <div class="reviews-section">
-                        <h4>💬 Community Reviews</h4>
-                        <div id="tripDetailReviews" class="reviews-list"></div>
-                        
-                        <!-- Add Review -->
-                        <div class="add-review-section">
-                            <h5>Share Your Experience</h5>
+            <!-- Route Tab -->
+            <div class="trip-tab-content" id="tab-route">
+                <div class="trip-card route-card">
+                    <div class="route-header">
+                        <h3>🗺️ Route & Stops</h3>
+                        <span class="stops-count"><span id="waypointsCount">0</span> stops</span>
+                    </div>
+                    <div class="route-timeline" id="tripDetailWaypoints"></div>
+                </div>
+            </div>
+
+            <!-- Budget Tab -->
+            <div class="trip-tab-content" id="tab-budget">
+                <div class="budget-grid">
+                    <div class="budget-breakdown">
+                        <h3>💰 Cost Breakdown</h3>
+                        <div class="budget-items">
+                            <div class="budget-item">
+                                <div class="budget-item-icon">⛽</div>
+                                <div class="budget-item-info">
+                                    <span class="budget-item-label">Fuel</span>
+                                    <span class="budget-item-value" id="tripFuelCost">~$300</span>
+                                </div>
+                                <div class="budget-item-bar"><div class="bar-fill fuel"></div></div>
+                            </div>
+                            <div class="budget-item">
+                                <div class="budget-item-icon">🛣️</div>
+                                <div class="budget-item-info">
+                                    <span class="budget-item-label">Tolls</span>
+                                    <span class="budget-item-value" id="tripTollCost">~$50</span>
+                                </div>
+                                <div class="budget-item-bar"><div class="bar-fill tolls"></div></div>
+                            </div>
+                            <div class="budget-item">
+                                <div class="budget-item-icon">🏨</div>
+                                <div class="budget-item-info">
+                                    <span class="budget-item-label">Accommodation</span>
+                                    <span class="budget-item-value" id="tripAccomCost">~$800</span>
+                                </div>
+                                <div class="budget-item-bar"><div class="bar-fill accommodation"></div></div>
+                            </div>
+                            <div class="budget-item">
+                                <div class="budget-item-icon">🍽️</div>
+                                <div class="budget-item-info">
+                                    <span class="budget-item-label">Food & Drinks</span>
+                                    <span class="budget-item-value" id="tripFoodCost">~$400</span>
+                                </div>
+                                <div class="budget-item-bar"><div class="bar-fill food"></div></div>
+                            </div>
+                        </div>
+                        <div class="budget-total">
+                            <span>Total Estimated Budget</span>
+                            <span class="budget-total-value" id="tripTotalCost">~$1,550</span>
+                        </div>
+                    </div>
+                    <div class="budget-tips">
+                        <h3>💡 Budget Tips</h3>
+                        <div class="budget-tips-list" id="budgetTips">
+                            <div class="budget-tip">💳 Book accommodations in advance for 20-30% savings</div>
+                            <div class="budget-tip">⛽ Use fuel apps like GasBuddy to find cheapest stations</div>
+                            <div class="budget-tip">🍳 Save money by cooking at campsites when possible</div>
+                            <div class="budget-tip">🎫 Look for combination tickets for attractions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Planning Tab -->
+            <div class="trip-tab-content" id="tab-planning">
+                <div class="planning-grid">
+                    <div class="planning-steps-container">
+                        <h3>📋 Step-by-Step Planning Guide</h3>
+                        <div class="planning-timeline" id="tripPlanningSteps"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Tab -->
+            <div class="trip-tab-content" id="tab-community">
+                <div class="community-grid">
+                    <!-- Reviews Section -->
+                    <div class="community-reviews">
+                        <div class="reviews-header">
+                            <h3>⭐ Reviews & Ratings</h3>
+                            <div class="reviews-summary">
+                                <span class="big-rating" id="tripBigRating">4.8</span>
+                                <div class="rating-breakdown" id="ratingBreakdown"></div>
+                            </div>
+                        </div>
+                        <div class="reviews-list" id="tripDetailReviews"></div>
+                        <div class="add-review-box">
+                            <h4>Share Your Experience</h4>
                             <div class="rating-input">
                                 <span class="rating-star" data-rating="1">☆</span>
                                 <span class="rating-star" data-rating="2">☆</span>
@@ -3133,38 +3975,31 @@
                                 <span class="rating-star" data-rating="4">☆</span>
                                 <span class="rating-star" data-rating="5">☆</span>
                             </div>
-                            <textarea class="form-input" id="newReviewText" placeholder="Write your review..."></textarea>
-                            <button class="btn btn-primary" onclick="submitTripReview()">Submit Review</button>
+                            <textarea class="review-textarea" id="newReviewText" placeholder="Tell others about your experience..."></textarea>
+                            <button class="submit-review-btn" onclick="submitTripReview()">Submit Review</button>
                         </div>
                     </div>
 
-                    <!-- Group Chat Section -->
-                    <div class="trip-chat-section">
-                        <div class="chat-header">
-                            <h4>💬 Trip Community Chat</h4>
-                            <span class="online-count" id="chatOnlineCount">👥 12 online</span>
-                        </div>
-                        <div class="chat-messages" id="tripChatMessages">
-                            <!-- Populated dynamically -->
-                        </div>
-                        <div class="chat-input-area">
-                            <div class="chat-type-selector">
-                                <button class="chat-type-btn active" data-type="question" onclick="setChatType('question')">❓ Question</button>
-                                <button class="chat-type-btn" data-type="tip" onclick="setChatType('tip')">💡 Tip</button>
-                                <button class="chat-type-btn" data-type="experience" onclick="setChatType('experience')">✨ Experience</button>
+                    <!-- Chat Section -->
+                    <div class="community-chat">
+                        <div class="chat-container">
+                            <div class="chat-header">
+                                <h3>💬 Live Discussion</h3>
+                                <span class="online-badge" id="chatOnlineCount">👥 12 online</span>
                             </div>
-                            <div class="chat-input-wrapper">
-                                <input type="text" class="chat-input" id="chatMessageInput" placeholder="Ask a question about this trip...">
-                                <button class="chat-send-btn" onclick="sendChatMessage()">➤</button>
+                            <div class="chat-messages" id="tripChatMessages"></div>
+                            <div class="chat-input-section">
+                                <div class="chat-type-pills">
+                                    <button class="chat-pill active" data-type="question" onclick="setChatType('question')">❓ Question</button>
+                                    <button class="chat-pill" data-type="tip" onclick="setChatType('tip')">💡 Tip</button>
+                                    <button class="chat-pill" data-type="experience" onclick="setChatType('experience')">✨ Story</button>
+                                </div>
+                                <div class="chat-input-row">
+                                    <input type="text" class="chat-text-input" id="chatMessageInput" placeholder="Ask the community...">
+                                    <button class="chat-submit-btn" onclick="sendChatMessage()">Send</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="trip-actions">
-                        <button class="btn btn-serendipity" onclick="viewTripOnMap()">🗺️ View on Map</button>
-                        <button class="btn btn-success" onclick="markCurrentTripCompleted()">✓ Mark Completed</button>
-                        <button class="btn btn-secondary" onclick="shareTripLink()">🔗 Share</button>
                     </div>
                 </div>
             </div>
@@ -4685,6 +5520,19 @@
         let currentDetailTrip = null;
         let userRating = 0;
 
+        // Tab switching for trip detail modal
+        function switchTripTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.trip-nav-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabName);
+            });
+            
+            // Update tab content
+            document.querySelectorAll('.trip-tab-content').forEach(content => {
+                content.classList.toggle('active', content.id === `tab-${tabName}`);
+            });
+        }
+
         function openTripDetail(tripId) {
             const allTrips = getAllTrips();
             const trip = allTrips.find(t => t.id === tripId);
@@ -4692,72 +5540,117 @@
 
             currentDetailTrip = trip;
             document.getElementById('tripDetailModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
             
-            // Populate header
+            // Reset to overview tab
+            switchTripTab('overview');
+            
+            // Populate Hero Header
             document.getElementById('tripDetailIcon').textContent = trip.icon;
             document.getElementById('tripDetailName').textContent = trip.name;
             document.getElementById('tripDetailCountry').textContent = trip.country;
             document.getElementById('tripDetailDistance').textContent = trip.distance;
             document.getElementById('tripDetailDuration').textContent = trip.duration;
+            
+            // Rating in hero
+            const rating = trip.rating || 4.0;
+            document.getElementById('tripDetailRating').textContent = rating.toFixed(1);
+            document.getElementById('tripHeroStars').textContent = '⭐'.repeat(Math.round(rating));
+            document.getElementById('tripReviewsCount').textContent = trip.reviews ? trip.reviews.length : 0;
+            document.getElementById('tripBigRating').textContent = rating.toFixed(1);
+            
+            // Tags in hero
+            const tagsContainer = document.getElementById('tripHeroTags');
+            if (trip.tags && trip.tags.length > 0) {
+                tagsContainer.innerHTML = trip.tags.map(t => `<span class="tag">${t === 'fourx4' ? '4x4' : t}</span>`).join('');
+            } else {
+                tagsContainer.innerHTML = '';
+            }
 
-            // Populate meta cards
-            document.getElementById('tripDetailRating').textContent = trip.rating ? trip.rating.toFixed(1) : 'N/A';
+            // Populate Stats
             document.getElementById('tripDetailDifficulty').textContent = (trip.difficulty || 'moderate').charAt(0).toUpperCase() + (trip.difficulty || 'moderate').slice(1);
             document.getElementById('tripDetailSeason').textContent = trip.bestSeason || 'Year-round';
             document.getElementById('tripDetailBudget').textContent = trip.budget || 'Varies';
 
-            // Set difficulty class
-            const diffCard = document.getElementById('tripDifficultyCard');
-            diffCard.className = `meta-card difficulty-card ${trip.difficulty || 'moderate'}`;
-
             // Description
-            document.getElementById('tripDetailDescription').textContent = trip.description;
-
-            // Must Know
-            const mustKnowList = document.getElementById('tripDetailMustKnow');
-            if (trip.mustKnow && trip.mustKnow.length > 0) {
-                mustKnowList.innerHTML = trip.mustKnow.map(item => `<li>${item}</li>`).join('');
-                document.querySelector('.must-know-section').style.display = 'block';
-            } else {
-                mustKnowList.innerHTML = '<li>No specific tips available yet. Be the first to add one!</li>';
-            }
+            document.getElementById('tripDetailDescription').textContent = trip.description || 'An amazing road trip adventure awaits!';
 
             // Highlights
             const highlightsGrid = document.getElementById('tripDetailHighlights');
             if (trip.highlights && trip.highlights.length > 0) {
                 highlightsGrid.innerHTML = trip.highlights.map(h => `<span class="highlight-tag">${h}</span>`).join('');
             } else {
-                highlightsGrid.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">No highlights listed yet</span>';
+                highlightsGrid.innerHTML = '<span style="color: var(--text-muted);">No highlights listed yet</span>';
             }
 
-            // Waypoints
+            // Must Know
+            const mustKnowList = document.getElementById('tripDetailMustKnow');
+            if (trip.mustKnow && trip.mustKnow.length > 0) {
+                mustKnowList.innerHTML = trip.mustKnow.map(item => `<li>${item}</li>`).join('');
+            } else {
+                mustKnowList.innerHTML = '<li>📝 No specific tips available yet. Check the community tab for discussions!</li>';
+            }
+
+            // Recommendations
+            const recommendationsContainer = document.getElementById('tripRecommendations');
+            if (trip.recommendations && trip.recommendations.length > 0) {
+                recommendationsContainer.innerHTML = trip.recommendations.map(rec => `
+                    <div class="recommendation-item">
+                        <div class="rec-icon">${rec.icon}</div>
+                        <div>
+                            <div class="rec-title">${rec.title}</div>
+                            <div class="rec-desc">${rec.desc}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                recommendationsContainer.innerHTML = '<p style="color: var(--text-muted);">No recommendations yet. Share yours in the community!</p>';
+            }
+
+            // Packing List
+            const packingContainer = document.getElementById('tripPackingList');
+            if (trip.packingList && trip.packingList.length > 0) {
+                packingContainer.innerHTML = trip.packingList.map(item => `
+                    <div class="packing-item ${item.essential ? 'essential' : ''}">
+                        <span>${item.item}</span>
+                    </div>
+                `).join('');
+            } else {
+                packingContainer.innerHTML = `
+                    <div class="packing-item essential">📱 Offline maps</div>
+                    <div class="packing-item essential">💧 Water bottles</div>
+                    <div class="packing-item">📷 Camera</div>
+                    <div class="packing-item essential">🔌 Phone charger</div>
+                `;
+            }
+
+            // Waypoints (Route Tab)
             const waypointsList = document.getElementById('tripDetailWaypoints');
             if (trip.waypoints && trip.waypoints.length > 0) {
                 document.getElementById('waypointsCount').textContent = trip.waypoints.length;
                 waypointsList.innerHTML = trip.waypoints.map((wp, idx) => `
                     <div class="waypoint-item">
-                        <div class="waypoint-name">${idx + 1}. ${wp[2] || 'Stop ' + (idx + 1)}</div>
+                        <div class="waypoint-name">${wp[2] || 'Stop ' + (idx + 1)}</div>
                         ${wp[3] ? `<div class="waypoint-desc">${wp[3]}</div>` : ''}
                     </div>
                 `).join('');
             } else {
                 document.getElementById('waypointsCount').textContent = '0';
-                waypointsList.innerHTML = '<p style="color: var(--text-muted);">No waypoints available</p>';
+                waypointsList.innerHTML = '<p style="color: var(--text-muted); padding: 20px;">No detailed waypoints available. Check the map view for the route.</p>';
             }
 
-            // Costs
+            // Costs (Budget Tab)
             if (trip.costs) {
                 document.getElementById('tripFuelCost').textContent = trip.costs.fuel || 'N/A';
                 document.getElementById('tripTollCost').textContent = trip.costs.tolls || 'N/A';
                 document.getElementById('tripAccomCost').textContent = trip.costs.accommodation || 'N/A';
                 document.getElementById('tripFoodCost').textContent = trip.costs.food || 'N/A';
                 document.getElementById('tripTotalCost').textContent = trip.costs.total || 'Varies';
-                document.querySelector('.cost-section').style.display = 'block';
             } else {
                 // Estimate costs based on distance
                 const distKm = parseInt(trip.distance) || 1000;
                 const days = parseInt(trip.duration) || 7;
-                const estFuel = Math.round(distKm * 0.12); // ~$0.12/km average
+                const estFuel = Math.round(distKm * 0.12);
                 const estAccom = days * 80;
                 const estFood = days * 50;
                 document.getElementById('tripFuelCost').textContent = `~$${estFuel}`;
@@ -4765,10 +5658,9 @@
                 document.getElementById('tripAccomCost').textContent = `~$${estAccom}`;
                 document.getElementById('tripFoodCost').textContent = `~$${estFood}`;
                 document.getElementById('tripTotalCost').textContent = `~$${estFuel + estAccom + estFood}`;
-                document.querySelector('.cost-section').style.display = 'block';
             }
 
-            // Planning Steps
+            // Planning Steps (Planning Tab)
             const planningStepsContainer = document.getElementById('tripPlanningSteps');
             if (trip.planningSteps && trip.planningSteps.length > 0) {
                 planningStepsContainer.innerHTML = trip.planningSteps.map((step, idx) => `
@@ -4780,9 +5672,7 @@
                         </div>
                     </div>
                 `).join('');
-                document.querySelector('.planning-section').style.display = 'block';
             } else {
-                // Default planning steps
                 planningStepsContainer.innerHTML = `
                     <div class="planning-step">
                         <div class="step-number">1</div>
@@ -4805,69 +5695,31 @@
                             <div class="step-desc">Service your car, check tires, and ensure you have emergency supplies.</div>
                         </div>
                     </div>
-                `;
-                document.querySelector('.planning-section').style.display = 'block';
-            }
-
-            // Recommendations
-            const recommendationsContainer = document.getElementById('tripRecommendations');
-            if (trip.recommendations && trip.recommendations.length > 0) {
-                recommendationsContainer.innerHTML = trip.recommendations.map(rec => `
-                    <div class="recommendation-card">
-                        <div class="recommendation-icon">${rec.icon}</div>
-                        <div class="recommendation-content">
-                            <div class="recommendation-title">${rec.title}</div>
-                            <div class="recommendation-desc">${rec.desc}</div>
+                    <div class="planning-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Download Offline Maps</div>
+                            <div class="step-desc">Ensure you have offline access to navigation - cell service may be spotty.</div>
                         </div>
                     </div>
-                `).join('');
-                document.querySelector('.recommendations-section').style.display = 'block';
-            } else {
-                document.querySelector('.recommendations-section').style.display = 'none';
+                `;
             }
 
-            // Packing List
-            const packingContainer = document.getElementById('tripPackingList');
-            if (trip.packingList && trip.packingList.length > 0) {
-                packingContainer.innerHTML = trip.packingList.map(item => `
-                    <div class="packing-item ${item.essential ? 'essential' : ''}">
-                        <span>${item.item}</span>
-                        ${item.essential ? '<span style="color: var(--warning); font-size: 0.65rem;">ESSENTIAL</span>' : ''}
-                    </div>
-                `).join('');
-                document.querySelector('.packing-section').style.display = 'block';
-            } else {
-                // Default packing list based on tags
-                const defaultItems = [
-                    { item: '📱 Offline maps', essential: true },
-                    { item: '💧 Water bottles', essential: true },
-                    { item: '📷 Camera', essential: false },
-                    { item: '🔌 Phone charger', essential: true },
-                    { item: '🩹 First aid kit', essential: false },
-                    { item: '🕶️ Sunglasses', essential: false }
-                ];
-                packingContainer.innerHTML = defaultItems.map(item => `
-                    <div class="packing-item ${item.essential ? 'essential' : ''}">
-                        <span>${item.item}</span>
-                    </div>
-                `).join('');
-                document.querySelector('.packing-section').style.display = 'block';
-            }
-
-            // Reviews
+            // Reviews (Community Tab)
             renderTripReviews(trip);
             
             // Reset rating input
             userRating = 0;
             updateRatingStars();
 
-            // Load chat
+            // Load chat (Community Tab)
             renderTripChat(tripId);
             setChatType('question');
         }
 
         function closeTripDetailModal() {
             document.getElementById('tripDetailModal').classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
             currentDetailTrip = null;
         }
 
@@ -5094,17 +5946,20 @@
 
         function setChatType(type) {
             currentChatType = type;
-            document.querySelectorAll('.chat-type-btn').forEach(btn => {
+            // Handle both old and new class names
+            document.querySelectorAll('.chat-type-btn, .chat-pill').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.type === type);
             });
             
             const input = document.getElementById('chatMessageInput');
-            const placeholders = {
-                'question': 'Ask a question about this trip...',
-                'tip': 'Share a helpful tip for other travelers...',
-                'experience': 'Tell us about your experience on this trip...'
-            };
-            input.placeholder = placeholders[type];
+            if (input) {
+                const placeholders = {
+                    'question': 'Ask the community...',
+                    'tip': 'Share a helpful tip...',
+                    'experience': 'Tell your story...'
+                };
+                input.placeholder = placeholders[type] || 'Type a message...';
+            }
         }
 
         function sendChatMessage() {
