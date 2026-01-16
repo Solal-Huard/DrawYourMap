@@ -497,6 +497,385 @@
         .road-tag.camping { background: rgba(20, 184, 166, 0.2); color: #14b8a6; }
         .road-tag.fourx4 { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
         .road-tag.wildlife { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .road-tag.historic { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+        .road-tag.epic { background: rgba(236, 72, 153, 0.2); color: #ec4899; }
+        .road-tag.community { background: rgba(244, 114, 182, 0.2); color: #f472b6; }
+
+        /* Enhanced Road Trip Card */
+        .road-trip-card {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .road-trip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .road-trip-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #fbbf24;
+            margin-top: 6px;
+        }
+
+        .road-trip-rating .rating-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .difficulty-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .difficulty-badge.easy { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .difficulty-badge.moderate { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .difficulty-badge.challenging { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+        .difficulty-badge.extreme { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .view-details-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .road-trip-card:hover .view-details-btn {
+            opacity: 1;
+        }
+
+        /* Trip Detail Modal */
+        .trip-detail-modal {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .trip-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--serendipity));
+        }
+
+        .trip-detail-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .trip-detail-icon {
+            font-size: 2.5rem;
+        }
+
+        .trip-detail-title h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .trip-detail-subtitle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 4px;
+        }
+
+        .separator {
+            opacity: 0.5;
+        }
+
+        .trip-detail-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .trip-detail-main {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .trip-detail-sidebar {
+            width: 320px;
+            background: var(--bg-elevated);
+            border-left: 1px solid var(--border-subtle);
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trip-meta-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .meta-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .meta-card .meta-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .meta-card .meta-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .meta-card .meta-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .meta-card.rating-card .meta-value { color: #fbbf24; }
+        .meta-card.difficulty-card.easy .meta-value { color: #22c55e; }
+        .meta-card.difficulty-card.moderate .meta-value { color: #fbbf24; }
+        .meta-card.difficulty-card.challenging .meta-value { color: #f97316; }
+        .meta-card.difficulty-card.extreme .meta-value { color: #ef4444; }
+
+        .trip-section {
+            margin-bottom: 24px;
+        }
+
+        .trip-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trip-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .must-know-section {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .must-know-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .must-know-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .must-know-list li:last-child {
+            border-bottom: none;
+        }
+
+        .highlights-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .highlight-tag {
+            padding: 8px 14px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--serendipity));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .waypoints-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .waypoints-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--serendipity));
+        }
+
+        .waypoint-item {
+            position: relative;
+            padding: 12px 0;
+            padding-left: 20px;
+        }
+
+        .waypoint-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 2px solid var(--bg-panel);
+        }
+
+        .waypoint-item:first-child::before { background: #22c55e; }
+        .waypoint-item:last-child::before { background: #ef4444; }
+
+        .waypoint-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .waypoint-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Reviews */
+        .reviews-section {
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        .reviews-section h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .reviews-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .review-item {
+            padding: 14px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .review-item.owner-review {
+            border-left: 3px solid var(--success);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), transparent);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .review-user {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .review-rating {
+            color: #fbbf24;
+            font-size: 0.8rem;
+        }
+
+        .review-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .review-date {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .add-review-section {
+            background: var(--bg-dark);
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+
+        .add-review-section h5 {
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .rating-input {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .rating-star {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .rating-star:hover,
+        .rating-star.active {
+            color: #fbbf24;
+        }
+
+        .trip-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
+        }
 
         .road-trip-card.personal {
             border-left: 3px solid var(--success);
@@ -2184,6 +2563,118 @@
         </div>
     </div>
 
+    <!-- Road Trip Detail Modal -->
+    <div class="modal-overlay" id="tripDetailModal">
+        <div class="modal trip-detail-modal" style="max-width: 900px; max-height: 90vh;">
+            <div class="modal-header trip-detail-header">
+                <div class="trip-detail-title">
+                    <span class="trip-detail-icon" id="tripDetailIcon">🛣️</span>
+                    <div>
+                        <h3 id="tripDetailName">Road Trip Name</h3>
+                        <div class="trip-detail-subtitle">
+                            <span id="tripDetailCountry">Country</span>
+                            <span class="separator">•</span>
+                            <span id="tripDetailDistance">0 km</span>
+                            <span class="separator">•</span>
+                            <span id="tripDetailDuration">0 days</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeTripDetailModal()">×</button>
+            </div>
+            
+            <div class="trip-detail-content">
+                <!-- Left Column -->
+                <div class="trip-detail-main">
+                    <!-- Rating & Difficulty -->
+                    <div class="trip-meta-cards">
+                        <div class="meta-card rating-card">
+                            <div class="meta-icon">⭐</div>
+                            <div class="meta-info">
+                                <div class="meta-value" id="tripDetailRating">4.5</div>
+                                <div class="meta-label">Rating</div>
+                            </div>
+                        </div>
+                        <div class="meta-card difficulty-card" id="tripDifficultyCard">
+                            <div class="meta-icon">💪</div>
+                            <div class="meta-info">
+                                <div class="meta-value" id="tripDetailDifficulty">Moderate</div>
+                                <div class="meta-label">Difficulty</div>
+                            </div>
+                        </div>
+                        <div class="meta-card season-card">
+                            <div class="meta-icon">📅</div>
+                            <div class="meta-info">
+                                <div class="meta-value" id="tripDetailSeason">Spring</div>
+                                <div class="meta-label">Best Season</div>
+                            </div>
+                        </div>
+                        <div class="meta-card budget-card">
+                            <div class="meta-icon">💰</div>
+                            <div class="meta-info">
+                                <div class="meta-value" id="tripDetailBudget">$2000</div>
+                                <div class="meta-label">Budget</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="trip-section">
+                        <h4>📝 About This Trip</h4>
+                        <p id="tripDetailDescription" class="trip-description"></p>
+                    </div>
+
+                    <!-- Must Know -->
+                    <div class="trip-section must-know-section">
+                        <h4>⚠️ Must Know Before You Go</h4>
+                        <ul id="tripDetailMustKnow" class="must-know-list"></ul>
+                    </div>
+
+                    <!-- Highlights -->
+                    <div class="trip-section">
+                        <h4>✨ Highlights</h4>
+                        <div id="tripDetailHighlights" class="highlights-grid"></div>
+                    </div>
+
+                    <!-- Waypoints / Itinerary -->
+                    <div class="trip-section">
+                        <h4>🗺️ Route & Stops</h4>
+                        <div id="tripDetailWaypoints" class="waypoints-timeline"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Reviews -->
+                <div class="trip-detail-sidebar">
+                    <div class="reviews-section">
+                        <h4>💬 Community Reviews</h4>
+                        <div id="tripDetailReviews" class="reviews-list"></div>
+                        
+                        <!-- Add Review -->
+                        <div class="add-review-section">
+                            <h5>Share Your Experience</h5>
+                            <div class="rating-input">
+                                <span class="rating-star" data-rating="1">☆</span>
+                                <span class="rating-star" data-rating="2">☆</span>
+                                <span class="rating-star" data-rating="3">☆</span>
+                                <span class="rating-star" data-rating="4">☆</span>
+                                <span class="rating-star" data-rating="5">☆</span>
+                            </div>
+                            <textarea class="form-input" id="newReviewText" placeholder="Write your review..."></textarea>
+                            <button class="btn btn-primary" onclick="submitTripReview()">Submit Review</button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="trip-actions">
+                        <button class="btn btn-serendipity" onclick="viewTripOnMap()">🗺️ View on Map</button>
+                        <button class="btn btn-success" onclick="markCurrentTripCompleted()">✓ Mark Completed</button>
+                        <button class="btn btn-secondary" onclick="shareTripLink()">🔗 Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Country Satellite View Modal (Double-click) -->
     <div class="modal-overlay" id="satelliteViewModal">
         <div class="modal satellite-view-modal" style="max-width: 95vw; width: 1400px; height: 90vh;">
@@ -2444,6 +2935,26 @@
                 tips: 'Location 4x4 avec tente de toit obligatoire. Réserver les campings NWR à l\'avance!',
                 personalTrip: true,
                 tripDate: 'Il y a 3 mois',
+                rating: 4.9,
+                difficulty: 'moderate',
+                bestSeason: 'May-October (dry season, best wildlife)',
+                budget: '€2500-4000',
+                mustKnow: [
+                    '🚙 4x4 with rooftop tent is THE way to do Namibia',
+                    '⛽ Fill up at EVERY station - distances are huge',
+                    '🏜️ Sossusvlei gate opens 1hr before sunrise for NWR guests only',
+                    '📱 No cell service in most areas - download offline maps',
+                    '💧 Carry 20+ liters of water at all times',
+                    '🦏 Etosha waterholes at night = guaranteed rhino sightings',
+                    '🛣️ Gravel roads are excellent but require reduced speed',
+                    '🌡️ Temperature swings are extreme - freezing nights, hot days'
+                ],
+                reviews: [
+                    { user: 'SafariSol', rating: 5, text: 'Mon road trip! Sossusvlei au lever du soleil = moment inoubliable. La tente de toit sous les étoiles d\'Etosha, magique!', date: '3 months ago', isOwner: true },
+                    { user: 'OverlandAfrica', rating: 5, text: 'Did this route exactly. Palmwag for desert elephants was the highlight!', date: '1 month ago' },
+                    { user: 'CoupleOnTheRoad', rating: 5, text: 'Best self-drive safari in Africa. NWR camps are basic but the locations are unbeatable.', date: '2 months ago' }
+                ],
+                highlights: ['Dune 45 sunrise', 'Deadvlei', 'Etosha waterholes', 'Skeleton Coast', 'Desert elephants'],
                 rentalProviders: [
                     { name: 'ASCO Car Hire', url: 'https://ascocarhire.com', rating: '⭐⭐⭐⭐⭐', note: 'Excellent, véhicules bien entretenus' },
                     { name: 'Namibia2Go', url: 'https://namibia2go.com', rating: '⭐⭐⭐⭐', note: 'Bon rapport qualité/prix' },
@@ -2472,15 +2983,38 @@
                 duration: '2-3 weeks',
                 coordinates: [[34.0522, -118.2437], [41.8781, -87.6298]],
                 waypoints: [
-                    [34.0522, -118.2437, 'Los Angeles'],
-                    [35.2226, -101.8313, 'Amarillo'],
-                    [35.0844, -106.6504, 'Albuquerque'],
-                    [36.1627, -86.7816, 'Nashville'],
-                    [41.8781, -87.6298, 'Chicago']
+                    [34.0522, -118.2437, 'Los Angeles', 'Start at Santa Monica Pier'],
+                    [34.1425, -118.2551, 'Pasadena', 'Route 66 Mother Road Museum'],
+                    [35.1983, -114.0533, 'Kingman', 'Historic downtown, great diners'],
+                    [35.2226, -101.8313, 'Amarillo', 'Cadillac Ranch art installation'],
+                    [35.0844, -106.6504, 'Albuquerque', 'Old Town, Breaking Bad locations'],
+                    [35.6870, -105.9378, 'Santa Fe', 'Art galleries, adobe architecture'],
+                    [37.2753, -107.8801, 'Durango', 'Steam train, mountain scenery'],
+                    [39.7392, -104.9903, 'Denver', 'Mile High City'],
+                    [38.6270, -90.1994, 'St. Louis', 'Gateway Arch'],
+                    [41.8781, -87.6298, 'Chicago', 'End at Grant Park']
                 ],
-                tags: ['scenic', 'adventure'],
+                tags: ['scenic', 'adventure', 'historic'],
                 description: 'The quintessential American road trip from Chicago to LA through the heart of America.',
-                tips: 'Best in spring or fall. Many original motels and diners still open.'
+                tips: 'Best in spring or fall. Many original motels and diners still open.',
+                rating: 4.8,
+                difficulty: 'easy',
+                bestSeason: 'Spring (Apr-May) or Fall (Sep-Oct)',
+                budget: '$2000-4000',
+                mustKnow: [
+                    '⛽ Gas stations can be 100+ miles apart in desert sections',
+                    '🏨 Book iconic motels like Wigwam Motel in advance',
+                    '📱 Download offline maps - cell service spotty in rural areas',
+                    '🚗 Any car works but classic American muscle adds to the vibe',
+                    '📸 Cadillac Ranch is free and open 24/7 - bring spray paint!',
+                    '🍔 Must-try: Big Texan Steak Ranch in Amarillo (free 72oz steak challenge)'
+                ],
+                reviews: [
+                    { user: 'RoadTripKing', rating: 5, text: 'Did this in a vintage Mustang. Best 2 weeks of my life!', date: '2 months ago' },
+                    { user: 'WanderlustMom', rating: 5, text: 'Perfect family trip. Kids loved Cadillac Ranch and the quirky roadside attractions.', date: '3 months ago' },
+                    { user: 'SoloTraveler22', rating: 4, text: 'Amazing but some sections are quite desolate. Make sure your car is reliable!', date: '5 months ago' }
+                ],
+                highlights: ['Cadillac Ranch', 'Grand Canyon detour', 'Santa Fe art scene', 'Gateway Arch', 'Petrified Forest']
             },
             {
                 id: 'panamerican',
@@ -2507,18 +3041,42 @@
                 icon: '🇮🇪',
                 country: 'Ireland',
                 distance: '2500 km',
-                duration: '2 weeks',
+                duration: '10-14 days',
                 coordinates: [[51.8985, -8.4756], [55.2408, -7.3074]],
                 waypoints: [
-                    [51.8985, -8.4756, 'Cork'],
-                    [52.2593, -9.7066, 'Dingle'],
-                    [53.2707, -9.0568, 'Galway'],
-                    [54.2766, -8.4761, 'Sligo'],
-                    [55.2408, -7.3074, 'Malin Head']
+                    [51.8985, -8.4756, 'Cork', 'Start point, English Market'],
+                    [51.9001, -8.4731, 'Kinsale', 'Foodie paradise, colorful harbor'],
+                    [51.7044, -9.7686, 'Mizen Head', 'Ireland\'s most southwesterly point'],
+                    [51.9419, -10.2418, 'Skellig Ring', 'Star Wars filming location'],
+                    [52.2593, -9.7066, 'Dingle', 'Traditional pubs, dolphins'],
+                    [52.9715, -9.4309, 'Cliffs of Moher', 'Iconic 200m sea cliffs'],
+                    [53.2707, -9.0568, 'Galway', 'Vibrant city, live music every night'],
+                    [53.5239, -10.0600, 'Connemara', 'Wild mountains, lakes, sheep'],
+                    [53.8075, -9.6316, 'Westport', 'Charming Georgian town'],
+                    [54.2766, -8.4761, 'Sligo', 'Yeats country, surfing'],
+                    [55.2408, -7.3074, 'Malin Head', 'Ireland\'s most northerly point']
                 ],
                 tags: ['scenic', 'toll-free', 'camping'],
-                description: 'Stunning coastal route along Ireland\'s rugged Atlantic coast.',
-                tips: 'Wild camping legal. Weather unpredictable - pack layers!'
+                description: 'Stunning 2,500km coastal route along Ireland\'s rugged Atlantic coast - the world\'s longest defined coastal touring route.',
+                tips: 'Wild camping legal. Weather unpredictable - pack layers!',
+                rating: 4.9,
+                difficulty: 'easy',
+                bestSeason: 'May-September (longest days, mildest weather)',
+                budget: '€1500-3000',
+                mustKnow: [
+                    '🌧️ Rain is guaranteed - waterproof everything!',
+                    '🚗 Narrow roads require confidence - locals drive fast',
+                    '🍺 Pubs are the social hub - strike up conversations!',
+                    '⛺ Wild camping allowed but ask landowners if near homes',
+                    '🐑 Sheep on roads are common - drive carefully',
+                    '📸 Golden hour is magical - days are very long in summer'
+                ],
+                reviews: [
+                    { user: 'IrishExplorer', rating: 5, text: 'As an Irish person, this still blew me away. Cliffs of Moher at sunset is unreal.', date: '1 month ago' },
+                    { user: 'CamperVanDave', rating: 5, text: 'Did this in a campervan. So many amazing free camping spots!', date: '2 months ago' },
+                    { user: 'PhotoNomad', rating: 5, text: 'Best photography road trip I\'ve ever done. Light is incredible.', date: '4 months ago' }
+                ],
+                highlights: ['Cliffs of Moher', 'Skellig Michael', 'Connemara', 'Dingle Peninsula', 'Galway nightlife']
             },
             {
                 id: 'nc500',
@@ -3465,6 +4023,9 @@
             
             container.innerHTML = allTrips.map(trip => {
                 const isCompleted = completedTrips.includes(trip.id);
+                const ratingStars = trip.rating ? '⭐'.repeat(Math.floor(trip.rating)) : '';
+                const difficultyClass = trip.difficulty || 'moderate';
+                
                 return `
                 <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''}" onclick="selectRoute('${trip.id}')">
                     ${isCompleted ? '<div class="trip-completed-badge">✓</div>' : ''}
@@ -3473,17 +4034,26 @@
                         <span class="road-trip-name">${trip.name}</span>
                         ${trip.personalTrip ? `<span class="personal-badge">✓ Mon voyage</span>` : ''}
                         ${trip.userCreated ? `<span class="user-created-badge">✨ Community</span>` : ''}
+                        ${trip.difficulty ? `<span class="difficulty-badge ${difficultyClass}">${difficultyClass}</span>` : ''}
                     </div>
                     <div class="road-trip-meta">
                         <span>📍 ${trip.country}</span>
                         <span>📏 ${trip.distance}</span>
                         <span>⏱️ ${trip.duration}</span>
                     </div>
+                    ${trip.rating ? `
+                        <div class="road-trip-rating">
+                            <span>${ratingStars}</span>
+                            <span class="rating-value">${trip.rating}</span>
+                            <span style="color: var(--text-muted);">(${trip.reviews ? trip.reviews.length : 0} reviews)</span>
+                        </div>
+                    ` : ''}
                     ${trip.tripDate ? `<div style="font-size: 0.7rem; color: var(--success); margin-top: 4px;">📅 ${trip.tripDate}</div>` : ''}
                     <div class="road-trip-tags">
                         ${trip.tags.map(t => `<span class="road-tag ${t}">${t === 'fourx4' ? '4x4' : t}</span>`).join('')}
                     </div>
-                    ${!isCompleted ? `<button class="complete-btn" onclick="event.stopPropagation(); markTripCompleted('${trip.id}')">✓ Mark Done</button>` : ''}
+                    <button class="view-details-btn" onclick="event.stopPropagation(); openTripDetail('${trip.id}')">View Details →</button>
+                    ${!isCompleted ? `<button class="complete-btn" onclick="event.stopPropagation(); markTripCompleted('${trip.id}')">✓ Done</button>` : ''}
                 </div>
             `}).join('');
             
@@ -3511,6 +4081,188 @@
             }
             
             updateStats();
+        }
+
+        // ==================== TRIP DETAIL MODAL ====================
+        let currentDetailTrip = null;
+        let userRating = 0;
+
+        function openTripDetail(tripId) {
+            const allTrips = getAllTrips();
+            const trip = allTrips.find(t => t.id === tripId);
+            if (!trip) return;
+
+            currentDetailTrip = trip;
+            document.getElementById('tripDetailModal').classList.add('active');
+            
+            // Populate header
+            document.getElementById('tripDetailIcon').textContent = trip.icon;
+            document.getElementById('tripDetailName').textContent = trip.name;
+            document.getElementById('tripDetailCountry').textContent = trip.country;
+            document.getElementById('tripDetailDistance').textContent = trip.distance;
+            document.getElementById('tripDetailDuration').textContent = trip.duration;
+
+            // Populate meta cards
+            document.getElementById('tripDetailRating').textContent = trip.rating ? trip.rating.toFixed(1) : 'N/A';
+            document.getElementById('tripDetailDifficulty').textContent = (trip.difficulty || 'moderate').charAt(0).toUpperCase() + (trip.difficulty || 'moderate').slice(1);
+            document.getElementById('tripDetailSeason').textContent = trip.bestSeason || 'Year-round';
+            document.getElementById('tripDetailBudget').textContent = trip.budget || 'Varies';
+
+            // Set difficulty class
+            const diffCard = document.getElementById('tripDifficultyCard');
+            diffCard.className = `meta-card difficulty-card ${trip.difficulty || 'moderate'}`;
+
+            // Description
+            document.getElementById('tripDetailDescription').textContent = trip.description;
+
+            // Must Know
+            const mustKnowList = document.getElementById('tripDetailMustKnow');
+            if (trip.mustKnow && trip.mustKnow.length > 0) {
+                mustKnowList.innerHTML = trip.mustKnow.map(item => `<li>${item}</li>`).join('');
+                document.querySelector('.must-know-section').style.display = 'block';
+            } else {
+                mustKnowList.innerHTML = '<li>No specific tips available yet. Be the first to add one!</li>';
+            }
+
+            // Highlights
+            const highlightsGrid = document.getElementById('tripDetailHighlights');
+            if (trip.highlights && trip.highlights.length > 0) {
+                highlightsGrid.innerHTML = trip.highlights.map(h => `<span class="highlight-tag">${h}</span>`).join('');
+            } else {
+                highlightsGrid.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">No highlights listed yet</span>';
+            }
+
+            // Waypoints
+            const waypointsList = document.getElementById('tripDetailWaypoints');
+            if (trip.waypoints && trip.waypoints.length > 0) {
+                waypointsList.innerHTML = trip.waypoints.map((wp, idx) => `
+                    <div class="waypoint-item">
+                        <div class="waypoint-name">${idx + 1}. ${wp[2] || 'Stop ' + (idx + 1)}</div>
+                        ${wp[3] ? `<div class="waypoint-desc">${wp[3]}</div>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                waypointsList.innerHTML = '<p style="color: var(--text-muted);">No waypoints available</p>';
+            }
+
+            // Reviews
+            renderTripReviews(trip);
+            
+            // Reset rating input
+            userRating = 0;
+            updateRatingStars();
+        }
+
+        function closeTripDetailModal() {
+            document.getElementById('tripDetailModal').classList.remove('active');
+            currentDetailTrip = null;
+        }
+
+        function renderTripReviews(trip) {
+            const reviewsList = document.getElementById('tripDetailReviews');
+            
+            if (trip.reviews && trip.reviews.length > 0) {
+                reviewsList.innerHTML = trip.reviews.map(review => `
+                    <div class="review-item ${review.isOwner ? 'owner-review' : ''}">
+                        <div class="review-header">
+                            <span class="review-user">${review.isOwner ? '👤 ' : ''}${review.user}</span>
+                            <span class="review-rating">${'⭐'.repeat(review.rating)}</span>
+                        </div>
+                        <div class="review-text">${review.text}</div>
+                        <div class="review-date">${review.date}</div>
+                    </div>
+                `).join('');
+            } else {
+                reviewsList.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No reviews yet. Be the first!</p>';
+            }
+        }
+
+        function updateRatingStars() {
+            document.querySelectorAll('.rating-star').forEach((star, idx) => {
+                star.textContent = idx < userRating ? '★' : '☆';
+                star.classList.toggle('active', idx < userRating);
+            });
+        }
+
+        // Rating star click handler
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('rating-star')) {
+                userRating = parseInt(e.target.dataset.rating);
+                updateRatingStars();
+            }
+        });
+
+        function submitTripReview() {
+            if (!currentDetailTrip) return;
+            
+            const reviewText = document.getElementById('newReviewText').value.trim();
+            if (!reviewText) {
+                alert('Please write a review');
+                return;
+            }
+            if (userRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+
+            const newReview = {
+                user: userName,
+                rating: userRating,
+                text: reviewText,
+                date: 'Just now'
+            };
+
+            // Add to trip's reviews
+            if (!currentDetailTrip.reviews) {
+                currentDetailTrip.reviews = [];
+            }
+            currentDetailTrip.reviews.unshift(newReview);
+
+            // Update average rating
+            const avgRating = currentDetailTrip.reviews.reduce((acc, r) => acc + r.rating, 0) / currentDetailTrip.reviews.length;
+            currentDetailTrip.rating = Math.round(avgRating * 10) / 10;
+
+            // Refresh display
+            renderTripReviews(currentDetailTrip);
+            document.getElementById('tripDetailRating').textContent = currentDetailTrip.rating.toFixed(1);
+            renderRoadTrips();
+            saveToStorage();
+
+            // Clear form
+            document.getElementById('newReviewText').value = '';
+            userRating = 0;
+            updateRatingStars();
+
+            alert('Thank you for your review! 🙏');
+        }
+
+        function viewTripOnMap() {
+            if (!currentDetailTrip) return;
+            closeTripDetailModal();
+            selectRoute(currentDetailTrip.id);
+        }
+
+        function markCurrentTripCompleted() {
+            if (!currentDetailTrip) return;
+            markTripCompleted(currentDetailTrip.id);
+            closeTripDetailModal();
+        }
+
+        function shareTripLink() {
+            if (!currentDetailTrip) return;
+            const shareText = `Check out this road trip: ${currentDetailTrip.name} (${currentDetailTrip.distance}) - ${currentDetailTrip.description}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: currentDetailTrip.name,
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Trip details copied to clipboard! 📋');
+                });
+            }
         }
 
         function renderRouteDetails(trip) {
@@ -4622,6 +5374,7 @@
                 closeCreateTripModal();
                 closeTripPlannerModal();
                 closeSatelliteViewModal();
+                closeTripDetailModal();
             }
         });
 
