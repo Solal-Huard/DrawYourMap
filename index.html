@@ -2672,29 +2672,56 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px;
+            padding: 10px;
             background: var(--bg-elevated);
-            border-radius: 6px;
+            border-radius: 8px;
             margin-bottom: 6px;
             font-size: 0.8rem;
+            border-left: 3px solid var(--border-subtle);
+        }
+
+        .route-stop-item .stop-number {
+            width: 22px;
+            height: 22px;
+            background: var(--bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
         }
 
         .route-stop-item .stop-icon {
-            font-size: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .route-stop-item .stop-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .route-stop-item .stop-name {
-            flex: 1;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .route-stop-item .stop-subtitle {
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
 
         .route-stop-item .stop-delete {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             background: transparent;
             border: none;
             color: var(--text-muted);
             cursor: pointer;
             border-radius: 4px;
+            font-size: 1rem;
         }
 
         .route-stop-item .stop-delete:hover {
@@ -2773,6 +2800,48 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
             border: 1px solid var(--border-subtle);
+        }
+
+        /* City Markers & Tooltips for Planner */
+        .city-tooltip {
+            background: var(--bg-panel) !important;
+            border: 1px solid var(--accent-primary) !important;
+            border-radius: 10px !important;
+            padding: 6px 12px !important;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3) !important;
+            font-family: inherit !important;
+        }
+
+        .planner-marker.city-stop div {
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            padding: 4px;
+        }
+
+        .leaflet-interactive.city-circle:hover {
+            fill-opacity: 0.8 !important;
+        }
+
+        .city-list-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        .city-list-hint span {
+            font-size: 1rem;
+        }
+
+        .route-stop-item.city-stop {
+            border-left: 3px solid var(--accent-primary);
+            background: rgba(99, 102, 241, 0.1);
         }
 
         /* Satellite View Modal */
@@ -4104,6 +4173,10 @@
                         <div class="tool-section">
                             <h4>📍 Add Stops</h4>
                             <p class="tool-hint">Click on map to add waypoints</p>
+                            <div class="city-list-hint">
+                                <span>🏙️</span>
+                                <span>Click near a city to auto-snap! Purple dots show major cities.</span>
+                            </div>
                             <div class="stop-type-selector">
                                 <button class="stop-type-btn active" data-type="waypoint" onclick="setStopType('waypoint')">
                                     <span>📍</span> Waypoint
@@ -4215,6 +4288,137 @@
         const DEFAULT_COLOR = '#3a3a4d';
         const VISITED_COLOR = '#22c55e';
         
+        // Major world cities database for trip planning snap-to feature
+        const majorCities = [
+            // Europe
+            { name: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522, pop: 11000000 },
+            { name: 'London', country: 'UK', lat: 51.5074, lng: -0.1278, pop: 9000000 },
+            { name: 'Berlin', country: 'Germany', lat: 52.5200, lng: 13.4050, pop: 3600000 },
+            { name: 'Madrid', country: 'Spain', lat: 40.4168, lng: -3.7038, pop: 6600000 },
+            { name: 'Barcelona', country: 'Spain', lat: 41.3851, lng: 2.1734, pop: 5500000 },
+            { name: 'Rome', country: 'Italy', lat: 41.9028, lng: 12.4964, pop: 4300000 },
+            { name: 'Milan', country: 'Italy', lat: 45.4642, lng: 9.1900, pop: 3100000 },
+            { name: 'Amsterdam', country: 'Netherlands', lat: 52.3676, lng: 4.9041, pop: 1100000 },
+            { name: 'Vienna', country: 'Austria', lat: 48.2082, lng: 16.3738, pop: 1900000 },
+            { name: 'Munich', country: 'Germany', lat: 48.1351, lng: 11.5820, pop: 1500000 },
+            { name: 'Prague', country: 'Czechia', lat: 50.0755, lng: 14.4378, pop: 1300000 },
+            { name: 'Budapest', country: 'Hungary', lat: 47.4979, lng: 19.0402, pop: 1800000 },
+            { name: 'Lisbon', country: 'Portugal', lat: 38.7223, lng: -9.1393, pop: 2900000 },
+            { name: 'Dublin', country: 'Ireland', lat: 53.3498, lng: -6.2603, pop: 1400000 },
+            { name: 'Brussels', country: 'Belgium', lat: 50.8503, lng: 4.3517, pop: 1200000 },
+            { name: 'Stockholm', country: 'Sweden', lat: 59.3293, lng: 18.0686, pop: 1000000 },
+            { name: 'Oslo', country: 'Norway', lat: 59.9139, lng: 10.7522, pop: 1000000 },
+            { name: 'Copenhagen', country: 'Denmark', lat: 55.6761, lng: 12.5683, pop: 800000 },
+            { name: 'Warsaw', country: 'Poland', lat: 52.2297, lng: 21.0122, pop: 1800000 },
+            { name: 'Zurich', country: 'Switzerland', lat: 47.3769, lng: 8.5417, pop: 400000 },
+            { name: 'Geneva', country: 'Switzerland', lat: 46.2044, lng: 6.1432, pop: 200000 },
+            { name: 'Athens', country: 'Greece', lat: 37.9838, lng: 23.7275, pop: 3200000 },
+            { name: 'Istanbul', country: 'Turkey', lat: 41.0082, lng: 28.9784, pop: 15500000 },
+            { name: 'Edinburgh', country: 'UK', lat: 55.9533, lng: -3.1883, pop: 500000 },
+            { name: 'Florence', country: 'Italy', lat: 43.7696, lng: 11.2558, pop: 380000 },
+            { name: 'Venice', country: 'Italy', lat: 45.4408, lng: 12.3155, pop: 260000 },
+            { name: 'Nice', country: 'France', lat: 43.7102, lng: 7.2620, pop: 350000 },
+            { name: 'Lyon', country: 'France', lat: 45.7640, lng: 4.8357, pop: 500000 },
+            { name: 'Marseille', country: 'France', lat: 43.2965, lng: 5.3698, pop: 870000 },
+            { name: 'Bordeaux', country: 'France', lat: 44.8378, lng: -0.5792, pop: 260000 },
+            { name: 'Seville', country: 'Spain', lat: 37.3891, lng: -5.9845, pop: 700000 },
+            { name: 'Valencia', country: 'Spain', lat: 39.4699, lng: -0.3763, pop: 800000 },
+            { name: 'Porto', country: 'Portugal', lat: 41.1579, lng: -8.6291, pop: 240000 },
+            { name: 'Krakow', country: 'Poland', lat: 50.0647, lng: 19.9450, pop: 780000 },
+            { name: 'Split', country: 'Croatia', lat: 43.5081, lng: 16.4402, pop: 180000 },
+            { name: 'Dubrovnik', country: 'Croatia', lat: 42.6507, lng: 18.0944, pop: 45000 },
+            { name: 'Reykjavik', country: 'Iceland', lat: 64.1466, lng: -21.9426, pop: 130000 },
+            // Africa
+            { name: 'Cape Town', country: 'South Africa', lat: -33.9249, lng: 18.4241, pop: 4600000 },
+            { name: 'Johannesburg', country: 'South Africa', lat: -26.2041, lng: 28.0473, pop: 5600000 },
+            { name: 'Marrakech', country: 'Morocco', lat: 31.6295, lng: -7.9811, pop: 930000 },
+            { name: 'Casablanca', country: 'Morocco', lat: 33.5731, lng: -7.5898, pop: 3700000 },
+            { name: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357, pop: 21000000 },
+            { name: 'Nairobi', country: 'Kenya', lat: -1.2921, lng: 36.8219, pop: 4400000 },
+            { name: 'Windhoek', country: 'Namibia', lat: -22.5609, lng: 17.0658, pop: 430000 },
+            { name: 'Swakopmund', country: 'Namibia', lat: -22.6784, lng: 14.5266, pop: 45000 },
+            { name: 'Sossusvlei', country: 'Namibia', lat: -24.7275, lng: 15.2772, pop: 100 },
+            { name: 'Etosha', country: 'Namibia', lat: -18.8556, lng: 16.3294, pop: 100 },
+            { name: 'Dar es Salaam', country: 'Tanzania', lat: -6.7924, lng: 39.2083, pop: 6700000 },
+            { name: 'Addis Ababa', country: 'Ethiopia', lat: 9.0320, lng: 38.7400, pop: 3400000 },
+            { name: 'Dakar', country: 'Senegal', lat: 14.7167, lng: -17.4677, pop: 1100000 },
+            { name: 'Lagos', country: 'Nigeria', lat: 6.5244, lng: 3.3792, pop: 15000000 },
+            { name: 'Accra', country: 'Ghana', lat: 5.6037, lng: -0.1870, pop: 2500000 },
+            // Americas
+            { name: 'New York', country: 'USA', lat: 40.7128, lng: -74.0060, pop: 8300000 },
+            { name: 'Los Angeles', country: 'USA', lat: 34.0522, lng: -118.2437, pop: 4000000 },
+            { name: 'Chicago', country: 'USA', lat: 41.8781, lng: -87.6298, pop: 2700000 },
+            { name: 'San Francisco', country: 'USA', lat: 37.7749, lng: -122.4194, pop: 880000 },
+            { name: 'Las Vegas', country: 'USA', lat: 36.1699, lng: -115.1398, pop: 640000 },
+            { name: 'Miami', country: 'USA', lat: 25.7617, lng: -80.1918, pop: 470000 },
+            { name: 'Boston', country: 'USA', lat: 42.3601, lng: -71.0589, pop: 690000 },
+            { name: 'Seattle', country: 'USA', lat: 47.6062, lng: -122.3321, pop: 750000 },
+            { name: 'Denver', country: 'USA', lat: 39.7392, lng: -104.9903, pop: 730000 },
+            { name: 'Austin', country: 'USA', lat: 30.2672, lng: -97.7431, pop: 960000 },
+            { name: 'Nashville', country: 'USA', lat: 36.1627, lng: -86.7816, pop: 690000 },
+            { name: 'New Orleans', country: 'USA', lat: 29.9511, lng: -90.0715, pop: 390000 },
+            { name: 'Santa Fe', country: 'USA', lat: 35.6870, lng: -105.9378, pop: 85000 },
+            { name: 'Flagstaff', country: 'USA', lat: 35.1983, lng: -111.6513, pop: 75000 },
+            { name: 'Phoenix', country: 'USA', lat: 33.4484, lng: -112.0740, pop: 1600000 },
+            { name: 'Albuquerque', country: 'USA', lat: 35.0844, lng: -106.6504, pop: 560000 },
+            { name: 'Toronto', country: 'Canada', lat: 43.6532, lng: -79.3832, pop: 2900000 },
+            { name: 'Vancouver', country: 'Canada', lat: 49.2827, lng: -123.1207, pop: 680000 },
+            { name: 'Montreal', country: 'Canada', lat: 45.5017, lng: -73.5673, pop: 1700000 },
+            { name: 'Mexico City', country: 'Mexico', lat: 19.4326, lng: -99.1332, pop: 21000000 },
+            { name: 'Cancun', country: 'Mexico', lat: 21.1619, lng: -86.8515, pop: 890000 },
+            { name: 'Buenos Aires', country: 'Argentina', lat: -34.6037, lng: -58.3816, pop: 15000000 },
+            { name: 'Rio de Janeiro', country: 'Brazil', lat: -22.9068, lng: -43.1729, pop: 6700000 },
+            { name: 'São Paulo', country: 'Brazil', lat: -23.5505, lng: -46.6333, pop: 12300000 },
+            { name: 'Lima', country: 'Peru', lat: -12.0464, lng: -77.0428, pop: 10700000 },
+            { name: 'Cusco', country: 'Peru', lat: -13.5319, lng: -71.9675, pop: 430000 },
+            { name: 'Santiago', country: 'Chile', lat: -33.4489, lng: -70.6693, pop: 6200000 },
+            { name: 'Bogota', country: 'Colombia', lat: 4.7110, lng: -74.0721, pop: 7400000 },
+            { name: 'Cartagena', country: 'Colombia', lat: 10.3910, lng: -75.4794, pop: 1000000 },
+            // Asia
+            { name: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, pop: 14000000 },
+            { name: 'Kyoto', country: 'Japan', lat: 35.0116, lng: 135.7681, pop: 1500000 },
+            { name: 'Osaka', country: 'Japan', lat: 34.6937, lng: 135.5023, pop: 2700000 },
+            { name: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.9780, pop: 10000000 },
+            { name: 'Bangkok', country: 'Thailand', lat: 13.7563, lng: 100.5018, pop: 10500000 },
+            { name: 'Chiang Mai', country: 'Thailand', lat: 18.7883, lng: 98.9853, pop: 130000 },
+            { name: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198, pop: 5700000 },
+            { name: 'Hong Kong', country: 'China', lat: 22.3193, lng: 114.1694, pop: 7500000 },
+            { name: 'Beijing', country: 'China', lat: 39.9042, lng: 116.4074, pop: 21500000 },
+            { name: 'Shanghai', country: 'China', lat: 31.2304, lng: 121.4737, pop: 24900000 },
+            { name: 'Hanoi', country: 'Vietnam', lat: 21.0285, lng: 105.8542, pop: 8000000 },
+            { name: 'Ho Chi Minh City', country: 'Vietnam', lat: 10.8231, lng: 106.6297, pop: 9000000 },
+            { name: 'Bali (Denpasar)', country: 'Indonesia', lat: -8.6705, lng: 115.2126, pop: 900000 },
+            { name: 'Jakarta', country: 'Indonesia', lat: -6.2088, lng: 106.8456, pop: 10600000 },
+            { name: 'Mumbai', country: 'India', lat: 19.0760, lng: 72.8777, pop: 20700000 },
+            { name: 'Delhi', country: 'India', lat: 28.7041, lng: 77.1025, pop: 32000000 },
+            { name: 'Jaipur', country: 'India', lat: 26.9124, lng: 75.7873, pop: 3100000 },
+            { name: 'Goa', country: 'India', lat: 15.2993, lng: 74.1240, pop: 100000 },
+            { name: 'Dubai', country: 'UAE', lat: 25.2048, lng: 55.2708, pop: 3400000 },
+            { name: 'Tel Aviv', country: 'Israel', lat: 32.0853, lng: 34.7818, pop: 460000 },
+            { name: 'Kathmandu', country: 'Nepal', lat: 27.7172, lng: 85.3240, pop: 1400000 },
+            // Oceania
+            { name: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093, pop: 5300000 },
+            { name: 'Melbourne', country: 'Australia', lat: -37.8136, lng: 144.9631, pop: 5000000 },
+            { name: 'Brisbane', country: 'Australia', lat: -27.4698, lng: 153.0251, pop: 2500000 },
+            { name: 'Perth', country: 'Australia', lat: -31.9505, lng: 115.8605, pop: 2100000 },
+            { name: 'Auckland', country: 'New Zealand', lat: -36.8509, lng: 174.7645, pop: 1700000 },
+            { name: 'Queenstown', country: 'New Zealand', lat: -45.0312, lng: 168.6626, pop: 15000 },
+            { name: 'Wellington', country: 'New Zealand', lat: -41.2865, lng: 174.7762, pop: 215000 },
+            // Ireland (Wild Atlantic Way)
+            { name: 'Galway', country: 'Ireland', lat: 53.2707, lng: -9.0568, pop: 80000 },
+            { name: 'Cork', country: 'Ireland', lat: 51.8985, lng: -8.4756, pop: 210000 },
+            { name: 'Killarney', country: 'Ireland', lat: 52.0598, lng: -9.5044, pop: 14000 },
+            { name: 'Dingle', country: 'Ireland', lat: 52.1408, lng: -10.2686, pop: 2000 },
+            { name: 'Limerick', country: 'Ireland', lat: 52.6638, lng: -8.6267, pop: 95000 },
+            { name: 'Cliffs of Moher', country: 'Ireland', lat: 52.9715, lng: -9.4309, pop: 100 },
+            { name: 'Westport', country: 'Ireland', lat: 53.8008, lng: -9.5200, pop: 6000 },
+            { name: 'Sligo', country: 'Ireland', lat: 54.2766, lng: -8.4761, pop: 20000 },
+            { name: 'Donegal', country: 'Ireland', lat: 54.6539, lng: -8.1099, pop: 2600 },
+        ];
+
+        // City search radius in km (for snap-to feature)
+        const CITY_SNAP_RADIUS = 50; // Will snap to city within 50km
+
         // Country center coordinates for zooming
         const countryCoordinates = {
             'France': [46.2276, 2.2137, 6],
@@ -6456,10 +6660,18 @@
                 maxZoom: 19
             }).addTo(tripPlannerMap);
 
-            // Click handler to add stops
+            // Click handler to add stops - with city snap
             tripPlannerMap.on('click', function(e) {
-                addPlannerStop(e.latlng.lat, e.latlng.lng);
+                const nearestCity = findNearestCity(e.latlng.lat, e.latlng.lng);
+                if (nearestCity) {
+                    addPlannerStop(nearestCity.lat, nearestCity.lng, nearestCity.name, nearestCity.country);
+                } else {
+                    addPlannerStop(e.latlng.lat, e.latlng.lng);
+                }
             });
+
+            // Add city markers to the planner map
+            addCityMarkersToPlanner();
 
             // Clear previous session
             plannerMarkers = [];
@@ -6486,28 +6698,88 @@
                 'hotel': '🏨',
                 'atm': '🏧',
                 'viewpoint': '📸',
-                'restaurant': '🍽️'
+                'restaurant': '🍽️',
+                'city': '🏙️'
             };
             return icons[type] || '📍';
         }
 
-        function addPlannerStop(lat, lng) {
+        // Find nearest city within snap radius
+        function findNearestCity(lat, lng) {
+            let nearest = null;
+            let minDist = CITY_SNAP_RADIUS;
+
+            majorCities.forEach(city => {
+                const dist = calculateDistance(lat, lng, city.lat, city.lng);
+                if (dist < minDist) {
+                    minDist = dist;
+                    nearest = city;
+                }
+            });
+
+            return nearest;
+        }
+
+        // Add clickable city markers to planner map
+        let cityMarkerLayer = null;
+        function addCityMarkersToPlanner() {
+            if (cityMarkerLayer) {
+                tripPlannerMap.removeLayer(cityMarkerLayer);
+            }
+
+            cityMarkerLayer = L.layerGroup();
+
+            majorCities.forEach(city => {
+                const marker = L.circleMarker([city.lat, city.lng], {
+                    radius: Math.min(8, Math.max(4, city.pop / 2000000)),
+                    fillColor: '#6366f1',
+                    color: '#4f46e5',
+                    weight: 2,
+                    opacity: 0.8,
+                    fillOpacity: 0.4
+                });
+
+                marker.bindTooltip(`<strong>🏙️ ${city.name}</strong><br><span style="color: #9ca3af;">${city.country}</span>`, {
+                    className: 'city-tooltip',
+                    direction: 'top'
+                });
+
+                marker.on('click', function(e) {
+                    L.DomEvent.stopPropagation(e);
+                    addPlannerStop(city.lat, city.lng, city.name, city.country);
+                });
+
+                cityMarkerLayer.addLayer(marker);
+            });
+
+            cityMarkerLayer.addTo(tripPlannerMap);
+        }
+
+        function addPlannerStop(lat, lng, cityName = null, cityCountry = null) {
             const stopId = Date.now();
+            const isCity = cityName !== null;
+            const stopName = isCity 
+                ? `🏙️ ${cityName}` 
+                : `${getStopIcon(currentStopType)} Stop ${plannerStops.length + 1}`;
+            
             const stop = {
                 id: stopId,
-                type: currentStopType,
+                type: isCity ? 'city' : currentStopType,
                 lat: lat,
                 lng: lng,
-                name: `${getStopIcon(currentStopType)} Stop ${plannerStops.length + 1}`
+                name: stopName,
+                cityName: cityName,
+                cityCountry: cityCountry
             };
             
             plannerStops.push(stop);
 
             // Add marker
+            const markerIcon = isCity ? '🏙️' : getStopIcon(currentStopType);
             const marker = L.marker([lat, lng], {
                 icon: L.divIcon({
-                    className: 'planner-marker',
-                    html: `<div style="font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${getStopIcon(currentStopType)}</div>`,
+                    className: `planner-marker ${isCity ? 'city-stop' : ''}`,
+                    html: `<div style="font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${markerIcon}</div>`,
                     iconSize: [30, 30],
                     iconAnchor: [15, 15]
                 }),
@@ -6519,18 +6791,44 @@
                 const newPos = e.target.getLatLng();
                 const stopIdx = plannerStops.findIndex(s => s.id === stopId);
                 if (stopIdx >= 0) {
-                    plannerStops[stopIdx].lat = newPos.lat;
-                    plannerStops[stopIdx].lng = newPos.lng;
+                    // Check if dragged near another city
+                    const nearCity = findNearestCity(newPos.lat, newPos.lng);
+                    if (nearCity) {
+                        plannerStops[stopIdx].lat = nearCity.lat;
+                        plannerStops[stopIdx].lng = nearCity.lng;
+                        plannerStops[stopIdx].name = `🏙️ ${nearCity.name}`;
+                        plannerStops[stopIdx].cityName = nearCity.name;
+                        plannerStops[stopIdx].cityCountry = nearCity.country;
+                        plannerStops[stopIdx].type = 'city';
+                        e.target.setLatLng([nearCity.lat, nearCity.lng]);
+                        showToast(`📍 Snapped to ${nearCity.name}`);
+                    } else {
+                        plannerStops[stopIdx].lat = newPos.lat;
+                        plannerStops[stopIdx].lng = newPos.lng;
+                        plannerStops[stopIdx].cityName = null;
+                        plannerStops[stopIdx].cityCountry = null;
+                    }
                     updatePlannerRoute();
+                    updatePlannerUI();
                 }
             });
 
-            marker.bindPopup(`
-                <div style="text-align: center;">
-                    <strong>${getStopIcon(currentStopType)} ${currentStopType}</strong><br>
+            const popupContent = isCity 
+                ? `<div style="text-align: center;">
+                    <strong>🏙️ ${cityName}</strong><br>
+                    <span style="color: #9ca3af;">${cityCountry}</span>
+                   </div>`
+                : `<div style="text-align: center;">
+                    <strong>${markerIcon} ${currentStopType}</strong><br>
                     <small>${lat.toFixed(4)}, ${lng.toFixed(4)}</small>
-                </div>
-            `);
+                   </div>`;
+
+            marker.bindPopup(popupContent);
+
+            // Show toast for city snap
+            if (isCity) {
+                showToast(`📍 Added ${cityName} to route`);
+            }
 
             plannerMarkers.push(marker);
             updatePlannerRoute();
@@ -6576,14 +6874,23 @@
             if (plannerStops.length === 0) {
                 listContainer.innerHTML = '<p class="empty-hint">Click on map to add stops...</p>';
             } else {
-                listContainer.innerHTML = plannerStops.map((stop, idx) => `
-                    <div class="route-stop-item">
-                        <span class="stop-number">${idx + 1}</span>
-                        <span class="stop-icon">${getStopIcon(stop.type)}</span>
-                        <span class="stop-name">${stop.type}</span>
-                        <button class="stop-delete" onclick="removePlannerStop(${stop.id})">×</button>
-                    </div>
-                `).join('');
+                listContainer.innerHTML = plannerStops.map((stop, idx) => {
+                    const isCity = stop.cityName !== null && stop.cityName !== undefined;
+                    const displayName = isCity ? stop.cityName : stop.type;
+                    const subtitle = isCity ? stop.cityCountry : `${stop.lat.toFixed(2)}, ${stop.lng.toFixed(2)}`;
+                    
+                    return `
+                        <div class="route-stop-item ${isCity ? 'city-stop' : ''}">
+                            <span class="stop-number">${idx + 1}</span>
+                            <span class="stop-icon">${getStopIcon(stop.type)}</span>
+                            <div class="stop-details">
+                                <span class="stop-name">${displayName}</span>
+                                <span class="stop-subtitle">${subtitle}</span>
+                            </div>
+                            <button class="stop-delete" onclick="removePlannerStop(${stop.id})">×</button>
+                        </div>
+                    `;
+                }).join('');
             }
 
             document.getElementById('plannerStopsCount').textContent = plannerStops.length;
