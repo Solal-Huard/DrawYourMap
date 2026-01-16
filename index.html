@@ -385,6 +385,29 @@
             color: var(--accent-secondary) !important;
         }
 
+        /* Route Tooltip */
+        .route-tooltip {
+            background: var(--bg-panel) !important;
+            border: 1px solid var(--border-subtle) !important;
+            border-radius: 10px !important;
+            padding: 8px 12px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+            font-family: inherit !important;
+            color: var(--text-primary) !important;
+        }
+
+        .route-tooltip::before {
+            border-top-color: var(--bg-panel) !important;
+        }
+
+        .leaflet-tooltip-left.route-tooltip::before {
+            border-left-color: var(--bg-panel) !important;
+        }
+
+        .leaflet-tooltip-right.route-tooltip::before {
+            border-right-color: var(--bg-panel) !important;
+        }
+
         /* Zoom Controls */
         .zoom-controls {
             position: absolute;
@@ -5264,6 +5287,26 @@
                         dashArray: trip.personalTrip ? null : '10, 5'
                     }).addTo(roadMap);
 
+                    // Double-click on route line opens trip detail
+                    routeLine.on('dblclick', function(e) {
+                        L.DomEvent.stopPropagation(e);
+                        openTripDetail(trip.id);
+                    });
+
+                    // Hover effect for route lines
+                    routeLine.on('mouseover', function() {
+                        this.setStyle({ weight: 6, opacity: 1 });
+                    });
+                    routeLine.on('mouseout', function() {
+                        this.setStyle({ weight: trip.personalTrip ? 4 : 3, opacity: 0.9 });
+                    });
+
+                    // Add tooltip on hover showing trip name
+                    routeLine.bindTooltip(`<strong>${trip.icon} ${trip.name}</strong><br>Double-click for details`, {
+                        sticky: true,
+                        className: 'route-tooltip'
+                    });
+
                     // Add markers for waypoints
                     trip.waypoints.forEach((wp, idx) => {
                         const isStart = idx === 0;
@@ -6313,6 +6356,26 @@
                 opacity: 0.8,
                 dashArray: '5, 10'
             }).addTo(roadMap);
+
+            // Double-click on route line opens trip detail
+            routeLine.on('dblclick', function(e) {
+                L.DomEvent.stopPropagation(e);
+                openTripDetail(trip.id);
+            });
+
+            // Hover effect for route lines
+            routeLine.on('mouseover', function() {
+                this.setStyle({ weight: 6, opacity: 1 });
+            });
+            routeLine.on('mouseout', function() {
+                this.setStyle({ weight: 3, opacity: 0.8 });
+            });
+
+            // Add tooltip on hover
+            routeLine.bindTooltip(`<strong>✨ ${trip.name}</strong><br>Double-click for details`, {
+                sticky: true,
+                className: 'route-tooltip'
+            });
 
             trip.waypoints.forEach((wp, idx) => {
                 const marker = L.marker([wp[0], wp[1]], {
