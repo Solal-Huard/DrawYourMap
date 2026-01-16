@@ -34,6 +34,18 @@
             --danger: #ef4444;
             --serendipity: #f472b6;
             --road-primary: #fbbf24;
+            
+            /* Vintage Road Trip Theme */
+            --vintage-cream: #f5f0e6;
+            --vintage-paper: #ebe5d9;
+            --vintage-tan: #d4c4a8;
+            --vintage-brown: #8b7355;
+            --vintage-dark: #4a3f35;
+            --vintage-red: #c44536;
+            --vintage-orange: #e07a39;
+            --vintage-gold: #d4a03d;
+            --vintage-teal: #4a7c7c;
+            --vintage-navy: #2c3e50;
         }
 
         body {
@@ -42,6 +54,425 @@
             color: var(--text-primary);
             overflow: hidden;
             min-height: 100vh;
+        }
+
+        /* =====================================================
+           VINTAGE ROAD TRIP THEME - Serendipity Mode
+           ===================================================== */
+        
+        body.vintage-mode {
+            background: var(--vintage-cream);
+        }
+
+        body.vintage-mode .sidebar {
+            background: var(--vintage-paper);
+            border-right: 2px solid var(--vintage-tan);
+            box-shadow: 4px 0 20px rgba(74, 63, 53, 0.15);
+        }
+
+        body.vintage-mode .sidebar-header {
+            background: linear-gradient(135deg, var(--vintage-dark), var(--vintage-brown));
+            border-bottom: 3px solid var(--vintage-gold);
+            padding: 20px;
+        }
+
+        body.vintage-mode .logo {
+            color: var(--vintage-cream);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            letter-spacing: 1px;
+        }
+
+        body.vintage-mode .mode-switcher {
+            background: var(--vintage-cream);
+            border: 2px solid var(--vintage-tan);
+            padding: 4px;
+        }
+
+        body.vintage-mode .mode-btn {
+            color: var(--vintage-brown);
+            font-weight: 600;
+        }
+
+        body.vintage-mode .mode-btn.active {
+            background: var(--vintage-red);
+            color: var(--vintage-cream);
+            border-radius: 6px;
+        }
+
+        body.vintage-mode .sidebar-content {
+            background: var(--vintage-paper);
+        }
+
+        body.vintage-mode .section-title {
+            color: var(--vintage-dark);
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--vintage-tan);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        body.vintage-mode .road-trip-card {
+            background: var(--vintage-cream);
+            border: 1px solid var(--vintage-tan);
+            border-left: 4px solid var(--vintage-red);
+            box-shadow: 2px 2px 8px rgba(74, 63, 53, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.vintage-mode .road-trip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 16px rgba(74, 63, 53, 0.2);
+            border-left-color: var(--vintage-orange);
+        }
+
+        body.vintage-mode .road-trip-card.active {
+            border-left-color: var(--vintage-gold);
+            background: linear-gradient(135deg, var(--vintage-cream), rgba(212, 160, 61, 0.1));
+        }
+
+        body.vintage-mode .road-trip-card.personal {
+            border-left-color: var(--vintage-teal);
+        }
+
+        body.vintage-mode .road-trip-card.completed {
+            border-left-color: var(--vintage-teal);
+            background: linear-gradient(135deg, var(--vintage-cream), rgba(74, 124, 124, 0.1));
+        }
+
+        body.vintage-mode .road-trip-name {
+            color: var(--vintage-dark);
+            font-family: 'Georgia', serif;
+            font-weight: 600;
+        }
+
+        body.vintage-mode .road-trip-meta {
+            color: var(--vintage-brown);
+        }
+
+        body.vintage-mode .road-trip-icon {
+            font-size: 1.4rem;
+        }
+
+        body.vintage-mode .road-tag {
+            background: var(--vintage-paper);
+            border: 1px solid var(--vintage-tan);
+            color: var(--vintage-brown);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        body.vintage-mode .road-tag.scenic { border-left: 3px solid var(--vintage-teal); }
+        body.vintage-mode .road-tag.adventure { border-left: 3px solid var(--vintage-red); }
+        body.vintage-mode .road-tag.historic { border-left: 3px solid var(--vintage-gold); }
+        body.vintage-mode .road-tag.camping { border-left: 3px solid var(--vintage-orange); }
+
+        body.vintage-mode .difficulty-badge {
+            font-family: 'Georgia', serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        body.vintage-mode .difficulty-badge.easy { 
+            background: rgba(74, 124, 124, 0.2);
+            color: var(--vintage-teal);
+        }
+        body.vintage-mode .difficulty-badge.moderate { 
+            background: rgba(212, 160, 61, 0.2);
+            color: var(--vintage-gold);
+        }
+        body.vintage-mode .difficulty-badge.challenging { 
+            background: rgba(224, 122, 57, 0.2);
+            color: var(--vintage-orange);
+        }
+        body.vintage-mode .difficulty-badge.extreme { 
+            background: rgba(196, 69, 54, 0.2);
+            color: var(--vintage-red);
+        }
+
+        body.vintage-mode .btn-serendipity {
+            background: var(--vintage-red);
+            border: none;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        body.vintage-mode .btn-serendipity:hover {
+            background: var(--vintage-orange);
+        }
+
+        body.vintage-mode .btn-secondary {
+            background: var(--vintage-cream);
+            border: 2px solid var(--vintage-tan);
+            color: var(--vintage-brown);
+        }
+
+        body.vintage-mode .btn-secondary:hover {
+            background: var(--vintage-tan);
+            color: var(--vintage-dark);
+        }
+
+        body.vintage-mode .section {
+            background: transparent;
+            border-bottom: 1px dashed var(--vintage-tan);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        body.vintage-mode .league-section {
+            background: linear-gradient(135deg, rgba(212, 160, 61, 0.1), rgba(196, 69, 54, 0.1));
+            border: 2px solid var(--vintage-tan);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        body.vintage-mode .league-stat-card {
+            background: var(--vintage-cream);
+            border: 1px solid var(--vintage-tan);
+        }
+
+        body.vintage-mode .league-stat-value {
+            color: var(--vintage-red);
+            font-family: 'Georgia', serif;
+        }
+
+        body.vintage-mode .league-badge {
+            background: linear-gradient(135deg, var(--vintage-gold), var(--vintage-orange));
+            border: none;
+        }
+
+        body.vintage-mode .view-details-btn {
+            background: var(--vintage-dark);
+            color: var(--vintage-cream);
+            font-family: 'Georgia', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.7rem;
+        }
+
+        body.vintage-mode .complete-btn {
+            background: var(--vintage-teal);
+            color: var(--vintage-cream);
+        }
+
+        body.vintage-mode .add-alert-btn {
+            background: var(--vintage-cream);
+            border: 2px dashed var(--vintage-tan);
+            color: var(--vintage-brown);
+        }
+
+        body.vintage-mode .add-alert-btn:hover {
+            border-color: var(--vintage-red);
+            color: var(--vintage-red);
+        }
+
+        body.vintage-mode .alert-card {
+            background: var(--vintage-cream);
+            border: 1px solid var(--vintage-tan);
+            border-left: 3px solid var(--vintage-orange);
+        }
+
+        body.vintage-mode .community-alerts .section-title::after {
+            content: ' 🛣️';
+        }
+
+        /* Vintage decorative elements */
+        body.vintage-mode .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            right: 20px;
+            height: 40px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 20"><text x="0" y="15" font-family="Georgia" font-size="10" fill="%238b7355" opacity="0.3">━ ROAD TRIP ━ ADVENTURE ━ EXPLORE ━</text></svg>') repeat-x;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        body.vintage-mode .road-trip-card::before {
+            content: '◉';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--vintage-red);
+            font-size: 0.8rem;
+        }
+
+        body.vintage-mode .dblclick-hint {
+            color: var(--vintage-brown);
+            font-style: italic;
+            font-family: 'Georgia', serif;
+        }
+
+        /* Vintage scroll styling */
+        body.vintage-mode .sidebar-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        body.vintage-mode .sidebar-content::-webkit-scrollbar-track {
+            background: var(--vintage-paper);
+        }
+
+        body.vintage-mode .sidebar-content::-webkit-scrollbar-thumb {
+            background: var(--vintage-tan);
+            border-radius: 4px;
+        }
+
+        body.vintage-mode .road-trip-rating {
+            color: var(--vintage-gold);
+        }
+
+        body.vintage-mode .personal-badge {
+            background: var(--vintage-teal);
+        }
+
+        body.vintage-mode .user-created-badge {
+            background: var(--vintage-orange);
+        }
+
+        /* Vintage Banner */
+        .vintage-banner {
+            display: none;
+        }
+
+        body.vintage-mode .vintage-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--vintage-dark) 0%, var(--vintage-brown) 100%);
+            border-bottom: 4px solid var(--vintage-gold);
+            margin: -16px -16px 20px -16px;
+            position: relative;
+        }
+
+        body.vintage-mode .vintage-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%23d4a03d" stroke-width="0.5" opacity="0.1"/></svg>') repeat;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .vintage-banner-content {
+            position: relative;
+        }
+
+        .vintage-title {
+            font-family: 'Georgia', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--vintage-cream);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .vintage-subtitle {
+            font-family: 'Georgia', serif;
+            font-size: 0.8rem;
+            color: var(--vintage-gold);
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        .vintage-stats {
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+
+        .vintage-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(245, 240, 230, 0.1);
+            border: 1px solid var(--vintage-gold);
+            border-radius: 4px;
+        }
+
+        .vintage-stat-value {
+            font-family: 'Georgia', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--vintage-cream);
+        }
+
+        .vintage-stat-label {
+            font-size: 0.65rem;
+            color: var(--vintage-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Vintage Tips */
+        .vintage-tips {
+            display: none;
+        }
+
+        body.vintage-mode .vintage-tips {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        body.vintage-mode .reddit-tips {
+            display: none;
+        }
+
+        body.vintage-mode .travel-stats {
+            display: none;
+        }
+
+        .vintage-tip {
+            display: flex;
+            gap: 12px;
+            padding: 14px;
+            background: var(--vintage-cream);
+            border: 1px solid var(--vintage-tan);
+            border-left: 4px solid var(--vintage-gold);
+            border-radius: 4px;
+        }
+
+        .vintage-tip .tip-icon {
+            font-size: 1.2rem;
+        }
+
+        .vintage-tip .tip-content {
+            flex: 1;
+        }
+
+        .vintage-tip .tip-text {
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            color: var(--vintage-dark);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .vintage-tip .tip-source {
+            font-size: 0.7rem;
+            color: var(--vintage-brown);
+            margin-top: 6px;
+        }
+
+        /* Map styling for vintage mode */
+        body.vintage-mode .map-container {
+            border-left: 3px solid var(--vintage-tan);
+        }
+
+        body.vintage-mode #roadMap {
+            filter: sepia(15%) saturate(90%);
         }
 
         .container {
@@ -2729,24 +3160,6 @@
             color: white;
         }
 
-        .route-stats {
-            display: flex;
-            gap: 15px;
-        }
-
-        .route-stat {
-            font-size: 0.75rem;
-        }
-
-        .route-stat .stat-label {
-            color: var(--text-muted);
-        }
-
-        .route-stat .stat-value {
-            font-weight: 600;
-            color: var(--accent-secondary);
-        }
-
         .nearby-links {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -2800,6 +3213,43 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
             border: 1px solid var(--border-subtle);
+        }
+
+        .route-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .route-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .route-stat .stat-label {
+            color: var(--text-muted);
+        }
+
+        .route-stat .stat-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .route-info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: var(--accent-primary);
         }
 
         /* City Markers & Tooltips for Planner */
@@ -3560,34 +4010,45 @@
 
                 <!-- ==================== SERENDIPITY MODE CONTENT ==================== -->
                 <div id="serendipityContent" class="mode-content serendipity-content">
-                    <!-- Serendipity Stats -->
-                    <div class="travel-stats" style="background: linear-gradient(135deg, rgba(244, 114, 182, 0.2), rgba(251, 191, 36, 0.2));">
-                        <div class="stat-box">
-                            <div class="stat-value" id="routesExplored">0</div>
-                            <div class="stat-label">Routes</div>
+                    <!-- Vintage Header Banner -->
+                    <div class="vintage-banner">
+                        <div class="vintage-banner-content">
+                            <div class="vintage-title">THE OPEN ROAD</div>
+                            <div class="vintage-subtitle">Your Adventure Awaits</div>
                         </div>
-                        <div class="stat-box">
-                            <div class="stat-value" id="kmTraveled">0</div>
-                            <div class="stat-label">KM Planned</div>
+                        <div class="vintage-stats">
+                            <div class="vintage-stat">
+                                <span class="vintage-stat-value" id="routesExplored">0</span>
+                                <span class="vintage-stat-label">Routes</span>
+                            </div>
+                            <div class="vintage-stat">
+                                <span class="vintage-stat-value" id="kmTraveled">0</span>
+                                <span class="vintage-stat-label">Miles</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Reddit Tips -->
-                    <div class="reddit-tips">
-                        <h4>🔥 Hot from r/roadtrip</h4>
-                        <div class="reddit-tip">
-                            <div class="tip-text">"The Wild Atlantic Way in Ireland is absolutely breathtaking. Skip the Ring of Kerry crowds!"</div>
-                            <div class="tip-source">u/wanderlust_adventures • 2.4k upvotes</div>
+                    <!-- Traveler Tips - Vintage Style -->
+                    <div class="vintage-tips">
+                        <div class="vintage-tip">
+                            <span class="tip-icon">📜</span>
+                            <div class="tip-content">
+                                <div class="tip-text">"The Wild Atlantic Way in Ireland is absolutely breathtaking. Skip the Ring of Kerry crowds!"</div>
+                                <div class="tip-source">— Fellow Traveler • Ireland</div>
+                            </div>
                         </div>
-                        <div class="reddit-tip">
-                            <div class="tip-text">"Pro tip: iOverlander app is essential for finding free camping spots in Europe"</div>
-                            <div class="tip-source">u/vanlife_europe • 1.8k upvotes</div>
+                        <div class="vintage-tip">
+                            <span class="tip-icon">💡</span>
+                            <div class="tip-content">
+                                <div class="tip-text">"iOverlander app is essential for finding free camping spots"</div>
+                                <div class="tip-source">— Road Warrior • Europe</div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Iconic Road Trips -->
                     <div class="section">
-                        <div class="section-title">🛣️ Iconic Road Trips</div>
+                        <div class="section-title">━━ Iconic Routes ━━</div>
                         <div id="roadTripsList">
                             <!-- Populated dynamically -->
                         </div>
@@ -5598,6 +6059,9 @@
             document.getElementById('diaryContent').classList.toggle('hidden', mode !== 'diary');
             document.getElementById('serendipityContent').classList.toggle('active', mode === 'serendipity');
             
+            // Toggle vintage theme for Serendipity mode
+            document.body.classList.toggle('vintage-mode', mode === 'serendipity');
+            
             // Update logo
             const logoIcon = document.getElementById('logoIcon');
             const logoText = document.getElementById('logoText');
@@ -5605,7 +6069,7 @@
             if (mode === 'serendipity') {
                 logoIcon.textContent = '🛣️';
                 logoIcon.classList.add('serendipity-mode');
-                logoText.textContent = 'Serendipity';
+                logoText.textContent = 'Road Trip';
                 
                 // Show road map
                 document.getElementById('worldMap').style.display = 'none';
@@ -6852,21 +7316,95 @@
             }
         }
 
-        function updatePlannerRoute() {
+        let routingInProgress = false;
+
+        async function updatePlannerRoute() {
             if (plannerRoute) {
                 tripPlannerMap.removeLayer(plannerRoute);
+                plannerRoute = null;
             }
 
-            if (plannerStops.length >= 2) {
-                const coords = plannerStops.map(s => [s.lat, s.lng]);
-                plannerRoute = L.polyline(coords, {
-                    color: '#6366f1',
-                    weight: 4,
-                    opacity: 0.8,
-                    dashArray: '10, 10'
-                }).addTo(tripPlannerMap);
+            if (plannerStops.length < 2) return;
+
+            // Build coordinates string for OSRM (lng,lat format)
+            const coordsStr = plannerStops.map(s => `${s.lng},${s.lat}`).join(';');
+            
+            // Show loading state
+            routingInProgress = true;
+            const distDisplay = document.getElementById('plannerDistance');
+            distDisplay.innerHTML = '<span style="color: var(--accent-primary);">⏳ Calculating...</span>';
+
+            try {
+                // Call OSRM routing API
+                const response = await fetch(
+                    `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`
+                );
+                const data = await response.json();
+
+                if (data.code === 'Ok' && data.routes && data.routes[0]) {
+                    const route = data.routes[0];
+                    const routeCoords = route.geometry.coordinates.map(c => [c[1], c[0]]); // GeoJSON is [lng, lat], Leaflet needs [lat, lng]
+                    
+                    // Draw the actual road route
+                    plannerRoute = L.polyline(routeCoords, {
+                        color: '#6366f1',
+                        weight: 5,
+                        opacity: 0.9
+                    }).addTo(tripPlannerMap);
+
+                    // Update distance with actual road distance
+                    const distKm = (route.distance / 1000).toFixed(0);
+                    const duration = formatDuration(route.duration);
+                    distDisplay.innerHTML = `${distKm} km <span style="color: var(--text-muted);">(${duration})</span>`;
+                    
+                    // Store actual distance for later use
+                    plannerActualDistance = route.distance / 1000;
+                } else {
+                    // Fallback to straight line if routing fails
+                    drawStraightRoute();
+                    console.warn('OSRM routing failed, using straight line');
+                }
+            } catch (error) {
+                console.error('Routing error:', error);
+                // Fallback to straight line
+                drawStraightRoute();
             }
+            
+            routingInProgress = false;
         }
+
+        // Fallback for when routing API fails
+        function drawStraightRoute() {
+            const coords = plannerStops.map(s => [s.lat, s.lng]);
+            plannerRoute = L.polyline(coords, {
+                color: '#6366f1',
+                weight: 4,
+                opacity: 0.6,
+                dashArray: '10, 10'
+            }).addTo(tripPlannerMap);
+            
+            // Calculate straight-line distance
+            let totalDist = 0;
+            for (let i = 1; i < plannerStops.length; i++) {
+                totalDist += calculateDistance(
+                    plannerStops[i-1].lat, plannerStops[i-1].lng,
+                    plannerStops[i].lat, plannerStops[i].lng
+                );
+            }
+            document.getElementById('plannerDistance').textContent = `~${Math.round(totalDist)} km (straight)`;
+        }
+
+        // Format duration from seconds to readable string
+        function formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            if (hours > 0) {
+                return `${hours}h ${minutes}min`;
+            }
+            return `${minutes}min`;
+        }
+
+        let plannerActualDistance = 0;
 
         function updatePlannerUI() {
             const listContainer = document.getElementById('routeStopsList');
