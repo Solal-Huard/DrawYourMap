@@ -1184,6 +1184,183 @@
             border: 1px solid var(--border-subtle);
         }
 
+        /* Satellite View Modal */
+        .satellite-view-modal {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .satellite-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #1a365d, #0f172a);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .satellite-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .satellite-title h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .satellite-icon {
+            font-size: 1.5rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .satellite-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .layer-toggle-group {
+            display: flex;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .layer-btn {
+            padding: 8px 14px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .layer-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .layer-btn.active {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .satellite-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .satellite-map {
+            flex: 1;
+            background: #0a0a12;
+        }
+
+        .satellite-info-panel {
+            width: 280px;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border-subtle);
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .country-quick-facts h4,
+        .country-landmarks h4,
+        .satellite-legend h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .quick-fact-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.8rem;
+        }
+
+        .quick-fact-item .fact-label {
+            color: var(--text-secondary);
+        }
+
+        .quick-fact-item .fact-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .landmark-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .landmark-item:hover {
+            background: var(--bg-hover);
+            transform: translateX(4px);
+        }
+
+        .landmark-icon {
+            font-size: 1.2rem;
+        }
+
+        .landmark-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .landmark-type {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .satellite-actions {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         /* Vanlifer Info Panel */
         .vanlifer-info {
             background: var(--bg-elevated);
@@ -2007,6 +2184,67 @@
         </div>
     </div>
 
+    <!-- Country Satellite View Modal (Double-click) -->
+    <div class="modal-overlay" id="satelliteViewModal">
+        <div class="modal satellite-view-modal" style="max-width: 95vw; width: 1400px; height: 90vh;">
+            <div class="modal-header satellite-header">
+                <div class="satellite-title">
+                    <span class="satellite-icon">🛰️</span>
+                    <h3><span id="satelliteCountryName">Country</span> - Satellite View</h3>
+                </div>
+                <div class="satellite-controls">
+                    <div class="layer-toggle-group">
+                        <button class="layer-btn active" data-layer="satellite" onclick="setSatelliteLayer('satellite')">
+                            🛰️ Satellite
+                        </button>
+                        <button class="layer-btn" data-layer="terrain" onclick="setSatelliteLayer('terrain')">
+                            ⛰️ Terrain
+                        </button>
+                        <button class="layer-btn" data-layer="roads" onclick="setSatelliteLayer('roads')">
+                            🛣️ Roads
+                        </button>
+                        <button class="layer-btn" data-layer="hybrid" onclick="setSatelliteLayer('hybrid')">
+                            🗺️ Hybrid
+                        </button>
+                    </div>
+                    <button class="modal-close" onclick="closeSatelliteViewModal()">×</button>
+                </div>
+            </div>
+            <div class="satellite-container">
+                <div id="satelliteMap" class="satellite-map"></div>
+                <div class="satellite-info-panel" id="satelliteInfoPanel">
+                    <div class="country-quick-facts">
+                        <h4>📊 Quick Facts</h4>
+                        <div id="countryQuickFacts">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="country-landmarks">
+                        <h4>🏛️ Key Landmarks</h4>
+                        <div id="countryLandmarks">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="satellite-legend">
+                        <h4>🎨 What You're Seeing</h4>
+                        <div class="legend-items">
+                            <div class="legend-item"><span class="legend-color" style="background: #2d5016;"></span> Forests</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #c4a35a;"></span> Desert/Arid</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #4a7c59;"></span> Grasslands</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #1a5276;"></span> Water</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #808080;"></span> Urban Areas</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #ffffff;"></span> Snow/Ice</div>
+                        </div>
+                    </div>
+                    <div class="satellite-actions">
+                        <button class="btn btn-primary" onclick="planTripFromSatellite()">✏️ Plan Trip Here</button>
+                        <button class="btn btn-secondary" onclick="openInGoogleEarth()">🌍 Google Earth</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Trip Planner Modal (Draw on Map) -->
     <div class="modal-overlay" id="tripPlannerModal">
         <div class="modal trip-planner-modal" style="max-width: 95vw; width: 1200px; height: 85vh;">
@@ -2126,6 +2364,9 @@
         let plannerRoute = null; // Polyline for route
         let currentStopType = 'waypoint'; // Current stop type being added
         let plannerStops = []; // Stops in current planning session
+        let satelliteMap = null; // Leaflet map for satellite view
+        let currentSatelliteLayer = 'satellite'; // Current layer type
+        let satelliteLayers = {}; // Store layer references
         const DEFAULT_COLOR = '#3a3a4d';
         const VISITED_COLOR = '#22c55e';
         
@@ -2951,6 +3192,11 @@
                     .on("click", function(event, d) {
                         event.stopPropagation();
                         selectCountry(this, d);
+                    })
+                    .on("dblclick", function(event, d) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        openCountrySatelliteView(d.properties.name || "Unknown");
                     })
                     .append("title")
                     .text(d => d.properties.name || "Unknown");
@@ -3922,6 +4168,205 @@
             }
         }
 
+        // ==================== SATELLITE VIEW (DOUBLE-CLICK) ====================
+        function openCountrySatelliteView(countryName) {
+            document.getElementById('satelliteViewModal').classList.add('active');
+            document.getElementById('satelliteCountryName').textContent = countryName;
+            
+            // Initialize satellite map
+            setTimeout(() => {
+                initSatelliteMap(countryName);
+                populateCountryInfo(countryName);
+            }, 100);
+        }
+
+        function closeSatelliteViewModal() {
+            document.getElementById('satelliteViewModal').classList.remove('active');
+            if (satelliteMap) {
+                satelliteMap.remove();
+                satelliteMap = null;
+            }
+        }
+
+        function initSatelliteMap(countryName) {
+            if (satelliteMap) {
+                satelliteMap.remove();
+            }
+
+            const coords = countryCoordinates[countryName] || [30, 0, 4];
+            
+            satelliteMap = L.map('satelliteMap', {
+                center: [coords[0], coords[1]],
+                zoom: coords[2] || 6,
+                zoomControl: true
+            });
+
+            // Create all layer options
+            // Esri World Imagery - FREE satellite imagery
+            satelliteLayers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri, Maxar, Earthstar Geographics',
+                maxZoom: 19
+            });
+
+            // Stamen Terrain - Shows terrain features
+            satelliteLayers.terrain = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png', {
+                attribution: '© Stadia Maps, © OpenStreetMap',
+                maxZoom: 18
+            });
+
+            // OpenStreetMap - Shows roads clearly
+            satelliteLayers.roads = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            });
+
+            // Hybrid - Satellite with road labels
+            satelliteLayers.hybrid = L.layerGroup([
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    maxZoom: 19
+                }),
+                L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    opacity: 0.5
+                }),
+                L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}.png', {
+                    maxZoom: 19
+                })
+            ]);
+
+            // Add default satellite layer
+            satelliteLayers.satellite.addTo(satelliteMap);
+            currentSatelliteLayer = 'satellite';
+            updateLayerButtons();
+
+            // Add landmarks for this country
+            addCountryLandmarks(countryName);
+            
+            // Add scale control
+            L.control.scale({ imperial: false }).addTo(satelliteMap);
+        }
+
+        function setSatelliteLayer(layerType) {
+            if (!satelliteMap) return;
+
+            // Remove current layer
+            Object.values(satelliteLayers).forEach(layer => {
+                if (satelliteMap.hasLayer(layer)) {
+                    satelliteMap.removeLayer(layer);
+                }
+            });
+
+            // Add new layer
+            satelliteLayers[layerType].addTo(satelliteMap);
+            currentSatelliteLayer = layerType;
+            updateLayerButtons();
+        }
+
+        function updateLayerButtons() {
+            document.querySelectorAll('.layer-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.layer === currentSatelliteLayer);
+            });
+        }
+
+        function addCountryLandmarks(countryName) {
+            // Filter viewpoints for this country
+            const landmarks = worldViewpoints.filter(v => v.country === countryName);
+            
+            landmarks.forEach(landmark => {
+                const marker = L.marker([landmark.lat, landmark.lng], {
+                    icon: L.divIcon({
+                        className: 'landmark-marker',
+                        html: `<div style="font-size: 1.5rem; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">${landmark.icon}</div>`,
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 15]
+                    })
+                }).addTo(satelliteMap);
+
+                marker.bindPopup(`
+                    <div style="min-width: 200px;">
+                        <h4 style="margin: 0 0 8px 0;">${landmark.icon} ${landmark.name}</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #666;">
+                            ${landmark.unesco ? '🏛️ UNESCO World Heritage' : landmark.type}
+                        </p>
+                        <a href="https://www.google.com/search?q=${encodeURIComponent(landmark.name)}" target="_blank" 
+                           style="display: inline-block; margin-top: 8px; font-size: 0.8rem; color: #6366f1;">
+                            Learn more →
+                        </a>
+                    </div>
+                `);
+            });
+        }
+
+        function populateCountryInfo(countryName) {
+            // Quick facts
+            const quickFactsContainer = document.getElementById('countryQuickFacts');
+            const info = vanliferInfo[countryName] || defaultVanliferInfo;
+            
+            quickFactsContainer.innerHTML = `
+                <div class="quick-fact-item">
+                    <span class="fact-label">🛣️ Tolls</span>
+                    <span class="fact-value">${info.tolls}</span>
+                </div>
+                <div class="quick-fact-item">
+                    <span class="fact-label">⛺ Camping</span>
+                    <span class="fact-value">${info.camping}</span>
+                </div>
+                <div class="quick-fact-item">
+                    <span class="fact-label">⛽ Fuel</span>
+                    <span class="fact-value">${info.fuel}</span>
+                </div>
+                <div class="quick-fact-item">
+                    <span class="fact-label">📋 Visa</span>
+                    <span class="fact-value">${info.visa}</span>
+                </div>
+                <div class="quick-fact-item">
+                    <span class="fact-label">🚗 Roads</span>
+                    <span class="fact-value">${info.roadQuality}</span>
+                </div>
+            `;
+
+            // Landmarks
+            const landmarksContainer = document.getElementById('countryLandmarks');
+            const landmarks = worldViewpoints.filter(v => v.country === countryName);
+            
+            if (landmarks.length > 0) {
+                landmarksContainer.innerHTML = landmarks.map(l => `
+                    <div class="landmark-item" onclick="flyToLandmark(${l.lat}, ${l.lng}, '${l.name}')">
+                        <span class="landmark-icon">${l.icon}</span>
+                        <div>
+                            <div class="landmark-name">${l.name}</div>
+                            <div class="landmark-type">${l.unesco ? 'UNESCO' : l.type}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                landmarksContainer.innerHTML = '<p style="font-size: 0.8rem; color: var(--text-muted);">No landmarks data yet</p>';
+            }
+        }
+
+        function flyToLandmark(lat, lng, name) {
+            if (satelliteMap) {
+                satelliteMap.flyTo([lat, lng], 14, { duration: 1.5 });
+            }
+        }
+
+        function planTripFromSatellite() {
+            const countryName = document.getElementById('satelliteCountryName').textContent;
+            closeSatelliteViewModal();
+            currentCountryName = countryName;
+            openTripPlannerModal();
+        }
+
+        function openInGoogleEarth() {
+            const countryName = document.getElementById('satelliteCountryName').textContent;
+            const coords = countryCoordinates[countryName];
+            if (coords) {
+                window.open(`https://earth.google.com/web/@${coords[0]},${coords[1]},0a,1000000d,35y,0h,0t,0r`, '_blank');
+            } else {
+                window.open(`https://earth.google.com/web/search/${encodeURIComponent(countryName)}`, '_blank');
+            }
+        }
+
         // ==================== COMMUNITY ALERTS ====================
         function renderAlerts() {
             const container = document.getElementById('alertsList');
@@ -4176,6 +4621,7 @@
                 closeLeaderboardModal();
                 closeCreateTripModal();
                 closeTripPlannerModal();
+                closeSatelliteViewModal();
             }
         });
 
