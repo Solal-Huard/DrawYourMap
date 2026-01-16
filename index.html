@@ -627,6 +627,277 @@
             font-style: italic;
         }
 
+        /* League System Styles */
+        .league-section {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(244, 114, 182, 0.1));
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .league-stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .league-stat-card {
+            flex: 1;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .league-stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--road-primary);
+        }
+
+        .league-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .league-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+
+        .badge-icon {
+            font-size: 1.5rem;
+        }
+
+        .badge-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Leaderboard */
+        .leaderboard-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .leaderboard-item.current-user {
+            border: 2px solid var(--road-primary);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), transparent);
+        }
+
+        .leaderboard-rank {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-rank.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #000; }
+        .leaderboard-rank.silver { background: linear-gradient(135deg, #9ca3af, #6b7280); color: #000; }
+        .leaderboard-rank.bronze { background: linear-gradient(135deg, #d97706, #b45309); color: #fff; }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-stats {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .leaderboard-badge {
+            font-size: 1.2rem;
+        }
+
+        .league-tiers {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .tier-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .tier-item span {
+            font-size: 1.2rem;
+        }
+
+        /* Create Trip Modal */
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .tag-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .tag-checkbox:has(input:checked) {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .tag-checkbox input {
+            display: none;
+        }
+
+        .waypoint-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .waypoint-row .waypoint-name {
+            flex: 2;
+        }
+
+        .waypoint-row .waypoint-lat,
+        .waypoint-row .waypoint-lng {
+            flex: 1;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* Country Roads Card */
+        .country-roads-card {
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .country-roads-card h4 {
+            margin-bottom: 10px;
+            color: var(--serendipity);
+        }
+
+        /* Road Trip Completed Badge */
+        .trip-completed-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        .road-trip-card {
+            position: relative;
+        }
+
+        .road-trip-card.completed {
+            border-left: 3px solid var(--success);
+        }
+
+        .road-trip-card .complete-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            font-size: 0.65rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .road-trip-card:hover .complete-btn {
+            opacity: 1;
+        }
+
+        .road-trip-card .complete-btn:hover {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        /* User-created trip badge */
+        .user-created-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: var(--serendipity);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
         /* Vanlifer Info Panel */
         .vanlifer-info {
             background: var(--bg-elevated);
@@ -1196,6 +1467,49 @@
                         </div>
                     </div>
 
+                    <!-- Road Trip League -->
+                    <div class="section league-section">
+                        <div class="section-title">🏆 Road Trip League</div>
+                        <div class="league-stats">
+                            <div class="league-stat-card">
+                                <div class="league-stat-value" id="completedTripsCount">0</div>
+                                <div class="league-stat-label">Completed</div>
+                            </div>
+                            <div class="league-stat-card">
+                                <div class="league-stat-value" id="totalKmCount">0</div>
+                                <div class="league-stat-label">Total km</div>
+                            </div>
+                            <div class="league-stat-card">
+                                <div class="league-stat-value" id="userRank">-</div>
+                                <div class="league-stat-label">Rank</div>
+                            </div>
+                        </div>
+                        <div class="league-badge" id="leagueBadge">
+                            <span class="badge-icon">🌱</span>
+                            <span class="badge-title">Beginner Explorer</span>
+                        </div>
+                        <button class="btn btn-secondary" style="margin-top: 10px; font-size: 0.8rem;" onclick="openLeaderboardModal()">👑 View Leaderboard</button>
+                    </div>
+
+                    <!-- Create Road Trip -->
+                    <div class="section">
+                        <div class="section-title">✨ Create Road Trip</div>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Share your own adventure with the community!</p>
+                        <button class="btn btn-serendipity" onclick="openCreateTripModal()">+ Create New Trip</button>
+                    </div>
+
+                    <!-- Country Roads Viewer -->
+                    <div class="section">
+                        <div class="section-title">🗺️ Explore Country Roads</div>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Click any country on the map to zoom in and see main highways.</p>
+                        <div id="countryRoadsInfo" style="display: none;">
+                            <div class="country-roads-card">
+                                <h4 id="selectedRoadsCountry">-</h4>
+                                <button class="btn btn-secondary" style="font-size: 0.75rem;" onclick="resetRoadMapView()">🔙 Back to World View</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Community Alerts -->
                     <div class="section community-alerts">
                         <div class="section-title">⚠️ Community Alerts</div>
@@ -1256,6 +1570,109 @@
         </div>
     </div>
 
+    <!-- Leaderboard Modal -->
+    <div class="modal-overlay" id="leaderboardModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>🏆 Road Trip Leaderboard</h3>
+                <button class="modal-close" onclick="closeLeaderboardModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="leaderboard-list" id="leaderboardList">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="league-tiers">
+                    <h4 style="margin: 15px 0 10px; color: var(--text-secondary);">League Tiers</h4>
+                    <div class="tier-item"><span>🌱</span> Beginner Explorer (0-2 trips)</div>
+                    <div class="tier-item"><span>🚗</span> Road Warrior (3-5 trips)</div>
+                    <div class="tier-item"><span>🏔️</span> Adventure Seeker (6-10 trips)</div>
+                    <div class="tier-item"><span>🌍</span> World Traveler (11-15 trips)</div>
+                    <div class="tier-item"><span>👑</span> Legendary Explorer (16+ trips)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Road Trip Modal -->
+    <div class="modal-overlay" id="createTripModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>✨ Create New Road Trip</h3>
+                <button class="modal-close" onclick="closeCreateTripModal()">×</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div class="form-group">
+                    <label>Trip Name *</label>
+                    <input type="text" class="form-input" id="newTripName" placeholder="e.g., Costa Brava Coastal Adventure">
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Country *</label>
+                        <input type="text" class="form-input" id="newTripCountry" placeholder="e.g., Spain">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Distance (km) *</label>
+                        <input type="number" class="form-input" id="newTripDistance" placeholder="e.g., 500">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Duration *</label>
+                        <input type="text" class="form-input" id="newTripDuration" placeholder="e.g., 3-5 days">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Icon (emoji)</label>
+                        <input type="text" class="form-input" id="newTripIcon" placeholder="🚗" maxlength="4">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea class="form-input" id="newTripDescription" placeholder="Describe what makes this road trip special..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tips for travelers</label>
+                    <textarea class="form-input" id="newTripTips" placeholder="Best time to visit, what to pack, warnings..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tags</label>
+                    <div class="tag-selector">
+                        <label class="tag-checkbox"><input type="checkbox" value="scenic"> 🏞️ Scenic</label>
+                        <label class="tag-checkbox"><input type="checkbox" value="adventure"> 🧗 Adventure</label>
+                        <label class="tag-checkbox"><input type="checkbox" value="historic"> 🏛️ Historic</label>
+                        <label class="tag-checkbox"><input type="checkbox" value="camping"> ⛺ Camping</label>
+                        <label class="tag-checkbox"><input type="checkbox" value="toll-free"> 🆓 Toll-Free</label>
+                        <label class="tag-checkbox"><input type="checkbox" value="fourx4"> 🚙 4x4</label>
+                        <label class="tag-checkbox"><input type="checkbox" value="wildlife"> 🦁 Wildlife</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Waypoints / Milestones *</label>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">Add key stops on your route (minimum 2)</p>
+                    <div id="waypointsList">
+                        <div class="waypoint-row">
+                            <input type="text" class="form-input waypoint-name" placeholder="Place name (e.g., Barcelona)">
+                            <input type="number" class="form-input waypoint-lat" placeholder="Latitude" step="0.0001">
+                            <input type="number" class="form-input waypoint-lng" placeholder="Longitude" step="0.0001">
+                            <button class="btn-icon" onclick="removeWaypoint(this)" title="Remove">×</button>
+                        </div>
+                        <div class="waypoint-row">
+                            <input type="text" class="form-input waypoint-name" placeholder="Place name">
+                            <input type="number" class="form-input waypoint-lat" placeholder="Latitude" step="0.0001">
+                            <input type="number" class="form-input waypoint-lng" placeholder="Longitude" step="0.0001">
+                            <button class="btn-icon" onclick="removeWaypoint(this)" title="Remove">×</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" style="font-size: 0.75rem; margin-top: 8px;" onclick="addWaypoint()">+ Add Waypoint</button>
+                    <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 5px;">💡 Tip: Get coordinates from Google Maps (right-click → "What's here?")</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" style="width: auto;" onclick="closeCreateTripModal()">Cancel</button>
+                <button class="btn btn-serendipity" style="width: auto;" onclick="submitNewTrip()">🚀 Submit Trip</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
@@ -1273,8 +1690,55 @@
         let roadMap = null;
         let activeRoute = null;
         let communityAlerts = [];
+        let completedTrips = [];  // Track completed road trips
+        let userCreatedTrips = []; // User-created road trips
+        let userName = 'Anonymous Explorer'; // User's display name
         const DEFAULT_COLOR = '#3a3a4d';
         const VISITED_COLOR = '#22c55e';
+        
+        // Country center coordinates for zooming
+        const countryCoordinates = {
+            'France': [46.2276, 2.2137, 6],
+            'Germany': [51.1657, 10.4515, 6],
+            'Spain': [40.4637, -3.7492, 6],
+            'Italy': [41.8719, 12.5674, 6],
+            'United Kingdom': [55.3781, -3.4360, 6],
+            'Portugal': [39.3999, -8.2245, 7],
+            'Norway': [60.4720, 8.4689, 5],
+            'Sweden': [60.1282, 18.6435, 5],
+            'Iceland': [64.9631, -19.0208, 6],
+            'Romania': [45.9432, 24.9668, 7],
+            'Greece': [39.0742, 21.8243, 7],
+            'Croatia': [45.1000, 15.2000, 7],
+            'Austria': [47.5162, 14.5501, 7],
+            'Switzerland': [46.8182, 8.2275, 8],
+            'Morocco': [31.7917, -7.0926, 6],
+            'South Africa': [-30.5595, 22.9375, 5],
+            'Namibia': [-22.9576, 18.4904, 6],
+            'Tanzania': [-6.3690, 34.8888, 6],
+            'Ethiopia': [9.1450, 40.4897, 6],
+            'Senegal': [14.4974, -14.4524, 7],
+            'Madagascar': [-18.7669, 46.8691, 6],
+            'Egypt': [26.8206, 30.8025, 6],
+            'Kenya': [-0.0236, 37.9062, 6],
+            'India': [20.5937, 78.9629, 5],
+            'Vietnam': [14.0583, 108.2772, 6],
+            'Thailand': [15.8700, 100.9925, 6],
+            'Japan': [36.2048, 138.2529, 6],
+            'Pakistan': [30.3753, 69.3451, 6],
+            'China': [35.8617, 104.1954, 4],
+            'South Korea': [35.9078, 127.7669, 7],
+            'Uzbekistan': [41.3775, 64.5853, 6],
+            'Australia': [-25.2744, 133.7751, 4],
+            'New Zealand': [-40.9006, 174.8860, 6],
+            'United States of America': [37.0902, -95.7129, 4],
+            'Canada': [56.1304, -106.3468, 4],
+            'Mexico': [23.6345, -102.5528, 5],
+            'Brazil': [-14.2350, -51.9253, 4],
+            'Argentina': [-38.4161, -63.6167, 4],
+            'Peru': [-9.1900, -75.0152, 6],
+            'Chile': [-35.6751, -71.5430, 4]
+        };
 
         // ==================== ICONIC ROAD TRIPS DATABASE ====================
         const roadTrips = [
@@ -1435,6 +1899,204 @@
                 tags: ['scenic', 'adventure', 'toll-free'],
                 description: 'Called "the best road in the world" by Top Gear.',
                 tips: 'Only open June-October. Arrive early to avoid crowds.'
+            },
+            // ==================== MORE EUROPE ROAD TRIPS ====================
+            {
+                id: 'amalfi_coast',
+                name: 'Amalfi Coast',
+                icon: '🇮🇹',
+                country: 'Italy',
+                distance: '50 km',
+                duration: '2-3 days',
+                coordinates: [[40.6333, 14.6029], [40.8518, 14.2681]],
+                waypoints: [
+                    [40.6333, 14.6029, 'Salerno'],
+                    [40.6340, 14.6027, 'Vietri sul Mare'],
+                    [40.6492, 14.4844, 'Amalfi'],
+                    [40.6262, 14.3749, 'Positano'],
+                    [40.7262, 14.4867, 'Ravello'],
+                    [40.8518, 14.2681, 'Sorrento']
+                ],
+                tags: ['scenic', 'historic'],
+                description: 'Italy\'s most glamorous coastal drive - cliffside villages and Mediterranean views.',
+                tips: 'Drive early morning or late afternoon. Very narrow roads, honk at curves!'
+            },
+            {
+                id: 'trollstigen',
+                name: 'Norwegian Fjords & Trollstigen',
+                icon: '🇳🇴',
+                country: 'Norway',
+                distance: '1500 km',
+                duration: '7-10 days',
+                coordinates: [[60.3913, 5.3221], [69.6489, 18.9551]],
+                waypoints: [
+                    [60.3913, 5.3221, 'Bergen'],
+                    [61.9047, 6.7091, 'Geirangerfjord'],
+                    [62.4574, 7.6817, 'Trollstigen'],
+                    [62.4722, 6.1549, 'Ålesund'],
+                    [63.4305, 10.3951, 'Trondheim'],
+                    [68.4385, 17.4278, 'Lofoten Islands'],
+                    [69.6489, 18.9551, 'Tromsø']
+                ],
+                tags: ['scenic', 'adventure', 'camping'],
+                description: 'Dramatic fjords, serpentine mountain roads, and the midnight sun.',
+                tips: 'Expensive! Wild camping legal (Allemannsretten). Best June-August.'
+            },
+            {
+                id: 'romantic_road',
+                name: 'Romantic Road',
+                icon: '🇩🇪',
+                country: 'Germany',
+                distance: '460 km',
+                duration: '3-5 days',
+                coordinates: [[49.8988, 10.9028], [47.5576, 10.7498]],
+                waypoints: [
+                    [49.8988, 10.9028, 'Würzburg'],
+                    [49.3795, 10.1807, 'Rothenburg ob der Tauber'],
+                    [48.9260, 10.6996, 'Nördlingen'],
+                    [48.3705, 10.8978, 'Augsburg'],
+                    [47.5576, 10.7498, 'Neuschwanstein Castle'],
+                    [47.5667, 10.6833, 'Füssen']
+                ],
+                tags: ['scenic', 'historic', 'toll-free'],
+                description: 'Medieval towns, castles, and the fairytale Neuschwanstein.',
+                tips: 'Christmas markets amazing in December. Book Neuschwanstein tickets online!'
+            },
+            {
+                id: 'grossglockner',
+                name: 'Grossglockner High Alpine Road',
+                icon: '🇦🇹',
+                country: 'Austria',
+                distance: '48 km',
+                duration: '1 day',
+                coordinates: [[47.0744, 12.8428], [47.1167, 12.8500]],
+                waypoints: [
+                    [47.0744, 12.8428, 'Bruck an der Großglocknerstraße'],
+                    [47.0833, 12.8167, 'Fuscher Törl'],
+                    [47.0742, 12.7514, 'Kaiser-Franz-Josefs-Höhe'],
+                    [47.1167, 12.8500, 'Heiligenblut']
+                ],
+                tags: ['scenic', 'adventure'],
+                description: 'Austria\'s highest paved road with 36 hairpin turns and glacier views.',
+                tips: 'Toll road (~40€). Open May-October. Stop at Edelweissspitze viewpoint!'
+            },
+            {
+                id: 'stelvio_pass',
+                name: 'Stelvio Pass',
+                icon: '🇮🇹',
+                country: 'Italy',
+                distance: '25 km',
+                duration: '1 day',
+                coordinates: [[46.5290, 10.4534], [46.5285, 10.5353]],
+                waypoints: [
+                    [46.5290, 10.4534, 'Prato allo Stelvio'],
+                    [46.5285, 10.5353, 'Stelvio Pass Summit (2757m)'],
+                    [46.5404, 10.5902, 'Bormio']
+                ],
+                tags: ['scenic', 'adventure', 'toll-free'],
+                description: '48 hairpin bends - the most challenging alpine pass in the Alps.',
+                tips: 'Open June-September. Early morning = no traffic. Great for motorcycles!'
+            },
+            {
+                id: 'costa_brava',
+                name: 'Costa Brava Coastal',
+                icon: '🇪🇸',
+                country: 'Spain',
+                distance: '200 km',
+                duration: '3-4 days',
+                coordinates: [[41.3851, 2.1734], [42.3154, 3.1836]],
+                waypoints: [
+                    [41.3851, 2.1734, 'Barcelona'],
+                    [41.6986, 2.8453, 'Tossa de Mar'],
+                    [41.9688, 3.2147, 'Cadaqués'],
+                    [42.1209, 3.1212, 'Dalí Museum Figueres'],
+                    [42.3154, 3.1836, 'Portbou (France border)']
+                ],
+                tags: ['scenic', 'toll-free', 'camping'],
+                description: 'Rugged Catalan coastline, hidden coves, and Dalí country.',
+                tips: 'Wild camping tolerated on beaches. Avoid August crowds!'
+            },
+            {
+                id: 'balkan_adventure',
+                name: 'Balkan Adventure',
+                icon: '🇭🇷',
+                country: 'Multi-country',
+                distance: '2000 km',
+                duration: '10-14 days',
+                coordinates: [[45.8150, 15.9819], [42.6507, 18.0944]],
+                waypoints: [
+                    [45.8150, 15.9819, 'Zagreb'],
+                    [44.8176, 15.8714, 'Plitvice Lakes'],
+                    [43.5081, 16.4402, 'Split'],
+                    [42.6507, 18.0944, 'Dubrovnik'],
+                    [42.4411, 19.2636, 'Kotor (Montenegro)'],
+                    [41.3275, 19.8187, 'Tirana (Albania)']
+                ],
+                tags: ['scenic', 'adventure', 'toll-free'],
+                description: 'Croatia, Montenegro, Albania - stunning coastline and affordable adventure.',
+                tips: 'Very affordable! Green Card insurance for Albania. Incredible value.'
+            },
+            {
+                id: 'portugal_atlantic',
+                name: 'Portugal Atlantic Coast',
+                icon: '🇵🇹',
+                country: 'Portugal',
+                distance: '850 km',
+                duration: '7-10 days',
+                coordinates: [[41.1579, -8.6291], [37.0179, -7.9308]],
+                waypoints: [
+                    [41.1579, -8.6291, 'Porto'],
+                    [40.2033, -8.4103, 'Coimbra'],
+                    [39.5000, -8.8833, 'Nazaré (Big Waves!)'],
+                    [38.7223, -9.1393, 'Lisbon'],
+                    [38.6916, -9.4163, 'Sintra'],
+                    [37.0941, -8.2478, 'Lagos'],
+                    [37.0179, -7.9308, 'Sagres (End of Europe)']
+                ],
+                tags: ['scenic', 'camping', 'toll-free'],
+                description: 'From Porto to the dramatic cliffs of Sagres - surf, wine, and history.',
+                tips: 'Tolls avoidable on N-roads. Best surf spots: Nazaré, Ericeira, Peniche.'
+            },
+            {
+                id: 'swiss_alpine',
+                name: 'Swiss Grand Tour',
+                icon: '🇨🇭',
+                country: 'Switzerland',
+                distance: '1600 km',
+                duration: '7-10 days',
+                coordinates: [[46.9480, 7.4474], [46.2044, 6.1432]],
+                waypoints: [
+                    [46.9480, 7.4474, 'Bern'],
+                    [46.6863, 7.8632, 'Interlaken'],
+                    [46.0207, 7.7491, 'Zermatt (Matterhorn)'],
+                    [46.2044, 6.1432, 'Geneva'],
+                    [46.8182, 8.2275, 'Lucerne'],
+                    [46.4908, 9.8355, 'St. Moritz'],
+                    [47.3769, 8.5417, 'Zürich']
+                ],
+                tags: ['scenic', 'adventure'],
+                description: 'Mountain passes, pristine lakes, and Alpine perfection.',
+                tips: 'Very expensive! Get Swiss Vignette (40 CHF). Free camping difficult.'
+            },
+            {
+                id: 'scottish_highlands',
+                name: 'Scottish Highlands & Islands',
+                icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+                country: 'Scotland',
+                distance: '1500 km',
+                duration: '10-14 days',
+                coordinates: [[55.9533, -3.1883], [57.4778, -4.2247]],
+                waypoints: [
+                    [55.9533, -3.1883, 'Edinburgh'],
+                    [56.8198, -5.1052, 'Fort William'],
+                    [57.2760, -5.5160, 'Isle of Skye'],
+                    [58.4397, -3.0943, 'John o\' Groats'],
+                    [57.4778, -4.2247, 'Inverness'],
+                    [56.4907, -4.2026, 'Loch Ness']
+                ],
+                tags: ['scenic', 'adventure', 'camping'],
+                description: 'Mystical highlands, dramatic castles, and the Isle of Skye.',
+                tips: 'Wild camping legal! Single track roads - use passing places. Midges in summer!'
             },
             {
                 id: 'garden_route',
@@ -2085,9 +2747,10 @@
             document.getElementById('selectedDisplay').classList.add('has-selection');
             document.getElementById('countrySearch').value = data.id;
 
-            // Update vanlifer info if in serendipity mode
+            // Update vanlifer info and zoom to roads if in serendipity mode
             if (currentMode === 'serendipity') {
                 showVanliferInfo(currentCountryName);
+                zoomToCountryRoads(currentCountryName);
             }
         }
 
@@ -2110,14 +2773,24 @@
         }
 
         // ==================== ROAD TRIPS ====================
+        function getAllTrips() {
+            return [...roadTrips, ...userCreatedTrips];
+        }
+
         function renderRoadTrips() {
             const container = document.getElementById('roadTripsList');
-            container.innerHTML = roadTrips.map(trip => `
-                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''}" onclick="selectRoute('${trip.id}')">
+            const allTrips = getAllTrips();
+            
+            container.innerHTML = allTrips.map(trip => {
+                const isCompleted = completedTrips.includes(trip.id);
+                return `
+                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''}" onclick="selectRoute('${trip.id}')">
+                    ${isCompleted ? '<div class="trip-completed-badge">✓</div>' : ''}
                     <div class="road-trip-header">
                         <span class="road-trip-icon">${trip.icon}</span>
                         <span class="road-trip-name">${trip.name}</span>
                         ${trip.personalTrip ? `<span class="personal-badge">✓ Mon voyage</span>` : ''}
+                        ${trip.userCreated ? `<span class="user-created-badge">✨ Community</span>` : ''}
                     </div>
                     <div class="road-trip-meta">
                         <span>📍 ${trip.country}</span>
@@ -2128,15 +2801,19 @@
                     <div class="road-trip-tags">
                         ${trip.tags.map(t => `<span class="road-tag ${t}">${t === 'fourx4' ? '4x4' : t}</span>`).join('')}
                     </div>
+                    ${!isCompleted ? `<button class="complete-btn" onclick="event.stopPropagation(); markTripCompleted('${trip.id}')">✓ Mark Done</button>` : ''}
                 </div>
-            `).join('');
+            `}).join('');
+            
+            updateLeagueStats();
         }
 
         function selectRoute(routeId) {
             activeRoute = routeId;
             renderRoadTrips();
             
-            const trip = roadTrips.find(t => t.id === routeId);
+            const allTrips = getAllTrips();
+            const trip = allTrips.find(t => t.id === routeId);
             if (trip && roadMap && trip.waypoints) {
                 const bounds = L.latLngBounds(trip.waypoints.map(w => [w[0], w[1]]));
                 roadMap.fitBounds(bounds, { padding: [50, 50] });
@@ -2199,6 +2876,262 @@
                     .setLatLng([lat, lng])
                     .setContent(`<div class="route-popup"><h4>🏕️ ${name}</h4></div>`)
                     .openOn(roadMap);
+            }
+        }
+
+        // ==================== LEAGUE SYSTEM ====================
+        function markTripCompleted(tripId) {
+            if (!completedTrips.includes(tripId)) {
+                completedTrips.push(tripId);
+                saveToStorage();
+                renderRoadTrips();
+                updateLeagueStats();
+                
+                // Show celebration
+                const allTrips = getAllTrips();
+                const trip = allTrips.find(t => t.id === tripId);
+                if (trip) {
+                    alert(`🎉 Congratulations! You completed "${trip.name}"!\n\n+${parseInt(trip.distance) || 0} km added to your total!`);
+                }
+            }
+        }
+
+        function updateLeagueStats() {
+            const allTrips = getAllTrips();
+            const completedCount = completedTrips.length;
+            
+            // Calculate total km
+            let totalKm = 0;
+            completedTrips.forEach(tripId => {
+                const trip = allTrips.find(t => t.id === tripId);
+                if (trip) {
+                    const km = parseInt(trip.distance.replace(/[^\d]/g, '')) || 0;
+                    totalKm += km;
+                }
+            });
+            
+            // Update UI
+            document.getElementById('completedTripsCount').textContent = completedCount;
+            document.getElementById('totalKmCount').textContent = totalKm.toLocaleString();
+            
+            // Calculate rank and badge
+            const { badge, title, rank } = calculateLeagueBadge(completedCount);
+            document.getElementById('leagueBadge').innerHTML = `
+                <span class="badge-icon">${badge}</span>
+                <span class="badge-title">${title}</span>
+            `;
+            document.getElementById('userRank').textContent = rank;
+        }
+
+        function calculateLeagueBadge(completedCount) {
+            if (completedCount >= 16) return { badge: '👑', title: 'Legendary Explorer', rank: '👑' };
+            if (completedCount >= 11) return { badge: '🌍', title: 'World Traveler', rank: '#1' };
+            if (completedCount >= 6) return { badge: '🏔️', title: 'Adventure Seeker', rank: '#2' };
+            if (completedCount >= 3) return { badge: '🚗', title: 'Road Warrior', rank: '#3' };
+            return { badge: '🌱', title: 'Beginner Explorer', rank: '-' };
+        }
+
+        // ==================== LEADERBOARD ====================
+        function openLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.add('active');
+            renderLeaderboard();
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.remove('active');
+        }
+
+        function renderLeaderboard() {
+            const container = document.getElementById('leaderboardList');
+            
+            // Simulated leaderboard data (in real app, would come from a server)
+            const allTrips = getAllTrips();
+            let userTotalKm = 0;
+            completedTrips.forEach(tripId => {
+                const trip = allTrips.find(t => t.id === tripId);
+                if (trip) userTotalKm += parseInt(trip.distance.replace(/[^\d]/g, '')) || 0;
+            });
+            
+            const leaderboard = [
+                { name: 'NomadKing', trips: 23, km: 45000, badge: '👑' },
+                { name: 'WanderlustQueen', trips: 18, km: 38000, badge: '👑' },
+                { name: 'RoadWarrior2000', trips: 14, km: 28000, badge: '🌍' },
+                { name: 'VanlifeVibes', trips: 11, km: 22000, badge: '🌍' },
+                { name: userName, trips: completedTrips.length, km: userTotalKm, badge: calculateLeagueBadge(completedTrips.length).badge, isCurrentUser: true },
+                { name: 'AdventureAlex', trips: 8, km: 15000, badge: '🏔️' },
+                { name: 'SunsetChaser', trips: 5, km: 9500, badge: '🚗' },
+                { name: 'MountainMike', trips: 3, km: 5200, badge: '🚗' }
+            ].sort((a, b) => b.trips - a.trips || b.km - a.km);
+            
+            container.innerHTML = leaderboard.map((user, idx) => {
+                const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
+                return `
+                    <div class="leaderboard-item ${user.isCurrentUser ? 'current-user' : ''}">
+                        <div class="leaderboard-rank ${rankClass}">${idx + 1}</div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${user.name} ${user.isCurrentUser ? '(You)' : ''}</div>
+                            <div class="leaderboard-stats">${user.trips} trips • ${user.km.toLocaleString()} km</div>
+                        </div>
+                        <div class="leaderboard-badge">${user.badge}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==================== CREATE ROAD TRIP ====================
+        function openCreateTripModal() {
+            document.getElementById('createTripModal').classList.add('active');
+        }
+
+        function closeCreateTripModal() {
+            document.getElementById('createTripModal').classList.remove('active');
+        }
+
+        function addWaypoint() {
+            const container = document.getElementById('waypointsList');
+            const newRow = document.createElement('div');
+            newRow.className = 'waypoint-row';
+            newRow.innerHTML = `
+                <input type="text" class="form-input waypoint-name" placeholder="Place name">
+                <input type="number" class="form-input waypoint-lat" placeholder="Latitude" step="0.0001">
+                <input type="number" class="form-input waypoint-lng" placeholder="Longitude" step="0.0001">
+                <button class="btn-icon" onclick="removeWaypoint(this)" title="Remove">×</button>
+            `;
+            container.appendChild(newRow);
+        }
+
+        function removeWaypoint(btn) {
+            const rows = document.querySelectorAll('.waypoint-row');
+            if (rows.length > 2) {
+                btn.parentElement.remove();
+            } else {
+                alert('Minimum 2 waypoints required');
+            }
+        }
+
+        function submitNewTrip() {
+            const name = document.getElementById('newTripName').value.trim();
+            const country = document.getElementById('newTripCountry').value.trim();
+            const distance = document.getElementById('newTripDistance').value;
+            const duration = document.getElementById('newTripDuration').value.trim();
+            const icon = document.getElementById('newTripIcon').value.trim() || '🚗';
+            const description = document.getElementById('newTripDescription').value.trim();
+            const tips = document.getElementById('newTripTips').value.trim();
+            
+            // Get selected tags
+            const tags = Array.from(document.querySelectorAll('.tag-selector input:checked')).map(cb => cb.value);
+            
+            // Get waypoints
+            const waypointRows = document.querySelectorAll('.waypoint-row');
+            const waypoints = [];
+            waypointRows.forEach(row => {
+                const placeName = row.querySelector('.waypoint-name').value.trim();
+                const lat = parseFloat(row.querySelector('.waypoint-lat').value);
+                const lng = parseFloat(row.querySelector('.waypoint-lng').value);
+                if (placeName && !isNaN(lat) && !isNaN(lng)) {
+                    waypoints.push([lat, lng, placeName]);
+                }
+            });
+            
+            // Validation
+            if (!name || !country || !distance || !duration || !description) {
+                alert('Please fill in all required fields (*)');
+                return;
+            }
+            if (waypoints.length < 2) {
+                alert('Please add at least 2 valid waypoints with coordinates');
+                return;
+            }
+            
+            // Create new trip
+            const newTrip = {
+                id: 'user_' + Date.now(),
+                name: name,
+                icon: icon,
+                country: country,
+                distance: distance + ' km',
+                duration: duration,
+                coordinates: [waypoints[0].slice(0, 2), waypoints[waypoints.length - 1].slice(0, 2)],
+                waypoints: waypoints,
+                tags: tags,
+                description: description,
+                tips: tips,
+                userCreated: true,
+                createdBy: userName,
+                createdAt: new Date().toISOString()
+            };
+            
+            userCreatedTrips.push(newTrip);
+            saveToStorage();
+            renderRoadTrips();
+            
+            // Add to map
+            if (roadMap) {
+                addTripToMap(newTrip);
+            }
+            
+            closeCreateTripModal();
+            alert(`🎉 Your road trip "${name}" has been added!\n\nIt's now available for everyone in the community.`);
+            
+            // Reset form
+            document.getElementById('newTripName').value = '';
+            document.getElementById('newTripCountry').value = '';
+            document.getElementById('newTripDistance').value = '';
+            document.getElementById('newTripDuration').value = '';
+            document.getElementById('newTripIcon').value = '';
+            document.getElementById('newTripDescription').value = '';
+            document.getElementById('newTripTips').value = '';
+            document.querySelectorAll('.tag-selector input').forEach(cb => cb.checked = false);
+        }
+
+        function addTripToMap(trip) {
+            if (!roadMap || !trip.waypoints) return;
+            
+            const coords = trip.waypoints.map(w => [w[0], w[1]]);
+            const routeLine = L.polyline(coords, {
+                color: '#a855f7', // Purple for user-created
+                weight: 3,
+                opacity: 0.8,
+                dashArray: '5, 10'
+            }).addTo(roadMap);
+
+            trip.waypoints.forEach((wp, idx) => {
+                const marker = L.marker([wp[0], wp[1]], {
+                    icon: L.divIcon({
+                        className: 'custom-marker poi-marker',
+                        html: idx === 0 ? '🚗' : (idx === trip.waypoints.length - 1 ? '🏁' : '📍'),
+                        iconSize: [30, 30]
+                    })
+                }).addTo(roadMap);
+
+                marker.bindPopup(`
+                    <div class="route-popup">
+                        <h4>${wp[2]}</h4>
+                        <p>${trip.name}</p>
+                        <div style="font-size: 0.8rem; color: #a855f7;">✨ Community Trip</div>
+                    </div>
+                `);
+            });
+        }
+
+        // ==================== COUNTRY ROAD VIEWER ====================
+        function zoomToCountryRoads(countryName) {
+            if (!roadMap || currentMode !== 'serendipity') return;
+            
+            const coords = countryCoordinates[countryName];
+            if (coords) {
+                roadMap.setView([coords[0], coords[1]], coords[2]);
+                
+                // Update UI
+                document.getElementById('countryRoadsInfo').style.display = 'block';
+                document.getElementById('selectedRoadsCountry').textContent = `🗺️ ${countryName} - Main Roads`;
+            }
+        }
+
+        function resetRoadMapView() {
+            if (roadMap) {
+                roadMap.setView([30, 0], 2);
+                document.getElementById('countryRoadsInfo').style.display = 'none';
             }
         }
 
@@ -2361,7 +3294,10 @@
             const data = {
                 countryColors,
                 communityAlerts,
-                activeRoute
+                activeRoute,
+                completedTrips,
+                userCreatedTrips,
+                userName
             };
             localStorage.setItem('travelDiarySerendipity', JSON.stringify(data));
         }
@@ -2380,6 +3316,9 @@
                     }
                     if (data.communityAlerts) communityAlerts = data.communityAlerts;
                     if (data.activeRoute) activeRoute = data.activeRoute;
+                    if (data.completedTrips) completedTrips = data.completedTrips;
+                    if (data.userCreatedTrips) userCreatedTrips = data.userCreatedTrips;
+                    if (data.userName) userName = data.userName;
                 }
             } catch (e) {
                 console.error('Error loading data:', e);
@@ -2392,6 +3331,9 @@
                 countryColors,
                 communityAlerts,
                 activeRoute,
+                completedTrips,
+                userCreatedTrips,
+                userName,
                 timestamp: new Date().toISOString()
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -2439,11 +3381,20 @@
 
         // ==================== KEYBOARD ====================
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeAlertModal();
+            if (e.key === 'Escape') {
+                closeAlertModal();
+                closeLeaderboardModal();
+                closeCreateTripModal();
+            }
         });
 
         // ==================== INIT ====================
         initMap();
+        
+        // Initialize league stats after a short delay to ensure DOM is ready
+        setTimeout(() => {
+            updateLeagueStats();
+        }, 100);
     </script>
 </body>
 </html>
