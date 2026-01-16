@@ -898,6 +898,292 @@
             margin-left: 8px;
         }
 
+        /* External Links Grid */
+        .external-links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .ext-link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 8px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .ext-link-card:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-hover);
+            transform: translateY(-2px);
+        }
+
+        .ext-icon {
+            font-size: 1.4rem;
+        }
+
+        .ext-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* Plan Trip Section */
+        .plan-trip-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(244, 114, 182, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .mini-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        #plannedTripsList .planned-trip-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #plannedTripsList .planned-trip-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .planned-trip-item .trip-icon {
+            font-size: 1.2rem;
+        }
+
+        .planned-trip-item .trip-info {
+            flex: 1;
+        }
+
+        .planned-trip-item .trip-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .planned-trip-item .trip-meta {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* Trip Planner Modal */
+        .trip-planner-modal {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .planner-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .planner-sidebar {
+            width: 320px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .planner-tools {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .tool-section {
+            margin-bottom: 20px;
+        }
+
+        .tool-section h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .tool-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .stop-type-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .stop-type-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 10px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stop-type-btn:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .stop-type-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .stop-type-btn span {
+            font-size: 1rem;
+        }
+
+        .route-stops-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .route-stops-list .empty-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .route-stop-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+
+        .route-stop-item .stop-icon {
+            font-size: 1rem;
+        }
+
+        .route-stop-item .stop-name {
+            flex: 1;
+        }
+
+        .route-stop-item .stop-delete {
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .route-stop-item .stop-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .route-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .route-stat {
+            font-size: 0.75rem;
+        }
+
+        .route-stat .stat-label {
+            color: var(--text-muted);
+        }
+
+        .route-stat .stat-value {
+            font-weight: 600;
+            color: var(--accent-secondary);
+        }
+
+        .nearby-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .nearby-btn {
+            padding: 8px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nearby-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .planner-actions {
+            padding: 16px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .planner-map-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .planner-map {
+            flex: 1;
+            background: #1a1a2e;
+        }
+
+        .map-instructions {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(21, 21, 32, 0.9);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+
         /* Vanlifer Info Panel */
         .vanlifer-info {
             background: var(--bg-elevated);
@@ -1376,6 +1662,54 @@
                         <button class="btn btn-secondary" onclick="resetMap()">🔄 Reset All</button>
                     </div>
 
+                    <!-- Plan Road Trip (NEW FEATURE) -->
+                    <div class="section plan-trip-section">
+                        <div class="section-title">🗺️ Plan Your Road Trip</div>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">
+                            Select a country above, then draw your route on the map!
+                        </p>
+                        <button class="btn btn-serendipity" onclick="openTripPlannerModal()" id="planTripBtn" disabled>
+                            ✏️ Draw Route on Map
+                        </button>
+                        
+                        <!-- My Planned Trips -->
+                        <div id="myPlannedTrips" style="margin-top: 12px;">
+                            <div class="mini-title">📋 My Planned Trips</div>
+                            <div id="plannedTripsList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick External Links -->
+                    <div class="section">
+                        <div class="section-title">🔗 Useful Travel Apps</div>
+                        <div class="external-links-grid">
+                            <a href="https://www.google.com/maps" target="_blank" class="ext-link-card">
+                                <span class="ext-icon">🗺️</span>
+                                <span class="ext-name">Google Maps</span>
+                            </a>
+                            <a href="https://www.ioverlander.com" target="_blank" class="ext-link-card">
+                                <span class="ext-icon">🏕️</span>
+                                <span class="ext-name">iOverlander</span>
+                            </a>
+                            <a href="https://park4night.com" target="_blank" class="ext-link-card">
+                                <span class="ext-icon">🚐</span>
+                                <span class="ext-name">Park4Night</span>
+                            </a>
+                            <a href="https://www.gasbuddy.com" target="_blank" class="ext-link-card">
+                                <span class="ext-icon">⛽</span>
+                                <span class="ext-name">GasBuddy</span>
+                            </a>
+                            <a href="https://www.booking.com" target="_blank" class="ext-link-card">
+                                <span class="ext-icon">🏨</span>
+                                <span class="ext-name">Booking</span>
+                            </a>
+                            <a href="https://maps.me" target="_blank" class="ext-link-card">
+                                <span class="ext-icon">📱</span>
+                                <span class="ext-name">Maps.me</span>
+                            </a>
+                        </div>
+                    </div>
+
                     <!-- Export -->
                     <div class="section">
                         <div class="section-title">💾 Save/Load</div>
@@ -1673,6 +2007,99 @@
         </div>
     </div>
 
+    <!-- Trip Planner Modal (Draw on Map) -->
+    <div class="modal-overlay" id="tripPlannerModal">
+        <div class="modal trip-planner-modal" style="max-width: 95vw; width: 1200px; height: 85vh;">
+            <div class="modal-header">
+                <h3>🗺️ Plan Your Road Trip in <span id="plannerCountryName">Country</span></h3>
+                <button class="modal-close" onclick="closeTripPlannerModal()">×</button>
+            </div>
+            <div class="planner-container">
+                <!-- Left Panel - Tools -->
+                <div class="planner-sidebar">
+                    <div class="planner-tools">
+                        <div class="tool-section">
+                            <h4>📍 Add Stops</h4>
+                            <p class="tool-hint">Click on map to add waypoints</p>
+                            <div class="stop-type-selector">
+                                <button class="stop-type-btn active" data-type="waypoint" onclick="setStopType('waypoint')">
+                                    <span>📍</span> Waypoint
+                                </button>
+                                <button class="stop-type-btn" data-type="camping" onclick="setStopType('camping')">
+                                    <span>🏕️</span> Camping
+                                </button>
+                                <button class="stop-type-btn" data-type="fuel" onclick="setStopType('fuel')">
+                                    <span>⛽</span> Fuel
+                                </button>
+                                <button class="stop-type-btn" data-type="hotel" onclick="setStopType('hotel')">
+                                    <span>🏨</span> Hotel
+                                </button>
+                                <button class="stop-type-btn" data-type="atm" onclick="setStopType('atm')">
+                                    <span>🏧</span> ATM
+                                </button>
+                                <button class="stop-type-btn" data-type="viewpoint" onclick="setStopType('viewpoint')">
+                                    <span>📸</span> Viewpoint
+                                </button>
+                                <button class="stop-type-btn" data-type="restaurant" onclick="setStopType('restaurant')">
+                                    <span>🍽️</span> Restaurant
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="tool-section">
+                            <h4>🛤️ Your Route</h4>
+                            <div id="routeStopsList" class="route-stops-list">
+                                <p class="empty-hint">Click on map to add stops...</p>
+                            </div>
+                            <div class="route-stats">
+                                <div class="route-stat">
+                                    <span class="stat-label">Stops:</span>
+                                    <span class="stat-value" id="plannerStopsCount">0</span>
+                                </div>
+                                <div class="route-stat">
+                                    <span class="stat-label">Est. Distance:</span>
+                                    <span class="stat-value" id="plannerDistance">0 km</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tool-section">
+                            <h4>🔗 Find Nearby</h4>
+                            <div class="nearby-links">
+                                <button class="nearby-btn" onclick="searchNearby('fuel station')">⛽ Fuel Stations</button>
+                                <button class="nearby-btn" onclick="searchNearby('atm')">🏧 ATMs</button>
+                                <button class="nearby-btn" onclick="searchNearby('hotel')">🏨 Hotels</button>
+                                <button class="nearby-btn" onclick="searchNearby('camping')">🏕️ Camping</button>
+                                <button class="nearby-btn" onclick="searchNearby('restaurant')">🍽️ Restaurants</button>
+                                <button class="nearby-btn" onclick="searchNearby('viewpoint')">📸 Viewpoints</button>
+                            </div>
+                        </div>
+
+                        <div class="tool-section">
+                            <h4>💾 Trip Details</h4>
+                            <input type="text" class="form-input" id="plannedTripName" placeholder="Trip name...">
+                            <textarea class="form-input" id="plannedTripNotes" placeholder="Notes, tips..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="planner-actions">
+                        <button class="btn btn-secondary" onclick="clearPlannerRoute()">🗑️ Clear All</button>
+                        <button class="btn btn-primary" onclick="savePlannedTrip()">💾 Save Trip</button>
+                        <button class="btn btn-serendipity" onclick="shareToCommunnity()">🌍 Share</button>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Map -->
+                <div class="planner-map-container">
+                    <div id="tripPlannerMap" class="planner-map"></div>
+                    <div class="map-instructions">
+                        <span>💡 Click anywhere on the map to add stops. Drag markers to adjust.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
@@ -1693,6 +2120,12 @@
         let completedTrips = [];  // Track completed road trips
         let userCreatedTrips = []; // User-created road trips
         let userName = 'Anonymous Explorer'; // User's display name
+        let plannedTrips = []; // User's planned trips from diary mode
+        let tripPlannerMap = null; // Leaflet map for trip planner
+        let plannerMarkers = []; // Markers on planner map
+        let plannerRoute = null; // Polyline for route
+        let currentStopType = 'waypoint'; // Current stop type being added
+        let plannerStops = []; // Stops in current planning session
         const DEFAULT_COLOR = '#3a3a4d';
         const VISITED_COLOR = '#22c55e';
         
@@ -2752,6 +3185,9 @@
                 showVanliferInfo(currentCountryName);
                 zoomToCountryRoads(currentCountryName);
             }
+            
+            // Enable plan trip button in diary mode
+            updatePlanTripButton();
         }
 
         function showVanliferInfo(countryName) {
@@ -3135,6 +3571,357 @@
             }
         }
 
+        // ==================== TRIP PLANNER (DIARY MODE) ====================
+        function openTripPlannerModal() {
+            if (!currentCountryName || currentCountryName === 'Unknown') {
+                alert('Please select a country first!');
+                return;
+            }
+            
+            document.getElementById('tripPlannerModal').classList.add('active');
+            document.getElementById('plannerCountryName').textContent = currentCountryName;
+            
+            // Initialize planner map
+            setTimeout(() => {
+                initTripPlannerMap();
+            }, 100);
+        }
+
+        function closeTripPlannerModal() {
+            document.getElementById('tripPlannerModal').classList.remove('active');
+        }
+
+        function initTripPlannerMap() {
+            if (tripPlannerMap) {
+                tripPlannerMap.remove();
+            }
+
+            const coords = countryCoordinates[currentCountryName] || [30, 0, 3];
+            
+            tripPlannerMap = L.map('tripPlannerMap', {
+                center: [coords[0], coords[1]],
+                zoom: coords[2] || 6,
+                zoomControl: true
+            });
+
+            // Add OpenStreetMap tiles (shows roads clearly)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(tripPlannerMap);
+
+            // Click handler to add stops
+            tripPlannerMap.on('click', function(e) {
+                addPlannerStop(e.latlng.lat, e.latlng.lng);
+            });
+
+            // Clear previous session
+            plannerMarkers = [];
+            plannerStops = [];
+            if (plannerRoute) {
+                plannerRoute.remove();
+                plannerRoute = null;
+            }
+            updatePlannerUI();
+        }
+
+        function setStopType(type) {
+            currentStopType = type;
+            document.querySelectorAll('.stop-type-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
+        }
+
+        function getStopIcon(type) {
+            const icons = {
+                'waypoint': '📍',
+                'camping': '🏕️',
+                'fuel': '⛽',
+                'hotel': '🏨',
+                'atm': '🏧',
+                'viewpoint': '📸',
+                'restaurant': '🍽️'
+            };
+            return icons[type] || '📍';
+        }
+
+        function addPlannerStop(lat, lng) {
+            const stopId = Date.now();
+            const stop = {
+                id: stopId,
+                type: currentStopType,
+                lat: lat,
+                lng: lng,
+                name: `${getStopIcon(currentStopType)} Stop ${plannerStops.length + 1}`
+            };
+            
+            plannerStops.push(stop);
+
+            // Add marker
+            const marker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: 'planner-marker',
+                    html: `<div style="font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${getStopIcon(currentStopType)}</div>`,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                }),
+                draggable: true
+            }).addTo(tripPlannerMap);
+
+            marker.stopId = stopId;
+            marker.on('dragend', function(e) {
+                const newPos = e.target.getLatLng();
+                const stopIdx = plannerStops.findIndex(s => s.id === stopId);
+                if (stopIdx >= 0) {
+                    plannerStops[stopIdx].lat = newPos.lat;
+                    plannerStops[stopIdx].lng = newPos.lng;
+                    updatePlannerRoute();
+                }
+            });
+
+            marker.bindPopup(`
+                <div style="text-align: center;">
+                    <strong>${getStopIcon(currentStopType)} ${currentStopType}</strong><br>
+                    <small>${lat.toFixed(4)}, ${lng.toFixed(4)}</small>
+                </div>
+            `);
+
+            plannerMarkers.push(marker);
+            updatePlannerRoute();
+            updatePlannerUI();
+        }
+
+        function removePlannerStop(stopId) {
+            const stopIdx = plannerStops.findIndex(s => s.id === stopId);
+            if (stopIdx >= 0) {
+                plannerStops.splice(stopIdx, 1);
+                
+                // Remove marker
+                const markerIdx = plannerMarkers.findIndex(m => m.stopId === stopId);
+                if (markerIdx >= 0) {
+                    tripPlannerMap.removeLayer(plannerMarkers[markerIdx]);
+                    plannerMarkers.splice(markerIdx, 1);
+                }
+                
+                updatePlannerRoute();
+                updatePlannerUI();
+            }
+        }
+
+        function updatePlannerRoute() {
+            if (plannerRoute) {
+                tripPlannerMap.removeLayer(plannerRoute);
+            }
+
+            if (plannerStops.length >= 2) {
+                const coords = plannerStops.map(s => [s.lat, s.lng]);
+                plannerRoute = L.polyline(coords, {
+                    color: '#6366f1',
+                    weight: 4,
+                    opacity: 0.8,
+                    dashArray: '10, 10'
+                }).addTo(tripPlannerMap);
+            }
+        }
+
+        function updatePlannerUI() {
+            const listContainer = document.getElementById('routeStopsList');
+            
+            if (plannerStops.length === 0) {
+                listContainer.innerHTML = '<p class="empty-hint">Click on map to add stops...</p>';
+            } else {
+                listContainer.innerHTML = plannerStops.map((stop, idx) => `
+                    <div class="route-stop-item">
+                        <span class="stop-number">${idx + 1}</span>
+                        <span class="stop-icon">${getStopIcon(stop.type)}</span>
+                        <span class="stop-name">${stop.type}</span>
+                        <button class="stop-delete" onclick="removePlannerStop(${stop.id})">×</button>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('plannerStopsCount').textContent = plannerStops.length;
+            
+            // Calculate approximate distance
+            let totalDist = 0;
+            for (let i = 1; i < plannerStops.length; i++) {
+                totalDist += calculateDistance(
+                    plannerStops[i-1].lat, plannerStops[i-1].lng,
+                    plannerStops[i].lat, plannerStops[i].lng
+                );
+            }
+            document.getElementById('plannerDistance').textContent = Math.round(totalDist) + ' km';
+        }
+
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function clearPlannerRoute() {
+            if (confirm('Clear all stops?')) {
+                plannerStops = [];
+                plannerMarkers.forEach(m => tripPlannerMap.removeLayer(m));
+                plannerMarkers = [];
+                if (plannerRoute) {
+                    tripPlannerMap.removeLayer(plannerRoute);
+                    plannerRoute = null;
+                }
+                updatePlannerUI();
+            }
+        }
+
+        function savePlannedTrip() {
+            if (plannerStops.length < 2) {
+                alert('Please add at least 2 stops to save a trip');
+                return;
+            }
+
+            const tripName = document.getElementById('plannedTripName').value.trim() || 
+                             `${currentCountryName} Trip ${plannedTrips.length + 1}`;
+            const tripNotes = document.getElementById('plannedTripNotes').value.trim();
+
+            let totalDist = 0;
+            for (let i = 1; i < plannerStops.length; i++) {
+                totalDist += calculateDistance(
+                    plannerStops[i-1].lat, plannerStops[i-1].lng,
+                    plannerStops[i].lat, plannerStops[i].lng
+                );
+            }
+
+            const newTrip = {
+                id: 'planned_' + Date.now(),
+                name: tripName,
+                country: currentCountryName,
+                stops: [...plannerStops],
+                distance: Math.round(totalDist),
+                notes: tripNotes,
+                createdAt: new Date().toISOString()
+            };
+
+            plannedTrips.push(newTrip);
+            saveToStorage();
+            renderPlannedTrips();
+            
+            alert(`✅ Trip "${tripName}" saved!\n\n${plannerStops.length} stops • ${Math.round(totalDist)} km`);
+            closeTripPlannerModal();
+        }
+
+        function shareToCommunnity() {
+            if (plannerStops.length < 2) {
+                alert('Please add at least 2 stops to share');
+                return;
+            }
+
+            const tripName = document.getElementById('plannedTripName').value.trim();
+            if (!tripName) {
+                alert('Please give your trip a name first');
+                return;
+            }
+
+            // Convert to community format
+            let totalDist = 0;
+            for (let i = 1; i < plannerStops.length; i++) {
+                totalDist += calculateDistance(
+                    plannerStops[i-1].lat, plannerStops[i-1].lng,
+                    plannerStops[i].lat, plannerStops[i].lng
+                );
+            }
+
+            const communityTrip = {
+                id: 'user_' + Date.now(),
+                name: tripName,
+                icon: '✨',
+                country: currentCountryName,
+                distance: Math.round(totalDist) + ' km',
+                duration: 'Varies',
+                coordinates: [[plannerStops[0].lat, plannerStops[0].lng], [plannerStops[plannerStops.length-1].lat, plannerStops[plannerStops.length-1].lng]],
+                waypoints: plannerStops.map(s => [s.lat, s.lng, `${getStopIcon(s.type)} ${s.type}`]),
+                tags: ['community'],
+                description: document.getElementById('plannedTripNotes').value.trim() || `Community trip in ${currentCountryName}`,
+                tips: '',
+                userCreated: true,
+                createdBy: userName,
+                createdAt: new Date().toISOString()
+            };
+
+            userCreatedTrips.push(communityTrip);
+            saveToStorage();
+            renderRoadTrips();
+            
+            alert(`🌍 Trip "${tripName}" shared with the community!\n\nIt's now available in Serendipity mode for everyone.`);
+            closeTripPlannerModal();
+        }
+
+        function renderPlannedTrips() {
+            const container = document.getElementById('plannedTripsList');
+            
+            if (plannedTrips.length === 0) {
+                container.innerHTML = '<p style="font-size: 0.7rem; color: var(--text-muted); text-align: center; padding: 10px;">No trips planned yet</p>';
+                return;
+            }
+
+            container.innerHTML = plannedTrips.map(trip => `
+                <div class="planned-trip-item" onclick="viewPlannedTrip('${trip.id}')">
+                    <span class="trip-icon">🗺️</span>
+                    <div class="trip-info">
+                        <div class="trip-name">${trip.name}</div>
+                        <div class="trip-meta">${trip.country} • ${trip.stops.length} stops • ${trip.distance} km</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewPlannedTrip(tripId) {
+            const trip = plannedTrips.find(t => t.id === tripId);
+            if (!trip) return;
+
+            // Open planner modal and load the trip
+            currentCountryName = trip.country;
+            openTripPlannerModal();
+            
+            setTimeout(() => {
+                // Load stops
+                trip.stops.forEach(stop => {
+                    currentStopType = stop.type;
+                    addPlannerStop(stop.lat, stop.lng);
+                });
+                
+                document.getElementById('plannedTripName').value = trip.name;
+                document.getElementById('plannedTripNotes').value = trip.notes || '';
+                
+                // Fit bounds
+                if (plannerStops.length > 0) {
+                    const bounds = L.latLngBounds(plannerStops.map(s => [s.lat, s.lng]));
+                    tripPlannerMap.fitBounds(bounds, { padding: [50, 50] });
+                }
+            }, 300);
+        }
+
+        function searchNearby(type) {
+            if (!tripPlannerMap) return;
+            
+            const center = tripPlannerMap.getCenter();
+            const query = encodeURIComponent(`${type} near ${center.lat},${center.lng}`);
+            
+            // Open Google Maps search
+            window.open(`https://www.google.com/maps/search/${query}`, '_blank');
+        }
+
+        // Enable/disable plan trip button based on country selection
+        function updatePlanTripButton() {
+            const btn = document.getElementById('planTripBtn');
+            if (btn) {
+                btn.disabled = !currentCountryName || currentCountryName === 'Unknown' || currentCountryName === '';
+            }
+        }
+
         // ==================== COMMUNITY ALERTS ====================
         function renderAlerts() {
             const container = document.getElementById('alertsList');
@@ -3297,6 +4084,7 @@
                 activeRoute,
                 completedTrips,
                 userCreatedTrips,
+                plannedTrips,
                 userName
             };
             localStorage.setItem('travelDiarySerendipity', JSON.stringify(data));
@@ -3318,6 +4106,7 @@
                     if (data.activeRoute) activeRoute = data.activeRoute;
                     if (data.completedTrips) completedTrips = data.completedTrips;
                     if (data.userCreatedTrips) userCreatedTrips = data.userCreatedTrips;
+                    if (data.plannedTrips) plannedTrips = data.plannedTrips;
                     if (data.userName) userName = data.userName;
                 }
             } catch (e) {
@@ -3333,6 +4122,7 @@
                 activeRoute,
                 completedTrips,
                 userCreatedTrips,
+                plannedTrips,
                 userName,
                 timestamp: new Date().toISOString()
             };
@@ -3385,15 +4175,17 @@
                 closeAlertModal();
                 closeLeaderboardModal();
                 closeCreateTripModal();
+                closeTripPlannerModal();
             }
         });
 
         // ==================== INIT ====================
         initMap();
         
-        // Initialize league stats after a short delay to ensure DOM is ready
+        // Initialize UI after a short delay to ensure DOM is ready
         setTimeout(() => {
             updateLeagueStats();
+            renderPlannedTrips();
         }, 100);
     </script>
 </body>
