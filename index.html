@@ -877,6 +877,416 @@
             background: #16a34a;
         }
 
+        /* Cost Section */
+        .cost-section {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 184, 166, 0.1));
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .cost-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .cost-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+        }
+
+        .cost-icon {
+            font-size: 1.5rem;
+        }
+
+        .cost-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .cost-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .cost-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .total-value {
+            font-size: 1.2rem;
+            color: var(--success);
+        }
+
+        /* Planning Section */
+        .planning-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .planning-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .planning-step {
+            display: flex;
+            gap: 14px;
+            padding: 14px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Recommendations Section */
+        .recommendations-section {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(249, 115, 22, 0.1));
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .recommendation-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+        }
+
+        .recommendation-icon {
+            font-size: 1.3rem;
+        }
+
+        .recommendation-content {
+            flex: 1;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+
+        .recommendation-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Packing Section */
+        .packing-section {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .packing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .packing-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .packing-item.essential {
+            border-left: 3px solid var(--warning);
+        }
+
+        /* Double-click hint */
+        .dblclick-hint {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Trip Chat Section */
+        .trip-chat-section {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .chat-header h4 {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .online-count {
+            font-size: 0.75rem;
+            color: var(--success);
+        }
+
+        .chat-messages {
+            height: 280px;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-message {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: var(--bg-elevated);
+            max-width: 90%;
+        }
+
+        .chat-message.question {
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .chat-message.tip {
+            border-left: 3px solid var(--success);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .chat-message.experience {
+            border-left: 3px solid var(--warning);
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .chat-message.own {
+            margin-left: auto;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+        }
+
+        .chat-msg-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .chat-msg-user {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--accent-primary);
+        }
+
+        .chat-msg-badge {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: var(--bg-dark);
+        }
+
+        .chat-msg-badge.verified {
+            background: var(--success);
+            color: white;
+        }
+
+        .chat-msg-badge.expert {
+            background: var(--warning);
+            color: var(--bg-dark);
+        }
+
+        .chat-msg-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .chat-msg-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .chat-msg-reactions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-reaction {
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+            transition: all 0.2s;
+        }
+
+        .chat-reaction:hover {
+            background: var(--bg-elevated);
+            transform: scale(1.1);
+        }
+
+        .chat-reaction.active {
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .chat-reply-btn {
+            cursor: pointer;
+            color: var(--accent-primary);
+        }
+
+        .chat-reply-btn:hover {
+            text-decoration: underline;
+        }
+
+        .chat-replies {
+            margin-top: 10px;
+            padding-left: 12px;
+            border-left: 2px solid var(--border-subtle);
+        }
+
+        .chat-reply {
+            padding: 6px 10px;
+            margin-top: 6px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .chat-input-area {
+            padding: 12px;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+        }
+
+        .chat-type-selector {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .chat-type-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-dark);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-type-btn:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .chat-type-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-send-btn:hover {
+            background: var(--accent-secondary);
+            transform: scale(1.05);
+        }
+
         .road-trip-card.personal {
             border-left: 3px solid var(--success);
             background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), transparent);
@@ -2310,6 +2720,7 @@
                         <div id="roadTripsList">
                             <!-- Populated dynamically -->
                         </div>
+                        <p class="dblclick-hint">💡 Double-click any trip for complete guide</p>
                     </div>
 
                     <!-- Vanlifer Country Info -->
@@ -2624,10 +3035,65 @@
                         <p id="tripDetailDescription" class="trip-description"></p>
                     </div>
 
+                    <!-- Cost Breakdown -->
+                    <div class="trip-section cost-section">
+                        <h4>💰 Estimated Costs</h4>
+                        <div class="cost-grid" id="tripCostGrid">
+                            <div class="cost-item">
+                                <div class="cost-icon">⛽</div>
+                                <div class="cost-info">
+                                    <div class="cost-label">Fuel</div>
+                                    <div class="cost-value" id="tripFuelCost">~$300</div>
+                                </div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-icon">🛣️</div>
+                                <div class="cost-info">
+                                    <div class="cost-label">Tolls</div>
+                                    <div class="cost-value" id="tripTollCost">~$50</div>
+                                </div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-icon">🏨</div>
+                                <div class="cost-info">
+                                    <div class="cost-label">Accommodation</div>
+                                    <div class="cost-value" id="tripAccomCost">~$800</div>
+                                </div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-icon">🍽️</div>
+                                <div class="cost-info">
+                                    <div class="cost-label">Food</div>
+                                    <div class="cost-value" id="tripFoodCost">~$400</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cost-total">
+                            <span>Total Estimated Budget:</span>
+                            <span id="tripTotalCost" class="total-value">~$1,550</span>
+                        </div>
+                    </div>
+
+                    <!-- Planning Guide -->
+                    <div class="trip-section planning-section">
+                        <h4>📋 How to Plan This Trip</h4>
+                        <div class="planning-steps" id="tripPlanningSteps">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
                     <!-- Must Know -->
                     <div class="trip-section must-know-section">
                         <h4>⚠️ Must Know Before You Go</h4>
                         <ul id="tripDetailMustKnow" class="must-know-list"></ul>
+                    </div>
+
+                    <!-- Top Recommendations -->
+                    <div class="trip-section recommendations-section">
+                        <h4>🏆 Top Recommendations</h4>
+                        <div id="tripRecommendations" class="recommendations-grid">
+                            <!-- Populated dynamically -->
+                        </div>
                     </div>
 
                     <!-- Highlights -->
@@ -2638,8 +3104,16 @@
 
                     <!-- Waypoints / Itinerary -->
                     <div class="trip-section">
-                        <h4>🗺️ Route & Stops</h4>
+                        <h4>🗺️ Route & Stops (<span id="waypointsCount">0</span> stops)</h4>
                         <div id="tripDetailWaypoints" class="waypoints-timeline"></div>
+                    </div>
+
+                    <!-- Packing List -->
+                    <div class="trip-section packing-section">
+                        <h4>🎒 Packing Essentials</h4>
+                        <div id="tripPackingList" class="packing-grid">
+                            <!-- Populated dynamically -->
+                        </div>
                     </div>
                 </div>
 
@@ -2661,6 +3135,28 @@
                             </div>
                             <textarea class="form-input" id="newReviewText" placeholder="Write your review..."></textarea>
                             <button class="btn btn-primary" onclick="submitTripReview()">Submit Review</button>
+                        </div>
+                    </div>
+
+                    <!-- Group Chat Section -->
+                    <div class="trip-chat-section">
+                        <div class="chat-header">
+                            <h4>💬 Trip Community Chat</h4>
+                            <span class="online-count" id="chatOnlineCount">👥 12 online</span>
+                        </div>
+                        <div class="chat-messages" id="tripChatMessages">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <div class="chat-input-area">
+                            <div class="chat-type-selector">
+                                <button class="chat-type-btn active" data-type="question" onclick="setChatType('question')">❓ Question</button>
+                                <button class="chat-type-btn" data-type="tip" onclick="setChatType('tip')">💡 Tip</button>
+                                <button class="chat-type-btn" data-type="experience" onclick="setChatType('experience')">✨ Experience</button>
+                            </div>
+                            <div class="chat-input-wrapper">
+                                <input type="text" class="chat-input" id="chatMessageInput" placeholder="Ask a question about this trip...">
+                                <button class="chat-send-btn" onclick="sendChatMessage()">➤</button>
+                            </div>
                         </div>
                     </div>
 
@@ -2955,6 +3451,42 @@
                     { user: 'CoupleOnTheRoad', rating: 5, text: 'Best self-drive safari in Africa. NWR camps are basic but the locations are unbeatable.', date: '2 months ago' }
                 ],
                 highlights: ['Dune 45 sunrise', 'Deadvlei', 'Etosha waterholes', 'Skeleton Coast', 'Desert elephants'],
+                costs: {
+                    fuel: '€300-400',
+                    tolls: '€0 (no tolls!)',
+                    accommodation: '€600-1000',
+                    food: '€300-500',
+                    total: '€2,500-4,000 (incl. 4x4 rental)'
+                },
+                planningSteps: [
+                    { title: 'Book 4x4 with Rooftop Tent', desc: 'Essential! Book 3-6 months ahead with ASCO, Britz or Namibia2Go. Toyota Hilux recommended.' },
+                    { title: 'Reserve NWR Camps', desc: 'Sesriem and Etosha camps book out fast. NWR website: nwr.com.na - book 2-3 months ahead!' },
+                    { title: 'Plan Your Route', desc: 'Clockwise or counter-clockwise both work. Allow 2+ nights at Etosha for wildlife.' },
+                    { title: 'Get Travel Insurance', desc: 'Medical evacuation coverage essential. Nearest hospital can be 500km away.' },
+                    { title: 'Download Tracks4Africa', desc: 'Best offline GPS app for Namibia. Includes campsites, fuel stations, distances.' }
+                ],
+                recommendations: [
+                    { icon: '🌅', title: 'Dune 45 at Sunrise', desc: 'Arrive 5:30am. Climb for best photos. Magical!' },
+                    { icon: '🦏', title: 'Okaukuejo Night Waterhole', desc: 'Rhinos visit 10pm-2am. Bring chair & patience!' },
+                    { icon: '🍰', title: 'Solitaire Apfelstrudel', desc: 'Best apple cake in Africa. Seriously!' },
+                    { icon: '🐘', title: 'Palmwag Desert Elephants', desc: 'Morning game drive - desert-adapted elephants unique here' },
+                    { icon: '💀', title: 'Skeleton Coast', desc: 'Shipwrecks, seal colonies, eerie beauty' },
+                    { icon: '⭐', title: 'Stargazing at Sesriem', desc: 'Some of the darkest skies on Earth. Unforgettable!' }
+                ],
+                packingList: [
+                    { item: '💧 20L water reserve', essential: true },
+                    { item: '⛽ Know fuel distances', essential: true },
+                    { item: '🔦 Headlamp (camp nights)', essential: true },
+                    { item: '🧴 SPF50 sunscreen', essential: true },
+                    { item: '🧥 Warm fleece (cold nights)', essential: true },
+                    { item: '📷 Camera + zoom lens', essential: false },
+                    { item: '🔌 Car charger', essential: true },
+                    { item: '🗺️ Tracks4Africa app', essential: true },
+                    { item: '🩹 First aid kit', essential: true },
+                    { item: '🕶️ Polarized sunglasses', essential: true },
+                    { item: '👒 Sun hat', essential: false },
+                    { item: '🔧 Basic tools', essential: false }
+                ],
                 rentalProviders: [
                     { name: 'ASCO Car Hire', url: 'https://ascocarhire.com', rating: '⭐⭐⭐⭐⭐', note: 'Excellent, véhicules bien entretenus' },
                     { name: 'Namibia2Go', url: 'https://namibia2go.com', rating: '⭐⭐⭐⭐', note: 'Bon rapport qualité/prix' },
@@ -3014,7 +3546,40 @@
                     { user: 'WanderlustMom', rating: 5, text: 'Perfect family trip. Kids loved Cadillac Ranch and the quirky roadside attractions.', date: '3 months ago' },
                     { user: 'SoloTraveler22', rating: 4, text: 'Amazing but some sections are quite desolate. Make sure your car is reliable!', date: '5 months ago' }
                 ],
-                highlights: ['Cadillac Ranch', 'Grand Canyon detour', 'Santa Fe art scene', 'Gateway Arch', 'Petrified Forest']
+                highlights: ['Cadillac Ranch', 'Grand Canyon detour', 'Santa Fe art scene', 'Gateway Arch', 'Petrified Forest'],
+                costs: {
+                    fuel: '$350-500',
+                    tolls: '$0 (toll-free!)',
+                    accommodation: '$800-1500',
+                    food: '$400-700',
+                    total: '$1,550-2,700'
+                },
+                planningSteps: [
+                    { title: 'Book Your Car', desc: 'Rent from Chicago or LA. Consider a one-way rental. Classic car rentals available for the ultimate experience!' },
+                    { title: 'Plan Your Route', desc: 'The original Route 66 is now fragmented. Download Route 66 Navigation app for authentic routing.' },
+                    { title: 'Book Key Accommodations', desc: 'Reserve iconic spots like Wigwam Motel, Blue Swallow Motel 2-3 months ahead in peak season.' },
+                    { title: 'Budget for Attractions', desc: 'Grand Canyon detour ($35/vehicle), Petrified Forest ($25), plus countless free roadside attractions.' },
+                    { title: 'Check Your Vehicle', desc: 'Full service before departure. Carry spare tire, jumper cables, extra water for desert sections.' }
+                ],
+                recommendations: [
+                    { icon: '🏨', title: 'Wigwam Motel', desc: 'Sleep in a concrete teepee - iconic Route 66!' },
+                    { icon: '🍔', title: 'Big Texan Steak Ranch', desc: 'Free 72oz steak if eaten in 1 hour!' },
+                    { icon: '🎨', title: 'Cadillac Ranch', desc: 'Bring spray paint and leave your mark' },
+                    { icon: '🏜️', title: 'Grand Canyon', desc: '1-hour detour - absolutely worth it!' },
+                    { icon: '📸', title: 'Blue Whale of Catoosa', desc: 'Quirky Oklahoma landmark, great photos' },
+                    { icon: '🌮', title: 'Santa Fe Plaza', desc: 'Best New Mexican food on the route' }
+                ],
+                packingList: [
+                    { item: '📱 Offline maps', essential: true },
+                    { item: '💧 2L water per person', essential: true },
+                    { item: '🧴 Sunscreen SPF50+', essential: true },
+                    { item: '🕶️ Sunglasses', essential: true },
+                    { item: '🎒 Cooler for drinks', essential: false },
+                    { item: '📷 Camera', essential: false },
+                    { item: '🔌 Car phone charger', essential: true },
+                    { item: '🧥 Light jacket (desert nights)', essential: false },
+                    { item: '🎧 Road trip playlist', essential: false }
+                ]
             },
             {
                 id: 'panamerican',
@@ -3076,7 +3641,40 @@
                     { user: 'CamperVanDave', rating: 5, text: 'Did this in a campervan. So many amazing free camping spots!', date: '2 months ago' },
                     { user: 'PhotoNomad', rating: 5, text: 'Best photography road trip I\'ve ever done. Light is incredible.', date: '4 months ago' }
                 ],
-                highlights: ['Cliffs of Moher', 'Skellig Michael', 'Connemara', 'Dingle Peninsula', 'Galway nightlife']
+                highlights: ['Cliffs of Moher', 'Skellig Michael', 'Connemara', 'Dingle Peninsula', 'Galway nightlife'],
+                costs: {
+                    fuel: '€200-300',
+                    tolls: '€0 (toll-free!)',
+                    accommodation: '€600-1200',
+                    food: '€300-500',
+                    total: '€1,100-2,000'
+                },
+                planningSteps: [
+                    { title: 'Fly into Shannon or Cork', desc: 'These airports offer the best access to the WAW. Dublin adds 3+ hours driving.' },
+                    { title: 'Rent the Right Vehicle', desc: 'Compact car recommended. Roads are narrow! Manual transmission cheaper.' },
+                    { title: 'Book B&Bs Early', desc: 'Irish B&Bs are the best experience. Book 1-2 months ahead for summer.' },
+                    { title: 'Get a Rain Jacket', desc: 'It WILL rain. Good waterproof gear essential. Layers for changeable weather.' },
+                    { title: 'Download the WAW App', desc: 'Official app has all discovery points, audio guides, and offline maps.' }
+                ],
+                recommendations: [
+                    { icon: '🌊', title: 'Cliffs of Moher at Sunset', desc: 'Arrive 2hrs before sunset, stay until dark' },
+                    { icon: '🍺', title: 'Tigh Neachtain, Galway', desc: 'Best traditional pub atmosphere in Ireland' },
+                    { icon: '🏝️', title: 'Skellig Michael', desc: 'Book boat trip 3+ months ahead - Star Wars fame!' },
+                    { icon: '🐬', title: 'Fungie the Dolphin', desc: 'Dingle\'s famous dolphin - boat trips daily' },
+                    { icon: '🎵', title: 'Galway Pubs', desc: 'Live trad music every night - free!' },
+                    { icon: '🥾', title: 'Connemara National Park', desc: 'Free entry, Diamond Hill hike is unmissable' }
+                ],
+                packingList: [
+                    { item: '🧥 Waterproof jacket', essential: true },
+                    { item: '👟 Hiking boots', essential: true },
+                    { item: '🧣 Warm layers', essential: true },
+                    { item: '☔ Umbrella (compact)', essential: false },
+                    { item: '📷 Camera (the light!)', essential: false },
+                    { item: '🔌 EU adapter', essential: true },
+                    { item: '💳 Cash for pubs', essential: true },
+                    { item: '🗺️ Offline maps', essential: true },
+                    { item: '🎧 Irish music playlist', essential: false }
+                ]
             },
             {
                 id: 'nc500',
@@ -4027,7 +4625,7 @@
                 const difficultyClass = trip.difficulty || 'moderate';
                 
                 return `
-                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''}" onclick="selectRoute('${trip.id}')">
+                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''}" onclick="selectRoute('${trip.id}')" ondblclick="event.stopPropagation(); openTripDetail('${trip.id}')">
                     ${isCompleted ? '<div class="trip-completed-badge">✓</div>' : ''}
                     <div class="road-trip-header">
                         <span class="road-trip-icon">${trip.icon}</span>
@@ -4135,6 +4733,7 @@
             // Waypoints
             const waypointsList = document.getElementById('tripDetailWaypoints');
             if (trip.waypoints && trip.waypoints.length > 0) {
+                document.getElementById('waypointsCount').textContent = trip.waypoints.length;
                 waypointsList.innerHTML = trip.waypoints.map((wp, idx) => `
                     <div class="waypoint-item">
                         <div class="waypoint-name">${idx + 1}. ${wp[2] || 'Stop ' + (idx + 1)}</div>
@@ -4142,7 +4741,117 @@
                     </div>
                 `).join('');
             } else {
+                document.getElementById('waypointsCount').textContent = '0';
                 waypointsList.innerHTML = '<p style="color: var(--text-muted);">No waypoints available</p>';
+            }
+
+            // Costs
+            if (trip.costs) {
+                document.getElementById('tripFuelCost').textContent = trip.costs.fuel || 'N/A';
+                document.getElementById('tripTollCost').textContent = trip.costs.tolls || 'N/A';
+                document.getElementById('tripAccomCost').textContent = trip.costs.accommodation || 'N/A';
+                document.getElementById('tripFoodCost').textContent = trip.costs.food || 'N/A';
+                document.getElementById('tripTotalCost').textContent = trip.costs.total || 'Varies';
+                document.querySelector('.cost-section').style.display = 'block';
+            } else {
+                // Estimate costs based on distance
+                const distKm = parseInt(trip.distance) || 1000;
+                const days = parseInt(trip.duration) || 7;
+                const estFuel = Math.round(distKm * 0.12); // ~$0.12/km average
+                const estAccom = days * 80;
+                const estFood = days * 50;
+                document.getElementById('tripFuelCost').textContent = `~$${estFuel}`;
+                document.getElementById('tripTollCost').textContent = 'Varies';
+                document.getElementById('tripAccomCost').textContent = `~$${estAccom}`;
+                document.getElementById('tripFoodCost').textContent = `~$${estFood}`;
+                document.getElementById('tripTotalCost').textContent = `~$${estFuel + estAccom + estFood}`;
+                document.querySelector('.cost-section').style.display = 'block';
+            }
+
+            // Planning Steps
+            const planningStepsContainer = document.getElementById('tripPlanningSteps');
+            if (trip.planningSteps && trip.planningSteps.length > 0) {
+                planningStepsContainer.innerHTML = trip.planningSteps.map((step, idx) => `
+                    <div class="planning-step">
+                        <div class="step-number">${idx + 1}</div>
+                        <div class="step-content">
+                            <div class="step-title">${step.title}</div>
+                            <div class="step-desc">${step.desc}</div>
+                        </div>
+                    </div>
+                `).join('');
+                document.querySelector('.planning-section').style.display = 'block';
+            } else {
+                // Default planning steps
+                planningStepsContainer.innerHTML = `
+                    <div class="planning-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Research the Route</div>
+                            <div class="step-desc">Study the waypoints, check road conditions, and plan your daily distances.</div>
+                        </div>
+                    </div>
+                    <div class="planning-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Book Accommodations</div>
+                            <div class="step-desc">Reserve hotels, campsites, or B&Bs along the route, especially in peak season.</div>
+                        </div>
+                    </div>
+                    <div class="planning-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Prepare Your Vehicle</div>
+                            <div class="step-desc">Service your car, check tires, and ensure you have emergency supplies.</div>
+                        </div>
+                    </div>
+                `;
+                document.querySelector('.planning-section').style.display = 'block';
+            }
+
+            // Recommendations
+            const recommendationsContainer = document.getElementById('tripRecommendations');
+            if (trip.recommendations && trip.recommendations.length > 0) {
+                recommendationsContainer.innerHTML = trip.recommendations.map(rec => `
+                    <div class="recommendation-card">
+                        <div class="recommendation-icon">${rec.icon}</div>
+                        <div class="recommendation-content">
+                            <div class="recommendation-title">${rec.title}</div>
+                            <div class="recommendation-desc">${rec.desc}</div>
+                        </div>
+                    </div>
+                `).join('');
+                document.querySelector('.recommendations-section').style.display = 'block';
+            } else {
+                document.querySelector('.recommendations-section').style.display = 'none';
+            }
+
+            // Packing List
+            const packingContainer = document.getElementById('tripPackingList');
+            if (trip.packingList && trip.packingList.length > 0) {
+                packingContainer.innerHTML = trip.packingList.map(item => `
+                    <div class="packing-item ${item.essential ? 'essential' : ''}">
+                        <span>${item.item}</span>
+                        ${item.essential ? '<span style="color: var(--warning); font-size: 0.65rem;">ESSENTIAL</span>' : ''}
+                    </div>
+                `).join('');
+                document.querySelector('.packing-section').style.display = 'block';
+            } else {
+                // Default packing list based on tags
+                const defaultItems = [
+                    { item: '📱 Offline maps', essential: true },
+                    { item: '💧 Water bottles', essential: true },
+                    { item: '📷 Camera', essential: false },
+                    { item: '🔌 Phone charger', essential: true },
+                    { item: '🩹 First aid kit', essential: false },
+                    { item: '🕶️ Sunglasses', essential: false }
+                ];
+                packingContainer.innerHTML = defaultItems.map(item => `
+                    <div class="packing-item ${item.essential ? 'essential' : ''}">
+                        <span>${item.item}</span>
+                    </div>
+                `).join('');
+                document.querySelector('.packing-section').style.display = 'block';
             }
 
             // Reviews
@@ -4151,6 +4860,10 @@
             // Reset rating input
             userRating = 0;
             updateRatingStars();
+
+            // Load chat
+            renderTripChat(tripId);
+            setChatType('question');
         }
 
         function closeTripDetailModal() {
@@ -4264,6 +4977,223 @@
                 });
             }
         }
+
+        // ==================== TRIP COMMUNITY CHAT ====================
+        let tripChatMessages = JSON.parse(localStorage.getItem('tripChatMessages')) || {};
+        let currentChatType = 'question';
+
+        // Pre-populated chat messages for key trips
+        const defaultChatMessages = {
+            'route66': [
+                { id: 1, user: 'RoadWarrior88', badge: 'verified', type: 'tip', text: 'Pro tip: Don\'t skip Seligman, AZ - it\'s the inspiration for the movie Cars and has amazing diners! The Angel\'s barber shop is a must-visit.', time: '2 hours ago', reactions: { '👍': 12, '❤️': 5 }, replies: [
+                    { user: 'TravelJunkie', text: 'Second this! Best pie on the whole route.', time: '1 hour ago' }
+                ]},
+                { id: 2, user: 'DesertExplorer', badge: 'expert', type: 'experience', text: 'Just finished the route last week! The Painted Desert blew my mind. Make sure you have at least 2-3 hours there - sunset is incredible.', time: '5 hours ago', reactions: { '👍': 8, '🔥': 3 }, replies: [] },
+                { id: 3, user: 'FirstTimer2024', badge: null, type: 'question', text: 'Planning to do this in March - is the weather good? Also, any recommendations for a reliable car rental in Chicago?', time: '1 day ago', reactions: { '👍': 2 }, replies: [
+                    { user: 'RoadWarrior88', text: 'March is perfect! Not too hot yet. Budget or Enterprise are reliable in Chicago.', time: '20 hours ago' },
+                    { user: 'LocalGuide', text: 'Watch for wind in New Mexico/Arizona in March. Can be dusty!', time: '18 hours ago' }
+                ]},
+                { id: 4, user: 'VanlifeKing', badge: 'verified', type: 'tip', text: '⛽ IMPORTANT: Between Kingman and Needles, gas stations are 100+ miles apart. Fill up every chance you get in the desert sections!', time: '2 days ago', reactions: { '👍': 24, '⚠️': 8 }, replies: [] }
+            ],
+            'wildatlantic': [
+                { id: 1, user: 'IrishRoads', badge: 'expert', type: 'tip', text: 'Drive CLOCKWISE! This keeps you on the ocean side and the views are 10x better. Trust me on this one.', time: '3 hours ago', reactions: { '👍': 18, '❤️': 7 }, replies: [
+                    { user: 'WanderlustSara', text: 'This is THE best advice. Counter-clockwise means you\'re looking at hedges instead of cliffs!', time: '2 hours ago' }
+                ]},
+                { id: 2, user: 'CamperVanDan', badge: 'verified', type: 'experience', text: 'Wild camped at Malin Head last night - the most northwestern point of Ireland. Northern lights appeared at 2am! Magical experience.', time: '1 day ago', reactions: { '👍': 15, '🔥': 12, '❤️': 8 }, replies: [] },
+                { id: 3, user: 'TravelNewbie', badge: null, type: 'question', text: 'Is it true you need to book Skellig Michael months in advance? We\'re going in July...', time: '2 days ago', reactions: { '👍': 3 }, replies: [
+                    { user: 'IrishRoads', text: 'Yes! Boats are limited and weather-dependent. Book 3-4 months ahead for summer. Check skelligs.com', time: '1 day ago' },
+                    { user: 'StarWarsFan', text: 'We got lucky with a cancellation. Check daily for openings!', time: '1 day ago' }
+                ]},
+                { id: 4, user: 'PhotoNomad', badge: 'expert', type: 'tip', text: '📸 Golden hour at Cliffs of Moher is around 8-9pm in summer. Stay after the crowds leave - totally different experience!', time: '3 days ago', reactions: { '👍': 22, '📸': 15 }, replies: [] }
+            ],
+            'namibia_highlights': [
+                { id: 1, user: 'SafariSol', badge: 'verified', type: 'experience', text: 'Just did this exact route! Dune 45 at sunrise was the highlight. Get there by 5:30am - the colors changing on the dunes are unreal. Worth the early wake up!', time: '1 week ago', reactions: { '👍': 20, '❤️': 12, '🔥': 8 }, replies: [
+                    { user: 'OverlandAfrica', text: 'The climb is harder than it looks! Bring water and go slow.', time: '6 days ago' }
+                ]},
+                { id: 2, user: 'DesertNomad', badge: 'expert', type: 'tip', text: '⚠️ CRITICAL: Download Tracks4Africa app before you go. Cell service is non-existent in most of Namibia. This app saved us multiple times!', time: '2 weeks ago', reactions: { '👍': 35, '⚠️': 12 }, replies: [
+                    { user: 'SafariSol', text: 'Can confirm - this is essential! Also has all campsites marked.', time: '1 week ago' }
+                ]},
+                { id: 3, user: 'CoupleAdventure', badge: null, type: 'question', text: 'First time doing a rooftop tent trip. Any tips for setting up camp? We\'re a bit nervous about wild camping...', time: '3 days ago', reactions: { '👍': 5 }, replies: [
+                    { user: 'DesertNomad', text: 'It\'s super safe! Just pick official campsites. NWR camps have fences. Set up before dark and you\'ll be fine!', time: '2 days ago' },
+                    { user: 'SafariSol', text: 'The rooftop tent is actually easy - practice at the rental place first. Most animals ignore you up there!', time: '2 days ago' },
+                    { user: 'WildlifeWatcher', text: 'Bring a headlamp! Essential for nighttime bathroom trips. And enjoy the stars - they\'re incredible.', time: '1 day ago' }
+                ]},
+                { id: 4, user: 'BudgetTraveler', badge: null, type: 'question', text: 'How much should I budget for fuel? The distances look massive...', time: '4 days ago', reactions: { '👍': 8 }, replies: [
+                    { user: 'DesertNomad', text: 'Budget about €350-400 for the full route. Fill up EVERY station - some are 300km apart! Toyota Hilux uses about 12L/100km on gravel.', time: '3 days ago' }
+                ]}
+            ]
+        };
+
+        function loadTripChat(tripId) {
+            // Merge default messages with user messages
+            const defaultMsgs = defaultChatMessages[tripId] || [];
+            const userMsgs = tripChatMessages[tripId] || [];
+            
+            const allMessages = [...defaultMsgs, ...userMsgs].sort((a, b) => {
+                // Keep order, but user messages at the end
+                if (a.id > 100 && b.id <= 100) return 1;
+                if (b.id > 100 && a.id <= 100) return -1;
+                return 0;
+            });
+            
+            return allMessages;
+        }
+
+        function renderTripChat(tripId) {
+            const container = document.getElementById('tripChatMessages');
+            const messages = loadTripChat(tripId);
+            
+            // Simulate online count
+            const onlineCount = Math.floor(Math.random() * 15) + 5;
+            document.getElementById('chatOnlineCount').textContent = `👥 ${onlineCount} online`;
+            
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">💬</div>
+                        <p>Be the first to start a conversation about this trip!</p>
+                        <p style="font-size: 0.8rem;">Ask questions, share tips, or tell us about your experience.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = messages.map(msg => `
+                <div class="chat-message ${msg.type} ${msg.own ? 'own' : ''}" data-msg-id="${msg.id}">
+                    <div class="chat-msg-header">
+                        <span class="chat-msg-user">${msg.user}</span>
+                        ${msg.badge ? `<span class="chat-msg-badge ${msg.badge}">${msg.badge === 'verified' ? '✓ Verified' : '⭐ Expert'}</span>` : ''}
+                    </div>
+                    <div class="chat-msg-text">${msg.text}</div>
+                    <div class="chat-msg-footer">
+                        <div class="chat-msg-reactions">
+                            ${Object.entries(msg.reactions || {}).map(([emoji, count]) => `
+                                <span class="chat-reaction" onclick="reactToMessage(${msg.id}, '${emoji}')">${emoji} ${count}</span>
+                            `).join('')}
+                            <span class="chat-reaction" onclick="reactToMessage(${msg.id}, '👍')">+</span>
+                        </div>
+                        <span>${msg.time}</span>
+                    </div>
+                    ${msg.replies && msg.replies.length > 0 ? `
+                        <div class="chat-replies">
+                            ${msg.replies.map(reply => `
+                                <div class="chat-reply">
+                                    <strong>${reply.user}:</strong> ${reply.text}
+                                    <span style="color: var(--text-muted); margin-left: 8px;">${reply.time}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    <span class="chat-reply-btn" onclick="replyToMessage(${msg.id})">↩️ Reply</span>
+                </div>
+            `).join('');
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function setChatType(type) {
+            currentChatType = type;
+            document.querySelectorAll('.chat-type-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
+            
+            const input = document.getElementById('chatMessageInput');
+            const placeholders = {
+                'question': 'Ask a question about this trip...',
+                'tip': 'Share a helpful tip for other travelers...',
+                'experience': 'Tell us about your experience on this trip...'
+            };
+            input.placeholder = placeholders[type];
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatMessageInput');
+            const text = input.value.trim();
+            if (!text || !currentDetailTrip) return;
+
+            const tripId = currentDetailTrip.id;
+            if (!tripChatMessages[tripId]) {
+                tripChatMessages[tripId] = [];
+            }
+
+            const newMessage = {
+                id: Date.now(),
+                user: userName || 'Anonymous Traveler',
+                badge: null,
+                type: currentChatType,
+                text: text,
+                time: 'Just now',
+                reactions: {},
+                replies: [],
+                own: true
+            };
+
+            tripChatMessages[tripId].push(newMessage);
+            localStorage.setItem('tripChatMessages', JSON.stringify(tripChatMessages));
+
+            input.value = '';
+            renderTripChat(tripId);
+
+            // Show confirmation
+            showToast('Message posted! 💬');
+        }
+
+        function reactToMessage(msgId, emoji) {
+            if (!currentDetailTrip) return;
+            const tripId = currentDetailTrip.id;
+            
+            // Find message in user messages
+            if (tripChatMessages[tripId]) {
+                const msg = tripChatMessages[tripId].find(m => m.id === msgId);
+                if (msg) {
+                    if (!msg.reactions) msg.reactions = {};
+                    msg.reactions[emoji] = (msg.reactions[emoji] || 0) + 1;
+                    localStorage.setItem('tripChatMessages', JSON.stringify(tripChatMessages));
+                }
+            }
+            
+            renderTripChat(tripId);
+        }
+
+        function replyToMessage(msgId) {
+            const input = document.getElementById('chatMessageInput');
+            input.focus();
+            input.placeholder = `Reply to message...`;
+            input.dataset.replyTo = msgId;
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--accent-primary);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                font-size: 0.9rem;
+                z-index: 10001;
+                animation: fadeInUp 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Add Enter key listener for chat
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatInput = document.getElementById('chatMessageInput');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendChatMessage();
+                    }
+                });
+            }
+        });
 
         function renderRouteDetails(trip) {
             // Render rental providers
