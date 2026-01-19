@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0d0d12">
+    <title>Draw Your Map - Mobile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --bg-dark: #0d0d12; --bg-panel: #151520; --bg-elevated: #1c1c2a; --bg-hover: #252538;
+            --accent-primary: #6366f1; --accent-secondary: #818cf8; --accent-glow: rgba(99, 102, 241, 0.4);
+            --text-primary: #f1f1f4; --text-secondary: #9494a8; --text-muted: #5e5e72;
+            --border-subtle: rgba(255, 255, 255, 0.08); --border-accent: rgba(99, 102, 241, 0.5);
+            --success: #22c55e; --warning: #f59e0b; --danger: #ef4444; --serendipity: #f472b6;
+            --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+        }
+        html, body { 
+            font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg-dark); 
+            color: var(--text-primary); height: 100%; overflow: hidden; touch-action: manipulation;
+        }
+        .mobile-app { display: flex; flex-direction: column; height: 100%; padding-top: var(--safe-top); }
+        
+        /* Header */
+        .mobile-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; }
+        .header-logo .icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--accent-primary), #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .header-actions { display: flex; gap: 8px; }
+        .header-btn { width: 36px; height: 36px; border-radius: 10px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        /* Main Content */
+        .mobile-content { flex: 1; overflow: hidden; position: relative; }
+        .screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; display: none; background: var(--bg-dark); }
+        .screen.active { display: flex; flex-direction: column; }
+        .screen-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex; background: var(--bg-panel); border-top: 1px solid var(--border-subtle);
+            padding: 8px 0; padding-bottom: calc(8px + var(--safe-bottom));
+        }
+        .nav-item {
+            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 8px 4px; background: none; border: none; color: var(--text-muted);
+            font-size: 0.65rem; font-family: inherit; cursor: pointer; transition: all 0.2s;
+        }
+        .nav-item .nav-icon { font-size: 1.4rem; transition: transform 0.2s; }
+        .nav-item.active { color: var(--accent-primary); }
+        .nav-item.active .nav-icon { transform: scale(1.1); }
+        .nav-item.serendipity.active { color: var(--serendipity); }
+
+        /* Map Screen */
+        #mapScreen .map-container { flex: 1; position: relative; }
+        #mobileMap { width: 100%; height: 100%; }
+        .map-stats-overlay {
+            position: absolute; top: 12px; left: 12px; right: 12px;
+            display: flex; gap: 8px; z-index: 50;
+        }
+        .stat-chip {
+            display: flex; align-items: center; gap: 6px; padding: 8px 12px;
+            background: rgba(21, 21, 32, 0.9); backdrop-filter: blur(10px);
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+        }
+        .stat-chip .value { color: var(--accent-primary); }
+        .map-fab {
+            position: absolute; bottom: 20px; right: 16px; width: 56px; height: 56px;
+            background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
+            border: none; border-radius: 16px; color: white; font-size: 1.5rem;
+            cursor: pointer; box-shadow: 0 4px 20px var(--accent-glow); z-index: 50;
+        }
+
+        /* Serendipity Screen */
+        .serendipity-header {
+            padding: 16px; background: linear-gradient(135deg, #1e1b4b, #312e81);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .serendipity-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+        .serendipity-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+        
+        /* Filter Section */
+        .filter-section { padding: 12px 16px; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); }
+        .filter-row { display: flex; gap: 8px; margin-bottom: 10px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+        .filter-row::-webkit-scrollbar { display: none; }
+        .filter-chip {
+            flex-shrink: 0; padding: 8px 14px; background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+            border-radius: 20px; font-size: 0.8rem; color: var(--text-secondary); cursor: pointer; white-space: nowrap;
+        }
+        .filter-chip.active { background: var(--accent-primary); border-color: var(--accent-primary); color: white; }
+        .filter-chip.serendipity.active { background: var(--serendipity); border-color: var(--serendipity); }
+        
+        .search-bar {
+            display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+            background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 12px;
+        }
+        .search-bar input {
+            flex: 1; background: none; border: none; color: var(--text-primary);
+            font-size: 0.9rem; font-family: inherit; outline: none;
+        }
+        .search-bar input::placeholder { color: var(--text-muted); }
+        .search-icon { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* Trip List */
+        .trip-list { padding: 12px 16px; }
+        .trip-list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .trip-list-title { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .trip-count { font-size: 0.75rem; color: var(--text-muted); }
+        
+        .trip-card-mobile {
+            background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 16px;
+            padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s;
+            border-left: 4px solid var(--accent-primary);
+        }
+        .trip-card-mobile:active { transform: scale(0.98); background: var(--bg-hover); }
+        .trip-card-mobile.completed { border-left-color: var(--success); }
+        .trip-card-mobile.personal { border-left-color: var(--serendipity); }
+        
+        .trip-card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+        .trip-icon-large { font-size: 2rem; }
+        .trip-info { flex: 1; }
+        .trip-name-mobile { font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
+        .trip-location { font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
+        .trip-badge { padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: 600; }
+        .trip-badge.personal { background: rgba(244, 114, 182, 0.2); color: var(--serendipity); }
+        .trip-badge.completed { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+        
+        .trip-meta-row { display: flex; gap: 16px; margin-bottom: 10px; }
+        .trip-meta-item { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--text-secondary); }
+        
+        .trip-tags-mobile { display: flex; flex-wrap: wrap; gap: 6px; }
+        .trip-tag {
+            padding: 4px 10px; border-radius: 12px; font-size: 0.7rem;
+            background: var(--bg-dark); color: var(--text-secondary);
+        }
+        .trip-tag.scenic { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+        .trip-tag.adventure { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+        .trip-tag.camping { background: rgba(20, 184, 166, 0.2); color: #14b8a6; }
+        .trip-tag.fourx4 { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .trip-tag.wildlife { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .trip-tag.historic { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+        .trip-tag.epic { background: rgba(236, 72, 153, 0.2); color: #ec4899; }
+
+        /* Trip Detail Modal */
+        .trip-detail-modal {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-dark);
+            z-index: 1000; display: none; flex-direction: column;
+        }
+        .trip-detail-modal.active { display: flex; }
+        
+        .detail-header {
+            position: relative; min-height: 200px; padding: 60px 20px 20px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+            display: flex; flex-direction: column; justify-content: flex-end;
+        }
+        .detail-back-btn {
+            position: absolute; top: calc(12px + var(--safe-top)); left: 12px;
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px); border: none; color: white; font-size: 1.2rem; cursor: pointer;
+        }
+        .detail-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .detail-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .detail-meta { display: flex; gap: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.8); flex-wrap: wrap; }
+        
+        .detail-tabs {
+            display: flex; background: var(--bg-elevated); border-bottom: 1px solid var(--border-subtle);
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+        }
+        .detail-tabs::-webkit-scrollbar { display: none; }
+        .detail-tab {
+            flex-shrink: 0; padding: 14px 20px; background: none; border: none;
+            color: var(--text-secondary); font-size: 0.85rem; font-weight: 500;
+            border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap;
+        }
+        .detail-tab.active { color: var(--accent-primary); border-bottom-color: var(--accent-primary); }
+        
+        .detail-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .detail-section { padding: 20px; }
+        .detail-section-title { font-size: 1rem; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .detail-text { font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); }
+        
+        .highlight-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .highlight-item {
+            padding: 10px 16px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 20px; font-size: 0.85rem;
+        }
+        
+        .info-card {
+            background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+            border-radius: 12px; padding: 16px; margin-bottom: 12px;
+        }
+        .info-card.warning { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3); }
+        .info-card h4 { font-size: 0.9rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .info-list { list-style: none; }
+        .info-list li { padding: 8px 0; border-bottom: 1px solid var(--border-subtle); font-size: 0.85rem; color: var(--text-secondary); }
+        .info-list li:last-child { border-bottom: none; }
+
+        /* Profile Screen */
+        .profile-header {
+            padding: 30px 20px; text-align: center;
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover));
+        }
+        .profile-avatar {
+            width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-primary), #8b5cf6);
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 12px;
+        }
+        .profile-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+        .profile-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: var(--bg-dark); border-radius: 20px; font-size: 0.8rem; }
+        
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            padding: 16px; margin: -30px 16px 16px; background: var(--bg-panel);
+            border-radius: 16px; border: 1px solid var(--border-subtle); position: relative;
+        }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); }
+        .stat-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+        
+        .menu-section { padding: 0 16px 16px; }
+        .menu-title { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; padding-left: 4px; }
+        .menu-item {
+            display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+            background: var(--bg-elevated); border-radius: 12px; margin-bottom: 8px; cursor: pointer;
+        }
+        .menu-item:active { background: var(--bg-hover); }
+        .menu-icon { font-size: 1.3rem; }
+        .menu-text { flex: 1; font-size: 0.9rem; }
+        .menu-arrow { color: var(--text-muted); }
+
+        /* Empty State */
+        .empty-state { text-align: center; padding: 60px 30px; }
+        .empty-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.5; }
+        .empty-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+        .empty-text { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* Animations */
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .trip-detail-modal.active { animation: slideUp 0.3s ease; }
+
+        /* Leaflet Customization */
+        .leaflet-container { background: #1a1a2e; }
+        .leaflet-control-zoom { border: none !important; }
+        .leaflet-control-zoom a { background: var(--bg-panel) !important; color: var(--text-primary) !important; border: 1px solid var(--border-subtle) !important; }
+        .leaflet-popup-content-wrapper { background: var(--bg-panel) !important; border-radius: 12px !important; }
+        .leaflet-popup-content { color: var(--text-primary) !important; }
+        .leaflet-popup-tip { background: var(--bg-panel) !important; }
+    </style>
+</head>
+<body>
+    <div class="mobile-app">
+        <!-- Header -->
+        <header class="mobile-header">
+            <div class="header-logo">
+                <div class="icon" id="headerIcon">🗺️</div>
+                <span id="headerTitle">Draw Your Map</span>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="showNotifications()">🔔</button>
+                <button class="header-btn" onclick="switchToScreen('profile')">👤</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="mobile-content">
+            <!-- Map Screen -->
+            <div id="mapScreen" class="screen active">
+                <div class="map-container">
+                    <div class="map-stats-overlay">
+                        <div class="stat-chip"><span class="value" id="countriesCount">0</span> countries</div>
+                        <div class="stat-chip"><span class="value" id="continentsCount">0</span> continents</div>
+                    </div>
+                    <div id="mobileMap"></div>
+                    <button class="map-fab" onclick="showCountryPicker()">+</button>
+                </div>
+            </div>
+
+            <!-- Serendipity Screen -->
+            <div id="serendipityScreen" class="screen">
+                <div class="screen-scroll">
+                    <div class="serendipity-header">
+                        <div class="serendipity-title">🛣️ Road Trips</div>
+                        <div class="serendipity-subtitle">Discover epic routes around the world</div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <div class="search-bar">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="tripSearch" placeholder="Search road trips..." oninput="filterTrips()">
+                        </div>
+                        
+                        <div style="margin-top: 12px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">Continent</div>
+                            <div class="filter-row" id="continentFilters">
+                                <button class="filter-chip active" data-continent="all" onclick="setContinent('all')">🌍 All</button>
+                                <button class="filter-chip" data-continent="africa" onclick="setContinent('africa')">🌍 Africa</button>
+                                <button class="filter-chip" data-continent="europe" onclick="setContinent('europe')">🇪🇺 Europe</button>
+                                <button class="filter-chip" data-continent="north-america" onclick="setContinent('north-america')">🌎 North America</button>
+                                <button class="filter-chip" data-continent="south-america" onclick="setContinent('south-america')">🌎 South America</button>
+                                <button class="filter-chip" data-continent="asia" onclick="setContinent('asia')">🌏 Asia</button>
+                                <button class="filter-chip" data-continent="oceania" onclick="setContinent('oceania')">🌏 Oceania</button>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">Type</div>
+                            <div class="filter-row" id="typeFilters">
+                                <button class="filter-chip serendipity active" data-type="all" onclick="setType('all')">All</button>
+                                <button class="filter-chip serendipity" data-type="scenic" onclick="setType('scenic')">🏞️ Scenic</button>
+                                <button class="filter-chip serendipity" data-type="adventure" onclick="setType('adventure')">⛰️ Adventure</button>
+                                <button class="filter-chip serendipity" data-type="historic" onclick="setType('historic')">🏛️ Historic</button>
+                                <button class="filter-chip serendipity" data-type="camping" onclick="setType('camping')">🏕️ Camping</button>
+                                <button class="filter-chip serendipity" data-type="wildlife" onclick="setType('wildlife')">🦁 Wildlife</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-list">
+                        <div class="trip-list-header">
+                            <span class="trip-list-title">Available Trips</span>
+                            <span class="trip-count" id="tripCount">0 trips</span>
+                        </div>
+                        <div id="tripListContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Screen -->
+            <div id="profileScreen" class="screen">
+                <div class="screen-scroll">
+                    <div class="profile-header">
+                        <div class="profile-avatar">🧭</div>
+                        <div class="profile-name" id="profileName">Explorer</div>
+                        <div class="profile-badge">🚗 <span id="profileBadge">Road Tripper</span></div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="profileCountries">0</div>
+                            <div class="stat-label">Countries</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="profileTrips">0</div>
+                            <div class="stat-label">Trips</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="profileKm">0</div>
+                            <div class="stat-label">KM Driven</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-section">
+                        <div class="menu-title">My Travel</div>
+                        <div class="menu-item" onclick="showCompletedTrips()">
+                            <span class="menu-icon">✅</span>
+                            <span class="menu-text">Completed Trips</span>
+                            <span class="menu-arrow">›</span>
+                        </div>
+                        <div class="menu-item" onclick="showWishlist()">
+                            <span class="menu-icon">💫</span>
+                            <span class="menu-text">Wishlist</span>
+                            <span class="menu-arrow">›</span>
+                        </div>
+                        <div class="menu-item" onclick="showPlannedTrips()">
+                            <span class="menu-icon">📅</span>
+                            <span class="menu-text">Planned Trips</span>
+                            <span class="menu-arrow">›</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-section">
+                        <div class="menu-title">Settings</div>
+                        <div class="menu-item">
+                            <span class="menu-icon">👤</span>
+                            <span class="menu-text">Edit Profile</span>
+                            <span class="menu-arrow">›</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="menu-icon">🌙</span>
+                            <span class="menu-text">Dark Mode</span>
+                            <span class="menu-arrow">✓</span>
+                        </div>
+                        <div class="menu-item" onclick="window.location.href='index.html'">
+                            <span class="menu-icon">💻</span>
+                            <span class="menu-text">Switch to Desktop</span>
+                            <span class="menu-arrow">›</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchToScreen('map')" id="navMap">
+                <span class="nav-icon">🗺️</span>
+                <span>Map</span>
+            </button>
+            <button class="nav-item serendipity" onclick="switchToScreen('serendipity')" id="navSerendipity">
+                <span class="nav-icon">🛣️</span>
+                <span>Road Trips</span>
+            </button>
+            <button class="nav-item" onclick="switchToScreen('profile')" id="navProfile">
+                <span class="nav-icon">👤</span>
+                <span>Profile</span>
+            </button>
+        </nav>
+
+        <!-- Trip Detail Modal -->
+        <div class="trip-detail-modal" id="tripDetailModal">
+            <div class="detail-header" id="detailHeader">
+                <button class="detail-back-btn" onclick="closeTripDetail()">←</button>
+                <div class="detail-icon" id="detailIcon">🛣️</div>
+                <div class="detail-title" id="detailTitle">Trip Name</div>
+                <div class="detail-meta" id="detailMeta"></div>
+            </div>
+            
+            <div class="detail-tabs">
+                <button class="detail-tab active" onclick="switchDetailTab('overview')">Overview</button>
+                <button class="detail-tab" onclick="switchDetailTab('route')">Route</button>
+                <button class="detail-tab" onclick="switchDetailTab('tips')">Tips</button>
+                <button class="detail-tab" onclick="switchDetailTab('budget')">Budget</button>
+            </div>
+            
+            <div class="detail-content" id="detailContent"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        // App State
+        let currentScreen = 'map';
+        let currentContinent = 'all';
+        let currentType = 'all';
+        let currentDetailTrip = null;
+        let currentDetailTab = 'overview';
+        let mobileMap = null;
+        let completedTrips = JSON.parse(localStorage.getItem('dym_completedTrips') || '[]');
+        let countryColors = JSON.parse(localStorage.getItem('dym_countryColors') || '{}');
+        let userName = localStorage.getItem('dym_userName') || 'Explorer';
+
+        // Road Trips Data with Continent info - Expanded Library from Reddit, Forums, Travel Agencies
+        const roadTrips = [
+            // ===== AFRICA =====
+            { id: 'namibia_highlights', name: 'Namibia Highlights', icon: '🇳🇦', country: 'Namibia', continent: 'africa', distance: '3500 km', duration: '12-16 days', rating: 4.9, difficulty: 'moderate', tags: ['fourx4', 'adventure', 'camping', 'wildlife'], personalTrip: true, description: 'The ultimate Namibia adventure: red dunes of Sossusvlei, Skeleton Coast, Etosha wildlife.', bestSeason: 'May-October (dry season)', budget: '€2500-4000', highlights: ['Dune 45 sunrise', 'Deadvlei', 'Etosha waterholes', 'Skeleton Coast', 'Desert elephants'], mustKnow: ['4x4 with rooftop tent essential', 'Fill up at EVERY station', 'Book NWR camps in advance', 'Carry 20+ liters of water'], waypoints: [{ name: 'Windhoek', desc: 'Start your adventure' }, { name: 'Swakopmund', desc: 'Coastal town' }, { name: 'Sossusvlei', desc: 'Iconic red dunes' }, { name: 'Etosha', desc: 'Wildlife paradise' }], costs: { fuel: '€300-400', accommodation: '€600-1000', food: '€300-500', total: '€2,500-4,000' } },
+            { id: 'garden_route', name: 'Garden Route', icon: '🇿🇦', country: 'South Africa', continent: 'africa', distance: '750 km', duration: '5-7 days', rating: 4.6, difficulty: 'easy', tags: ['scenic', 'wildlife', 'adventure'], description: 'South Africa\'s most scenic coastal drive through forests and beaches.', bestSeason: 'Year-round', budget: '€800-1500', highlights: ['Tsitsikamma', 'Knysna Heads', 'Bloukrans Bungee', 'Whale watching'], mustKnow: ['Safe for tourists', 'Many adventure activities', 'Excellent infrastructure'], waypoints: [{ name: 'Cape Town', desc: 'Start here' }, { name: 'Hermanus', desc: 'Whale watching' }, { name: 'Knysna', desc: 'Lagoon town' }, { name: 'Port Elizabeth', desc: 'End point' }], costs: { fuel: '€100-150', accommodation: '€300-600', food: '€150-300', total: '€800-1,500' } },
+            { id: 'botswana_safari', name: 'Botswana Self-Drive Safari', icon: '🇧🇼', country: 'Botswana', continent: 'africa', distance: '1200 km', duration: '10-14 days', rating: 4.8, difficulty: 'challenging', tags: ['fourx4', 'wildlife', 'camping', 'adventure'], description: 'Ultimate self-drive safari through Okavango Delta, Moremi and Chobe.', bestSeason: 'May-October (dry season)', budget: '$3000-5000', highlights: ['Okavango Delta', 'Moremi Game Reserve', 'Chobe elephants', 'Savuti predators'], mustKnow: ['4x4 essential - sandy terrain', 'Book campsites months ahead', 'Carry Tracks4Africa GPS', 'No night driving allowed'], waypoints: [{ name: 'Maun', desc: 'Gateway to Okavango' }, { name: 'Moremi', desc: 'Prime wildlife' }, { name: 'Savuti', desc: 'Predator paradise' }, { name: 'Kasane', desc: 'Chobe riverfront' }], costs: { fuel: '$400-600', accommodation: '$800-1500', food: '$300-500', total: '$3,000-5,000' } },
+            { id: 'morocco_sahara', name: 'Morocco Sahara Trail', icon: '🇲🇦', country: 'Morocco', continent: 'africa', distance: '1500 km', duration: '7-10 days', rating: 4.7, difficulty: 'moderate', tags: ['adventure', 'scenic', 'historic', 'camping'], description: 'From Marrakech through Atlas Mountains to the Sahara dunes of Merzouga.', bestSeason: 'March-May, Sept-Nov', budget: '€800-1500', highlights: ['Ait Benhaddou', 'Dades Gorge', 'Todra Gorge', 'Erg Chebbi dunes'], mustKnow: ['4x4 for desert sections', 'Bring cash for rural areas', 'Avoid summer heat', 'Hire local guide for dunes'], waypoints: [{ name: 'Marrakech', desc: 'Imperial city' }, { name: 'Ait Benhaddou', desc: 'UNESCO kasbah' }, { name: 'Dades Valley', desc: 'Rose valley' }, { name: 'Merzouga', desc: 'Sahara dunes' }], costs: { fuel: '€150-250', accommodation: '€300-600', food: '€150-300', total: '€800-1,500' } },
+            { id: 'tanzania_northern', name: 'Tanzania Northern Circuit', icon: '🇹🇿', country: 'Tanzania', continent: 'africa', distance: '800 km', duration: '7-10 days', rating: 4.7, difficulty: 'moderate', tags: ['wildlife', 'adventure', 'scenic'], description: 'Classic safari route through Serengeti, Ngorongoro and Tarangire.', bestSeason: 'June-October, Jan-Feb', budget: '$2500-4000', highlights: ['Serengeti migration', 'Ngorongoro Crater', 'Tarangire elephants', 'Lake Manyara'], mustKnow: ['4x4 required in parks', 'Book lodges early', 'Guide recommended', 'Park fees are expensive'], waypoints: [{ name: 'Arusha', desc: 'Safari capital' }, { name: 'Tarangire', desc: 'Elephant paradise' }, { name: 'Ngorongoro', desc: 'Crater wildlife' }, { name: 'Serengeti', desc: 'Endless plains' }], costs: { fuel: '$300-500', accommodation: '$1000-2000', food: '$200-400', total: '$2,500-4,000' } },
+
+            // ===== EUROPE =====
+            { id: 'wild_atlantic_way', name: 'Wild Atlantic Way', icon: '🇮🇪', country: 'Ireland', continent: 'europe', distance: '2500 km', duration: '10-14 days', rating: 4.8, difficulty: 'easy', tags: ['scenic', 'historic', 'adventure'], description: 'Ireland\'s stunning coastal route along dramatic cliffs and charming villages.', bestSeason: 'May-September', budget: '€1500-3000', highlights: ['Cliffs of Moher', 'Ring of Kerry', 'Dingle Peninsula', 'Connemara'], mustKnow: ['Drive on the left!', 'Roads are narrow', 'Weather changes quickly', 'Book B&Bs ahead'], waypoints: [{ name: 'Cork', desc: 'Starting point' }, { name: 'Dingle', desc: 'Charming town' }, { name: 'Cliffs of Moher', desc: 'Iconic cliffs' }, { name: 'Galway', desc: 'Vibrant city' }], costs: { fuel: '€200-300', accommodation: '€600-1200', food: '€300-500', total: '€1,500-3,000' } },
+            { id: 'transfagarasan', name: 'Transfăgărășan', icon: '🇷🇴', country: 'Romania', continent: 'europe', distance: '150 km', duration: '1-2 days', rating: 4.9, difficulty: 'moderate', tags: ['scenic', 'adventure', 'epic'], description: 'The best driving road in the world according to Top Gear.', bestSeason: 'June-October', budget: '€200-400', highlights: ['Balea Lake', 'Vidraru Dam', 'Mountain tunnels', 'Hairpin turns'], mustKnow: ['Open late June to October only', 'Start early for fewer crowds', 'Steep drops, no barriers'], waypoints: [{ name: 'Curtea de Argeș', desc: 'Southern approach' }, { name: 'Balea Lake', desc: 'Highest point' }, { name: 'Sibiu', desc: 'Historic city' }], costs: { fuel: '€30-50', accommodation: '€50-150', food: '€30-60', total: '€200-400' } },
+            { id: 'norway_atlantic_road', name: 'Atlantic Road', icon: '🇳🇴', country: 'Norway', continent: 'europe', distance: '8.3 km', duration: '1 day', rating: 4.9, difficulty: 'easy', tags: ['scenic', 'epic'], description: 'Norway\'s engineering marvel - bridges hopping across the Atlantic.', bestSeason: 'May-September', budget: '€100-200', highlights: ['Storseisundet Bridge', 'Storm watching', 'Fishing villages', 'Midnight sun'], mustKnow: ['Best in stormy weather', 'Part of larger coastal route', 'Stop at viewpoints'], waypoints: [{ name: 'Kristiansund', desc: 'Coastal city' }, { name: 'Atlantic Road', desc: 'The drive' }, { name: 'Molde', desc: 'Rose city' }], costs: { fuel: '€20-30', accommodation: '€80-150', food: '€30-50', total: '€100-200' } },
+            { id: 'ring_road_iceland', name: 'Ring Road Iceland', icon: '🇮🇸', country: 'Iceland', continent: 'europe', distance: '1332 km', duration: '7-10 days', rating: 4.9, difficulty: 'moderate', tags: ['scenic', 'adventure', 'epic', 'camping'], description: 'Circle Iceland through glaciers, waterfalls, and volcanic landscapes.', bestSeason: 'June-August', budget: '€2000-4000', highlights: ['Northern Lights', 'Blue Lagoon', 'Jökulsárlón', 'Geysir'], mustKnow: ['Weather changes rapidly', '4x4 for F-roads only', 'Book ahead', 'Very expensive'], waypoints: [{ name: 'Reykjavik', desc: 'Capital start' }, { name: 'Vik', desc: 'Black sand beach' }, { name: 'Höfn', desc: 'Glacier lagoon' }, { name: 'Akureyri', desc: 'Northern capital' }], costs: { fuel: '€300-400', accommodation: '€800-1500', food: '€400-700', total: '€2,000-4,000' } },
+            { id: 'nc500_scotland', name: 'North Coast 500', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', country: 'Scotland', continent: 'europe', distance: '830 km', duration: '5-7 days', rating: 4.8, difficulty: 'easy', tags: ['scenic', 'historic', 'adventure'], description: 'Scotland\'s answer to Route 66 - dramatic highlands and coastal beauty.', bestSeason: 'May-September', budget: '£800-1500', highlights: ['Dunrobin Castle', 'Smoo Cave', 'Bealach na Bà pass', 'Isle of Skye detour'], mustKnow: ['Single-track roads', 'Use passing places', 'Book accommodation early', 'Midges in summer!'], waypoints: [{ name: 'Inverness', desc: 'Highland capital' }, { name: 'John O\'Groats', desc: 'Britain\'s tip' }, { name: 'Durness', desc: 'Remote beauty' }, { name: 'Applecross', desc: 'Mountain pass' }], costs: { fuel: '£150-250', accommodation: '€400-800', food: '£200-400', total: '£800-1,500' } },
+            { id: 'amalfi_coast', name: 'Amalfi Coast', icon: '🇮🇹', country: 'Italy', continent: 'europe', distance: '50 km', duration: '2-4 days', rating: 4.7, difficulty: 'moderate', tags: ['scenic', 'historic', 'epic'], description: 'Italy\'s most famous coastal drive - clifftop villages and Mediterranean views.', bestSeason: 'May-June, Sept-Oct', budget: '€500-1200', highlights: ['Positano', 'Ravello gardens', 'Amalfi Cathedral', 'Limoncello tasting'], mustKnow: ['Very narrow roads', 'Heavy traffic in summer', 'Park and walk in villages', 'Start early morning'], waypoints: [{ name: 'Sorrento', desc: 'Gateway town' }, { name: 'Positano', desc: 'Cliffside icon' }, { name: 'Amalfi', desc: 'Historic center' }, { name: 'Ravello', desc: 'Garden paradise' }], costs: { fuel: '€30-50', accommodation: '€300-800', food: '€150-300', total: '€500-1,200' } },
+            { id: 'swiss_alps_tour', name: 'Swiss Alps Grand Tour', icon: '🇨🇭', country: 'Switzerland', continent: 'europe', distance: '1600 km', duration: '7-10 days', rating: 4.9, difficulty: 'moderate', tags: ['scenic', 'adventure', 'epic'], description: 'Switzerland\'s official grand tour through alpine passes and turquoise lakes.', bestSeason: 'June-September', budget: 'CHF 2000-4000', highlights: ['Grimsel Pass', 'Furka Pass', 'Lake Lucerne', 'Matterhorn views'], mustKnow: ['Many passes close in winter', 'Expensive country', 'Vignette required for highways', 'Book mountain hotels early'], waypoints: [{ name: 'Zurich', desc: 'Start point' }, { name: 'Lucerne', desc: 'Lake city' }, { name: 'Zermatt', desc: 'Matterhorn base' }, { name: 'St. Moritz', desc: 'Alpine glamour' }], costs: { fuel: 'CHF 200-350', accommodation: 'CHF 800-1500', food: 'CHF 400-700', total: 'CHF 2,000-4,000' } },
+            { id: 'dolomites', name: 'Dolomites Circuit', icon: '🇮🇹', country: 'Italy', continent: 'europe', distance: '400 km', duration: '4-6 days', rating: 4.8, difficulty: 'moderate', tags: ['scenic', 'adventure', 'epic'], description: 'Italian Alps at their finest - dramatic peaks, alpine meadows, and mountain passes.', bestSeason: 'June-September', budget: '€600-1200', highlights: ['Tre Cime di Lavaredo', 'Passo Stelvio', 'Lake Braies', 'Seceda viewpoint'], mustKnow: ['Passes crowded in August', 'Cable cars for best views', 'Great hiking opportunities', 'Book rifugios ahead'], waypoints: [{ name: 'Bolzano', desc: 'Gateway city' }, { name: 'Cortina', desc: 'Olympic resort' }, { name: 'Tre Cime', desc: 'Iconic peaks' }, { name: 'Ortisei', desc: 'Charming village' }], costs: { fuel: '€80-120', accommodation: '€300-700', food: '€150-300', total: '€600-1,200' } },
+            { id: 'romantic_road', name: 'Romantic Road', icon: '🇩🇪', country: 'Germany', continent: 'europe', distance: '460 km', duration: '3-5 days', rating: 4.6, difficulty: 'easy', tags: ['scenic', 'historic'], description: 'Germany\'s most famous route through medieval towns and fairy-tale castles.', bestSeason: 'May-October', budget: '€400-800', highlights: ['Neuschwanstein Castle', 'Rothenburg ob der Tauber', 'Würzburg Residenz', 'Füssen'], mustKnow: ['Popular with tour buses', 'Best in shoulder season', 'Christmas markets magical', 'Castle tickets sell out'], waypoints: [{ name: 'Würzburg', desc: 'Wine city' }, { name: 'Rothenburg', desc: 'Medieval gem' }, { name: 'Augsburg', desc: 'Roman history' }, { name: 'Füssen', desc: 'Castle country' }], costs: { fuel: '€60-100', accommodation: '€200-450', food: '€100-200', total: '€400-800' } },
+            { id: 'andalusia', name: 'Andalusia Explorer', icon: '🇪🇸', country: 'Spain', continent: 'europe', distance: '800 km', duration: '7-10 days', rating: 4.7, difficulty: 'easy', tags: ['scenic', 'historic', 'adventure'], description: 'Southern Spain\'s cultural treasures - Moorish palaces, white villages, flamenco.', bestSeason: 'March-May, Sept-Nov', budget: '€600-1200', highlights: ['Alhambra Granada', 'Seville Cathedral', 'Ronda cliffs', 'Córdoba Mezquita'], mustKnow: ['Book Alhambra months ahead', 'Very hot in summer', 'Siesta hours observed', 'Great tapas culture'], waypoints: [{ name: 'Seville', desc: 'Flamenco capital' }, { name: 'Córdoba', desc: 'Moorish history' }, { name: 'Granada', desc: 'Alhambra palace' }, { name: 'Ronda', desc: 'Cliffside drama' }], costs: { fuel: '€100-150', accommodation: '€300-600', food: '€150-300', total: '€600-1,200' } },
+
+            // ===== NORTH AMERICA =====
+            { id: 'route_66', name: 'Route 66 Classic', icon: '🇺🇸', country: 'USA', continent: 'north-america', distance: '3940 km', duration: '14-21 days', rating: 4.7, difficulty: 'easy', tags: ['historic', 'scenic', 'adventure'], description: 'The Mother Road - Chicago to Santa Monica through the heart of America.', bestSeason: 'Spring or Fall', budget: '$2000-4000', highlights: ['Cadillac Ranch', 'Grand Canyon detour', 'Santa Monica Pier', 'Wigwam Motel'], mustKnow: ['Many sections now I-40', 'Book quirky motels ahead', 'Gas stations can be sparse'], waypoints: [{ name: 'Chicago', desc: 'Starting point' }, { name: 'St. Louis', desc: 'Gateway Arch' }, { name: 'Amarillo', desc: 'Cadillac Ranch' }, { name: 'Santa Monica', desc: 'End of the road' }], costs: { fuel: '$400-600', accommodation: '$800-1500', food: '$400-700', total: '$2,000-4,000' } },
+            { id: 'pacific_coast_highway', name: 'Pacific Coast Highway', icon: '🇺🇸', country: 'USA', continent: 'north-america', distance: '1000 km', duration: '5-7 days', rating: 4.9, difficulty: 'easy', tags: ['scenic', 'epic', 'adventure'], description: 'America\'s most iconic coastal drive from San Francisco to Los Angeles.', bestSeason: 'April-October', budget: '$1500-3000', highlights: ['Big Sur', 'Bixby Bridge', 'Hearst Castle', 'Monterey aquarium'], mustKnow: ['Fog common in mornings', 'Landslides can close road', 'Drive north to south for ocean views', 'Book Big Sur early'], waypoints: [{ name: 'San Francisco', desc: 'Golden Gate start' }, { name: 'Monterey', desc: 'Cannery Row' }, { name: 'Big Sur', desc: 'Coastal drama' }, { name: 'Los Angeles', desc: 'Beach finish' }], costs: { fuel: '$150-250', accommodation: '$700-1500', food: '$300-600', total: '$1,500-3,000' } },
+            { id: 'grand_circle', name: 'Utah Grand Circle', icon: '🇺🇸', country: 'USA', continent: 'north-america', distance: '2000 km', duration: '10-14 days', rating: 4.9, difficulty: 'easy', tags: ['scenic', 'adventure', 'epic', 'camping'], description: 'Utah\'s legendary loop through 5 national parks and Monument Valley.', bestSeason: 'March-May, Sept-Nov', budget: '$1500-3000', highlights: ['Zion Angels Landing', 'Bryce hoodoos', 'Arches Delicate Arch', 'Monument Valley'], mustKnow: ['Permits needed for some hikes', 'Very hot in summer', 'Book camping 6 months ahead', 'Annual park pass worth it'], waypoints: [{ name: 'Las Vegas', desc: 'Start point' }, { name: 'Zion', desc: 'Red canyons' }, { name: 'Bryce', desc: 'Hoodoo wonderland' }, { name: 'Moab', desc: 'Arches & Canyonlands' }], costs: { fuel: '$200-350', accommodation: '$600-1200', food: '$300-500', total: '$1,500-3,000' } },
+            { id: 'icefields_parkway', name: 'Icefields Parkway', icon: '🇨🇦', country: 'Canada', continent: 'north-america', distance: '232 km', duration: '2-4 days', rating: 4.9, difficulty: 'easy', tags: ['scenic', 'epic', 'adventure'], description: 'Canada\'s most stunning drive through the heart of the Rockies.', bestSeason: 'June-September', budget: 'C$500-1000', highlights: ['Peyto Lake', 'Athabasca Glacier', 'Bow Lake', 'Columbia Icefield'], mustKnow: ['Fill up gas in Banff or Jasper', 'Wildlife on roads', 'Weather changes fast', 'Book Lake Louise early'], waypoints: [{ name: 'Banff', desc: 'Mountain town' }, { name: 'Lake Louise', desc: 'Turquoise gem' }, { name: 'Columbia Icefield', desc: 'Glacier walk' }, { name: 'Jasper', desc: 'Northern terminus' }], costs: { fuel: 'C$60-100', accommodation: 'C$250-500', food: 'C$100-200', total: 'C$500-1,000' } },
+            { id: 'cabot_trail', name: 'Cabot Trail', icon: '🇨🇦', country: 'Canada', continent: 'north-america', distance: '298 km', duration: '2-4 days', rating: 4.8, difficulty: 'easy', tags: ['scenic', 'adventure'], description: 'Nova Scotia\'s spectacular coastal loop through Cape Breton Highlands.', bestSeason: 'June-October', budget: 'C$400-800', highlights: ['Skyline Trail', 'Whale watching', 'Celtic culture', 'Fall colors'], mustKnow: ['Drive clockwise for best views', 'Book whale tours ahead', 'Bring layers', 'Fall colors spectacular'], waypoints: [{ name: 'Baddeck', desc: 'Gateway town' }, { name: 'Ingonish', desc: 'Beach stop' }, { name: 'Pleasant Bay', desc: 'Whale watching' }, { name: 'Cheticamp', desc: 'Acadian culture' }], costs: { fuel: 'C$50-80', accommodation: 'C$200-400', food: 'C$100-200', total: 'C$400-800' } },
+            { id: 'baja_california', name: 'Baja California', icon: '🇲🇽', country: 'Mexico', continent: 'north-america', distance: '1700 km', duration: '10-14 days', rating: 4.6, difficulty: 'moderate', tags: ['adventure', 'scenic', 'camping', 'wildlife'], description: 'Mexico\'s wild peninsula - wine country, whales, desert, and beaches.', bestSeason: 'December-April', budget: '$1000-2000', highlights: ['Valle de Guadalupe wines', 'Gray whale watching', 'Balandra beach', 'Boojum tree forest'], mustKnow: ['Mexican car insurance required', 'Gas up frequently', 'Cash needed in small towns', 'Whale season Dec-Apr'], waypoints: [{ name: 'Tijuana', desc: 'Border crossing' }, { name: 'Valle de Guadalupe', desc: 'Wine country' }, { name: 'Guerrero Negro', desc: 'Whale watching' }, { name: 'La Paz', desc: 'Beach paradise' }], costs: { fuel: '$200-350', accommodation: '$400-800', food: '$200-400', total: '$1,000-2,000' } },
+            { id: 'sea_to_sky', name: 'Sea to Sky Highway', icon: '🇨🇦', country: 'Canada', continent: 'north-america', distance: '120 km', duration: '1-2 days', rating: 4.7, difficulty: 'easy', tags: ['scenic', 'adventure'], description: 'Vancouver to Whistler through fjords and mountain scenery.', bestSeason: 'Year-round', budget: 'C$200-500', highlights: ['Shannon Falls', 'Sea to Sky Gondola', 'Whistler village', 'Brandywine Falls'], mustKnow: ['Winter conditions can be challenging', 'Stop at viewpoints', 'Whistler expensive', 'Great year-round'], waypoints: [{ name: 'Vancouver', desc: 'Start' }, { name: 'Squamish', desc: 'Outdoor hub' }, { name: 'Whistler', desc: 'Resort village' }], costs: { fuel: 'C$30-50', accommodation: 'C$100-300', food: 'C$50-100', total: 'C$200-500' } },
+
+            // ===== SOUTH AMERICA =====
+            { id: 'carretera_austral', name: 'Carretera Austral', icon: '🇨🇱', country: 'Chile', continent: 'south-america', distance: '1240 km', duration: '10-14 days', rating: 4.8, difficulty: 'challenging', tags: ['adventure', 'scenic', 'camping', 'epic'], description: 'Chile\'s legendary route through Patagonia\'s untamed wilderness.', bestSeason: 'November-March', budget: '$1500-3000', highlights: ['Marble Caves', 'Queulat Glacier', 'Ferry crossings', 'Hot springs'], mustKnow: ['4x4 recommended', 'Ferries book up fast', 'Cash only in many places', 'Fuel up at every station'], waypoints: [{ name: 'Puerto Montt', desc: 'Starting point' }, { name: 'Chaitén', desc: 'Volcano town' }, { name: 'Marble Caves', desc: 'Must see' }, { name: 'Villa O\'Higgins', desc: 'End of the road' }], costs: { fuel: '$300-500', accommodation: '$400-800', food: '$200-400', total: '$1,500-3,000' } },
+            { id: 'ruta_40', name: 'Ruta 40', icon: '🇦🇷', country: 'Argentina', continent: 'south-america', distance: '5000 km', duration: '21-30 days', rating: 4.8, difficulty: 'challenging', tags: ['adventure', 'epic', 'scenic', 'camping'], description: 'Argentina\'s legendary route from Patagonia to Bolivia along the Andes.', bestSeason: 'November-March', budget: '$2000-4000', highlights: ['Perito Moreno Glacier', 'El Chaltén hiking', 'Mendoza wine', 'Lake District'], mustKnow: ['Long distances between services', 'Wind can be extreme', '4x4 for some sections', 'Fuel up always'], waypoints: [{ name: 'El Calafate', desc: 'Glacier gateway' }, { name: 'El Chaltén', desc: 'Trekking capital' }, { name: 'Bariloche', desc: 'Lake District' }, { name: 'Mendoza', desc: 'Wine country' }], costs: { fuel: '$400-700', accommodation: '$600-1200', food: '$300-600', total: '$2,000-4,000' } },
+            { id: 'seven_lakes', name: 'Ruta de los Siete Lagos', icon: '🇦🇷', country: 'Argentina', continent: 'south-america', distance: '110 km', duration: '1-2 days', rating: 4.7, difficulty: 'easy', tags: ['scenic', 'adventure'], description: 'Argentina\'s Lake District gem - seven stunning lakes connected by mountain road.', bestSeason: 'Year-round', budget: '$200-400', highlights: ['Lake Nahuel Huapi', 'Lake Correntoso', 'Arrayanes forest', 'Villa La Angostura'], mustKnow: ['Paved and easy', 'Beautiful in all seasons', 'Chocolate shops everywhere', 'Can be done in a day'], waypoints: [{ name: 'San Martín de los Andes', desc: 'Start' }, { name: 'Lake Lácar', desc: 'First lake' }, { name: 'Lake Espejo', desc: 'Mirror lake' }, { name: 'Villa La Angostura', desc: 'End point' }], costs: { fuel: '$30-50', accommodation: '$100-200', food: '$50-100', total: '$200-400' } },
+
+            // ===== ASIA =====
+            { id: 'hai_van_pass', name: 'Hai Van Pass', icon: '🇻🇳', country: 'Vietnam', continent: 'asia', distance: '21 km', duration: '1 day', rating: 4.6, difficulty: 'moderate', tags: ['scenic', 'adventure'], description: 'Vietnam\'s legendary coastal mountain pass - Top Gear\'s best coast road.', bestSeason: 'February-August', budget: '$50-100', highlights: ['Ocean views', 'Mountain curves', 'French bunkers', 'Local food'], mustKnow: ['Rent motorbike in Da Nang', 'Start early morning', 'Watch for trucks'], waypoints: [{ name: 'Da Nang', desc: 'Start point' }, { name: 'Hai Van Summit', desc: 'Highest point' }, { name: 'Hue', desc: 'Imperial city' }], costs: { fuel: '$5-10', accommodation: '$20-50', food: '$10-20', total: '$50-100' } },
+            { id: 'japan_sanin', name: 'San\'in Coast', icon: '🇯🇵', country: 'Japan', continent: 'asia', distance: '355 km', duration: '3-5 days', rating: 4.7, difficulty: 'easy', tags: ['scenic', 'historic', 'adventure'], description: 'Japan\'s hidden coast - shrines, sand dunes, and traditional fishing villages.', bestSeason: 'April-May, Sept-Nov', budget: '¥80,000-150,000', highlights: ['Izumo Taisha shrine', 'Tottori sand dunes', 'Matsue castle', 'Ine boat houses'], mustKnow: ['Less touristy than other routes', 'Onsen everywhere', 'Seafood is incredible', 'Some English signs limited'], waypoints: [{ name: 'Matsue', desc: 'Castle town' }, { name: 'Izumo', desc: 'Grand shrine' }, { name: 'Tottori', desc: 'Sand dunes' }, { name: 'Ine', desc: 'Boat houses' }], costs: { fuel: '¥10,000-15,000', accommodation: '¥40,000-80,000', food: '¥20,000-40,000', total: '¥80,000-150,000' } },
+            { id: 'taiwan_taroko', name: 'Taroko Gorge Route', icon: '🇹🇼', country: 'Taiwan', continent: 'asia', distance: '200 km', duration: '2-3 days', rating: 4.8, difficulty: 'moderate', tags: ['scenic', 'adventure', 'epic'], description: 'Taiwan\'s most dramatic drive through marble gorges and coastal cliffs.', bestSeason: 'October-April', budget: 'NT$5,000-10,000', highlights: ['Taroko Gorge', 'Qingshui Cliffs', 'Swallow Grotto', 'Eternal Spring Shrine'], mustKnow: ['Helmet required on scooter', 'Rock fall danger', 'Book Taroko permits ahead', 'Incredible hiking'], waypoints: [{ name: 'Hualien', desc: 'Gateway city' }, { name: 'Taroko Gorge', desc: 'Marble canyon' }, { name: 'Qingshui Cliffs', desc: 'Ocean views' }, { name: 'Suao', desc: 'Coastal town' }], costs: { fuel: 'NT$500-1000', accommodation: 'NT$2000-5000', food: 'NT$1500-3000', total: 'NT$5,000-10,000' } },
+            { id: 'sri_lanka_hill', name: 'Sri Lanka Hill Country', icon: '🇱🇰', country: 'Sri Lanka', continent: 'asia', distance: '300 km', duration: '4-6 days', rating: 4.6, difficulty: 'moderate', tags: ['scenic', 'adventure', 'historic'], description: 'Tea plantations, waterfalls, and colonial hill stations of central Sri Lanka.', bestSeason: 'January-April', budget: '$300-600', highlights: ['Nuwara Eliya', 'Ella rock', 'Nine Arch Bridge', 'Tea factory tours'], mustKnow: ['Winding mountain roads', 'Train also scenic option', 'Cool weather - bring layers', 'Great vegetarian food'], waypoints: [{ name: 'Kandy', desc: 'Temple city' }, { name: 'Nuwara Eliya', desc: 'Little England' }, { name: 'Ella', desc: 'Backpacker hub' }, { name: 'Haputale', desc: 'Tea views' }], costs: { fuel: '$40-70', accommodation: '$100-250', food: '$50-120', total: '$300-600' } },
+
+            // ===== MIDDLE EAST =====
+            { id: 'jordan_kings_highway', name: 'King\'s Highway', icon: '🇯🇴', country: 'Jordan', continent: 'asia', distance: '335 km', duration: '3-5 days', rating: 4.8, difficulty: 'easy', tags: ['historic', 'scenic', 'adventure'], description: 'Ancient trading route through Jordan\'s biblical landscapes to Petra.', bestSeason: 'March-May, Sept-Nov', budget: '$400-800', highlights: ['Petra', 'Wadi Mujib canyon', 'Karak Castle', 'Dana Biosphere'], mustKnow: ['Petra needs 2 days minimum', 'Jordan Pass great value', 'Avoid summer heat', 'Friendly locals'], waypoints: [{ name: 'Amman', desc: 'Capital start' }, { name: 'Madaba', desc: 'Mosaic city' }, { name: 'Karak', desc: 'Crusader castle' }, { name: 'Petra', desc: 'Rose city' }], costs: { fuel: '$50-80', accommodation: '$150-350', food: '$80-150', total: '$400-800' } },
+            { id: 'oman_salalah', name: 'Oman Coastal Drive', icon: '🇴🇲', country: 'Oman', continent: 'asia', distance: '1000 km', duration: '5-7 days', rating: 4.7, difficulty: 'moderate', tags: ['scenic', 'adventure', 'camping'], description: 'From Muscat through dramatic wadis to the tropical south.', bestSeason: 'October-April', budget: 'OMR 300-600', highlights: ['Wadi Shab', 'Wahiba Sands', 'Jebel Shams canyon', 'Salalah monsoon'], mustKnow: ['4x4 for wadis and desert', 'Very hot in summer', 'Respectful dress required', 'Wild camping allowed'], waypoints: [{ name: 'Muscat', desc: 'Capital start' }, { name: 'Sur', desc: 'Dhow building' }, { name: 'Wahiba Sands', desc: 'Desert camp' }, { name: 'Salalah', desc: 'Tropical south' }], costs: { fuel: 'OMR 60-100', accommodation: 'OMR 150-300', food: 'OMR 60-120', total: 'OMR 300-600' } },
+
+            // ===== OCEANIA =====
+            { id: 'great_ocean_road', name: 'Great Ocean Road', icon: '🇦🇺', country: 'Australia', continent: 'oceania', distance: '243 km', duration: '2-3 days', rating: 4.7, difficulty: 'easy', tags: ['scenic', 'wildlife', 'adventure'], description: 'Australia\'s most scenic coastal drive featuring the 12 Apostles.', bestSeason: 'December-February', budget: 'A$300-600', highlights: ['12 Apostles', 'Loch Ard Gorge', 'Koalas', 'Rainforest walks'], mustKnow: ['Drive on the left', 'Many lookout points', 'Watch for wildlife'], waypoints: [{ name: 'Torquay', desc: 'Surf coast start' }, { name: 'Apollo Bay', desc: 'Charming town' }, { name: '12 Apostles', desc: 'Iconic rocks' }], costs: { fuel: 'A$50-80', accommodation: 'A$150-300', food: 'A$100-200', total: 'A$300-600' } },
+            { id: 'nz_south_island', name: 'South Island Circuit', icon: '🇳🇿', country: 'New Zealand', continent: 'oceania', distance: '2500 km', duration: '14-21 days', rating: 4.9, difficulty: 'easy', tags: ['scenic', 'adventure', 'epic', 'camping'], description: 'New Zealand\'s South Island - mountains, fjords, glaciers, and more.', bestSeason: 'December-March', budget: 'NZ$2500-5000', highlights: ['Milford Sound', 'Mount Cook', 'Queenstown', 'Franz Josef Glacier'], mustKnow: ['Book Milford Sound early', 'Campervan popular option', 'Weather unpredictable', 'Great freedom camping'], waypoints: [{ name: 'Christchurch', desc: 'Garden city' }, { name: 'Mount Cook', desc: 'Highest peak' }, { name: 'Queenstown', desc: 'Adventure capital' }, { name: 'Milford Sound', desc: 'Fjord paradise' }], costs: { fuel: 'NZ$300-500', accommodation: 'NZ$800-2000', food: 'NZ$400-800', total: 'NZ$2,500-5,000' } },
+            { id: 'tasmania_circuit', name: 'Tasmania Road Trip', icon: '🇦🇺', country: 'Australia', continent: 'oceania', distance: '1500 km', duration: '10-14 days', rating: 4.7, difficulty: 'easy', tags: ['scenic', 'wildlife', 'adventure', 'camping'], description: 'Australia\'s island state - wilderness, wildlife, and world-class food.', bestSeason: 'December-March', budget: 'A$1500-3000', highlights: ['Cradle Mountain', 'Wineglass Bay', 'MONA museum', 'Bay of Fires'], mustKnow: ['Ferry or fly from mainland', 'Wildlife everywhere', 'Pack for all seasons', 'Amazing local produce'], waypoints: [{ name: 'Hobart', desc: 'Capital start' }, { name: 'Freycinet', desc: 'Coastal park' }, { name: 'Cradle Mountain', desc: 'Wilderness icon' }, { name: 'Strahan', desc: 'West coast' }], costs: { fuel: 'A$200-350', accommodation: 'A$600-1200', food: 'A$300-600', total: 'A$1,500-3,000' } }
+        ];
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            initMobileMap();
+            renderTripList();
+            updateStats();
+        });
+
+        // Screen Navigation
+        function switchToScreen(screen) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(screen + 'Screen').classList.add('active');
+            document.getElementById('nav' + screen.charAt(0).toUpperCase() + screen.slice(1)).classList.add('active');
+            
+            currentScreen = screen;
+            
+            // Update header
+            const headerIcon = document.getElementById('headerIcon');
+            const headerTitle = document.getElementById('headerTitle');
+            if (screen === 'map') {
+                headerIcon.textContent = '🗺️';
+                headerTitle.textContent = 'Draw Your Map';
+            } else if (screen === 'serendipity') {
+                headerIcon.textContent = '🛣️';
+                headerTitle.textContent = 'Road Trips';
+            } else {
+                headerIcon.textContent = '👤';
+                headerTitle.textContent = 'Profile';
+            }
+        }
+
+        // Initialize Map
+        function initMobileMap() {
+            mobileMap = L.map('mobileMap', {
+                center: [20, 0],
+                zoom: 2,
+                zoomControl: false,
+                attributionControl: false
+            });
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(mobileMap);
+
+            L.control.zoom({ position: 'bottomleft' }).addTo(mobileMap);
+
+            // Load visited countries
+            loadVisitedCountries();
+        }
+
+        function loadVisitedCountries() {
+            const visited = Object.keys(countryColors).length;
+            document.getElementById('countriesCount').textContent = visited;
+            // Simplified - in full version would load GeoJSON
+        }
+
+        // Trip List Filtering
+        function setContinent(continent) {
+            currentContinent = continent;
+            document.querySelectorAll('#continentFilters .filter-chip').forEach(c => {
+                c.classList.toggle('active', c.dataset.continent === continent);
+            });
+            filterTrips();
+        }
+
+        function setType(type) {
+            currentType = type;
+            document.querySelectorAll('#typeFilters .filter-chip').forEach(c => {
+                c.classList.toggle('active', c.dataset.type === type);
+            });
+            filterTrips();
+        }
+
+        function filterTrips() {
+            const searchTerm = document.getElementById('tripSearch').value.toLowerCase();
+            
+            let filtered = roadTrips.filter(trip => {
+                const matchesSearch = !searchTerm || 
+                    trip.name.toLowerCase().includes(searchTerm) ||
+                    trip.country.toLowerCase().includes(searchTerm);
+                const matchesContinent = currentContinent === 'all' || trip.continent === currentContinent;
+                const matchesType = currentType === 'all' || trip.tags.includes(currentType);
+                return matchesSearch && matchesContinent && matchesType;
+            });
+            
+            renderTripList(filtered);
+        }
+
+        function renderTripList(trips = roadTrips) {
+            const container = document.getElementById('tripListContainer');
+            document.getElementById('tripCount').textContent = trips.length + ' trips';
+            
+            if (trips.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-title">No trips found</div>
+                        <div class="empty-text">Try adjusting your filters</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = trips.map(trip => {
+                const isCompleted = completedTrips.includes(trip.id);
+                return `
+                    <div class="trip-card-mobile ${isCompleted ? 'completed' : ''} ${trip.personalTrip ? 'personal' : ''}" 
+                         onclick="openTripDetail('${trip.id}')">
+                        <div class="trip-card-top">
+                            <span class="trip-icon-large">${trip.icon}</span>
+                            <div class="trip-info">
+                                <div class="trip-name-mobile">${trip.name}</div>
+                                <div class="trip-location">📍 ${trip.country}</div>
+                            </div>
+                            ${trip.personalTrip ? '<span class="trip-badge personal">My Trip</span>' : ''}
+                            ${isCompleted ? '<span class="trip-badge completed">✓ Done</span>' : ''}
+                        </div>
+                        <div class="trip-meta-row">
+                            <div class="trip-meta-item">📏 ${trip.distance}</div>
+                            <div class="trip-meta-item">⏱️ ${trip.duration}</div>
+                            <div class="trip-meta-item">⭐ ${trip.rating}</div>
+                            <div class="trip-meta-item difficulty-${trip.difficulty}">${trip.difficulty}</div>
+                        </div>
+                        <div class="trip-tags-mobile">
+                            ${trip.tags.map(tag => `<span class="trip-tag ${tag}">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Trip Detail
+        function openTripDetail(tripId) {
+            const trip = roadTrips.find(t => t.id === tripId);
+            if (!trip) return;
+            
+            currentDetailTrip = trip;
+            currentDetailTab = 'overview';
+            
+            document.getElementById('detailIcon').textContent = trip.icon;
+            document.getElementById('detailTitle').textContent = trip.name;
+            document.getElementById('detailMeta').innerHTML = `
+                <span>📍 ${trip.country}</span>
+                <span>📏 ${trip.distance}</span>
+                <span>⏱️ ${trip.duration}</span>
+                <span>⭐ ${trip.rating}</span>
+            `;
+            
+            document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.detail-tab').classList.add('active');
+            
+            renderDetailContent();
+            document.getElementById('tripDetailModal').classList.add('active');
+        }
+
+        function closeTripDetail() {
+            document.getElementById('tripDetailModal').classList.remove('active');
+            currentDetailTrip = null;
+        }
+
+        function switchDetailTab(tab) {
+            currentDetailTab = tab;
+            document.querySelectorAll('.detail-tab').forEach(t => {
+                t.classList.toggle('active', t.textContent.toLowerCase() === tab);
+            });
+            renderDetailContent();
+        }
+
+        function renderDetailContent() {
+            const trip = currentDetailTrip;
+            const container = document.getElementById('detailContent');
+            
+            if (currentDetailTab === 'overview') {
+                container.innerHTML = `
+                    <div class="detail-section">
+                        <div class="detail-section-title">📝 Description</div>
+                        <p class="detail-text">${trip.description}</p>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">✨ Highlights</div>
+                        <div class="highlight-list">
+                            ${trip.highlights.map(h => `<span class="highlight-item">${h}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">📅 Best Season</div>
+                        <p class="detail-text">${trip.bestSeason}</p>
+                    </div>
+                    <div class="detail-section">
+                        <button class="complete-trip-btn" onclick="toggleComplete('${trip.id}')" style="
+                            width: 100%; padding: 16px; border-radius: 12px; border: none; font-size: 1rem; font-weight: 600;
+                            background: ${completedTrips.includes(trip.id) ? 'var(--bg-elevated)' : 'linear-gradient(135deg, var(--accent-primary), #8b5cf6)'};
+                            color: white; cursor: pointer;
+                        ">
+                            ${completedTrips.includes(trip.id) ? '✓ Completed' : 'Mark as Completed'}
+                        </button>
+                    </div>
+                `;
+            } else if (currentDetailTab === 'route') {
+                container.innerHTML = `
+                    <div class="detail-section">
+                        <div class="detail-section-title">🗺️ Route Waypoints</div>
+                        ${trip.waypoints.map((w, i) => `
+                            <div class="info-card" style="display: flex; gap: 12px; align-items: center;">
+                                <div style="width: 28px; height: 28px; background: var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600;">${i + 1}</div>
+                                <div>
+                                    <div style="font-weight: 600;">${w.name}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);">${w.desc}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (currentDetailTab === 'tips') {
+                container.innerHTML = `
+                    <div class="detail-section">
+                        <div class="info-card warning">
+                            <h4>⚠️ Must Know</h4>
+                            <ul class="info-list">
+                                ${trip.mustKnow.map(tip => `<li>${tip}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else if (currentDetailTab === 'budget') {
+                container.innerHTML = `
+                    <div class="detail-section">
+                        <div class="detail-section-title">💰 Estimated Budget: ${trip.budget}</div>
+                        <div class="info-card">
+                            <h4>💵 Cost Breakdown</h4>
+                            <ul class="info-list">
+                                ${Object.entries(trip.costs).map(([k, v]) => `<li><strong>${k}:</strong> ${v}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleComplete(tripId) {
+            if (completedTrips.includes(tripId)) {
+                completedTrips = completedTrips.filter(id => id !== tripId);
+            } else {
+                completedTrips.push(tripId);
+            }
+            localStorage.setItem('dym_completedTrips', JSON.stringify(completedTrips));
+            renderDetailContent();
+            renderTripList();
+            updateStats();
+        }
+
+        // Stats
+        function updateStats() {
+            const visited = Object.keys(countryColors).length;
+            document.getElementById('countriesCount').textContent = visited;
+            document.getElementById('profileCountries').textContent = visited;
+            document.getElementById('profileTrips').textContent = completedTrips.length;
+            
+            let totalKm = 0;
+            completedTrips.forEach(id => {
+                const trip = roadTrips.find(t => t.id === id);
+                if (trip) totalKm += parseInt(trip.distance.replace(/\D/g, '')) || 0;
+            });
+            document.getElementById('profileKm').textContent = totalKm.toLocaleString();
+            
+            // Update badge
+            let badge = '🚗 Road Tripper';
+            if (completedTrips.length >= 10) badge = '👑 Road King';
+            else if (completedTrips.length >= 5) badge = '🌍 Globe Trotter';
+            else if (completedTrips.length >= 3) badge = '🏔️ Explorer';
+            document.getElementById('profileBadge').textContent = badge.split(' ')[1];
+        }
+
+        // Placeholder functions
+        function showCountryPicker() { alert('Country picker - tap countries on map to mark as visited'); }
+        function showNotifications() { alert('No new notifications'); }
+        function showCompletedTrips() { setContinent('all'); setType('all'); switchToScreen('serendipity'); }
+        function showWishlist() { alert('Wishlist coming soon!'); }
+        function showPlannedTrips() { alert('Trip planner coming soon!'); }
+    </script>
+</body>
+</html>
