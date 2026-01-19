@@ -3703,6 +3703,318 @@
             justify-content: flex-end;
         }
 
+        /* ==================== PRINT POSTER STYLES ==================== */
+        .poster-modal {
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .poster-preview-container {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            background: #2a2a3a;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .poster-canvas {
+            background: #f5f0e6;
+            width: 600px;
+            min-height: 800px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            color: #2c3e50;
+            font-family: 'Georgia', serif;
+        }
+
+        .poster-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #d4c4a8;
+        }
+
+        .poster-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .poster-subtitle {
+            font-size: 1rem;
+            color: #8b7355;
+            font-style: italic;
+        }
+
+        .poster-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .poster-stat {
+            text-align: center;
+            padding: 15px;
+            background: rgba(212, 196, 168, 0.3);
+            border-radius: 10px;
+            border: 1px solid #d4c4a8;
+        }
+
+        .poster-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #c44536;
+        }
+
+        .poster-stat-label {
+            font-size: 0.75rem;
+            color: #8b7355;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .poster-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a3f35;
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #d4c4a8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .poster-trips-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .poster-trip-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 8px;
+            border-left: 4px solid #c44536;
+        }
+
+        .poster-trip-icon {
+            font-size: 1.5rem;
+        }
+
+        .poster-trip-info {
+            flex: 1;
+        }
+
+        .poster-trip-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+
+        .poster-trip-meta {
+            font-size: 0.75rem;
+            color: #8b7355;
+        }
+
+        .poster-trip-date {
+            font-size: 0.7rem;
+            color: #8b7355;
+            font-style: italic;
+        }
+
+        .poster-countries-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .poster-country-tag {
+            padding: 6px 12px;
+            background: rgba(196, 69, 54, 0.1);
+            border: 1px solid #c44536;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #c44536;
+        }
+
+        .poster-memories {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .poster-memory {
+            aspect-ratio: 4/3;
+            background: #d4c4a8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            opacity: 0.5;
+            border: 2px dashed #8b7355;
+        }
+
+        .poster-memory.has-photo {
+            opacity: 1;
+            border: none;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .poster-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #d4c4a8;
+            text-align: center;
+        }
+
+        .poster-footer-text {
+            font-size: 0.75rem;
+            color: #8b7355;
+            font-style: italic;
+        }
+
+        .poster-qr-placeholder {
+            width: 60px;
+            height: 60px;
+            background: #2c3e50;
+            margin: 10px auto;
+            border-radius: 5px;
+        }
+
+        .poster-options {
+            padding: 15px 20px;
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .poster-options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .poster-option {
+            padding: 15px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .poster-option:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .poster-option.selected {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .poster-option-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .poster-option-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .poster-option-price {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .poster-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .poster-actions .btn {
+            flex: 1;
+        }
+
+        /* ==================== AD BANNER STYLES ==================== */
+        .ad-banner {
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(244, 114, 182, 0.1));
+            border: 1px dashed var(--border-subtle);
+            border-radius: 10px;
+            margin: 12px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ad-banner:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(244, 114, 182, 0.15));
+            border-color: var(--accent-primary);
+        }
+
+        .ad-banner-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .ad-banner-content {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .ad-banner-cta {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+            border-radius: 10px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .go-premium-btn {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+            color: #1a1a2e !important;
+        }
+
+        .go-premium-btn:hover {
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4) !important;
+        }
+
         /* Route Info Popup */
         .route-popup {
             background: var(--bg-panel);
@@ -3946,7 +4258,18 @@
                     <div class="section">
                         <div class="section-title">⚡ Quick Actions</div>
                         <button class="btn btn-primary" onclick="markAsVisited()" style="margin-bottom: 8px;">✅ Mark Visited</button>
-                        <button class="btn btn-secondary" onclick="resetMap()">🔄 Reset All</button>
+                        <button class="btn btn-secondary" onclick="resetMap()" style="margin-bottom: 8px;">🔄 Reset All</button>
+                        <button class="btn go-premium-btn" onclick="openPrintPosterModal()">🖼️ Print Travel Poster</button>
+                    </div>
+
+                    <!-- Ad Banner (Free Tier) -->
+                    <div class="ad-banner" onclick="openPrintPosterModal()" id="adBanner1">
+                        <div class="ad-banner-label">✨ Featured</div>
+                        <div class="ad-banner-content">
+                            Turn your travels into a beautiful poster!<br>
+                            <strong>Print your personalized travel map</strong>
+                        </div>
+                        <span class="ad-banner-cta">Create Poster →</span>
                     </div>
 
                     <!-- Plan Road Trip (NEW FEATURE) -->
@@ -4098,6 +4421,15 @@
                             <div class="section-title">🏕️ Campings sur la route</div>
                             <div id="campingSitesList"></div>
                         </div>
+                    </div>
+
+                    <!-- Sponsored Trip / Ad Banner (Serendipity) -->
+                    <div class="ad-banner" onclick="openPrintPosterModal()" id="adBanner2" style="margin-bottom: 16px;">
+                        <div class="ad-banner-label">🗺️ Your Adventures, Printed</div>
+                        <div class="ad-banner-content">
+                            Create a beautiful poster of all your road trips!
+                        </div>
+                        <span class="ad-banner-cta">Design My Poster →</span>
                     </div>
 
                     <!-- Road Trip League -->
@@ -4302,6 +4634,147 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" style="width: auto;" onclick="closeCreateTripModal()">Cancel</button>
                 <button class="btn btn-serendipity" style="width: auto;" onclick="submitNewTrip()">🚀 Submit Trip</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Travel Poster Modal -->
+    <div class="modal-overlay" id="printPosterModal">
+        <div class="modal poster-modal">
+            <div class="modal-header">
+                <h3>🖼️ Create Your Travel Poster</h3>
+                <button class="modal-close" onclick="closePrintPosterModal()">×</button>
+            </div>
+            
+            <div class="poster-preview-container">
+                <div class="poster-canvas" id="posterCanvas">
+                    <div class="poster-header">
+                        <div class="poster-title">MY ADVENTURES</div>
+                        <div class="poster-subtitle" id="posterUserName">Explorer's Travel Map</div>
+                    </div>
+                    
+                    <div class="poster-stats-grid">
+                        <div class="poster-stat">
+                            <div class="poster-stat-value" id="posterCountries">0</div>
+                            <div class="poster-stat-label">Countries</div>
+                        </div>
+                        <div class="poster-stat">
+                            <div class="poster-stat-value" id="posterTrips">0</div>
+                            <div class="poster-stat-label">Road Trips</div>
+                        </div>
+                        <div class="poster-stat">
+                            <div class="poster-stat-value" id="posterKm">0</div>
+                            <div class="poster-stat-label">KM Driven</div>
+                        </div>
+                    </div>
+                    
+                    <div class="poster-section-title">🛣️ Completed Road Trips</div>
+                    <div class="poster-trips-list" id="posterTripsList">
+                        <div style="text-align: center; color: #8b7355; font-style: italic; padding: 20px;">
+                            Complete road trips to see them here!
+                        </div>
+                    </div>
+                    
+                    <div class="poster-section-title">🌍 Countries Visited</div>
+                    <div class="poster-countries-grid" id="posterCountriesList">
+                        <div style="color: #8b7355; font-style: italic;">Mark countries as visited to see them here</div>
+                    </div>
+                    
+                    <div class="poster-section-title">📸 Trip Memories</div>
+                    <div class="poster-memories" id="posterMemories">
+                        <div class="poster-memory">📷</div>
+                        <div class="poster-memory">📷</div>
+                        <div class="poster-memory">📷</div>
+                        <div class="poster-memory">📷</div>
+                    </div>
+                    <p style="font-size: 0.7rem; color: #8b7355; text-align: center; margin-top: 8px;">
+                        <span class="premium-badge">⭐ Premium</span> Upload photos with premium
+                    </p>
+                    
+                    <div class="poster-footer">
+                        <div class="poster-qr-placeholder" title="QR code to your digital map"></div>
+                        <div class="poster-footer-text">Scan to view my interactive travel map</div>
+                        <div class="poster-footer-text" style="margin-top: 10px;">Created with Draw Your Map • drawmymap.com</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="poster-options">
+                <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 10px;">Choose your format:</div>
+                <div class="poster-options-grid">
+                    <div class="poster-option selected" onclick="selectPosterOption(this, 'digital')">
+                        <div class="poster-option-icon">📱</div>
+                        <div class="poster-option-name">Digital Download</div>
+                        <div class="poster-option-price">Free (with watermark)</div>
+                    </div>
+                    <div class="poster-option" onclick="selectPosterOption(this, 'hd')">
+                        <div class="poster-option-icon">🖥️</div>
+                        <div class="poster-option-name">HD Download</div>
+                        <div class="poster-option-price">$2.99</div>
+                    </div>
+                    <div class="poster-option" onclick="selectPosterOption(this, 'print')">
+                        <div class="poster-option-icon">🖨️</div>
+                        <div class="poster-option-name">Printed Poster</div>
+                        <div class="poster-option-price">From $14.99</div>
+                    </div>
+                </div>
+                <div class="poster-actions">
+                    <button class="btn btn-secondary" onclick="closePrintPosterModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="downloadPoster()" id="posterDownloadBtn">📥 Download Free (with watermark)</button>
+                    <button class="btn go-premium-btn" onclick="showPremiumUpgrade()">⭐ Go Premium - $4.99/year</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Upgrade Modal -->
+    <div class="modal-overlay" id="premiumModal">
+        <div class="modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3>⭐ Go Premium</h3>
+                <button class="modal-close" onclick="closePremiumModal()">×</button>
+            </div>
+            <div class="modal-body" style="text-align: center; padding: 30px;">
+                <div style="font-size: 3rem; margin-bottom: 15px;">🗺️⭐</div>
+                <h2 style="margin-bottom: 10px;">Unlock All Features</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">One-time payment, lifetime access</p>
+                
+                <div style="text-align: left; background: var(--bg-elevated); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="color: var(--success);">✓</span>
+                        <span>Ad-free experience</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="color: var(--success);">✓</span>
+                        <span>HD poster downloads (no watermark)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="color: var(--success);">✓</span>
+                        <span>Upload trip photos & memories</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="color: var(--success);">✓</span>
+                        <span>Print-ready poster exports</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="color: var(--success);">✓</span>
+                        <span>Priority access to new road trips</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: var(--success);">✓</span>
+                        <span>Support indie development ❤️</span>
+                    </div>
+                </div>
+                
+                <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 5px;">$4.99</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">one-time payment</div>
+                
+                <button class="btn go-premium-btn" style="width: 100%; padding: 16px; font-size: 1rem;" onclick="processPremiumPurchase()">
+                    ⭐ Upgrade to Premium
+                </button>
+                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 10px;">
+                    Secure payment via Stripe. 30-day money-back guarantee.
+                </p>
             </div>
         </div>
     </div>
@@ -4721,6 +5194,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
     <script>
         // ==================== GLOBAL STATE ====================
@@ -6442,7 +6916,8 @@
                 updateStats();
                 renderRoadTrips();
                 renderAlerts();
-                
+                checkPremiumStatus();
+
             } catch (error) {
                 console.error("Error loading map:", error);
             }
@@ -7424,6 +7899,194 @@
 
         function closeLeaderboardModal() {
             document.getElementById('leaderboardModal').classList.remove('active');
+        }
+
+        // ==================== PRINT POSTER FUNCTIONS ====================
+        let selectedPosterOption = 'digital';
+        let isPremiumUser = localStorage.getItem('dym_premium') === 'true';
+
+        function openPrintPosterModal() {
+            document.getElementById('printPosterModal').classList.add('active');
+            updatePosterPreview();
+        }
+
+        function closePrintPosterModal() {
+            document.getElementById('printPosterModal').classList.remove('active');
+        }
+
+        function updatePosterPreview() {
+            // Update user name
+            document.getElementById('posterUserName').textContent = userName + "'s Travel Map";
+            
+            // Update stats
+            const countriesCount = Object.keys(countryColors).length;
+            document.getElementById('posterCountries').textContent = countriesCount;
+            document.getElementById('posterTrips').textContent = completedTrips.length;
+            
+            // Calculate total km
+            let totalKm = 0;
+            const allTrips = getAllTrips();
+            completedTrips.forEach(tripId => {
+                const trip = allTrips.find(t => t.id === tripId);
+                if (trip) {
+                    const km = parseInt(trip.distance.replace(/[^\d]/g, '')) || 0;
+                    totalKm += km;
+                }
+            });
+            document.getElementById('posterKm').textContent = totalKm.toLocaleString();
+            
+            // Update completed trips list
+            const tripsContainer = document.getElementById('posterTripsList');
+            if (completedTrips.length > 0) {
+                tripsContainer.innerHTML = completedTrips.slice(0, 5).map(tripId => {
+                    const trip = allTrips.find(t => t.id === tripId);
+                    if (!trip) return '';
+                    return `
+                        <div class="poster-trip-item">
+                            <span class="poster-trip-icon">${trip.icon}</span>
+                            <div class="poster-trip-info">
+                                <div class="poster-trip-name">${trip.name}</div>
+                                <div class="poster-trip-meta">${trip.country} • ${trip.distance}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                if (completedTrips.length > 5) {
+                    tripsContainer.innerHTML += `<div style="text-align: center; color: #8b7355; font-size: 0.8rem;">+${completedTrips.length - 5} more trips...</div>`;
+                }
+            } else {
+                tripsContainer.innerHTML = '<div style="text-align: center; color: #8b7355; font-style: italic; padding: 20px;">Complete road trips to see them here!</div>';
+            }
+            
+            // Update countries list
+            const countriesContainer = document.getElementById('posterCountriesList');
+            const visitedCountries = [];
+            document.querySelectorAll('#worldMap path').forEach(path => {
+                const id = path.getAttribute('data-id');
+                if (countryColors[id]) {
+                    const name = path.getAttribute('data-name');
+                    if (name && name !== 'Unknown') {
+                        visitedCountries.push(name);
+                    }
+                }
+            });
+            
+            if (visitedCountries.length > 0) {
+                countriesContainer.innerHTML = visitedCountries.slice(0, 12).map(country => 
+                    `<span class="poster-country-tag">${country}</span>`
+                ).join('');
+                if (visitedCountries.length > 12) {
+                    countriesContainer.innerHTML += `<span class="poster-country-tag">+${visitedCountries.length - 12} more</span>`;
+                }
+            } else {
+                countriesContainer.innerHTML = '<div style="color: #8b7355; font-style: italic;">Mark countries as visited to see them here</div>';
+            }
+        }
+
+        function selectPosterOption(element, option) {
+            document.querySelectorAll('.poster-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPosterOption = option;
+            
+            const downloadBtn = document.getElementById('posterDownloadBtn');
+            if (option === 'digital') {
+                downloadBtn.textContent = '📥 Download Free (with watermark)';
+            } else if (option === 'hd') {
+                downloadBtn.textContent = isPremiumUser ? '📥 Download HD' : '📥 Download HD - $2.99';
+            } else if (option === 'print') {
+                downloadBtn.textContent = '🖨️ Order Print - From $14.99';
+            }
+        }
+
+        function downloadPoster() {
+            if (selectedPosterOption === 'digital') {
+                // Generate and download free version with watermark
+                generatePosterImage(false);
+            } else if (selectedPosterOption === 'hd') {
+                if (isPremiumUser) {
+                    generatePosterImage(true);
+                } else {
+                    showPremiumUpgrade();
+                }
+            } else if (selectedPosterOption === 'print') {
+                // Redirect to print service
+                showPrintOptions();
+            }
+        }
+
+        function generatePosterImage(isHD) {
+            const posterCanvas = document.getElementById('posterCanvas');
+            
+            // Use html2canvas if available, otherwise show instructions
+            if (typeof html2canvas !== 'undefined') {
+                html2canvas(posterCanvas, {
+                    scale: isHD ? 3 : 1.5,
+                    backgroundColor: '#f5f0e6',
+                    useCORS: true
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `my-travel-poster${isHD ? '-hd' : ''}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            } else {
+                // Fallback: show print dialog
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>My Travel Poster</title>
+                        <style>
+                            body { margin: 0; padding: 20px; font-family: Georgia, serif; }
+                            ${!isHD ? '.watermark { position: fixed; bottom: 20px; right: 20px; opacity: 0.3; font-size: 12px; }' : ''}
+                        </style>
+                    </head>
+                    <body>
+                        ${posterCanvas.outerHTML}
+                        ${!isHD ? '<div class="watermark">Created with Draw Your Map - Free Version</div>' : ''}
+                        <script>window.print();<\/script>
+                    </body>
+                    </html>
+                `);
+            }
+            
+            // Track conversion
+            console.log('Poster downloaded:', isHD ? 'HD' : 'Free');
+        }
+
+        function showPrintOptions() {
+            alert('🖨️ Print Service Coming Soon!\\n\\nWe\\'re partnering with print-on-demand services to deliver high-quality posters directly to your door.\\n\\nOptions will include:\\n• A3 Poster ($14.99)\\n• A2 Large Poster ($24.99)\\n• Framed Print ($39.99)\\n• Scratch Map Style ($29.99)\\n\\nJoin our waitlist to be notified!');
+        }
+
+        function showPremiumUpgrade() {
+            document.getElementById('premiumModal').classList.add('active');
+        }
+
+        function closePremiumModal() {
+            document.getElementById('premiumModal').classList.remove('active');
+        }
+
+        function processPremiumPurchase() {
+            // In production, this would integrate with Stripe
+            alert('💳 Payment Integration\\n\\nIn production, this would redirect to Stripe checkout.\\n\\nFor demo purposes, we\\'ll activate premium features now!');
+            
+            isPremiumUser = true;
+            localStorage.setItem('dym_premium', 'true');
+            
+            // Hide ads
+            const adBanners = document.querySelectorAll('.ad-banner');
+            adBanners.forEach(ad => ad.style.display = 'none');
+            
+            closePremiumModal();
+            alert('⭐ Premium Activated!\\n\\nYou now have access to:\\n• Ad-free experience\\n• HD poster downloads\\n• Photo uploads\\n• Print-ready exports\\n\\nThank you for your support!');
+        }
+
+        // Check premium status on load
+        function checkPremiumStatus() {
+            if (isPremiumUser) {
+                const adBanners = document.querySelectorAll('.ad-banner');
+                adBanners.forEach(ad => ad.style.display = 'none');
+            }
         }
 
         function renderLeaderboard() {
