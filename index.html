@@ -784,7 +784,7 @@
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-primary);
-            font-family: 'Libre Baskerville', Georgia, serif;
+            font-family: Georgia, serif;
         }
 
         .logo-icon {
@@ -7826,43 +7826,35 @@
 
         // ==================== INITIALIZE ====================
         async function initMap() {
-            // Check if D3 and topojson are loaded
-            if (typeof d3 === 'undefined') {
-                console.error('D3 not loaded!');
-                setTimeout(initMap, 500); // Retry after 500ms
-                return;
-            }
-            if (typeof topojson === 'undefined') {
-                console.error('Topojson not loaded!');
-                setTimeout(initMap, 500); // Retry after 500ms
-                return;
-            }
-            
-            console.log('Initializing map...');
-            svg = d3.select("#worldMap");
-            g = svg.append("g");
-
-            projection = d3.geoMercator()
-                .scale(320)
-                .translate([1000, 650]);
-
-            path = d3.geoPath().projection(projection);
-
             try {
-                console.log('Fetching map data...');
-                const world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
-                console.log('Map data loaded, processing...');
-                const countries = topojson.feature(world, world.objects.countries);
+                // Hide loading text when starting
+                var loadingEl = document.getElementById('mapLoading');
                 
+                // Setup SVG
+                svg = d3.select("#worldMap");
+                g = svg.append("g");
+
+                // Use Natural Earth projection (better for world view)
+                projection = d3.geoNaturalEarth1()
+                    .scale(350)
+                    .translate([1000, 500]);
+
+                path = d3.geoPath().projection(projection);
+
+                // Fetch map data
+                var world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
+                var countries = topojson.feature(world, world.objects.countries);
+                
+                // Draw countries
                 g.selectAll("path")
                     .data(countries.features)
                     .enter()
                     .append("path")
                     .attr("d", path)
                     .style("fill", DEFAULT_COLOR)
-                    .attr("id", d => "country_" + d.id)
-                    .attr("data-id", d => d.id)
-                    .attr("data-name", d => d.properties.name || "Unknown")
+                    .attr("id", function(d) { return "country_" + d.id; })
+                    .attr("data-id", function(d) { return d.id; })
+                    .attr("data-name", function(d) { return d.properties.name || "Unknown"; })
                     .on("click", function(event, d) {
                         event.stopPropagation();
                         selectCountry(this, d);
@@ -7873,15 +7865,14 @@
                         openCountrySatelliteView(d.properties.name || "Unknown");
                     })
                     .append("title")
-                    .text(d => d.properties.name || "Unknown");
+                    .text(function(d) { return d.properties.name || "Unknown"; });
 
                 countriesData = countries.features;
-                console.log(`Map rendered with ${countries.features.length} countries`);
                 
                 // Hide loading indicator
-                const loading = document.getElementById('mapLoading');
-                if (loading) loading.style.display = 'none';
+                if (loadingEl) loadingEl.style.display = 'none';
                 
+                // Initialize other components
                 populateCountrySearch();
                 setupZoom();
                 loadFromStorage();
@@ -7891,14 +7882,12 @@
                 renderPlannedTrips();
                 checkPremiumStatus();
                 initializeAds();
-                
-                console.log('✅ Map initialization complete!');
 
-            } catch (error) {
-                console.error("Error loading map:", error);
-                const loading = document.getElementById('mapLoading');
-                if (loading) {
-                    loading.innerHTML = '<div style="color: var(--danger);">Failed to load map<br><button onclick="location.reload()" style="margin-top: 10px; padding: 8px 16px; background: var(--accent-primary); color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button></div>';
+            } catch (err) {
+                console.error("Map init error:", err);
+                var loadingEl = document.getElementById('mapLoading');
+                if (loadingEl) {
+                    loadingEl.innerHTML = '<div style="color: red;">Map failed to load. <button onclick="location.reload()">Retry</button></div>';
                 }
             }
         }
@@ -8167,6 +8156,8 @@
         }
 
         // ==================== ROAD TRIPS ====================
+        let currentRegionFilter = 'all';  // MUST be defined before renderRoadTrips uses it
+        
         function getAllTrips() {
             return [...roadTrips, ...userCreatedTrips];
         }
@@ -8176,7 +8167,7 @@
             let allTrips = getAllTrips();
             
             // Apply region filter
-            if (currentRegionFilter !== 'all') {
+            if (currentRegionFilter && currentRegionFilter !== 'all') {
                 allTrips = allTrips.filter(trip => trip.continent === currentRegionFilter);
             }
             
@@ -10591,8 +10582,6 @@
         });
 
         // ==================== FILTER ROAD TRIPS BY REGION ====================
-        let currentRegionFilter = 'all';
-        
         function filterRoadTrips(region) {
             currentRegionFilter = region;
             
