@@ -810,6 +810,36 @@
             letter-spacing: 0.5px;
             margin-top: 2px;
         }
+        
+        /* Filter Chips */
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .filter-chip {
+            padding: 6px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .filter-chip:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+        }
+        
+        .filter-chip.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
 
         /* Mode Tabs */
         .mode-tabs {
@@ -4812,7 +4842,7 @@
             }
             
             /* Map takes remaining space */
-            .map-panel {
+            .map-container {
                 order: 1;
                 height: 50vh;
             }
@@ -4911,7 +4941,7 @@
                 max-height: 55vh;
             }
             
-            .map-panel {
+            .map-container {
                 height: 45vh;
             }
             
@@ -5262,13 +5292,27 @@
                         </div>
                     </div>
 
+                    <!-- Road Trips Filter -->
+                    <div class="section">
+                        <div class="section-title">🌍 Filter by Region</div>
+                        <div class="filter-chips">
+                            <button class="filter-chip active" onclick="filterRoadTrips('all')">All</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Europe')">Europe</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('North America')">North America</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('South America')">South America</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Africa')">Africa</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Asia')">Asia</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Oceania')">Oceania</button>
+                        </div>
+                    </div>
+
                     <!-- Iconic Road Trips -->
                     <div class="section">
-                        <div class="section-title">━━ Iconic Routes ━━</div>
+                        <div class="section-title">🛣️ <span id="roadTripsCount">0</span> Road Trips</div>
                         <div id="roadTripsList">
                             <!-- Populated dynamically -->
                         </div>
-                        <p class="dblclick-hint">💡 Double-click any trip for complete guide</p>
+                        <p class="dblclick-hint">💡 Double-click any trip for detailed guide</p>
                     </div>
 
                     <!-- Vanlifer Country Info -->
