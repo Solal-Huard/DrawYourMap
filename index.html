@@ -1047,8 +1047,6 @@
             position: relative;
             background: var(--bg-dark);
             overflow: hidden;
-            min-height: 400px;
-            min-width: 400px;
         }
 
         #worldMap {
@@ -1083,13 +1081,13 @@
 
         /* Leaflet Road Map */
         #roadMap {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: none;
             background: #1a1a2e;
-            position: absolute;
-            top: 0;
-            left: 0;
         }
 
         #roadMap.active {
@@ -5446,7 +5444,7 @@
                 <button class="zoom-btn" onclick="resetZoom()" title="Reset">⟲</button>
             </div>
             <!-- D3 World Map -->
-            <svg id="worldMap" viewBox="0 0 2000 1000" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%; display: block; position: absolute; top: 0; left: 0;"></svg>
+            <svg id="worldMap" width="100%" height="100%" viewBox="0 0 2000 1000" preserveAspectRatio="xMidYMid meet"></svg>
             <!-- Leaflet Road Map -->
             <div id="roadMap"></div>
         </div>
@@ -7831,51 +7829,33 @@
 
         // ==================== INITIALIZE ====================
         async function initMap() {
-            console.log('🗺️ initMap starting...');
-            
             // Wait for D3 to be available
             if (typeof d3 === 'undefined') {
-                console.log('Waiting for D3...');
                 setTimeout(initMap, 100);
                 return;
             }
             if (typeof topojson === 'undefined') {
-                console.log('Waiting for topojson...');
                 setTimeout(initMap, 100);
                 return;
             }
             
-            console.log('✓ D3 and topojson loaded');
-            
             try {
                 var loadingEl = document.getElementById('mapLoading');
-                var svgEl = document.getElementById('worldMap');
-                
-                if (!svgEl) {
-                    console.error('SVG element #worldMap not found!');
-                    return;
-                }
-                console.log('✓ SVG element found');
                 
                 // Setup SVG with D3
                 svg = d3.select("#worldMap");
                 g = svg.append("g");
 
-                // Mercator projection - PROVEN TO WORK
+                // ORIGINAL Mercator projection settings
                 projection = d3.geoMercator()
-                    .scale(280)
-                    .translate([1000, 600]);
+                    .scale(320)
+                    .translate([1000, 650]);
 
                 path = d3.geoPath().projection(projection);
-                console.log('✓ Projection configured');
 
                 // Fetch map data
-                console.log('Fetching world map data...');
                 var world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
-                console.log('✓ World data fetched:', world);
-                
                 var countries = topojson.feature(world, world.objects.countries);
-                console.log('✓ Countries extracted:', countries.features.length);
                 
                 // Draw countries
                 g.selectAll("path")
@@ -7900,7 +7880,6 @@
                     .text(function(d) { return d.properties.name || "Unknown"; });
 
                 countriesData = countries.features;
-                console.log('✓ Map drawn with', countriesData.length, 'countries');
                 
                 // Hide loading indicator
                 if (loadingEl) loadingEl.style.display = 'none';
@@ -7915,14 +7894,12 @@
                 renderPlannedTrips();
                 checkPremiumStatus();
                 initializeAds();
-                
-                console.log('✅ initMap complete!');
 
             } catch (err) {
-                console.error("❌ Map init error:", err);
+                console.error("Map init error:", err);
                 var loadingEl = document.getElementById('mapLoading');
                 if (loadingEl) {
-                    loadingEl.innerHTML = '<div style="color: red;">Map failed: ' + err.message + '<br><button onclick="location.reload()">Retry</button></div>';
+                    loadingEl.innerHTML = '<div style="color: red;">Map error. <button onclick="location.reload()">Retry</button></div>';
                 }
             }
         }
