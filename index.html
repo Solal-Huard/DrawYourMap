@@ -289,49 +289,64 @@
         }
 
         :root {
-            /* Core Dark Theme */
-            --bg-dark: #0d0d12;
-            --bg-panel: #151520;
-            --bg-elevated: #1c1c2a;
-            --bg-hover: #252538;
+            /* Safari Adventure Color Palette */
+            --bg-dark: #1a1410;
+            --bg-panel: #231c16;
+            --bg-elevated: #2d2419;
+            --bg-hover: #3a2f22;
             
-            /* Primary Accent - Warm amber/orange */
-            --accent-primary: #e07a39;
-            --accent-secondary: #f59e0b;
-            --accent-glow: rgba(224, 122, 57, 0.4);
+            /* Warm Safari Tones */
+            --safari-cream: #F5F0E1;
+            --safari-sand: #E8DCC8;
+            --safari-terracotta: #C65D3B;
+            --safari-rust: #A64B2A;
+            --safari-brown: #5C2018;
+            --safari-sage: #7A8B6E;
+            --safari-olive: #6B7B5C;
+            --safari-gold: #D4A84B;
+            --safari-amber: #E8B84A;
+            
+            /* Primary Accent - Terracotta/Rust */
+            --accent-primary: #C65D3B;
+            --accent-secondary: #D4A84B;
+            --accent-glow: rgba(198, 93, 59, 0.4);
             
             /* Text */
-            --text-primary: #f1f1f4;
-            --text-secondary: #9494a8;
-            --text-muted: #5e5e72;
+            --text-primary: #F5F0E1;
+            --text-secondary: #BDB3A0;
+            --text-muted: #7A7062;
             
             /* Borders */
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-accent: rgba(224, 122, 57, 0.5);
+            --border-subtle: rgba(245, 240, 225, 0.1);
+            --border-accent: rgba(198, 93, 59, 0.5);
             
             /* Status Colors */
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --serendipity: #f472b6;
-            --road-primary: #fbbf24;
+            --success: #7A8B6E;
+            --warning: #D4A84B;
+            --danger: #C65D3B;
+            --serendipity: #C65D3B;
+            --road-primary: #D4A84B;
             
-            /* Vintage Road Trip Theme */
-            --vintage-cream: #f5f0e6;
-            --vintage-paper: #ebe5d9;
-            --vintage-tan: #d4c4a8;
-            --vintage-brown: #8b7355;
-            --vintage-dark: #4a3f35;
-            --vintage-red: #c44536;
-            --vintage-orange: #e07a39;
-            --vintage-gold: #d4a03d;
-            --vintage-teal: #4a7c7c;
-            --vintage-navy: #2c3e50;
+            /* Adventure Theme */
+            --adventure-cream: #F5F0E1;
+            --adventure-paper: #E8DCC8;
+            --adventure-tan: #C9B896;
+            --adventure-brown: #8B7355;
+            --adventure-dark: #3D2F1E;
+            --adventure-red: #C65D3B;
+            --adventure-orange: #D97B4A;
+            --adventure-gold: #D4A84B;
+            --adventure-sage: #7A8B6E;
+            --adventure-forest: #4A5D40;
         }
 
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-dark);
+            background-image: 
+                radial-gradient(ellipse at 20% 80%, rgba(198, 93, 59, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(212, 168, 75, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(122, 139, 110, 0.04) 0%, transparent 70%);
             color: var(--text-primary);
             overflow: hidden;
             min-height: 100vh;
@@ -761,53 +776,79 @@
             height: 100vh;
         }
 
-        /* Sidebar */
+        /* Sidebar - Safari Adventure Style */
         .sidebar {
             width: 320px;
-            background: var(--bg-panel);
-            border-right: 1px solid var(--border-subtle);
+            background: linear-gradient(180deg, var(--bg-panel) 0%, rgba(35, 28, 22, 0.98) 100%);
+            border-right: 1px solid rgba(212, 168, 75, 0.2);
             display: flex;
             flex-direction: column;
             z-index: 100;
             transition: transform 0.3s;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .sidebar-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-subtle);
+            padding: 20px;
+            border-bottom: 2px solid var(--safari-terracotta);
+            background: linear-gradient(135deg, var(--adventure-dark), var(--bg-panel));
+            position: relative;
+        }
+
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--safari-gold), transparent);
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: var(--text-primary);
-            font-family: Georgia, serif;
+            color: var(--safari-cream);
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
         }
 
         .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-rust));
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 12px rgba(198, 93, 59, 0.3);
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            border: 2px solid var(--safari-gold);
+            opacity: 0.5;
         }
 
         .logo-icon.serendipity-mode {
-            background: linear-gradient(135deg, var(--serendipity), var(--accent-secondary));
+            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-gold));
         }
         
         /* Brand tagline under logo */
         .logo-tagline {
-            font-size: 0.6rem;
-            color: var(--text-muted);
+            font-size: 0.65rem;
+            color: var(--safari-gold);
             font-style: italic;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            text-transform: lowercase;
             margin-top: 2px;
         }
         
@@ -819,26 +860,30 @@
         }
         
         .filter-chip {
-            padding: 6px 12px;
+            padding: 6px 14px;
             background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
+            border: 2px solid var(--border-subtle);
             border-radius: 20px;
             font-size: 0.75rem;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
+            transition: all 0.3s;
+            font-family: 'Georgia', serif;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
         
         .filter-chip:hover {
             background: var(--bg-hover);
-            border-color: var(--accent-primary);
+            border-color: var(--safari-gold);
+            color: var(--safari-cream);
         }
         
         .filter-chip.active {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: white;
+            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-rust));
+            border-color: var(--safari-gold);
+            color: var(--safari-cream);
+            box-shadow: 0 2px 8px rgba(198, 93, 59, 0.3);
         }
 
         /* Season badges */
@@ -1158,43 +1203,47 @@
             color: var(--text-muted);
         }
 
-        /* Mode Tabs */
+        /* Mode Tabs - Safari Style */
         .mode-tabs {
             display: flex;
             padding: 12px;
             gap: 8px;
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 2px solid rgba(212, 168, 75, 0.15);
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .mode-tab {
             flex: 1;
-            padding: 10px;
+            padding: 12px 10px;
             background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
             color: var(--text-secondary);
-            font-family: inherit;
+            font-family: 'Georgia', serif;
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             text-align: center;
+            letter-spacing: 0.5px;
         }
 
         .mode-tab:hover {
             background: var(--bg-hover);
-            color: var(--text-primary);
+            color: var(--safari-cream);
+            border-color: var(--safari-gold);
         }
 
         .mode-tab.active {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: white;
+            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-rust));
+            border-color: var(--safari-gold);
+            color: var(--safari-cream);
+            box-shadow: 0 4px 12px rgba(198, 93, 59, 0.3);
         }
 
         .mode-tab.serendipity.active {
-            background: linear-gradient(135deg, var(--serendipity), var(--road-primary));
-            border-color: var(--serendipity);
+            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-gold));
+            border-color: var(--safari-gold);
         }
 
         .sidebar-content {
@@ -1218,13 +1267,25 @@
         }
 
         .section-title {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            padding-left: 4px;
+            letter-spacing: 1px;
+            color: var(--safari-gold);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(212, 168, 75, 0.2);
+            font-family: 'Georgia', serif;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '🔍';
+            font-size: 0.9rem;
+            opacity: 0.7;
         }
 
         /* Stats */
@@ -1254,7 +1315,7 @@
             text-transform: uppercase;
         }
 
-        /* Buttons */
+        /* Buttons - Safari Adventure Style */
         .btn {
             display: flex;
             align-items: center;
@@ -1262,45 +1323,51 @@
             gap: 8px;
             width: 100%;
             padding: 12px 16px;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-family: 'Georgia', serif;
             font-size: 0.85rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
+            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-rust));
+            color: var(--safari-cream);
+            border-color: var(--safari-gold);
+            box-shadow: 0 4px 12px rgba(198, 93, 59, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px var(--accent-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(198, 93, 59, 0.4);
+            background: linear-gradient(135deg, var(--safari-rust), var(--safari-terracotta));
         }
 
         .btn-secondary {
             background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
+            border: 2px solid var(--safari-sage);
+            color: var(--safari-cream);
         }
 
         .btn-secondary:hover {
-            background: var(--bg-hover);
-            border-color: var(--border-accent);
+            background: rgba(122, 139, 110, 0.2);
+            border-color: var(--safari-olive);
+            color: var(--safari-cream);
         }
 
         .btn-serendipity {
-            background: linear-gradient(135deg, var(--serendipity), var(--road-primary));
-            color: white;
+            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-gold));
+            color: var(--safari-cream);
             font-weight: 600;
+            border-color: var(--safari-gold);
         }
 
         .btn-serendipity:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 168, 75, 0.4);
         }
 
         .btn-group {
@@ -1358,12 +1425,15 @@
             border-color: var(--accent-primary);
         }
 
-        /* Map Container */
+        /* Map Container - Safari Adventure Style */
         .map-container {
             flex: 1;
             position: relative;
             background: var(--bg-dark);
             overflow: hidden;
+            background-image: 
+                radial-gradient(ellipse at 20% 30%, rgba(212, 168, 75, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(198, 93, 59, 0.05) 0%, transparent 50%);
         }
 
         #worldMap {
@@ -1378,7 +1448,7 @@
         }
 
         #worldMap path {
-            stroke: rgba(255, 255, 255, 0.2);
+            stroke: rgba(212, 168, 75, 0.15);
             stroke-width: 0.5;
             transition: filter 0.15s, stroke 0.15s;
         }
@@ -1524,23 +1594,40 @@
 
         .road-trip-card {
             background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
+            border: 2px solid var(--border-subtle);
+            border-left: 4px solid var(--safari-terracotta);
             border-radius: 12px;
             padding: 14px;
             margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .road-trip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(212, 168, 75, 0.1) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .road-trip-card:hover {
-            border-color: var(--serendipity);
+            border-color: var(--safari-gold);
+            border-left-color: var(--safari-gold);
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.2);
+            box-shadow: 0 6px 24px rgba(198, 93, 59, 0.3);
+            background: rgba(198, 93, 59, 0.05);
         }
 
         .road-trip-card.active {
-            border-color: var(--serendipity);
-            background: rgba(244, 114, 182, 0.1);
+            border-color: var(--safari-gold);
+            border-left-color: var(--safari-gold);
+            background: linear-gradient(135deg, rgba(198, 93, 59, 0.1), rgba(212, 168, 75, 0.05));
         }
 
         .road-trip-header {
@@ -2138,6 +2225,568 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
             margin: 0;
+        }
+
+        /* ==================== VANLIFE COMMUNITY FEATURES ==================== */
+        
+        /* Offline Map Download */
+        .offline-download-card {
+            background: linear-gradient(135deg, #1e3a5f, #0d2137);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .offline-download-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .offline-download-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #60a5fa;
+        }
+
+        .offline-download-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .offline-download-includes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .offline-include-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .download-btn.downloaded {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .download-progress {
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .download-progress-bar {
+            height: 100%;
+            background: #60a5fa;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        /* Campsite Booking */
+        .campsite-booking-card {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .campsite-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #2d4a3e, #1a2f26);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .campsite-info {
+            padding: 12px;
+        }
+
+        .campsite-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .campsite-location {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .campsite-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .campsite-feature {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            background: var(--bg-dark);
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        .campsite-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .campsite-price-value {
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        .campsite-book-btn {
+            padding: 6px 12px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .campsite-book-btn:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Community Forum */
+        .forum-section {
+            margin-top: 24px;
+        }
+
+        .forum-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .forum-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .forum-stats {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .new-post-btn {
+            padding: 8px 16px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .forum-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .forum-filter {
+            padding: 6px 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .forum-filter:hover,
+        .forum-filter.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        /* Forum Post */
+        .forum-post {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .forum-post-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .forum-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .forum-post-meta {
+            flex: 1;
+        }
+
+        .forum-username {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .forum-badge {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            background: rgba(224, 122, 57, 0.2);
+            color: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        .forum-timestamp {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .forum-post-type {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .forum-post-type.question { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .forum-post-type.tip { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .forum-post-type.photo { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+        .forum-post-type.warning { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .forum-post-type.campsite { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+
+        .forum-post-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        /* Photo Gallery in Posts */
+        .forum-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .forum-photo {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .forum-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .forum-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .forum-post-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .forum-action {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .forum-action:hover {
+            color: var(--accent-primary);
+        }
+
+        .forum-action.liked {
+            color: #ef4444;
+        }
+
+        /* Create Post Modal */
+        .create-post-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10006;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .create-post-modal.active {
+            display: flex;
+        }
+
+        .create-post-form {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            width: 90vw;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .create-post-header h3 {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .create-post-body {
+            padding: 20px;
+        }
+
+        .post-type-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .post-type-option {
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .post-type-option:hover,
+        .post-type-option.selected {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .post-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            resize: vertical;
+            margin-bottom: 16px;
+        }
+
+        .post-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .photo-upload-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .photo-upload-slot {
+            aspect-ratio: 1;
+            border: 2px dashed var(--border-subtle);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .photo-upload-slot:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-hover);
+        }
+
+        .photo-upload-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-upload-slot .add-icon {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .location-tag-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .location-tag-input input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+        }
+
+        .location-tag-input input:focus {
+            outline: none;
+        }
+
+        /* Saved Offline Maps */
+        .saved-maps-section {
+            margin-top: 20px;
+        }
+
+        .saved-map-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .saved-map-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .saved-map-info {
+            flex: 1;
+        }
+
+        .saved-map-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .saved-map-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .saved-map-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .saved-map-btn {
+            padding: 6px 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .saved-map-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .saved-map-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
         }
 
         /* Grid Layouts */
@@ -6128,9 +6777,12 @@
         <aside class="sidebar" role="complementary" aria-label="Trip planning controls">
             <header class="sidebar-header">
                 <div class="logo" role="banner">
-                    <div class="logo-icon" id="logoIcon" aria-hidden="true">🗺️</div>
+                    <div class="logo-icon" id="logoIcon" aria-hidden="true" style="position: relative;">
+                        <span style="font-size: 1.6rem;">🔍</span>
+                        <span style="position: absolute; top: -4px; right: -4px; font-size: 0.9rem; opacity: 0.8;">🐆</span>
+                    </div>
                     <div>
-                        <span id="logoText">Srndipity</span>
+                        <span id="logoText" style="font-family: 'Georgia', serif; font-style: italic;">Srndipity</span>
                         <div class="logo-tagline">for those with eyes to see</div>
                     </div>
                 </div>
@@ -7075,18 +7727,39 @@
             <div class="trip-tab-content" id="tab-guide">
                 <div class="trip-grid">
                     <div class="trip-main-col">
+                        <!-- Offline Map Download -->
+                        <div class="offline-download-card">
+                            <div class="offline-download-header">
+                                <span style="font-size: 1.8rem;">📥</span>
+                                <h3>Download Offline Map</h3>
+                            </div>
+                            <div class="offline-download-info">
+                                Download this complete road trip guide for offline use. Perfect for areas with limited cell coverage!
+                            </div>
+                            <div class="offline-download-includes">
+                                <div class="offline-include-item">📍 Waypoints</div>
+                                <div class="offline-include-item">⛽ Fuel Stations</div>
+                                <div class="offline-include-item">🛒 Grocery Stores</div>
+                                <div class="offline-include-item">🏕️ Campsites</div>
+                                <div class="offline-include-item">💧 Water Points</div>
+                                <div class="offline-include-item">📸 Viewpoints</div>
+                            </div>
+                            <button class="download-btn" id="downloadOfflineBtn" onclick="downloadOfflineMap()">
+                                <span>📥</span> Download for Offline Use
+                            </button>
+                            <div class="download-progress" id="downloadProgress" style="display: none;">
+                                <div class="download-progress-bar" id="downloadProgressBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
                         <!-- Best Time to Visit -->
                         <div class="best-time-card" id="guideBestTime">
                             <div class="best-time-header">
                                 <span style="font-size: 1.5rem;">📅</span>
                                 <h4>Best Time to Visit</h4>
                             </div>
-                            <div class="month-chips" id="guideMonthChips">
-                                <!-- Populated dynamically -->
-                            </div>
-                            <div class="best-time-reason" id="guideBestTimeReason">
-                                Loading seasonal information...
-                            </div>
+                            <div class="month-chips" id="guideMonthChips"></div>
+                            <div class="best-time-reason" id="guideBestTimeReason">Loading seasonal information...</div>
                             <div class="events-list" id="guideEvents" style="display: none;">
                                 <h5>🎉 Events & Festivals</h5>
                                 <div id="guideEventsList"></div>
@@ -7101,17 +7774,40 @@
                             </div>
                         </div>
 
-                        <!-- Community Tips from Reddit/Forums -->
-                        <div class="trip-card">
-                            <h3>💬 Community Tips & Insights</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px;">Real tips from travelers on Reddit, TripAdvisor, and travel forums</p>
-                            <div id="guideCommunityTips">
-                                <p style="color: var(--text-muted);">Loading community insights...</p>
+                        <!-- Vanlife Community Forum -->
+                        <div class="trip-card forum-section">
+                            <div class="forum-header">
+                                <h3>🚐 Vanlife Forum</h3>
+                                <button class="new-post-btn" onclick="openCreatePostModal()">
+                                    <span>✏️</span> New Post
+                                </button>
+                            </div>
+                            <div class="forum-filters">
+                                <button class="forum-filter active" onclick="filterForumPosts('all', this)">All</button>
+                                <button class="forum-filter" onclick="filterForumPosts('photo', this)">📸 Photos</button>
+                                <button class="forum-filter" onclick="filterForumPosts('tip', this)">💡 Tips</button>
+                                <button class="forum-filter" onclick="filterForumPosts('question', this)">❓ Questions</button>
+                                <button class="forum-filter" onclick="filterForumPosts('campsite', this)">🏕️ Campsites</button>
+                            </div>
+                            <div id="forumPosts">
+                                <!-- Forum posts populated dynamically -->
                             </div>
                         </div>
                     </div>
 
                     <div class="trip-side-col">
+                        <!-- Campsite Booking -->
+                        <div class="trip-card">
+                            <h3>🏕️ Book Campsites</h3>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Recommended spots along the route</p>
+                            <div id="guideCampsites">
+                                <!-- Campsites populated dynamically -->
+                            </div>
+                            <button class="btn btn-secondary" style="width: 100%; margin-top: 12px; font-size: 0.8rem;" onclick="searchNearbyCampsites()">
+                                🔍 Search More Campsites
+                            </button>
+                        </div>
+
                         <!-- Fuel Stops -->
                         <div class="trip-card">
                             <h3>⛽ Fuel Stations</h3>
@@ -7130,19 +7826,11 @@
                             </div>
                         </div>
 
-                        <!-- Quick Links -->
-                        <div class="trip-card">
-                            <h3>🔗 Useful Resources</h3>
-                            <div id="guideResources">
-                                <a href="#" class="resource-link" style="display: block; padding: 8px 12px; margin-bottom: 6px; background: var(--bg-elevated); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;">
-                                    🗺️ Download Offline Maps
-                                </a>
-                                <a href="#" class="resource-link" style="display: block; padding: 8px 12px; margin-bottom: 6px; background: var(--bg-elevated); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;">
-                                    📱 Recommended Apps
-                                </a>
-                                <a href="#" class="resource-link" style="display: block; padding: 8px 12px; margin-bottom: 6px; background: var(--bg-elevated); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;">
-                                    🏕️ Campsite Booking
-                                </a>
+                        <!-- Saved Offline Maps -->
+                        <div class="trip-card saved-maps-section">
+                            <h3>📱 My Offline Maps</h3>
+                            <div id="savedOfflineMaps">
+                                <p style="color: var(--text-muted); font-size: 0.8rem;">No maps downloaded yet</p>
                             </div>
                         </div>
                     </div>
@@ -7376,6 +8064,100 @@
                 <!-- Populated dynamically -->
             </div>
             <button class="btn btn-secondary" style="width: 100%; margin-top: 16px;" onclick="closeTripSelection()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Create Forum Post Modal -->
+    <div class="create-post-modal" id="createPostModal">
+        <div class="create-post-form">
+            <div class="create-post-header">
+                <h3>✏️ Share with the Community</h3>
+                <button class="modal-close" onclick="closeCreatePostModal()">×</button>
+            </div>
+            <div class="create-post-body">
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+                    Share your experiences, tips, photos, or ask questions about this route!
+                </p>
+                
+                <label style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px; display: block;">Post Type</label>
+                <div class="post-type-selector">
+                    <button class="post-type-option selected" data-type="tip" onclick="selectPostType('tip', this)">💡 Tip</button>
+                    <button class="post-type-option" data-type="photo" onclick="selectPostType('photo', this)">📸 Photo</button>
+                    <button class="post-type-option" data-type="question" onclick="selectPostType('question', this)">❓ Question</button>
+                    <button class="post-type-option" data-type="campsite" onclick="selectPostType('campsite', this)">🏕️ Campsite</button>
+                    <button class="post-type-option" data-type="warning" onclick="selectPostType('warning', this)">⚠️ Warning</button>
+                </div>
+                
+                <textarea class="post-textarea" id="postContent" placeholder="Share your experience, tip, or question..."></textarea>
+                
+                <label style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px; display: block;">📷 Add Photos (optional)</label>
+                <div class="photo-upload-grid">
+                    <div class="photo-upload-slot" onclick="triggerPhotoUpload(0)">
+                        <span class="add-icon">+</span>
+                    </div>
+                    <div class="photo-upload-slot" onclick="triggerPhotoUpload(1)">
+                        <span class="add-icon">+</span>
+                    </div>
+                    <div class="photo-upload-slot" onclick="triggerPhotoUpload(2)">
+                        <span class="add-icon">+</span>
+                    </div>
+                    <div class="photo-upload-slot" onclick="triggerPhotoUpload(3)">
+                        <span class="add-icon">+</span>
+                    </div>
+                </div>
+                <input type="file" id="forumPhotoInput" accept="image/*" multiple style="display: none;" onchange="handleForumPhotoUpload(event)">
+                
+                <div class="location-tag-input">
+                    <span>📍</span>
+                    <input type="text" id="postLocation" placeholder="Add location (e.g., Mile 45, Seligman AZ)">
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="closeCreatePostModal()">Cancel</button>
+                    <button class="btn btn-primary" style="flex: 1;" onclick="submitForumPost()">🚀 Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campsite Search Modal -->
+    <div class="modal-overlay" id="campsiteSearchModal">
+        <div class="modal" style="max-width: 600px; max-height: 80vh;">
+            <div class="modal-header">
+                <h3>🏕️ Search Campsites</h3>
+                <button class="modal-close" onclick="closeCampsiteSearch()">×</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto; max-height: 60vh;">
+                <div class="form-group">
+                    <label>Search Area</label>
+                    <input type="text" class="form-input" id="campsiteSearchArea" placeholder="e.g., Flagstaff, AZ">
+                </div>
+                <div class="form-group">
+                    <label>Campsite Type</label>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="filter-chip active" onclick="setCampsiteType('all', this)">All</button>
+                        <button class="filter-chip" onclick="setCampsiteType('free', this)">Free</button>
+                        <button class="filter-chip" onclick="setCampsiteType('rv-park', this)">RV Park</button>
+                        <button class="filter-chip" onclick="setCampsiteType('campground', this)">Campground</button>
+                        <button class="filter-chip" onclick="setCampsiteType('wild', this)">Wild</button>
+                    </div>
+                </div>
+                <div id="campsiteSearchResults">
+                    <p style="text-align: center; color: var(--text-muted); padding: 20px;">
+                        Enter a location to search for campsites
+                    </p>
+                </div>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-subtle);">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">🔗 External Booking Sites:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <a href="https://www.hipcamp.com" target="_blank" class="btn btn-secondary" style="font-size: 0.75rem;">Hipcamp</a>
+                        <a href="https://www.recreation.gov" target="_blank" class="btn btn-secondary" style="font-size: 0.75rem;">Recreation.gov</a>
+                        <a href="https://www.campendium.com" target="_blank" class="btn btn-secondary" style="font-size: 0.75rem;">Campendium</a>
+                        <a href="https://freecampsites.net" target="_blank" class="btn btn-secondary" style="font-size: 0.75rem;">FreeCampsites</a>
+                        <a href="https://www.ioverlander.com" target="_blank" class="btn btn-secondary" style="font-size: 0.75rem;">iOverlander</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -10533,7 +11315,561 @@
             } else {
                 document.getElementById('guideGroceryStops').innerHTML = '<p style="color: var(--text-muted);">Grocery store data not yet available.</p>';
             }
+            
+            // Populate Campsites
+            populateCampsites(tripId);
+            
+            // Populate Forum Posts
+            loadForumPosts(tripId);
+            
+            // Check and display saved offline maps
+            displaySavedMaps();
         }
+
+        // ==================== VANLIFE COMMUNITY FORUM ====================
+        
+        // Forum posts storage
+        let forumPosts = {};
+        let currentPostType = 'tip';
+        let currentForumFilter = 'all';
+        let forumPhotos = [];
+
+        // Load forum posts from localStorage
+        function loadForumPostsFromStorage() {
+            const saved = localStorage.getItem('srndipity_forum_posts');
+            if (saved) {
+                forumPosts = JSON.parse(saved);
+            }
+        }
+
+        // Save forum posts to localStorage
+        function saveForumPosts() {
+            localStorage.setItem('srndipity_forum_posts', JSON.stringify(forumPosts));
+        }
+
+        // Initialize sample forum posts
+        function initSampleForumPosts(tripId) {
+            if (!forumPosts[tripId]) {
+                forumPosts[tripId] = [
+                    {
+                        id: 'post_sample_1',
+                        type: 'tip',
+                        user: 'RoadWarrior22',
+                        avatar: '🚐',
+                        badge: 'Verified Vanlifer',
+                        content: 'Pro tip: Fill up your water tanks at the visitor center before heading into the desert sections. It\'s free and the water quality is great!',
+                        location: 'Visitor Center',
+                        timestamp: new Date(Date.now() - 86400000 * 2).toISOString(),
+                        likes: 45,
+                        comments: 8,
+                        photos: []
+                    },
+                    {
+                        id: 'post_sample_2',
+                        type: 'photo',
+                        user: 'SunsetChaser',
+                        avatar: '🌅',
+                        badge: 'Photo Pro',
+                        content: 'Caught this incredible sunset yesterday! The colors were absolutely unreal. Highly recommend stopping here around 6pm.',
+                        location: 'Mile Marker 45',
+                        timestamp: new Date(Date.now() - 86400000).toISOString(),
+                        likes: 128,
+                        comments: 23,
+                        photos: ['sunset_placeholder']
+                    },
+                    {
+                        id: 'post_sample_3',
+                        type: 'campsite',
+                        user: 'FreeCamper',
+                        avatar: '⛺',
+                        badge: 'Campsite Hunter',
+                        content: 'Found an amazing free campsite with flat ground and cell signal! GPS: Check the pin. Stayed 3 nights, very quiet.',
+                        location: 'BLM Land, Mile 78',
+                        timestamp: new Date(Date.now() - 86400000 * 5).toISOString(),
+                        likes: 89,
+                        comments: 15,
+                        photos: []
+                    },
+                    {
+                        id: 'post_sample_4',
+                        type: 'warning',
+                        user: 'SafeTraveler',
+                        avatar: '⚠️',
+                        badge: 'Safety First',
+                        content: 'Heads up! Road construction between mile 30-35. Expect 20-30 min delays. Flaggers present weekdays 7am-5pm.',
+                        location: 'Mile 30-35',
+                        timestamp: new Date(Date.now() - 3600000 * 5).toISOString(),
+                        likes: 67,
+                        comments: 12,
+                        photos: []
+                    }
+                ];
+            }
+        }
+
+        // Load and display forum posts for a trip
+        function loadForumPosts(tripId) {
+            loadForumPostsFromStorage();
+            initSampleForumPosts(tripId);
+            renderForumPosts(tripId);
+        }
+
+        // Render forum posts
+        function renderForumPosts(tripId) {
+            const container = document.getElementById('forumPosts');
+            if (!container) return;
+            
+            let posts = forumPosts[tripId] || [];
+            
+            // Filter by type
+            if (currentForumFilter !== 'all') {
+                posts = posts.filter(p => p.type === currentForumFilter);
+            }
+            
+            // Sort by timestamp (newest first)
+            posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">💬</div>
+                        <p>No posts yet. Be the first to share!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = posts.map(post => `
+                <div class="forum-post" data-id="${post.id}">
+                    <div class="forum-post-header">
+                        <div class="forum-avatar">${post.avatar}</div>
+                        <div class="forum-post-meta">
+                            <div class="forum-username">
+                                ${post.user}
+                                ${post.badge ? `<span class="forum-badge">${post.badge}</span>` : ''}
+                            </div>
+                            <div class="forum-timestamp">${formatTimeAgo(post.timestamp)} ${post.location ? '• 📍 ' + post.location : ''}</div>
+                        </div>
+                        <span class="forum-post-type ${post.type}">${getPostTypeLabel(post.type)}</span>
+                    </div>
+                    <div class="forum-post-content">${post.content}</div>
+                    ${post.photos && post.photos.length > 0 ? `
+                        <div class="forum-photos">
+                            ${post.photos.map((photo, idx) => `
+                                <div class="forum-photo" onclick="viewForumPhoto('${post.id}', ${idx})">
+                                    ${photo === 'sunset_placeholder' 
+                                        ? '<div style="width:100%;height:100%;background:linear-gradient(135deg,#f97316,#dc2626,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:2rem;">🌅</div>'
+                                        : `<img src="${photo}" alt="Photo">`
+                                    }
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="forum-post-actions">
+                        <div class="forum-action ${isPostLiked(post.id) ? 'liked' : ''}" onclick="togglePostLike('${tripId}', '${post.id}')">
+                            ❤️ ${post.likes}
+                        </div>
+                        <div class="forum-action" onclick="viewPostComments('${post.id}')">
+                            💬 ${post.comments} comments
+                        </div>
+                        <div class="forum-action" onclick="sharePost('${post.id}')">
+                            🔗 Share
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Format timestamp as "time ago"
+        function formatTimeAgo(timestamp) {
+            const seconds = Math.floor((new Date() - new Date(timestamp)) / 1000);
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + ' min ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+            if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
+            return new Date(timestamp).toLocaleDateString();
+        }
+
+        // Get post type label
+        function getPostTypeLabel(type) {
+            const labels = {
+                tip: '💡 Tip',
+                photo: '📸 Photo',
+                question: '❓ Question',
+                warning: '⚠️ Warning',
+                campsite: '🏕️ Campsite'
+            };
+            return labels[type] || type;
+        }
+
+        // Filter forum posts
+        function filterForumPosts(filter, element) {
+            currentForumFilter = filter;
+            
+            document.querySelectorAll('.forum-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            if (currentDetailTrip) {
+                renderForumPosts(currentDetailTrip.id);
+            }
+        }
+
+        // Toggle post like
+        function togglePostLike(tripId, postId) {
+            const likedPosts = JSON.parse(localStorage.getItem('srndipity_liked_posts') || '[]');
+            const index = likedPosts.indexOf(postId);
+            
+            if (index === -1) {
+                likedPosts.push(postId);
+                // Increment like count
+                const post = forumPosts[tripId]?.find(p => p.id === postId);
+                if (post) post.likes++;
+            } else {
+                likedPosts.splice(index, 1);
+                const post = forumPosts[tripId]?.find(p => p.id === postId);
+                if (post) post.likes--;
+            }
+            
+            localStorage.setItem('srndipity_liked_posts', JSON.stringify(likedPosts));
+            saveForumPosts();
+            renderForumPosts(tripId);
+        }
+
+        // Check if post is liked
+        function isPostLiked(postId) {
+            const likedPosts = JSON.parse(localStorage.getItem('srndipity_liked_posts') || '[]');
+            return likedPosts.includes(postId);
+        }
+
+        // Open create post modal
+        function openCreatePostModal() {
+            document.getElementById('createPostModal').classList.add('active');
+            document.getElementById('postContent').value = '';
+            document.getElementById('postLocation').value = '';
+            forumPhotos = [];
+            resetPhotoSlots();
+        }
+
+        // Close create post modal
+        function closeCreatePostModal() {
+            document.getElementById('createPostModal').classList.remove('active');
+        }
+
+        // Select post type
+        function selectPostType(type, element) {
+            currentPostType = type;
+            document.querySelectorAll('.post-type-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // Trigger photo upload
+        function triggerPhotoUpload(index) {
+            document.getElementById('forumPhotoInput').click();
+        }
+
+        // Handle forum photo upload
+        function handleForumPhotoUpload(event) {
+            const files = Array.from(event.target.files);
+            
+            files.forEach((file, idx) => {
+                if (forumPhotos.length >= 4) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    forumPhotos.push(e.target.result);
+                    updatePhotoSlots();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Update photo upload slots
+        function updatePhotoSlots() {
+            const slots = document.querySelectorAll('.photo-upload-slot');
+            slots.forEach((slot, idx) => {
+                if (forumPhotos[idx]) {
+                    slot.innerHTML = `<img src="${forumPhotos[idx]}" alt="Photo ${idx + 1}">`;
+                } else {
+                    slot.innerHTML = '<span class="add-icon">+</span>';
+                }
+            });
+        }
+
+        // Reset photo slots
+        function resetPhotoSlots() {
+            const slots = document.querySelectorAll('.photo-upload-slot');
+            slots.forEach(slot => {
+                slot.innerHTML = '<span class="add-icon">+</span>';
+            });
+        }
+
+        // Submit forum post
+        function submitForumPost() {
+            const content = document.getElementById('postContent').value.trim();
+            if (!content) {
+                showToast('Please write something to post');
+                return;
+            }
+            
+            const location = document.getElementById('postLocation').value.trim();
+            const tripId = currentDetailTrip?.id;
+            
+            if (!tripId) return;
+            
+            if (!forumPosts[tripId]) {
+                forumPosts[tripId] = [];
+            }
+            
+            const newPost = {
+                id: 'post_' + Date.now(),
+                type: currentPostType,
+                user: userName || 'Anonymous Traveler',
+                avatar: '🚐',
+                badge: null,
+                content: content,
+                location: location,
+                timestamp: new Date().toISOString(),
+                likes: 0,
+                comments: 0,
+                photos: forumPhotos
+            };
+            
+            forumPosts[tripId].unshift(newPost);
+            saveForumPosts();
+            
+            closeCreatePostModal();
+            renderForumPosts(tripId);
+            showToast('Post shared! Thanks for contributing 🙌');
+        }
+
+        // ==================== OFFLINE MAP DOWNLOAD ====================
+        
+        let offlineMaps = {};
+
+        // Load offline maps from storage
+        function loadOfflineMaps() {
+            const saved = localStorage.getItem('srndipity_offline_maps');
+            if (saved) {
+                offlineMaps = JSON.parse(saved);
+            }
+        }
+
+        // Save offline maps
+        function saveOfflineMaps() {
+            localStorage.setItem('srndipity_offline_maps', JSON.stringify(offlineMaps));
+        }
+
+        // Download offline map for current trip
+        function downloadOfflineMap() {
+            const tripId = currentDetailTrip?.id;
+            if (!tripId) return;
+            
+            const btn = document.getElementById('downloadOfflineBtn');
+            const progress = document.getElementById('downloadProgress');
+            const progressBar = document.getElementById('downloadProgressBar');
+            
+            // Show progress
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Downloading...';
+            progress.style.display = 'block';
+            
+            // Simulate download progress
+            let percent = 0;
+            const interval = setInterval(() => {
+                percent += Math.random() * 15;
+                if (percent >= 100) {
+                    percent = 100;
+                    clearInterval(interval);
+                    
+                    // Save offline data
+                    const trip = currentDetailTrip;
+                    const guide = roadTripGuides[tripId];
+                    
+                    offlineMaps[tripId] = {
+                        tripId: tripId,
+                        name: trip.name,
+                        icon: trip.icon,
+                        downloadDate: new Date().toISOString(),
+                        data: {
+                            trip: trip,
+                            guide: guide,
+                            pois: getPoiDataForTrip(tripId)
+                        }
+                    };
+                    
+                    saveOfflineMaps();
+                    
+                    // Update UI
+                    btn.classList.add('downloaded');
+                    btn.innerHTML = '<span>✅</span> Downloaded! Available Offline';
+                    btn.disabled = false;
+                    
+                    setTimeout(() => {
+                        progress.style.display = 'none';
+                    }, 1000);
+                    
+                    displaySavedMaps();
+                    showToast('Map downloaded for offline use! 📥');
+                }
+                progressBar.style.width = percent + '%';
+            }, 200);
+        }
+
+        // Get POI data for a trip
+        function getPoiDataForTrip(tripId) {
+            // Get relevant POIs near trip waypoints
+            const trip = getAllTrips().find(t => t.id === tripId);
+            if (!trip || !trip.waypoints) return {};
+            
+            const relevantPois = {};
+            Object.keys(poiDatabase).forEach(type => {
+                relevantPois[type] = poiDatabase[type].filter(poi => {
+                    // Check if POI is near any waypoint
+                    return trip.waypoints.some(wp => {
+                        const dist = getDistanceKm(poi.lat, poi.lng, wp[0], wp[1]);
+                        return dist < 100; // Within 100km of a waypoint
+                    });
+                });
+            });
+            
+            return relevantPois;
+        }
+
+        // Display saved offline maps
+        function displaySavedMaps() {
+            loadOfflineMaps();
+            const container = document.getElementById('savedOfflineMaps');
+            if (!container) return;
+            
+            const maps = Object.values(offlineMaps);
+            
+            if (maps.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">No maps downloaded yet</p>';
+                return;
+            }
+            
+            container.innerHTML = maps.map(map => `
+                <div class="saved-map-item">
+                    <div class="saved-map-icon">${map.icon}</div>
+                    <div class="saved-map-info">
+                        <div class="saved-map-name">${map.name}</div>
+                        <div class="saved-map-meta">Downloaded ${formatTimeAgo(map.downloadDate)}</div>
+                    </div>
+                    <div class="saved-map-actions">
+                        <button class="saved-map-btn" onclick="viewOfflineMap('${map.tripId}')">View</button>
+                        <button class="saved-map-btn delete" onclick="deleteOfflineMap('${map.tripId}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update download button if current trip is downloaded
+            if (currentDetailTrip && offlineMaps[currentDetailTrip.id]) {
+                const btn = document.getElementById('downloadOfflineBtn');
+                if (btn) {
+                    btn.classList.add('downloaded');
+                    btn.innerHTML = '<span>✅</span> Downloaded! Available Offline';
+                }
+            }
+        }
+
+        // View offline map
+        function viewOfflineMap(tripId) {
+            closeTripDetailModal();
+            openTripDetail(tripId);
+            showToast('Viewing offline map data');
+        }
+
+        // Delete offline map
+        function deleteOfflineMap(tripId) {
+            if (confirm('Delete this offline map?')) {
+                delete offlineMaps[tripId];
+                saveOfflineMaps();
+                displaySavedMaps();
+                showToast('Offline map deleted');
+            }
+        }
+
+        // ==================== CAMPSITE BOOKING ====================
+        
+        // Sample campsites data for trips
+        const tripCampsites = {
+            'route66': [
+                { name: 'KOA Flagstaff', type: 'RV Park', price: '$45-65/night', features: ['Hookups', 'WiFi', 'Pool', 'Laundry'], bookingUrl: 'https://koa.com/campgrounds/flagstaff/', rating: 4.2 },
+                { name: 'Grand Canyon Trailer Village', type: 'RV Park', price: '$56/night', features: ['Full Hookups', 'Near South Rim'], bookingUrl: 'https://www.nps.gov/grca', rating: 4.0 },
+                { name: 'Mather Campground', type: 'Campground', price: '$18/night', features: ['Tent Sites', 'No Hookups', 'Scenic'], bookingUrl: 'https://www.recreation.gov', rating: 4.5 }
+            ],
+            'iceland-ring': [
+                { name: 'Reykjavik Campsite', type: 'Campground', price: '2500 ISK', features: ['Hot Showers', 'Central', 'Bus Stop'], bookingUrl: 'https://reykjavikcampsite.is', rating: 4.1 },
+                { name: 'Akureyri Camping', type: 'Campground', price: '2000 ISK', features: ['Near Town', 'Kitchen', 'WiFi'], bookingUrl: '', rating: 4.3 }
+            ],
+            'nc500': [
+                { name: 'Inverness Camping & Caravanning', type: 'Campground', price: '£25/night', features: ['Hookups', 'Shop', 'WiFi'], bookingUrl: 'https://www.campingandcaravanningclub.co.uk', rating: 4.2 },
+                { name: 'Applecross Campsite', type: 'Wild', price: '£10/night', features: ['Sea Views', 'Basic Facilities'], bookingUrl: '', rating: 4.7 }
+            ]
+        };
+
+        // Populate campsites for a trip
+        function populateCampsites(tripId) {
+            const container = document.getElementById('guideCampsites');
+            if (!container) return;
+            
+            const campsites = tripCampsites[tripId] || [];
+            
+            if (campsites.length === 0) {
+                container.innerHTML = `
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">
+                        No curated campsites yet for this route.
+                    </p>
+                `;
+                return;
+            }
+            
+            container.innerHTML = campsites.map(camp => `
+                <div class="campsite-booking-card">
+                    <div class="campsite-image">🏕️</div>
+                    <div class="campsite-info">
+                        <div class="campsite-name">${camp.name}</div>
+                        <div class="campsite-location">${camp.type} • ⭐ ${camp.rating}</div>
+                        <div class="campsite-features">
+                            ${camp.features.map(f => `<span class="campsite-feature">${f}</span>`).join('')}
+                        </div>
+                        <div class="campsite-price">
+                            <span class="campsite-price-value">${camp.price}</span>
+                            ${camp.bookingUrl ? 
+                                `<a href="${camp.bookingUrl}" target="_blank" class="campsite-book-btn">Book Now</a>` :
+                                `<span style="font-size: 0.7rem; color: var(--text-muted);">Walk-in only</span>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search nearby campsites
+        function searchNearbyCampsites() {
+            document.getElementById('campsiteSearchModal').classList.add('active');
+        }
+
+        // Close campsite search
+        function closeCampsiteSearch() {
+            document.getElementById('campsiteSearchModal').classList.remove('active');
+        }
+
+        // Set campsite type filter
+        function setCampsiteType(type, element) {
+            document.querySelectorAll('#campsiteSearchModal .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+
+        // Initialize on load
+        loadOfflineMaps();
+        loadForumPostsFromStorage();
 
         // Trip Selection Modal Functions
         function showTripSelection(trips, lat, lng) {
