@@ -841,6 +841,323 @@
             color: white;
         }
 
+        /* Season badges */
+        .season-badge {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .season-badge.best {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .season-badge.avoid {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .road-trip-card.season-best {
+            border-left: 3px solid #22c55e;
+        }
+
+        .road-trip-card.season-avoid {
+            opacity: 0.7;
+        }
+
+        .season-tip {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 4px;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+        }
+
+        /* Travel month selector */
+        .travel-month-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .travel-month-selector label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .travel-month-selector select {
+            flex: 1;
+            padding: 6px 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        body.vintage-mode .travel-month-selector {
+            background: var(--vintage-cream);
+            border-color: var(--vintage-tan);
+        }
+
+        body.vintage-mode .travel-month-selector select {
+            background: white;
+            color: var(--vintage-dark);
+            border-color: var(--vintage-tan);
+        }
+
+        body.vintage-mode .season-badge.best {
+            background: rgba(34, 139, 34, 0.15);
+            color: #228b22;
+        }
+
+        body.vintage-mode .season-badge.avoid {
+            background: rgba(196, 69, 54, 0.15);
+            color: #c44536;
+        }
+
+        body.vintage-mode .season-tip {
+            background: rgba(139, 115, 85, 0.1);
+            color: var(--vintage-brown);
+        }
+
+        /* POI Layer Controls */
+        .poi-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(21, 21, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid var(--border-subtle);
+            max-width: 280px;
+        }
+
+        .poi-controls-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .poi-controls-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .poi-controls-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .poi-toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .poi-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .poi-toggle:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .poi-toggle.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .poi-toggle .poi-icon {
+            font-size: 0.9rem;
+        }
+
+        .poi-toggle .poi-count {
+            background: rgba(255,255,255,0.2);
+            padding: 1px 5px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+        }
+
+        /* POI Markers on map */
+        .poi-marker-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 2px solid white;
+            transition: transform 0.2s;
+        }
+
+        .poi-marker-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .poi-marker-icon.campsite-free {
+            background: #22c55e;
+        }
+
+        .poi-marker-icon.campsite-paid {
+            background: #3b82f6;
+        }
+
+        .poi-marker-icon.fuel {
+            background: #ef4444;
+        }
+
+        .poi-marker-icon.grocery {
+            background: #f59e0b;
+        }
+
+        .poi-marker-icon.water {
+            background: #06b6d4;
+        }
+
+        .poi-marker-icon.viewpoint {
+            background: #8b5cf6;
+        }
+
+        .poi-marker-icon.rest-area {
+            background: #6b7280;
+        }
+
+        .poi-marker-icon.mechanic {
+            background: #dc2626;
+        }
+
+        /* POI Popup styling */
+        .poi-popup {
+            min-width: 200px;
+        }
+
+        .poi-popup-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .poi-popup-icon {
+            font-size: 1.5rem;
+        }
+
+        .poi-popup-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .poi-popup-type {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .poi-popup-details {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        .poi-popup-details p {
+            margin: 4px 0;
+        }
+
+        .poi-popup-tip {
+            margin-top: 8px;
+            padding: 6px 8px;
+            background: #f0f9ff;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #0369a1;
+        }
+
+        .poi-popup-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .poi-popup-actions a {
+            flex: 1;
+            padding: 6px;
+            text-align: center;
+            background: #f3f4f6;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            color: #374151;
+        }
+
+        .poi-popup-actions a:hover {
+            background: #e5e7eb;
+        }
+
+        /* Offline indicator */
+        .offline-indicator {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            z-index: 1000;
+            display: none;
+        }
+
+        .offline-indicator.visible {
+            display: block;
+        }
+
+        /* POI Legend */
+        .poi-legend {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
         /* Mode Tabs */
         .mode-tabs {
             display: flex;
@@ -4959,6 +5276,436 @@
             }
         }
 
+        /* ==================== MEMORY BOOK STYLES ==================== */
+        .memory-book-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+        }
+
+        .memory-book-modal.active {
+            display: flex;
+        }
+
+        .memory-book {
+            width: 90vw;
+            max-width: 900px;
+            height: 80vh;
+            max-height: 600px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .book-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(5deg);
+        }
+
+        .book-page {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f0e6 0%, #ebe5d9 100%);
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            padding: 30px;
+            overflow-y: auto;
+            transform-origin: left center;
+            backface-visibility: hidden;
+        }
+
+        .book-page.left {
+            left: 0;
+            border-radius: 8px 0 0 8px;
+            transform-origin: right center;
+            background: linear-gradient(135deg, #ebe5d9 0%, #f5f0e6 100%);
+        }
+
+        .book-page.right {
+            left: 50%;
+        }
+
+        .book-spine {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 20px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #8b7355, #6b5344, #8b7355);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+
+        .book-close-btn {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .book-close-btn:hover {
+            background: var(--danger);
+            transform: scale(1.1);
+        }
+
+        .page-title {
+            font-family: 'Georgia', serif;
+            font-size: 1.8rem;
+            color: #4a3f35;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #d4c4a8;
+            padding-bottom: 10px;
+        }
+
+        .country-flag-large {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .memory-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-10px) rotateX(-5deg) scale(1.05);
+            box-shadow: 5px 15px 30px rgba(0,0,0,0.25);
+        }
+
+        .memory-card-image {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #e0d5c5, #d4c4a8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .memory-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .memory-card-content {
+            padding: 10px;
+        }
+
+        .memory-card-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a3f35;
+            margin-bottom: 4px;
+        }
+
+        .memory-card-date {
+            font-size: 0.7rem;
+            color: #8b7355;
+        }
+
+        .add-memory-card {
+            background: transparent;
+            border: 2px dashed #d4c4a8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+            color: #8b7355;
+            transition: all 0.3s;
+        }
+
+        .add-memory-card:hover {
+            border-color: #e07a39;
+            color: #e07a39;
+            transform: translateY(-5px);
+        }
+
+        .add-memory-card .plus-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        /* Memory Pop-up Detail View */
+        .memory-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            max-width: 500px;
+            width: 90vw;
+            max-height: 80vh;
+            overflow: hidden;
+            z-index: 10002;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .memory-popup.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .memory-popup-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #e0d5c5, #d4c4a8);
+        }
+
+        .memory-popup-content {
+            padding: 20px;
+        }
+
+        .memory-popup-title {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            color: #4a3f35;
+            margin-bottom: 8px;
+        }
+
+        .memory-popup-date {
+            font-size: 0.85rem;
+            color: #8b7355;
+            margin-bottom: 15px;
+        }
+
+        .memory-popup-description {
+            font-size: 0.95rem;
+            color: #5a4f45;
+            line-height: 1.6;
+        }
+
+        .memory-popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .memory-popup-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0d5c5;
+        }
+
+        .memory-popup-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .memory-edit-btn {
+            background: #e07a39;
+            color: white;
+        }
+
+        .memory-delete-btn {
+            background: #f5f0e6;
+            color: #c44536;
+        }
+
+        /* Add Memory Modal */
+        .add-memory-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 10003;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-memory-modal.active {
+            display: flex;
+        }
+
+        .add-memory-form {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            padding: 24px;
+            width: 90vw;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .add-memory-form h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .photo-upload-area {
+            border: 2px dashed var(--border-subtle);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 16px;
+            background: var(--bg-elevated);
+        }
+
+        .photo-upload-area:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-hover);
+        }
+
+        .photo-upload-area.has-photo {
+            padding: 0;
+            border-style: solid;
+        }
+
+        .photo-upload-area img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .photo-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .photo-upload-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Country selector for memories */
+        .countries-with-memories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .country-memory-chip {
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .country-memory-chip:hover,
+        .country-memory-chip.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .country-memory-chip .memory-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 5px;
+            font-size: 0.75rem;
+        }
+
+        .no-memories-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #8b7355;
+        }
+
+        .no-memories-message .icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Memory book navigation */
+        .book-nav {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .book-nav button {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .book-nav button:hover {
+            background: var(--accent-primary);
+        }
+
         /* Animations */
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -5168,6 +5915,7 @@
                     <div class="section">
                         <div class="section-title">⚡ Quick Actions</div>
                         <button class="btn btn-primary" onclick="markAsVisited()" style="margin-bottom: 8px;">✅ Mark Visited</button>
+                        <button class="btn btn-secondary" onclick="openMemoryBook()" style="margin-bottom: 8px;">📖 Memory Book</button>
                         <button class="btn btn-secondary" onclick="resetMap()" style="margin-bottom: 8px;">🔄 Reset All</button>
                         <button class="btn go-premium-btn" onclick="openPrintPosterModal()">🖼️ Print Travel Poster</button>
                     </div>
@@ -5300,13 +6048,32 @@
                     <div class="section">
                         <div class="section-title">🌍 Filter by Region</div>
                         <div class="filter-chips">
-                            <button class="filter-chip active" onclick="filterRoadTrips('all')">All</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Europe')">Europe</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('North America')">North America</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('South America')">South America</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Africa')">Africa</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Asia')">Asia</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Oceania')">Oceania</button>
+                            <button class="filter-chip active" onclick="filterRoadTrips('all', this)">All</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Europe', this)">🇪🇺 Europe</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('North America', this)">🌎 N. America</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('South America', this)">🌎 S. America</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Africa', this)">🌍 Africa</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Asia', this)">🌏 Asia</button>
+                            <button class="filter-chip" onclick="filterRoadTrips('Oceania', this)">🌏 Oceania</button>
+                        </div>
+                        
+                        <!-- Travel Month Selector -->
+                        <div class="travel-month-selector">
+                            <label>📅 When are you traveling?</label>
+                            <select onchange="setTravelMonth(this.value)" id="travelMonthSelect">
+                                <option value="0">January</option>
+                                <option value="1">February</option>
+                                <option value="2">March</option>
+                                <option value="3">April</option>
+                                <option value="4">May</option>
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">October</option>
+                                <option value="10">November</option>
+                                <option value="11">December</option>
+                            </select>
                         </div>
                     </div>
 
@@ -5447,6 +6214,64 @@
             <svg id="worldMap" width="100%" height="100%" viewBox="0 0 2000 1000" preserveAspectRatio="xMidYMid meet"></svg>
             <!-- Leaflet Road Map -->
             <div id="roadMap"></div>
+            
+            <!-- POI Layer Controls (shown only in Road Trips mode) -->
+            <div class="poi-controls" id="poiControls" style="display: none;">
+                <div class="poi-controls-header">
+                    <span class="poi-controls-title">📍 Points of Interest</span>
+                    <button class="poi-controls-toggle" onclick="togglePoiPanel()" title="Collapse">−</button>
+                </div>
+                <div class="poi-toggles" id="poiToggles">
+                    <button class="poi-toggle" onclick="togglePoi('campsiteFree', this)" data-type="campsiteFree">
+                        <span class="poi-icon">⛺</span>
+                        <span>Free Camps</span>
+                        <span class="poi-count" id="countCampsiteFree">0</span>
+                    </button>
+                    <button class="poi-toggle" onclick="togglePoi('campsitePaid', this)" data-type="campsitePaid">
+                        <span class="poi-icon">🏕️</span>
+                        <span>Paid Camps</span>
+                        <span class="poi-count" id="countCampsitePaid">0</span>
+                    </button>
+                    <button class="poi-toggle" onclick="togglePoi('fuel', this)" data-type="fuel">
+                        <span class="poi-icon">⛽</span>
+                        <span>Fuel</span>
+                        <span class="poi-count" id="countFuel">0</span>
+                    </button>
+                    <button class="poi-toggle" onclick="togglePoi('grocery', this)" data-type="grocery">
+                        <span class="poi-icon">🛒</span>
+                        <span>Grocery</span>
+                        <span class="poi-count" id="countGrocery">0</span>
+                    </button>
+                    <button class="poi-toggle" onclick="togglePoi('water', this)" data-type="water">
+                        <span class="poi-icon">💧</span>
+                        <span>Water</span>
+                        <span class="poi-count" id="countWater">0</span>
+                    </button>
+                    <button class="poi-toggle" onclick="togglePoi('viewpoint', this)" data-type="viewpoint">
+                        <span class="poi-icon">📸</span>
+                        <span>Views</span>
+                        <span class="poi-count" id="countViewpoint">0</span>
+                    </button>
+                    <button class="poi-toggle" onclick="togglePoi('restArea', this)" data-type="restArea">
+                        <span class="poi-icon">🅿️</span>
+                        <span>Rest</span>
+                        <span class="poi-count" id="countRestArea">0</span>
+                    </button>
+                    <button class="poi-toggle" onclick="togglePoi('mechanic', this)" data-type="mechanic">
+                        <span class="poi-icon">🔧</span>
+                        <span>Service</span>
+                        <span class="poi-count" id="countMechanic">0</span>
+                    </button>
+                </div>
+                <div class="poi-legend">
+                    💡 Reference data for offline planning. Verify on Google Maps before visiting.
+                </div>
+            </div>
+            
+            <!-- Offline Indicator -->
+            <div class="offline-indicator" id="offlineIndicator">
+                📴 Offline Mode - Using cached POI data
+            </div>
         </div>
     </div>
 
@@ -6142,6 +6967,102 @@
             </div>
         </div>
     </div>
+
+    <!-- Memory Book Modal -->
+    <div class="memory-book-modal" id="memoryBookModal">
+        <div class="memory-book">
+            <button class="book-close-btn" onclick="closeMemoryBook()">×</button>
+            
+            <div class="book-container">
+                <div class="book-spine"></div>
+                
+                <!-- Left Page - Country List -->
+                <div class="book-page left">
+                    <div class="page-title">📖 My Travel Memories</div>
+                    <p style="text-align: center; color: #8b7355; font-style: italic; margin-bottom: 20px;">Select a country to view memories</p>
+                    
+                    <div class="countries-with-memories" id="countriesWithMemories">
+                        <!-- Dynamically populated -->
+                    </div>
+                    
+                    <div class="no-memories-message" id="noMemoriesMessage" style="display: none;">
+                        <div class="icon">📷</div>
+                        <h3>No memories yet!</h3>
+                        <p>Mark countries as visited and add your travel memories to create your personal journey book.</p>
+                    </div>
+                </div>
+                
+                <!-- Right Page - Memories Grid -->
+                <div class="book-page right">
+                    <div id="memoryPageContent">
+                        <div class="country-flag-large" id="selectedCountryFlag">🌍</div>
+                        <div class="page-title" id="selectedCountryTitle">Select a Country</div>
+                        
+                        <div class="memory-grid" id="memoryGrid">
+                            <!-- Memories will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="book-nav">
+                <button onclick="addMemoryToCountry()">➕ Add Memory</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Memory Detail Popup -->
+    <div class="memory-popup" id="memoryPopup">
+        <button class="memory-popup-close" onclick="closeMemoryPopup()">×</button>
+        <div class="memory-popup-image" id="memoryPopupImage"></div>
+        <div class="memory-popup-content">
+            <div class="memory-popup-title" id="memoryPopupTitle">Memory Title</div>
+            <div class="memory-popup-date" id="memoryPopupDate">Date</div>
+            <div class="memory-popup-description" id="memoryPopupDesc">Description</div>
+            <div class="memory-popup-actions">
+                <button class="memory-edit-btn" onclick="editCurrentMemory()">✏️ Edit</button>
+                <button class="memory-delete-btn" onclick="deleteCurrentMemory()">🗑️ Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Memory Modal -->
+    <div class="add-memory-modal" id="addMemoryModal">
+        <div class="add-memory-form">
+            <h3><span id="memoryFormIcon">📸</span> <span id="memoryFormTitle">Add Memory</span></h3>
+            
+            <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('memoryPhotoInput').click()">
+                <div class="photo-upload-icon">📷</div>
+                <div class="photo-upload-text">Click to upload a photo</div>
+            </div>
+            <input type="file" id="memoryPhotoInput" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+            
+            <div class="form-group">
+                <label>Memory Title *</label>
+                <input type="text" class="form-input" id="memoryTitle" placeholder="e.g., Sunset at Santorini">
+            </div>
+            
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" class="form-input" id="memoryDate">
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-input" id="memoryDescription" rows="3" placeholder="What made this moment special?"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Location (optional)</label>
+                <input type="text" class="form-input" id="memoryLocation" placeholder="e.g., Oia, Santorini">
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeAddMemoryModal()">Cancel</button>
+                <button class="btn btn-primary" style="flex: 1;" onclick="saveMemory()">💾 Save Memory</button>
+            </div>
+        </div>
+    </div>
     </main>
 
     <!-- Scripts -->
@@ -6176,6 +7097,176 @@
         let satelliteLayers = {}; // Store layer references
         const DEFAULT_COLOR = '#3a3a4d';
         const VISITED_COLOR = '#22c55e';
+        
+        // POI Layer Groups for Road Map
+        let poiLayers = {
+            campsiteFree: null,
+            campsitePaid: null,
+            fuel: null,
+            grocery: null,
+            water: null,
+            viewpoint: null,
+            restArea: null,
+            mechanic: null
+        };
+        let poiVisible = {
+            campsiteFree: false,
+            campsitePaid: false,
+            fuel: false,
+            grocery: false,
+            water: false,
+            viewpoint: false,
+            restArea: false,
+            mechanic: false
+        };
+
+        // POI Database - Pre-loaded reference data for offline use
+        const poiDatabase = {
+            // ============ FREE CAMPSITES ============
+            campsiteFree: [
+                // Route 66 (USA)
+                { lat: 35.6870, lng: -105.9378, name: 'Santa Fe BLM Land', region: 'Route 66', country: 'USA', tip: 'Dispersed camping allowed, no facilities' },
+                { lat: 35.1983, lng: -111.6513, name: 'Coconino Forest Camp', region: 'Route 66', country: 'USA', tip: 'Free 14-day limit, bring water' },
+                { lat: 35.2220, lng: -101.8313, name: 'Lake Meredith NRA', region: 'Route 66', country: 'USA', tip: 'Free camping at designated areas' },
+                // Iceland Ring Road
+                { lat: 64.1466, lng: -21.9426, name: 'Reykjavik Campsite', region: 'Iceland Ring', country: 'Iceland', tip: 'Basic facilities, central location' },
+                { lat: 65.6835, lng: -18.0878, name: 'Akureyri Camping', region: 'Iceland Ring', country: 'Iceland', tip: 'Hot showers, near town center' },
+                { lat: 64.2538, lng: -15.2080, name: 'Höfn Campground', region: 'Iceland Ring', country: 'Iceland', tip: 'Glacier views, basic facilities' },
+                // Scotland NC500
+                { lat: 57.4778, lng: -4.2247, name: 'Inverness Wild Camp', region: 'NC500', country: 'Scotland', tip: 'Right to roam - wild camping legal' },
+                { lat: 58.4375, lng: -4.4312, name: 'Durness Beach Camp', region: 'NC500', country: 'Scotland', tip: 'Stunning beach, free wild camping' },
+                { lat: 57.8619, lng: -5.1589, name: 'Ullapool Hills', region: 'NC500', country: 'Scotland', tip: 'Wild camping with loch views' },
+                // Norway
+                { lat: 62.1127, lng: 7.2066, name: 'Trollstigen Valley', region: 'Trollstigen', country: 'Norway', tip: 'Allemannsretten - right to roam' },
+                { lat: 61.2176, lng: 6.8413, name: 'Sognefjord Rest', region: 'Norway', country: 'Norway', tip: 'Free fjord-side camping' },
+                // Australia
+                { lat: -38.6819, lng: 143.4764, name: 'Great Ocean Free Camp', region: 'Great Ocean Road', country: 'Australia', tip: '24hr max, self-contained only' },
+                { lat: -38.7611, lng: 143.6667, name: 'Johanna Beach', region: 'Great Ocean Road', country: 'Australia', tip: 'Beautiful beach camping, free' },
+                // New Zealand
+                { lat: -45.0312, lng: 168.6626, name: 'Milford Road Camp', region: 'Milford Sound', country: 'New Zealand', tip: 'DOC site, basic facilities' },
+                { lat: -44.6714, lng: 167.9264, name: 'Lake Gunn Rest', region: 'Milford Sound', country: 'New Zealand', tip: 'Free DOC campsite, stunning' },
+                // Europe
+                { lat: 40.4168, lng: -3.7038, name: 'Madrid Outskirts', region: 'Spain', country: 'Spain', tip: 'Free areas outside city' },
+                { lat: 41.3851, lng: 2.1734, name: 'Barcelona Hills', region: 'Spain', country: 'Spain', tip: 'Montjuic area, check local rules' },
+                { lat: 43.7696, lng: 11.2558, name: 'Tuscany Agriturismi', region: 'Italy', country: 'Italy', tip: 'Many offer free overnight' },
+                { lat: 45.4642, lng: 9.1900, name: 'Milan Lakes', region: 'Italy', country: 'Italy', tip: 'Lake Como free spots' }
+            ],
+            
+            // ============ PAID CAMPSITES ============
+            campsitePaid: [
+                // Route 66
+                { lat: 34.0522, lng: -118.2437, name: 'LA/Long Beach KOA', region: 'Route 66', country: 'USA', price: '$45-65/night', tip: 'Full hookups, pool, WiFi' },
+                { lat: 36.1699, lng: -115.1398, name: 'Las Vegas RV Resort', region: 'Route 66', country: 'USA', price: '$40-80/night', tip: 'Near Strip, full amenities' },
+                { lat: 35.0844, lng: -106.6504, name: 'Albuquerque KOA', region: 'Route 66', country: 'USA', price: '$35-55/night', tip: 'Clean facilities, laundry' },
+                // Iceland
+                { lat: 64.1466, lng: -21.9426, name: 'Reykjavik Campsite', region: 'Iceland Ring', country: 'Iceland', price: '2500 ISK', tip: 'Hot showers, central' },
+                { lat: 65.2622, lng: -14.4044, name: 'Egilsstaðir Camp', region: 'Iceland Ring', country: 'Iceland', price: '2000 ISK', tip: 'Near supermarket' },
+                // Europe
+                { lat: 40.6337, lng: 14.6027, name: 'Amalfi Coast Camp', region: 'Amalfi', country: 'Italy', price: '€25-40/night', tip: 'Sea views, book ahead in summer' },
+                { lat: 48.8566, lng: 2.3522, name: 'Paris Bois de Boulogne', region: 'France', country: 'France', price: '€30-50/night', tip: 'Closest to city center' },
+                { lat: 47.3769, lng: 8.5417, name: 'Zurich Camping', region: 'Switzerland', country: 'Switzerland', price: '€35-45/night', tip: 'Lake access, clean' },
+                // Australia/NZ
+                { lat: -38.7611, lng: 143.6667, name: 'Apollo Bay Holiday Park', region: 'Great Ocean Road', country: 'Australia', price: 'A$35-60/night', tip: 'Hot showers, beach access' },
+                { lat: -45.4140, lng: 167.7180, name: 'Te Anau Holiday Park', region: 'Milford Sound', country: 'New Zealand', price: 'NZ$45-65/night', tip: 'Gateway to Milford' }
+            ],
+            
+            // ============ FUEL STATIONS ============
+            fuel: [
+                // Route 66 - Critical fuel stops
+                { lat: 35.4676, lng: -109.0565, name: 'Holbrook Shell', region: 'Route 66', country: 'USA', type: 'Gas/Diesel', tip: 'Last fuel for 60 miles' },
+                { lat: 35.2220, lng: -101.8313, name: 'Amarillo Loves', region: 'Route 66', country: 'USA', type: 'Gas/Diesel/LPG', tip: '24hr, truck stop, showers' },
+                { lat: 35.1917, lng: -111.6178, name: 'Flagstaff Chevron', region: 'Route 66', country: 'USA', type: 'Gas/Diesel', tip: 'Near historic downtown' },
+                // Iceland - Limited fuel!
+                { lat: 64.1466, lng: -21.9426, name: 'N1 Reykjavik', region: 'Iceland Ring', country: 'Iceland', type: 'Gas/Diesel', tip: 'Fill up here, sparse ahead' },
+                { lat: 65.6835, lng: -18.0878, name: 'N1 Akureyri', region: 'Iceland Ring', country: 'Iceland', type: 'Gas/Diesel', tip: 'Major stop in North' },
+                { lat: 64.2538, lng: -15.2080, name: 'Olís Höfn', region: 'Iceland Ring', country: 'Iceland', type: 'Gas/Diesel', tip: 'Southeast Iceland' },
+                { lat: 63.4186, lng: -20.2867, name: 'N1 Vík', region: 'Iceland Ring', country: 'Iceland', type: 'Gas/Diesel', tip: 'South coast stop' },
+                // Scotland NC500
+                { lat: 57.4778, lng: -4.2247, name: 'Tesco Inverness', region: 'NC500', country: 'Scotland', type: 'Gas/Diesel', tip: 'Cheapest fuel, stock up' },
+                { lat: 58.5667, lng: -3.0667, name: 'John o Groats Shell', region: 'NC500', country: 'Scotland', type: 'Gas/Diesel', tip: 'Northernmost mainland' },
+                // Norway
+                { lat: 62.4722, lng: 6.1549, name: 'Circle K Ålesund', region: 'Trollstigen', country: 'Norway', type: 'Gas/Diesel', tip: 'Before mountain pass' },
+                // Australia
+                { lat: -38.3583, lng: 144.0500, name: 'Shell Geelong', region: 'Great Ocean Road', country: 'Australia', type: 'Gas/Diesel/LPG', tip: 'Last major town fuel' },
+                { lat: -38.7611, lng: 143.6667, name: 'Apollo Bay BP', region: 'Great Ocean Road', country: 'Australia', type: 'Gas/Diesel', tip: 'Mid-route fuel stop' },
+                // Patagonia - CRITICAL
+                { lat: -43.1167, lng: -72.0667, name: 'COPEC Chaitén', region: 'Carretera Austral', country: 'Chile', type: 'Gas/Diesel', tip: 'Fill tank completely!' },
+                { lat: -45.4000, lng: -72.7000, name: 'COPEC Coyhaique', region: 'Carretera Austral', country: 'Chile', type: 'Gas/Diesel', tip: 'Major hub, fill up' }
+            ],
+            
+            // ============ GROCERY STORES ============
+            grocery: [
+                // Route 66
+                { lat: 34.0522, lng: -118.2437, name: 'Walmart Los Angeles', region: 'Route 66', country: 'USA', type: 'Supermarket', tip: '24hr, good for stocking up' },
+                { lat: 35.0844, lng: -106.6504, name: 'Smith\'s Albuquerque', region: 'Route 66', country: 'USA', type: 'Supermarket', tip: 'Good deli section' },
+                // Iceland
+                { lat: 64.1466, lng: -21.9426, name: 'Bónus Reykjavik', region: 'Iceland Ring', country: 'Iceland', type: 'Discount', tip: 'Cheapest groceries in Iceland' },
+                { lat: 65.6835, lng: -18.0878, name: 'Krónan Akureyri', region: 'Iceland Ring', country: 'Iceland', type: 'Supermarket', tip: 'Good selection, fair prices' },
+                // Scotland
+                { lat: 57.4778, lng: -4.2247, name: 'Tesco Inverness', region: 'NC500', country: 'Scotland', type: 'Supermarket', tip: 'Stock up, limited shops on route' },
+                // Europe
+                { lat: 40.6337, lng: 14.6027, name: 'Conad Amalfi', region: 'Amalfi', country: 'Italy', type: 'Supermarket', tip: 'Small but has essentials' },
+                { lat: 48.8566, lng: 2.3522, name: 'Carrefour Paris', region: 'France', country: 'France', type: 'Hypermarket', tip: 'Multiple locations' },
+                // Australia
+                { lat: -38.3583, lng: 144.0500, name: 'Coles Geelong', region: 'Great Ocean Road', country: 'Australia', type: 'Supermarket', tip: 'Last big supermarket' },
+                // New Zealand
+                { lat: -45.4140, lng: 167.7180, name: 'Fresh Choice Te Anau', region: 'Milford Sound', country: 'New Zealand', type: 'Supermarket', tip: 'Stock up before Milford' }
+            ],
+            
+            // ============ WATER REFILL POINTS ============
+            water: [
+                { lat: 35.4676, lng: -109.0565, name: 'Holbrook Visitor Center', region: 'Route 66', country: 'USA', type: 'Free', tip: 'Potable water tap' },
+                { lat: 64.1466, lng: -21.9426, name: 'Reykjavik Campsite', region: 'Iceland Ring', country: 'Iceland', type: 'Free', tip: 'Iceland tap water is excellent' },
+                { lat: 57.4778, lng: -4.2247, name: 'Inverness Rest Stop', region: 'NC500', country: 'Scotland', type: 'Free', tip: 'Scottish water is pristine' },
+                { lat: -38.7611, lng: 143.6667, name: 'Apollo Bay Info Center', region: 'Great Ocean Road', country: 'Australia', type: 'Free', tip: 'Filtered water available' },
+                { lat: -45.0312, lng: 168.6626, name: 'Milford Road Rest', region: 'Milford Sound', country: 'New Zealand', type: 'Free', tip: 'Natural spring water' },
+                { lat: 62.1127, lng: 7.2066, name: 'Trollstigen Parking', region: 'Trollstigen', country: 'Norway', type: 'Free', tip: 'Mountain spring water' }
+            ],
+            
+            // ============ VIEWPOINTS / PHOTO SPOTS ============
+            viewpoint: [
+                // Route 66
+                { lat: 36.0544, lng: -112.1401, name: 'Grand Canyon South Rim', region: 'Route 66', country: 'USA', tip: 'Sunset views incredible' },
+                { lat: 35.0456, lng: -110.8350, name: 'Meteor Crater', region: 'Route 66', country: 'USA', tip: '50,000 year old crater' },
+                // Iceland
+                { lat: 64.3271, lng: -20.1199, name: 'Gullfoss Waterfall', region: 'Iceland Ring', country: 'Iceland', tip: 'Golden hour magic' },
+                { lat: 64.0558, lng: -16.1819, name: 'Jökulsárlón Glacier', region: 'Iceland Ring', country: 'Iceland', tip: 'Icebergs in lagoon' },
+                { lat: 63.6167, lng: -19.9917, name: 'Seljalandsfoss', region: 'Iceland Ring', country: 'Iceland', tip: 'Walk behind the waterfall' },
+                // Scotland
+                { lat: 57.2271, lng: -5.5210, name: 'Eilean Donan Castle', region: 'NC500', country: 'Scotland', tip: 'Most photographed castle' },
+                { lat: 58.4375, lng: -4.7286, name: 'Smoo Cave', region: 'NC500', country: 'Scotland', tip: 'Sea cave with waterfall' },
+                // Norway
+                { lat: 62.4583, lng: 7.6667, name: 'Trollstigen Viewpoint', region: 'Trollstigen', country: 'Norway', tip: 'Glass viewing platform' },
+                { lat: 60.1282, lng: 6.7461, name: 'Trolltunga', region: 'Norway', country: 'Norway', tip: 'Famous rock formation' },
+                // Australia
+                { lat: -38.7597, lng: 143.1044, name: 'Twelve Apostles', region: 'Great Ocean Road', country: 'Australia', tip: 'Sunrise/sunset best' },
+                { lat: -38.8583, lng: 143.5167, name: 'London Arch', region: 'Great Ocean Road', country: 'Australia', tip: 'Former London Bridge' },
+                // New Zealand
+                { lat: -44.6714, lng: 167.9264, name: 'Mirror Lakes', region: 'Milford Sound', country: 'New Zealand', tip: 'Perfect reflections, calm days' },
+                { lat: -44.6731, lng: 167.9256, name: 'Milford Sound', region: 'Milford Sound', country: 'New Zealand', tip: 'Best from boat cruise' },
+                // Amalfi
+                { lat: 40.6500, lng: 14.6000, name: 'Ravello Gardens', region: 'Amalfi', country: 'Italy', tip: 'Villa Rufolo gardens' },
+                { lat: 40.6337, lng: 14.6027, name: 'Amalfi Cathedral', region: 'Amalfi', country: 'Italy', tip: 'Steps are famous photo' }
+            ],
+            
+            // ============ REST AREAS ============
+            restArea: [
+                { lat: 35.2220, lng: -101.8313, name: 'Texas Rest Stop', region: 'Route 66', country: 'USA', tip: 'Clean toilets, picnic tables' },
+                { lat: 35.4676, lng: -109.0565, name: 'Arizona Welcome Center', region: 'Route 66', country: 'USA', tip: 'Info, toilets, vending' },
+                { lat: 64.2538, lng: -15.2080, name: 'Höfn Rest Area', region: 'Iceland Ring', country: 'Iceland', tip: 'Toilets, info board' },
+                { lat: 57.8619, lng: -5.1589, name: 'Ullapool Layby', region: 'NC500', country: 'Scotland', tip: 'Scenic rest with view' },
+                { lat: -38.7611, lng: 143.6667, name: 'Apollo Bay Rest', region: 'Great Ocean Road', country: 'Australia', tip: 'Toilets, BBQ facilities' }
+            ],
+            
+            // ============ MECHANICS / SERVICE ============
+            mechanic: [
+                { lat: 35.0844, lng: -106.6504, name: 'Albuquerque Auto', region: 'Route 66', country: 'USA', type: 'Full Service', tip: 'Good for older vehicles' },
+                { lat: 64.1466, lng: -21.9426, name: 'Bílaþjónusta Reykjavik', region: 'Iceland Ring', country: 'Iceland', type: 'Full Service', tip: 'English spoken, expensive' },
+                { lat: 65.6835, lng: -18.0878, name: 'Akureyri Garage', region: 'Iceland Ring', country: 'Iceland', type: 'Full Service', tip: 'Only major service in North' },
+                { lat: 57.4778, lng: -4.2247, name: 'Halfords Inverness', region: 'NC500', country: 'Scotland', type: 'Parts & Basic', tip: 'Good for parts and basics' },
+                { lat: -38.3583, lng: 144.0500, name: 'Repco Geelong', region: 'Great Ocean Road', country: 'Australia', type: 'Parts', tip: 'Auto parts chain' }
+            ]
+        };
         
         // Major world cities database for trip planning snap-to feature
         const majorCities = [
@@ -7908,9 +8999,11 @@
             if (roadMap) return;
             
             roadMap = L.map('roadMap', {
-                center: [30, 0],
-                zoom: 2,
-                zoomControl: false
+                center: [35, 10],
+                zoom: 3,
+                zoomControl: false,
+                minZoom: 2,
+                maxZoom: 18
             });
 
             // Base dark layer
@@ -8056,6 +9149,244 @@
                         .bindPopup(`<div class="route-popup"><h4>${alert.title}</h4><p>${alert.description}</p></div>`);
                 }
             });
+            
+            // Initialize POI layers after map is ready
+            initPoiLayers();
+            loadPoiPreferences();
+        }
+
+        // ==================== POI LAYER MANAGEMENT ====================
+        
+        // Initialize POI layers (call after roadMap is created)
+        function initPoiLayers() {
+            if (!roadMap) return;
+            
+            // Create layer groups for each POI type
+            Object.keys(poiLayers).forEach(type => {
+                poiLayers[type] = L.layerGroup();
+            });
+            
+            // Populate layers with markers
+            populatePoiMarkers();
+            
+            // Update counts in UI
+            updatePoiCounts();
+            
+            // Cache POI data for offline use
+            cachePoiData();
+            
+            // Check online status
+            updateOnlineStatus();
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+        }
+
+        // Populate POI markers from database
+        function populatePoiMarkers() {
+            const iconConfig = {
+                campsiteFree: { icon: '⛺', class: 'campsite-free' },
+                campsitePaid: { icon: '🏕️', class: 'campsite-paid' },
+                fuel: { icon: '⛽', class: 'fuel' },
+                grocery: { icon: '🛒', class: 'grocery' },
+                water: { icon: '💧', class: 'water' },
+                viewpoint: { icon: '📸', class: 'viewpoint' },
+                restArea: { icon: '🅿️', class: 'rest-area' },
+                mechanic: { icon: '🔧', class: 'mechanic' }
+            };
+            
+            Object.keys(poiDatabase).forEach(type => {
+                const config = iconConfig[type];
+                const pois = poiDatabase[type];
+                
+                pois.forEach(poi => {
+                    const marker = L.marker([poi.lat, poi.lng], {
+                        icon: L.divIcon({
+                            className: 'poi-marker',
+                            html: `<div class="poi-marker-icon ${config.class}">${config.icon}</div>`,
+                            iconSize: [28, 28],
+                            iconAnchor: [14, 14]
+                        })
+                    });
+                    
+                    // Create popup content
+                    const popupContent = createPoiPopup(poi, type);
+                    marker.bindPopup(popupContent, { maxWidth: 280 });
+                    
+                    // Add to layer group
+                    poiLayers[type].addLayer(marker);
+                });
+            });
+        }
+
+        // Create popup content for POI
+        function createPoiPopup(poi, type) {
+            const typeLabels = {
+                campsiteFree: 'Free Campsite',
+                campsitePaid: 'Paid Campsite',
+                fuel: 'Fuel Station',
+                grocery: 'Grocery Store',
+                water: 'Water Refill',
+                viewpoint: 'Viewpoint',
+                restArea: 'Rest Area',
+                mechanic: 'Mechanic/Service'
+            };
+            
+            const icons = {
+                campsiteFree: '⛺',
+                campsitePaid: '🏕️',
+                fuel: '⛽',
+                grocery: '🛒',
+                water: '💧',
+                viewpoint: '📸',
+                restArea: '🅿️',
+                mechanic: '🔧'
+            };
+            
+            let html = `
+                <div class="poi-popup">
+                    <div class="poi-popup-header">
+                        <span class="poi-popup-icon">${icons[type]}</span>
+                        <div>
+                            <div class="poi-popup-title">${poi.name}</div>
+                            <div class="poi-popup-type">${typeLabels[type]}</div>
+                        </div>
+                    </div>
+                    <div class="poi-popup-details">
+                        <p>📍 <strong>${poi.region}</strong>, ${poi.country}</p>
+                        ${poi.price ? `<p>💰 ${poi.price}</p>` : ''}
+                        ${poi.type ? `<p>🏷️ ${poi.type}</p>` : ''}
+                    </div>
+                    ${poi.tip ? `<div class="poi-popup-tip">💡 ${poi.tip}</div>` : ''}
+                    <div class="poi-popup-actions">
+                        <a href="https://www.google.com/maps/search/?api=1&query=${poi.lat},${poi.lng}" target="_blank">
+                            🗺️ Google Maps
+                        </a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}" target="_blank">
+                            🚗 Directions
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Toggle POI layer visibility
+        function togglePoi(type, buttonEl) {
+            if (!roadMap || !poiLayers[type]) return;
+            
+            poiVisible[type] = !poiVisible[type];
+            
+            if (poiVisible[type]) {
+                roadMap.addLayer(poiLayers[type]);
+                buttonEl.classList.add('active');
+            } else {
+                roadMap.removeLayer(poiLayers[type]);
+                buttonEl.classList.remove('active');
+            }
+            
+            // Save preference
+            localStorage.setItem('srndipity_poi_visible', JSON.stringify(poiVisible));
+        }
+
+        // Toggle all POI layers
+        function toggleAllPoi(show) {
+            Object.keys(poiLayers).forEach(type => {
+                poiVisible[type] = show;
+                if (show && roadMap) {
+                    roadMap.addLayer(poiLayers[type]);
+                } else if (roadMap) {
+                    roadMap.removeLayer(poiLayers[type]);
+                }
+            });
+            
+            // Update button states
+            document.querySelectorAll('.poi-toggle').forEach(btn => {
+                btn.classList.toggle('active', show);
+            });
+        }
+
+        // Toggle POI panel collapse
+        function togglePoiPanel() {
+            const toggles = document.getElementById('poiToggles');
+            const btn = document.querySelector('.poi-controls-toggle');
+            
+            if (toggles.style.display === 'none') {
+                toggles.style.display = 'flex';
+                btn.textContent = '−';
+            } else {
+                toggles.style.display = 'none';
+                btn.textContent = '+';
+            }
+        }
+
+        // Update POI counts in UI
+        function updatePoiCounts() {
+            Object.keys(poiDatabase).forEach(type => {
+                const countEl = document.getElementById('count' + type.charAt(0).toUpperCase() + type.slice(1));
+                if (countEl) {
+                    countEl.textContent = poiDatabase[type].length;
+                }
+            });
+        }
+
+        // Cache POI data for offline use
+        function cachePoiData() {
+            try {
+                localStorage.setItem('srndipity_poi_cache', JSON.stringify(poiDatabase));
+                localStorage.setItem('srndipity_poi_cache_date', new Date().toISOString());
+            } catch (e) {
+                console.warn('Could not cache POI data:', e);
+            }
+        }
+
+        // Load cached POI data
+        function loadCachedPoiData() {
+            try {
+                const cached = localStorage.getItem('srndipity_poi_cache');
+                if (cached) {
+                    return JSON.parse(cached);
+                }
+            } catch (e) {
+                console.warn('Could not load cached POI data:', e);
+            }
+            return null;
+        }
+
+        // Update online/offline status indicator
+        function updateOnlineStatus() {
+            const indicator = document.getElementById('offlineIndicator');
+            if (indicator) {
+                indicator.classList.toggle('visible', !navigator.onLine);
+            }
+        }
+
+        // Show/hide POI controls based on mode
+        function updatePoiControlsVisibility(mode) {
+            const controls = document.getElementById('poiControls');
+            if (controls) {
+                controls.style.display = mode === 'serendipity' ? 'block' : 'none';
+            }
+        }
+
+        // Load saved POI visibility preferences
+        function loadPoiPreferences() {
+            try {
+                const saved = localStorage.getItem('srndipity_poi_visible');
+                if (saved) {
+                    const prefs = JSON.parse(saved);
+                    Object.keys(prefs).forEach(type => {
+                        if (prefs[type] && poiLayers[type] && roadMap) {
+                            poiVisible[type] = true;
+                            roadMap.addLayer(poiLayers[type]);
+                            const btn = document.querySelector(`.poi-toggle[data-type="${type}"]`);
+                            if (btn) btn.classList.add('active');
+                        }
+                    });
+                }
+            } catch (e) {
+                console.warn('Could not load POI preferences:', e);
+            }
         }
 
         // ==================== MODE SWITCHING ====================
@@ -8089,6 +9420,9 @@
 
                 initRoadMap();
                 setTimeout(() => roadMap.invalidateSize(), 100);
+                
+                // Show POI controls
+                updatePoiControlsVisibility('serendipity');
             } else {
                 logoIcon.textContent = '🗺️';
                 logoIcon.classList.remove('serendipity-mode');
@@ -8098,6 +9432,9 @@
                 document.getElementById('worldMap').style.display = 'block';
                 document.getElementById('roadMap').classList.remove('active');
                 document.getElementById('zoomControls').style.display = 'flex';
+                
+                // Hide POI controls
+                updatePoiControlsVisibility('diary');
             }
         }
 
@@ -8169,6 +9506,49 @@
 
         // ==================== ROAD TRIPS ====================
         let currentRegionFilter = 'all';  // MUST be defined before renderRoadTrips uses it
+        let selectedTravelMonth = new Date().getMonth(); // Default to current month
+        
+        // Best seasons for road trips - defined early so renderRoadTrips can use it
+        const tripSeasons = {
+            'route66': { best: [3, 4, 5, 8, 9, 10], avoid: [6, 7], reason: 'Avoid extreme summer heat in desert sections' },
+            'pch': { best: [4, 5, 8, 9, 10], avoid: [11, 12, 0, 1], reason: 'Best weather and less fog' },
+            'iceland-ring': { best: [5, 6, 7, 8], avoid: [10, 11, 12, 0, 1, 2], reason: 'Roads may be closed in winter' },
+            'nc500': { best: [4, 5, 6, 7, 8, 9], avoid: [11, 12, 0, 1], reason: 'Scottish weather is mildest in summer' },
+            'great-ocean': { best: [11, 12, 0, 1, 2], avoid: [5, 6, 7], reason: 'Southern hemisphere summer' },
+            'garden-route': { best: [9, 10, 11, 0, 1, 2, 3], avoid: [5, 6, 7], reason: 'Dry season with pleasant temperatures' },
+            'amalfi': { best: [4, 5, 6, 9], avoid: [7, 8], reason: 'Avoid peak summer crowds' },
+            'romantic-road': { best: [4, 5, 6, 9], avoid: [11, 12, 0, 1, 2], reason: 'Best in spring/fall, Christmas markets in December' },
+            'ring-of-kerry': { best: [4, 5, 6, 7, 8, 9], avoid: [11, 12, 0, 1], reason: 'Milder weather and longer days' },
+            'wild-atlantic': { best: [5, 6, 7, 8], avoid: [11, 12, 0, 1], reason: 'Calmer weather along the coast' },
+            'carretera-austral': { best: [11, 12, 0, 1, 2], avoid: [5, 6, 7], reason: 'Southern hemisphere summer' },
+            'ruta-40': { best: [10, 11, 12, 0, 1, 2, 3], avoid: [5, 6, 7], reason: 'Patagonian summer is warmest' },
+            'hai-van': { best: [1, 2, 3, 4], avoid: [9, 10, 11], reason: 'Avoid monsoon season' },
+            'milford': { best: [11, 12, 0, 1, 2], avoid: [5, 6, 7], reason: 'New Zealand summer' },
+            'trollstigen': { best: [5, 6, 7, 8], avoid: [9, 10, 11, 12, 0, 1, 2, 3, 4], reason: 'Road closed Oct-May' },
+            'transfagarasan': { best: [6, 7, 8, 9], avoid: [10, 11, 12, 0, 1, 2, 3, 4, 5], reason: 'Road closed in winter' },
+            'grossglockner': { best: [5, 6, 7, 8, 9], avoid: [10, 11, 12, 0, 1, 2, 3, 4], reason: 'Alpine road closed in winter' },
+            'karakoram': { best: [5, 6, 7, 8, 9], avoid: [11, 12, 0, 1, 2], reason: 'High altitude, avoid winter' },
+            'gibb-river': { best: [4, 5, 6, 7, 8, 9], avoid: [11, 12, 0, 1, 2], reason: 'Dry season only' },
+            'icefields': { best: [6, 7, 8], avoid: [10, 11, 12, 0, 1, 2, 3], reason: 'Summer only' },
+            'cabot-trail': { best: [5, 6, 7, 8, 9, 10], avoid: [12, 0, 1, 2, 3], reason: 'Fall foliage spectacular' },
+            'blue-ridge': { best: [4, 5, 9, 10], avoid: [12, 0, 1, 2], reason: 'Spring flowers or fall colors' },
+            'namibia': { best: [4, 5, 6, 7, 8, 9], avoid: [12, 0, 1, 2], reason: 'Dry season best' },
+            'costa-rica': { best: [11, 12, 0, 1, 2, 3, 4], avoid: [9, 10], reason: 'Dry season Dec-Apr' }
+        };
+
+        // Check if a trip is good for selected month
+        function getTripSeasonStatus(tripId) {
+            const seasonInfo = tripSeasons[tripId];
+            if (!seasonInfo) return { status: 'unknown', reason: null };
+            
+            if (seasonInfo.best && seasonInfo.best.includes(selectedTravelMonth)) {
+                return { status: 'best', reason: seasonInfo.reason };
+            }
+            if (seasonInfo.avoid && seasonInfo.avoid.includes(selectedTravelMonth)) {
+                return { status: 'avoid', reason: seasonInfo.reason };
+            }
+            return { status: 'ok', reason: null };
+        }
         
         function getAllTrips() {
             return [...roadTrips, ...userCreatedTrips];
@@ -8196,12 +9576,21 @@
                 const difficultyClass = trip.difficulty || 'moderate';
                 const isSponsored = trip.sponsored || false;
                 
+                // Get seasonal status
+                const seasonStatus = getTripSeasonStatus(trip.id);
+                const seasonBadge = seasonStatus.status === 'best' 
+                    ? `<span class="season-badge best" title="${seasonStatus.reason || 'Great time to visit!'}">☀️ Best Season</span>`
+                    : seasonStatus.status === 'avoid' 
+                    ? `<span class="season-badge avoid" title="${seasonStatus.reason || 'Consider another time'}">⚠️ Off-Season</span>`
+                    : '';
+                
                 return `
-                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''} ${isSponsored ? 'sponsored' : ''}" onclick="selectRoute('${trip.id}')" ondblclick="event.stopPropagation(); openTripDetail('${trip.id}')">
+                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''} ${isSponsored ? 'sponsored' : ''} ${seasonStatus.status === 'best' ? 'season-best' : ''} ${seasonStatus.status === 'avoid' ? 'season-avoid' : ''}" onclick="selectRoute('${trip.id}')" ondblclick="event.stopPropagation(); openTripDetail('${trip.id}')">
                     ${isCompleted ? '<div class="trip-completed-badge">✓</div>' : ''}
                     <div class="road-trip-header">
                         <span class="road-trip-icon">${trip.icon}</span>
                         <span class="road-trip-name">${trip.name}</span>
+                        ${seasonBadge}
                         ${trip.personalTrip ? `<span class="personal-badge">✓ Mon voyage</span>` : ''}
                         ${trip.userCreated ? `<span class="user-created-badge">✨ Community</span>` : ''}
                         ${isSponsored ? `<span class="sponsored-badge">Sponsored</span>` : ''}
@@ -8219,6 +9608,7 @@
                             <span style="color: var(--text-muted);">(${trip.reviews ? trip.reviews.length : 0} reviews)</span>
                         </div>
                     ` : ''}
+                    ${seasonStatus.reason ? `<div class="season-tip">${seasonStatus.reason}</div>` : ''}
                     ${trip.tripDate ? `<div style="font-size: 0.7rem; color: var(--success); margin-top: 4px;">📅 ${trip.tripDate}</div>` : ''}
                     <div class="road-trip-tags">
                         ${trip.tags.map(t => `<span class="road-tag ${t}">${t === 'fourx4' ? '4x4' : t}</span>`).join('')}
@@ -10593,26 +11983,466 @@
             }
         });
 
+        // ==================== MEMORY BOOK FEATURE ====================
+        let travelMemories = {}; // { countryId: [{ id, title, description, date, location, photo }] }
+        let currentMemoryCountry = null;
+        let currentViewingMemory = null;
+        let editingMemoryId = null;
+
+        // Load memories from localStorage
+        function loadMemories() {
+            const saved = localStorage.getItem('srndipity_memories');
+            if (saved) {
+                travelMemories = JSON.parse(saved);
+            }
+        }
+
+        // Save memories to localStorage
+        function saveMemoriesToStorage() {
+            localStorage.setItem('srndipity_memories', JSON.stringify(travelMemories));
+        }
+
+        // Open Memory Book
+        function openMemoryBook() {
+            loadMemories();
+            document.getElementById('memoryBookModal').classList.add('active');
+            renderCountriesWithMemories();
+            
+            // Auto-select first country with memories, or show message
+            const countriesWithMems = Object.keys(travelMemories).filter(id => 
+                travelMemories[id] && travelMemories[id].length > 0
+            );
+            
+            if (countriesWithMems.length > 0) {
+                selectMemoryCountry(countriesWithMems[0]);
+                document.getElementById('noMemoriesMessage').style.display = 'none';
+            } else {
+                document.getElementById('noMemoriesMessage').style.display = 'block';
+                document.getElementById('selectedCountryFlag').textContent = '🌍';
+                document.getElementById('selectedCountryTitle').textContent = 'No Memories Yet';
+                document.getElementById('memoryGrid').innerHTML = '';
+            }
+        }
+
+        // Close Memory Book
+        function closeMemoryBook() {
+            document.getElementById('memoryBookModal').classList.remove('active');
+        }
+
+        // Get country name by ID
+        function getCountryNameById(countryId) {
+            const country = countriesData.find(c => c.id == countryId);
+            return country ? (country.properties.name || 'Unknown') : 'Unknown';
+        }
+
+        // Get country flag emoji (simplified mapping)
+        function getCountryFlag(countryName) {
+            const flags = {
+                'France': '🇫🇷', 'Germany': '🇩🇪', 'Italy': '🇮🇹', 'Spain': '🇪🇸', 'Portugal': '🇵🇹',
+                'United Kingdom': '🇬🇧', 'Ireland': '🇮🇪', 'Netherlands': '🇳🇱', 'Belgium': '🇧🇪',
+                'Switzerland': '🇨🇭', 'Austria': '🇦🇹', 'Greece': '🇬🇷', 'Sweden': '🇸🇪', 'Norway': '🇳🇴',
+                'Denmark': '🇩🇰', 'Finland': '🇫🇮', 'Iceland': '🇮🇸', 'Poland': '🇵🇱', 'Czechia': '🇨🇿',
+                'United States of America': '🇺🇸', 'Canada': '🇨🇦', 'Mexico': '🇲🇽',
+                'Brazil': '🇧🇷', 'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Peru': '🇵🇪', 'Colombia': '🇨🇴',
+                'Australia': '🇦🇺', 'New Zealand': '🇳🇿', 'Japan': '🇯🇵', 'South Korea': '🇰🇷',
+                'China': '🇨🇳', 'Thailand': '🇹🇭', 'Vietnam': '🇻🇳', 'India': '🇮🇳', 'Indonesia': '🇮🇩',
+                'South Africa': '🇿🇦', 'Morocco': '🇲🇦', 'Egypt': '🇪🇬', 'Kenya': '🇰🇪',
+                'Turkey': '🇹🇷', 'United Arab Emirates': '🇦🇪', 'Croatia': '🇭🇷', 'Hungary': '🇭🇺'
+            };
+            return flags[countryName] || '🏳️';
+        }
+
+        // Render countries with memories in left page
+        function renderCountriesWithMemories() {
+            const container = document.getElementById('countriesWithMemories');
+            
+            // Get visited countries (from countryColors)
+            const visitedCountries = Object.keys(countryColors).filter(id => countryColors[id] === VISITED_COLOR);
+            
+            if (visitedCountries.length === 0) {
+                container.innerHTML = '<p style="color: #8b7355; text-align: center;">No visited countries yet. Mark countries as visited to add memories!</p>';
+                return;
+            }
+
+            container.innerHTML = visitedCountries.map(countryId => {
+                const name = getCountryNameById(countryId);
+                const memories = travelMemories[countryId] || [];
+                const flag = getCountryFlag(name);
+                const isActive = currentMemoryCountry == countryId ? 'active' : '';
+                
+                return `
+                    <div class="country-memory-chip ${isActive}" onclick="selectMemoryCountry('${countryId}')">
+                        ${flag} ${name}
+                        ${memories.length > 0 ? `<span class="memory-count">${memories.length}</span>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Select a country to view memories
+        function selectMemoryCountry(countryId) {
+            currentMemoryCountry = countryId;
+            const name = getCountryNameById(countryId);
+            const flag = getCountryFlag(name);
+            
+            document.getElementById('selectedCountryFlag').textContent = flag;
+            document.getElementById('selectedCountryTitle').textContent = name;
+            
+            renderCountriesWithMemories(); // Update active state
+            renderMemoryGrid();
+        }
+
+        // Render memory grid for selected country
+        function renderMemoryGrid() {
+            const grid = document.getElementById('memoryGrid');
+            const memories = travelMemories[currentMemoryCountry] || [];
+            
+            let html = memories.map(memory => `
+                <div class="memory-card" onclick="viewMemory('${memory.id}')">
+                    <div class="memory-card-image">
+                        ${memory.photo ? `<img src="${memory.photo}" alt="${memory.title}">` : '📷'}
+                    </div>
+                    <div class="memory-card-content">
+                        <div class="memory-card-title">${memory.title}</div>
+                        <div class="memory-card-date">${memory.date ? formatMemoryDate(memory.date) : ''}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add "Add Memory" card
+            html += `
+                <div class="memory-card add-memory-card" onclick="addMemoryToCountry()">
+                    <div class="plus-icon">+</div>
+                    <div>Add Memory</div>
+                </div>
+            `;
+            
+            grid.innerHTML = html;
+        }
+
+        // Format date for display
+        function formatMemoryDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // View a specific memory
+        function viewMemory(memoryId) {
+            const memories = travelMemories[currentMemoryCountry] || [];
+            const memory = memories.find(m => m.id === memoryId);
+            
+            if (!memory) return;
+            
+            currentViewingMemory = memory;
+            
+            const popup = document.getElementById('memoryPopup');
+            const imageDiv = document.getElementById('memoryPopupImage');
+            
+            if (memory.photo) {
+                imageDiv.innerHTML = `<img src="${memory.photo}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            } else {
+                imageDiv.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem;">📷</div>';
+            }
+            
+            document.getElementById('memoryPopupTitle').textContent = memory.title;
+            document.getElementById('memoryPopupDate').textContent = memory.date ? 
+                `📅 ${formatMemoryDate(memory.date)}${memory.location ? ' • 📍 ' + memory.location : ''}` : 
+                (memory.location ? '📍 ' + memory.location : '');
+            document.getElementById('memoryPopupDesc').textContent = memory.description || 'No description added.';
+            
+            popup.classList.add('active');
+        }
+
+        // Close memory popup
+        function closeMemoryPopup() {
+            document.getElementById('memoryPopup').classList.remove('active');
+            currentViewingMemory = null;
+        }
+
+        // Add memory to current country
+        function addMemoryToCountry() {
+            if (!currentMemoryCountry) {
+                showToast('Please select a country first');
+                return;
+            }
+            
+            editingMemoryId = null;
+            document.getElementById('memoryFormIcon').textContent = '📸';
+            document.getElementById('memoryFormTitle').textContent = 'Add Memory to ' + getCountryNameById(currentMemoryCountry);
+            
+            // Reset form
+            document.getElementById('memoryTitle').value = '';
+            document.getElementById('memoryDate').value = '';
+            document.getElementById('memoryDescription').value = '';
+            document.getElementById('memoryLocation').value = '';
+            
+            const uploadArea = document.getElementById('photoUploadArea');
+            uploadArea.classList.remove('has-photo');
+            uploadArea.innerHTML = `
+                <div class="photo-upload-icon">📷</div>
+                <div class="photo-upload-text">Click to upload a photo</div>
+            `;
+            uploadArea.dataset.photo = '';
+            
+            document.getElementById('addMemoryModal').classList.add('active');
+        }
+
+        // Handle photo upload
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                showToast('Photo is too large. Please use an image under 5MB.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const uploadArea = document.getElementById('photoUploadArea');
+                uploadArea.classList.add('has-photo');
+                uploadArea.innerHTML = `<img src="${e.target.result}" alt="Memory photo">`;
+                uploadArea.dataset.photo = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Save memory
+        function saveMemory() {
+            const title = document.getElementById('memoryTitle').value.trim();
+            if (!title) {
+                showToast('Please enter a memory title');
+                return;
+            }
+            
+            const photo = document.getElementById('photoUploadArea').dataset.photo || '';
+            const date = document.getElementById('memoryDate').value;
+            const description = document.getElementById('memoryDescription').value.trim();
+            const location = document.getElementById('memoryLocation').value.trim();
+            
+            if (!travelMemories[currentMemoryCountry]) {
+                travelMemories[currentMemoryCountry] = [];
+            }
+            
+            if (editingMemoryId) {
+                // Update existing memory
+                const memories = travelMemories[currentMemoryCountry];
+                const index = memories.findIndex(m => m.id === editingMemoryId);
+                if (index !== -1) {
+                    memories[index] = { ...memories[index], title, photo, date, description, location };
+                }
+            } else {
+                // Add new memory
+                travelMemories[currentMemoryCountry].push({
+                    id: 'mem_' + Date.now(),
+                    title,
+                    photo,
+                    date,
+                    description,
+                    location,
+                    createdAt: new Date().toISOString()
+                });
+            }
+            
+            saveMemoriesToStorage();
+            closeAddMemoryModal();
+            renderMemoryGrid();
+            renderCountriesWithMemories();
+            
+            showToast(editingMemoryId ? 'Memory updated!' : 'Memory added! 📸');
+        }
+
+        // Close add memory modal
+        function closeAddMemoryModal() {
+            document.getElementById('addMemoryModal').classList.remove('active');
+            editingMemoryId = null;
+        }
+
+        // Edit current memory
+        function editCurrentMemory() {
+            if (!currentViewingMemory) return;
+            
+            editingMemoryId = currentViewingMemory.id;
+            document.getElementById('memoryFormIcon').textContent = '✏️';
+            document.getElementById('memoryFormTitle').textContent = 'Edit Memory';
+            
+            // Fill form with existing data
+            document.getElementById('memoryTitle').value = currentViewingMemory.title || '';
+            document.getElementById('memoryDate').value = currentViewingMemory.date || '';
+            document.getElementById('memoryDescription').value = currentViewingMemory.description || '';
+            document.getElementById('memoryLocation').value = currentViewingMemory.location || '';
+            
+            const uploadArea = document.getElementById('photoUploadArea');
+            if (currentViewingMemory.photo) {
+                uploadArea.classList.add('has-photo');
+                uploadArea.innerHTML = `<img src="${currentViewingMemory.photo}" alt="Memory photo">`;
+                uploadArea.dataset.photo = currentViewingMemory.photo;
+            } else {
+                uploadArea.classList.remove('has-photo');
+                uploadArea.innerHTML = `
+                    <div class="photo-upload-icon">📷</div>
+                    <div class="photo-upload-text">Click to upload a photo</div>
+                `;
+                uploadArea.dataset.photo = '';
+            }
+            
+            closeMemoryPopup();
+            document.getElementById('addMemoryModal').classList.add('active');
+        }
+
+        // Delete current memory
+        function deleteCurrentMemory() {
+            if (!currentViewingMemory) return;
+            
+            if (confirm('Are you sure you want to delete this memory?')) {
+                const memories = travelMemories[currentMemoryCountry];
+                const index = memories.findIndex(m => m.id === currentViewingMemory.id);
+                if (index !== -1) {
+                    memories.splice(index, 1);
+                }
+                
+                saveMemoriesToStorage();
+                closeMemoryPopup();
+                renderMemoryGrid();
+                renderCountriesWithMemories();
+                showToast('Memory deleted');
+            }
+        }
+
+        // Auto-prompt to add memory when marking a country as visited
+        const originalMarkAsVisited = markAsVisited;
+        markAsVisited = function() {
+            originalMarkAsVisited();
+            
+            // After marking visited, prompt to add memory
+            setTimeout(() => {
+                if (currentCountryId && countryColors[currentCountryId] === VISITED_COLOR) {
+                    if (confirm(`Would you like to add a memory for ${currentCountryName}?`)) {
+                        currentMemoryCountry = currentCountryId;
+                        addMemoryToCountry();
+                    }
+                }
+            }, 300);
+        };
+
+        // Load memories on startup
+        loadMemories();
+
         // ==================== FILTER ROAD TRIPS BY REGION ====================
-        function filterRoadTrips(region) {
+        
+        // Region coordinates for auto-zoom
+        const regionBounds = {
+            'all': { center: [35, 10], zoom: 3 },
+            'Europe': { center: [50, 10], zoom: 4 },
+            'North America': { center: [45, -100], zoom: 4 },
+            'South America': { center: [-15, -60], zoom: 4 },
+            'Asia': { center: [35, 100], zoom: 4 },
+            'Africa': { center: [5, 20], zoom: 4 },
+            'Oceania': { center: [-25, 140], zoom: 4 }
+        };
+
+        function filterRoadTrips(region, element) {
             currentRegionFilter = region;
             
             // Update active filter chip
             document.querySelectorAll('.filter-chip').forEach(chip => {
                 chip.classList.remove('active');
             });
-            event.target.classList.add('active');
+            if (element) {
+                element.classList.add('active');
+            } else if (event && event.target) {
+                event.target.classList.add('active');
+            }
             
-            // Re-render trips with filter
+            // Auto-zoom to region on the road map
+            if (roadMap && regionBounds[region]) {
+                const bounds = regionBounds[region];
+                roadMap.flyTo(bounds.center, bounds.zoom, {
+                    duration: 1.5,
+                    easeLinearity: 0.25
+                });
+            }
+            
+            // Re-render trips with filter and seasonal info
             renderRoadTrips();
+            
+            // Show seasonal tip for the region
+            showSeasonalTip(region);
+        }
+
+        // Show seasonal tip based on region and current/selected month
+        function showSeasonalTip(region) {
+            const tips = getSeasonalTips(region, selectedTravelMonth);
+            if (tips.best.length > 0 || tips.avoid.length > 0) {
+                const monthName = new Date(2024, selectedTravelMonth).toLocaleString('en', { month: 'long' });
+                let tipMessage = `📅 For ${monthName}: `;
+                
+                if (tips.best.length > 0) {
+                    tipMessage += `✅ Great time for: ${tips.best.slice(0, 3).join(', ')}`;
+                }
+                if (tips.avoid.length > 0) {
+                    tipMessage += tips.best.length > 0 ? ' | ' : '';
+                    tipMessage += `⚠️ Consider avoiding: ${tips.avoid.slice(0, 2).join(', ')}`;
+                }
+                
+                showToast(tipMessage);
+            }
+        }
+
+        // Get seasonal tips for a region
+        function getSeasonalTips(region, month) {
+            const tripsInRegion = getAllTrips().filter(t => 
+                region === 'all' || t.continent === region
+            );
+            
+            const best = [];
+            const avoid = [];
+            
+            tripsInRegion.forEach(trip => {
+                const seasonInfo = tripSeasons[trip.id];
+                if (seasonInfo) {
+                    if (seasonInfo.best.includes(month)) {
+                        best.push(trip.name);
+                    }
+                    if (seasonInfo.avoid.includes(month)) {
+                        avoid.push(trip.name);
+                    }
+                }
+            });
+            
+            return { best, avoid };
+        }
+
+        // Update selected travel month
+        function setTravelMonth(month) {
+            selectedTravelMonth = parseInt(month);
+            renderRoadTrips();
+            
+            // Show tip for new month
+            if (currentRegionFilter) {
+                showSeasonalTip(currentRegionFilter);
+            }
         }
         
         // ==================== INITIALIZE APP ====================
+        // Initialize travel month selector to current month
+        function initTravelMonthSelector() {
+            const select = document.getElementById('travelMonthSelect');
+            if (select) {
+                select.value = new Date().getMonth().toString();
+            }
+        }
+        
         // Wait for DOM to be ready, then initialize
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initMap);
+            document.addEventListener('DOMContentLoaded', function() {
+                initMap();
+                initTravelMonthSelector();
+            });
         } else {
             initMap();
+            initTravelMonthSelector();
         }
     </script>
 
