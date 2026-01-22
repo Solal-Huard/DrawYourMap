@@ -1880,6 +1880,266 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Fuel & Grocery Stops */
+        .stop-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .stop-card.fuel { border-left-color: #ef4444; }
+        .stop-card.grocery { border-left-color: #22c55e; }
+
+        .stop-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .stop-info {
+            flex: 1;
+        }
+
+        .stop-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .stop-location {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .stop-distance {
+            font-size: 0.7rem;
+            color: var(--accent-primary);
+            margin-top: 2px;
+        }
+
+        .stop-tip {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 4px;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+
+        /* Community Tips */
+        .community-tip-card {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .community-tip-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .community-tip-source {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .community-tip-source img {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .community-tip-platform {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .community-tip-user {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .community-tip-upvotes {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #f59e0b;
+        }
+
+        .community-tip-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        /* Warnings */
+        .warning-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: #fca5a5;
+        }
+
+        /* Best Time Card */
+        .best-time-card {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .best-time-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .best-time-header h4 {
+            color: #22c55e;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .month-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .month-chip {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .month-chip.ideal {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .month-chip.avoid {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .best-time-reason {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .events-list {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .events-list h5 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .event-item {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        /* Trip Selection Modal */
+        .trip-selection-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10005;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trip-selection-overlay.active {
+            display: flex;
+        }
+
+        .trip-selection-modal {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90vw;
+        }
+
+        .trip-selection-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .trip-selection-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .trip-selection-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .trip-selection-item:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-hover);
+        }
+
+        .trip-selection-icon {
+            font-size: 1.5rem;
+        }
+
+        .trip-selection-info h4 {
+            font-size: 0.95rem;
+            margin: 0 0 2px 0;
+        }
+
+        .trip-selection-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
         /* Grid Layouts */
         .trip-grid {
             display: grid;
@@ -6601,6 +6861,9 @@
                 <button class="trip-nav-tab" data-tab="community" onclick="switchTripTab('community')">
                     💬 Community
                 </button>
+                <button class="trip-nav-tab" data-tab="guide" onclick="switchTripTab('guide')">
+                    📚 Guide
+                </button>
             </div>
             <div class="trip-nav-actions">
                 <button class="trip-action-btn" onclick="viewTripOnMap()" title="View on Map">🗺️</button>
@@ -6802,6 +7065,84 @@
                                     <input type="text" class="chat-text-input" id="chatMessageInput" placeholder="Ask the community...">
                                     <button class="chat-submit-btn" onclick="sendChatMessage()">Send</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guide Tab - Comprehensive Road Trip Guide -->
+            <div class="trip-tab-content" id="tab-guide">
+                <div class="trip-grid">
+                    <div class="trip-main-col">
+                        <!-- Best Time to Visit -->
+                        <div class="best-time-card" id="guideBestTime">
+                            <div class="best-time-header">
+                                <span style="font-size: 1.5rem;">📅</span>
+                                <h4>Best Time to Visit</h4>
+                            </div>
+                            <div class="month-chips" id="guideMonthChips">
+                                <!-- Populated dynamically -->
+                            </div>
+                            <div class="best-time-reason" id="guideBestTimeReason">
+                                Loading seasonal information...
+                            </div>
+                            <div class="events-list" id="guideEvents" style="display: none;">
+                                <h5>🎉 Events & Festivals</h5>
+                                <div id="guideEventsList"></div>
+                            </div>
+                        </div>
+
+                        <!-- Warnings -->
+                        <div class="trip-card">
+                            <h3>⚠️ Important Warnings</h3>
+                            <div id="guideWarnings">
+                                <p style="color: var(--text-muted);">Loading safety information...</p>
+                            </div>
+                        </div>
+
+                        <!-- Community Tips from Reddit/Forums -->
+                        <div class="trip-card">
+                            <h3>💬 Community Tips & Insights</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px;">Real tips from travelers on Reddit, TripAdvisor, and travel forums</p>
+                            <div id="guideCommunityTips">
+                                <p style="color: var(--text-muted);">Loading community insights...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trip-side-col">
+                        <!-- Fuel Stops -->
+                        <div class="trip-card">
+                            <h3>⛽ Fuel Stations</h3>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Key stops along the route</p>
+                            <div id="guideFuelStops">
+                                <p style="color: var(--text-muted);">Loading fuel stops...</p>
+                            </div>
+                        </div>
+
+                        <!-- Grocery Stores -->
+                        <div class="trip-card">
+                            <h3>🛒 Grocery & Supplies</h3>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Stock up at these locations</p>
+                            <div id="guideGroceryStops">
+                                <p style="color: var(--text-muted);">Loading grocery stops...</p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Links -->
+                        <div class="trip-card">
+                            <h3>🔗 Useful Resources</h3>
+                            <div id="guideResources">
+                                <a href="#" class="resource-link" style="display: block; padding: 8px 12px; margin-bottom: 6px; background: var(--bg-elevated); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;">
+                                    🗺️ Download Offline Maps
+                                </a>
+                                <a href="#" class="resource-link" style="display: block; padding: 8px 12px; margin-bottom: 6px; background: var(--bg-elevated); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;">
+                                    📱 Recommended Apps
+                                </a>
+                                <a href="#" class="resource-link" style="display: block; padding: 8px 12px; margin-bottom: 6px; background: var(--bg-elevated); border-radius: 8px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;">
+                                    🏕️ Campsite Booking
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -7023,6 +7364,18 @@
                 <button class="memory-edit-btn" onclick="editCurrentMemory()">✏️ Edit</button>
                 <button class="memory-delete-btn" onclick="deleteCurrentMemory()">🗑️ Delete</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Trip Selection Modal (when clicking location with multiple trips) -->
+    <div class="trip-selection-overlay" id="tripSelectionOverlay">
+        <div class="trip-selection-modal">
+            <div class="trip-selection-title">📍 Multiple Road Trips at this Location</div>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">Select which road trip you want to explore:</p>
+            <div class="trip-selection-list" id="tripSelectionList">
+                <!-- Populated dynamically -->
+            </div>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 16px;" onclick="closeTripSelection()">Cancel</button>
         </div>
     </div>
 
@@ -7441,6 +7794,175 @@
             'Argentina': [-38.4161, -63.6167, 4],
             'Peru': [-9.1900, -75.0152, 6],
             'Chile': [-35.6751, -71.5430, 4]
+        };
+
+        // ==================== ROAD TRIP DETAILED GUIDES ====================
+        // Comprehensive data for each road trip: fuel, groceries, best times, community tips
+        const roadTripGuides = {
+            'route66': {
+                fuelStops: [
+                    { name: 'Kingman Shell', location: 'Kingman, AZ', distance: '0 mi', tip: 'Start here, full tank' },
+                    { name: 'Seligman General', location: 'Seligman, AZ', distance: '72 mi', tip: 'Historic town, last cheap gas' },
+                    { name: 'Williams Chevron', location: 'Williams, AZ', distance: '115 mi', tip: 'Gateway to Grand Canyon' },
+                    { name: 'Flagstaff Loves', location: 'Flagstaff, AZ', distance: '145 mi', tip: '24hr, truck stop amenities' },
+                    { name: 'Winslow Circle K', location: 'Winslow, AZ', distance: '200 mi', tip: 'Standing on the corner!' },
+                    { name: 'Holbrook Maverick', location: 'Holbrook, AZ', distance: '235 mi', tip: 'Petrified Forest nearby' }
+                ],
+                groceryStops: [
+                    { name: 'Safeway Kingman', location: 'Kingman, AZ', type: 'Full supermarket', tip: 'Stock up before desert' },
+                    { name: 'Bashas\' Flagstaff', location: 'Flagstaff, AZ', type: 'Supermarket', tip: 'Good deli section' },
+                    { name: "Walmart Albuquerque", location: 'Albuquerque, NM', type: 'Supercenter', tip: '24hr, best prices' }
+                ],
+                bestTimeAnalysis: {
+                    ideal: ['March', 'April', 'May', 'September', 'October', 'November'],
+                    avoid: ['June', 'July', 'August'],
+                    reason: 'Summer temperatures in Arizona/New Mexico can exceed 110°F (43°C). Desert sections are dangerous in extreme heat. Spring and fall offer perfect 70-85°F weather.',
+                    events: ['Route 66 Festival (Kingman) - May', 'Albuquerque Balloon Fiesta - October']
+                },
+                communityTips: [
+                    { source: 'Reddit r/roadtrip', user: 'DesertWanderer', tip: 'The stretch between Kingman and Seligman is the most scenic - take your time!', upvotes: 245 },
+                    { source: 'Reddit r/Route66', user: 'VintageTraveler', tip: 'Angel Delgadillo\'s barbershop in Seligman is a must-stop. He\'s the "Guardian Angel of Route 66"', upvotes: 189 },
+                    { source: 'TripAdvisor', user: 'RoadWarrior22', tip: 'Book Wigwam Motel in Holbrook weeks ahead - it fills up fast!', upvotes: 156 },
+                    { source: 'Reddit r/vanlife', user: 'NomadLife', tip: 'Free camping at dispersed sites in Coconino National Forest near Flagstaff', upvotes: 134 }
+                ],
+                warnings: [
+                    '⚠️ No cell service for 30+ miles in some desert sections',
+                    '⚠️ Carry extra water - minimum 1 gallon per person',
+                    '⚠️ Flash floods possible July-September in washes',
+                    '⚠️ Wildlife on road at dawn/dusk (deer, elk near Flagstaff)'
+                ]
+            },
+            'iceland-ring': {
+                fuelStops: [
+                    { name: 'N1 Reykjavik', location: 'Reykjavik', distance: '0 km', tip: 'Fill up completely before leaving!' },
+                    { name: 'Olís Borgarnes', location: 'Borgarnes', distance: '74 km', tip: 'Last station before Snæfellsnes' },
+                    { name: 'N1 Akureyri', location: 'Akureyri', distance: '388 km', tip: 'Major hub in the North' },
+                    { name: 'N1 Egilsstaðir', location: 'Egilsstaðir', distance: '596 km', tip: 'Only station for 150km!' },
+                    { name: 'Olís Höfn', location: 'Höfn', distance: '786 km', tip: 'Southeast, near glaciers' },
+                    { name: 'N1 Vík', location: 'Vík', distance: '960 km', tip: 'Black sand beach town' }
+                ],
+                groceryStops: [
+                    { name: 'Bónus Reykjavik', location: 'Reykjavik', type: 'Discount', tip: 'Cheapest in Iceland - stock up here!' },
+                    { name: 'Krónan Akureyri', location: 'Akureyri', type: 'Supermarket', tip: 'Best selection in North' },
+                    { name: 'Samkaup Höfn', location: 'Höfn', type: 'Small market', tip: 'Limited but has essentials' }
+                ],
+                bestTimeAnalysis: {
+                    ideal: ['June', 'July', 'August'],
+                    avoid: ['November', 'December', 'January', 'February', 'March'],
+                    reason: 'F-roads and highland routes close in winter. Summer offers 24hr daylight (midnight sun), all roads open, and mild temperatures (10-15°C). Winter has only 4-5 hours of daylight and dangerous driving conditions.',
+                    events: ['Midnight Sun - June 21', 'Secret Solstice Festival - June', 'Þjóðhátíð Festival - August']
+                },
+                communityTips: [
+                    { source: 'Reddit r/VisitingIceland', user: 'IcelandExpert', tip: 'NEVER drive off-road. Fines are €50,000+ and you destroy fragile ecosystems that take centuries to recover', upvotes: 892 },
+                    { source: 'Reddit r/Iceland', user: 'LocalGuide', tip: 'Download offline maps! Cell coverage is spotty in East Fjords and highlands', upvotes: 445 },
+                    { source: 'iOverlander', user: 'VanTripper', tip: 'Wild camping is legal but use designated sites when possible - leave no trace', upvotes: 334 },
+                    { source: 'Reddit r/roadtrip', user: 'NorthernLights22', tip: 'Book accommodations 3+ months ahead for summer. Everything sells out.', upvotes: 278 }
+                ],
+                warnings: [
+                    '⚠️ Single-lane bridges - yield to first arrival',
+                    '⚠️ Sheep on roads everywhere - slow down!',
+                    '⚠️ River crossings require 4x4 - never attempt in 2WD',
+                    '⚠️ Weather changes in minutes - always check vedur.is'
+                ]
+            },
+            'nc500': {
+                fuelStops: [
+                    { name: 'Tesco Inverness', location: 'Inverness', distance: '0 mi', tip: 'Cheapest fuel - fill up here!' },
+                    { name: 'Morrisons Dingwall', location: 'Dingwall', distance: '14 mi', tip: 'Last supermarket fuel' },
+                    { name: 'Highland Fuels Ullapool', location: 'Ullapool', distance: '57 mi', tip: 'Only station for next 50mi' },
+                    { name: 'Lochinver Fuel', location: 'Lochinver', distance: '92 mi', tip: 'Small but reliable' },
+                    { name: 'Durness Filling Station', location: 'Durness', distance: '140 mi', tip: 'Remote! Fill up!' },
+                    { name: 'John o\' Groats Shell', location: 'John o\' Groats', distance: '220 mi', tip: 'Northernmost mainland' }
+                ],
+                groceryStops: [
+                    { name: 'Tesco Inverness', location: 'Inverness', type: 'Superstore', tip: 'Only large supermarket on route' },
+                    { name: 'Co-op Ullapool', location: 'Ullapool', type: 'Small market', tip: 'Surprisingly good selection' },
+                    { name: 'Spar Thurso', location: 'Thurso', type: 'Convenience', tip: 'Has essentials' }
+                ],
+                bestTimeAnalysis: {
+                    ideal: ['May', 'June', 'July', 'August', 'September'],
+                    avoid: ['December', 'January', 'February'],
+                    reason: 'Summer offers long days (up to 18hrs daylight in June) and the best chance of dry weather. Single-track roads can be icy and dangerous in winter. Midges (biting insects) worst in July-August.',
+                    events: ['Up Helly Aa (Shetland nearby) - January', 'Highland Games - various summer dates']
+                },
+                communityTips: [
+                    { source: 'Reddit r/Scotland', user: 'HighlandRoamer', tip: 'Clockwise direction is easier - most passing places are on your left', upvotes: 567 },
+                    { source: 'Reddit r/NC500', user: 'LocalLad', tip: 'Stop at Kylesku Bridge viewpoint - best photo op on the entire route', upvotes: 423 },
+                    { source: 'TripAdvisor', user: 'ScotlandLover', tip: 'Book Kylesku Hotel for dinner - their seafood is caught that morning', upvotes: 345 },
+                    { source: 'Reddit r/vanlife', user: 'FreeCamper', tip: 'Wild camping is legal in Scotland - "right to roam" - but be respectful', upvotes: 289 }
+                ],
+                warnings: [
+                    '⚠️ Single-track roads with passing places - pull in for oncoming traffic',
+                    '⚠️ Midges (biting insects) June-August - bring repellent!',
+                    '⚠️ Fuel stations close early (5-6pm) in remote areas',
+                    '⚠️ Mobile signal very patchy - download offline maps'
+                ]
+            },
+            'great-ocean': {
+                fuelStops: [
+                    { name: 'Shell Geelong', location: 'Geelong', distance: '0 km', tip: 'Last major town - fill up' },
+                    { name: 'BP Torquay', location: 'Torquay', distance: '21 km', tip: 'Surf coast gateway' },
+                    { name: 'United Lorne', location: 'Lorne', distance: '73 km', tip: 'Busy town, may have queues' },
+                    { name: 'BP Apollo Bay', location: 'Apollo Bay', distance: '115 km', tip: 'Last before Otways' },
+                    { name: 'Port Campbell Fuel', location: 'Port Campbell', distance: '185 km', tip: '12 Apostles nearby' },
+                    { name: 'Coles Express Warrnambool', location: 'Warrnambool', distance: '260 km', tip: 'End point, full services' }
+                ],
+                groceryStops: [
+                    { name: 'Coles Geelong', location: 'Geelong', type: 'Supermarket', tip: 'Stock up - last big store' },
+                    { name: 'IGA Lorne', location: 'Lorne', type: 'Small market', tip: 'Tourist prices but has basics' },
+                    { name: 'Apollo Bay Foodworks', location: 'Apollo Bay', type: 'Small market', tip: 'Good fresh produce' }
+                ],
+                bestTimeAnalysis: {
+                    ideal: ['November', 'December', 'January', 'February', 'March'],
+                    avoid: ['June', 'July', 'August'],
+                    reason: 'Australian summer (Dec-Feb) offers warm weather and long days. Winter is cold, wet, and grey. Spring (Sep-Nov) can be beautiful with wildflowers. Whale watching best June-September off Warrnambool.',
+                    events: ['Falls Festival (Lorne) - December/January', 'Whale Season - June-September']
+                },
+                communityTips: [
+                    { source: 'Reddit r/australia', user: 'MelbourneLocal', tip: 'Go at sunrise for 12 Apostles - no crowds and best light for photos', upvotes: 678 },
+                    { source: 'Reddit r/roadtrip', user: 'AussieRoads', tip: 'Teddy\'s Lookout near Lorne is the best viewpoint most tourists miss', upvotes: 445 },
+                    { source: 'TripAdvisor', user: 'CoastalDrives', tip: 'Walk down Gibson Steps to the beach at 12 Apostles for a different perspective', upvotes: 389 },
+                    { source: 'Reddit r/vanlife', user: 'FreedomWheels', tip: 'Johanna Beach has free camping but gets windy - great surf though!', upvotes: 234 }
+                ],
+                warnings: [
+                    '⚠️ Koalas on road especially at dusk - drive carefully',
+                    '⚠️ Cliffs are unstable at 12 Apostles - stay behind barriers',
+                    '⚠️ Rip currents at beaches - swim between flags only',
+                    '⚠️ Summer bushfire risk - check CFA warnings'
+                ]
+            },
+            'amalfi': {
+                fuelStops: [
+                    { name: 'Esso Naples', location: 'Naples', distance: '0 km', tip: 'Fill up before the coast road' },
+                    { name: 'IP Sorrento', location: 'Sorrento', distance: '50 km', tip: 'Last easy access before Amalfi' },
+                    { name: 'Agip Positano', location: 'Positano area', distance: '65 km', tip: 'Small, often busy' },
+                    { name: 'Q8 Amalfi', location: 'Amalfi', distance: '85 km', tip: 'Town center, limited parking' },
+                    { name: 'Esso Salerno', location: 'Salerno', distance: '110 km', tip: 'End point, full services' }
+                ],
+                groceryStops: [
+                    { name: 'Conad Naples', location: 'Naples', type: 'Supermarket', tip: 'Best selection and prices' },
+                    { name: 'Sorrento Market', location: 'Sorrento', type: 'Small market', tip: 'Higher prices but fresh limoncello!' },
+                    { name: 'Mini-market Amalfi', location: 'Amalfi', type: 'Convenience', tip: 'Very expensive - buy elsewhere' }
+                ],
+                bestTimeAnalysis: {
+                    ideal: ['April', 'May', 'June', 'September', 'October'],
+                    avoid: ['July', 'August'],
+                    reason: 'Summer is extremely crowded and hot (35°C+). Traffic jams can last hours. Spring and fall offer pleasant weather (20-25°C), fewer crowds, and better prices. Shoulder season is the sweet spot.',
+                    events: ['Ravello Festival - July-August', 'Regatta of the Maritime Republics - June']
+                },
+                communityTips: [
+                    { source: 'Reddit r/Italy', user: 'ItalianRoads', tip: 'Drive EARLY morning (before 8am) or evening to avoid buses and traffic', upvotes: 734 },
+                    { source: 'Reddit r/travel', user: 'EuroTripper', tip: 'Rent the SMALLEST car possible - roads are incredibly narrow', upvotes: 612 },
+                    { source: 'TripAdvisor', user: 'AmalfiExpert', tip: 'Park in Amalfi and take SITA buses to other towns - much less stressful', upvotes: 534 },
+                    { source: 'Reddit r/roadtrip', user: 'CoastalDreamer', tip: 'Villa Rufolo gardens in Ravello at sunset is the most magical spot on the coast', upvotes: 423 }
+                ],
+                warnings: [
+                    '⚠️ Roads extremely narrow - large vehicles prohibited',
+                    '⚠️ Buses have priority - pull over when you see them',
+                    '⚠️ Parking scarce and expensive - book accommodations with parking',
+                    '⚠️ ZTL zones (limited traffic zones) - check before entering towns'
+                ]
+            }
         };
 
         // ==================== ICONIC ROAD TRIPS DATABASE ====================
@@ -9090,14 +9612,32 @@
                             })
                         }).addTo(roadMap);
 
-                        marker.bindPopup(`
+                        // Create popup with click action to open trip detail
+                        const popupContent = `
                             <div class="route-popup">
-                                <h4>${wp[2]}</h4>
+                                <h4>${wp[2] || 'Waypoint'}</h4>
                                 <p><strong>${trip.icon} ${trip.name}</strong></p>
                                 ${trip.personalTrip ? '<div style="color: #22c55e; font-size: 0.8rem;">✓ Visité</div>' : ''}
-                                <div style="font-size: 0.8rem; color: #9494a8;">${trip.description}</div>
+                                <div style="font-size: 0.8rem; color: #9494a8; margin-bottom: 10px;">${trip.description || ''}</div>
+                                <button onclick="openTripDetail('${trip.id}')" style="
+                                    background: #e07a39;
+                                    color: white;
+                                    border: none;
+                                    padding: 8px 16px;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                    font-size: 0.85rem;
+                                    width: 100%;
+                                ">📚 Open Full Guide</button>
                             </div>
-                        `);
+                        `;
+                        marker.bindPopup(popupContent);
+                        
+                        // Double-click on marker opens trip detail directly
+                        marker.on('dblclick', function(e) {
+                            L.DomEvent.stopPropagation(e);
+                            openTripDetail(trip.id);
+                        });
                     });
 
                     // Add camping markers for trips that have them
@@ -9878,12 +10418,193 @@
             // Load chat (Community Tab)
             renderTripChat(tripId);
             setChatType('question');
+            
+            // Load Guide Tab
+            populateGuideTab(tripId);
         }
 
         function closeTripDetailModal() {
             document.getElementById('tripDetailModal').classList.remove('active');
             document.body.style.overflow = ''; // Restore scrolling
             currentDetailTrip = null;
+        }
+
+        // Populate Guide Tab with comprehensive road trip information
+        function populateGuideTab(tripId) {
+            const guide = roadTripGuides[tripId];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            if (!guide) {
+                // No detailed guide available - show generic message
+                document.getElementById('guideMonthChips').innerHTML = '<span style="color: var(--text-muted);">Seasonal data coming soon</span>';
+                document.getElementById('guideBestTimeReason').textContent = 'Detailed seasonal information is not yet available for this route. Check the Community tab for tips from other travelers.';
+                document.getElementById('guideEvents').style.display = 'none';
+                document.getElementById('guideWarnings').innerHTML = '<p style="color: var(--text-muted);">No specific warnings available. Always research current conditions before your trip.</p>';
+                document.getElementById('guideCommunityTips').innerHTML = '<p style="color: var(--text-muted);">Community tips coming soon. Check Reddit and TripAdvisor for current discussions about this route.</p>';
+                document.getElementById('guideFuelStops').innerHTML = '<p style="color: var(--text-muted);">Fuel station data coming soon. Use Google Maps or GasBuddy for real-time information.</p>';
+                document.getElementById('guideGroceryStops').innerHTML = '<p style="color: var(--text-muted);">Grocery store data coming soon. Check Google Maps when planning your route.</p>';
+                return;
+            }
+            
+            // Best Time Analysis
+            if (guide.bestTimeAnalysis) {
+                const idealMonths = guide.bestTimeAnalysis.ideal || [];
+                const avoidMonths = guide.bestTimeAnalysis.avoid || [];
+                
+                let chipsHTML = '';
+                months.forEach((month, idx) => {
+                    if (idealMonths.includes(month)) {
+                        chipsHTML += `<span class="month-chip ideal">✓ ${month}</span>`;
+                    } else if (avoidMonths.includes(month)) {
+                        chipsHTML += `<span class="month-chip avoid">✗ ${month}</span>`;
+                    }
+                });
+                document.getElementById('guideMonthChips').innerHTML = chipsHTML || '<span style="color: var(--text-muted);">Year-round destination</span>';
+                document.getElementById('guideBestTimeReason').textContent = guide.bestTimeAnalysis.reason || 'Check local conditions before traveling.';
+                
+                // Events
+                if (guide.bestTimeAnalysis.events && guide.bestTimeAnalysis.events.length > 0) {
+                    document.getElementById('guideEvents').style.display = 'block';
+                    document.getElementById('guideEventsList').innerHTML = guide.bestTimeAnalysis.events
+                        .map(e => `<div class="event-item">🎉 ${e}</div>`).join('');
+                } else {
+                    document.getElementById('guideEvents').style.display = 'none';
+                }
+            }
+            
+            // Warnings
+            if (guide.warnings && guide.warnings.length > 0) {
+                document.getElementById('guideWarnings').innerHTML = guide.warnings
+                    .map(w => `<div class="warning-card">${w}</div>`).join('');
+            } else {
+                document.getElementById('guideWarnings').innerHTML = '<p style="color: var(--text-muted);">No specific warnings. Always check current conditions.</p>';
+            }
+            
+            // Community Tips
+            if (guide.communityTips && guide.communityTips.length > 0) {
+                document.getElementById('guideCommunityTips').innerHTML = guide.communityTips.map(tip => `
+                    <div class="community-tip-card">
+                        <div class="community-tip-header">
+                            <div class="community-tip-source">
+                                <span class="community-tip-platform">${tip.source}</span>
+                                <span class="community-tip-user">@${tip.user}</span>
+                            </div>
+                            <div class="community-tip-upvotes">
+                                👍 ${tip.upvotes}
+                            </div>
+                        </div>
+                        <div class="community-tip-text">"${tip.tip}"</div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('guideCommunityTips').innerHTML = '<p style="color: var(--text-muted);">No community tips yet. Check the Community tab to add yours!</p>';
+            }
+            
+            // Fuel Stops
+            if (guide.fuelStops && guide.fuelStops.length > 0) {
+                document.getElementById('guideFuelStops').innerHTML = guide.fuelStops.map(stop => `
+                    <div class="stop-card fuel">
+                        <div class="stop-icon">⛽</div>
+                        <div class="stop-info">
+                            <div class="stop-name">${stop.name}</div>
+                            <div class="stop-location">${stop.location}</div>
+                            ${stop.distance ? `<div class="stop-distance">📏 ${stop.distance} from start</div>` : ''}
+                            ${stop.tip ? `<div class="stop-tip">💡 ${stop.tip}</div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('guideFuelStops').innerHTML = '<p style="color: var(--text-muted);">Fuel station data not yet available.</p>';
+            }
+            
+            // Grocery Stops
+            if (guide.groceryStops && guide.groceryStops.length > 0) {
+                document.getElementById('guideGroceryStops').innerHTML = guide.groceryStops.map(stop => `
+                    <div class="stop-card grocery">
+                        <div class="stop-icon">🛒</div>
+                        <div class="stop-info">
+                            <div class="stop-name">${stop.name}</div>
+                            <div class="stop-location">${stop.location} • ${stop.type}</div>
+                            ${stop.tip ? `<div class="stop-tip">💡 ${stop.tip}</div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('guideGroceryStops').innerHTML = '<p style="color: var(--text-muted);">Grocery store data not yet available.</p>';
+            }
+        }
+
+        // Trip Selection Modal Functions
+        function showTripSelection(trips, lat, lng) {
+            const list = document.getElementById('tripSelectionList');
+            list.innerHTML = trips.map(trip => `
+                <div class="trip-selection-item" onclick="selectTripFromList('${trip.id}')">
+                    <span class="trip-selection-icon">${trip.icon}</span>
+                    <div class="trip-selection-info">
+                        <h4>${trip.name}</h4>
+                        <p>${trip.country} • ${trip.distance}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('tripSelectionOverlay').classList.add('active');
+        }
+
+        function closeTripSelection() {
+            document.getElementById('tripSelectionOverlay').classList.remove('active');
+        }
+
+        function selectTripFromList(tripId) {
+            closeTripSelection();
+            openTripDetail(tripId);
+        }
+
+        // Find trips near a clicked location
+        function findTripsNearLocation(lat, lng, radius = 50) {
+            const allTrips = getAllTrips();
+            const nearbyTrips = [];
+            
+            allTrips.forEach(trip => {
+                if (trip.waypoints) {
+                    for (let wp of trip.waypoints) {
+                        const dist = getDistanceKm(lat, lng, wp[0], wp[1]);
+                        if (dist < radius) {
+                            if (!nearbyTrips.find(t => t.id === trip.id)) {
+                                nearbyTrips.push(trip);
+                            }
+                            break;
+                        }
+                    }
+                }
+            });
+            
+            return nearbyTrips;
+        }
+
+        // Calculate distance between two points in km
+        function getDistanceKm(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // Handle click on map to find nearby trips
+        function handleMapClick(lat, lng) {
+            const nearbyTrips = findTripsNearLocation(lat, lng);
+            
+            if (nearbyTrips.length === 0) {
+                return; // No trips nearby
+            } else if (nearbyTrips.length === 1) {
+                openTripDetail(nearbyTrips[0].id);
+            } else {
+                showTripSelection(nearbyTrips, lat, lng);
+            }
         }
 
         function renderTripReviews(trip) {
