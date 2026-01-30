@@ -604,17 +604,9 @@
             content: ' 🛣️';
         }
 
-        /* Vintage decorative elements */
+        /* Vintage decorative elements – text watermark removed */
         body.vintage-mode .sidebar::before {
-            content: '';
-            position: absolute;
-            top: 80px;
-            left: 20px;
-            right: 20px;
-            height: 40px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 20"><text x="0" y="15" font-family="Georgia" font-size="10" fill="%238b7355" opacity="0.3">━ ROAD TRIP ━ ADVENTURE ━ EXPLORE ━</text></svg>') repeat-x;
-            opacity: 0.5;
-            pointer-events: none;
+            display: none;
         }
 
         body.vintage-mode .road-trip-card::before {
@@ -3065,6 +3057,119 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
+
+        /* Preparation Tab – visas, vaccines, legal */
+        .preparation-layout {
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .preparation-intro h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.25rem;
+        }
+        .preparation-intro p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .preparation-selector-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+        .preparation-selector-card label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .preparation-select {
+            width: 100%;
+            max-width: 320px;
+            padding: 10px 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .preparation-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        .preparation-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .preparation-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .preparation-card h4 {
+            margin: 0;
+            padding: 14px 18px;
+            font-size: 1rem;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .preparation-card-body {
+            padding: 16px 18px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+        .preparation-card-body ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+        .preparation-card-body li {
+            margin-bottom: 6px;
+        }
+        .preparation-disclaimer {
+            padding: 16px 20px;
+            background: rgba(255, 188, 66, 0.08);
+            border: 1px solid rgba(255, 188, 66, 0.25);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .preparation-disclaimer p {
+            margin: 0 0 12px 0;
+        }
+        .preparation-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .preparation-links a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .preparation-links a:hover {
+            text-decoration: underline;
+        }
+        .prep-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .prep-badge.ok { background: rgba(90, 112, 34, 0.3); color: #b8d44a; }
+        .prep-badge.required { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .prep-badge.recommended { background: rgba(255, 188, 66, 0.25); color: var(--accent-primary); }
 
         .packing-item {
             display: flex;
@@ -7055,10 +7160,8 @@
             </header>
 
             <div class="sidebar-content sidebar-merged">
-                <!-- ==================== 1. SEARCH TOOLS – Find your ideal road trip ==================== -->
+                <!-- ==================== 1. Travel stats + regions ==================== -->
                 <div class="sidebar-block">
-                    <div class="section-title section-title-index">🔍 Search – Find your ideal road trip</div>
-                    <!-- Travel Stats -->
                     <div class="travel-stats">
                         <div class="stat-box">
                             <div class="stat-value" id="countriesVisited">0</div>
@@ -7078,17 +7181,6 @@
                             <div class="stat-value" id="kmTraveled">0</div>
                             <div class="stat-label">Miles</div>
                         </div>
-                    </div>
-                    <!-- Selected Country -->
-                    <div class="selected-display" id="selectedDisplay">
-                        <div class="selected-label">Selected</div>
-                        <div class="selected-name" id="selectedCountryName">Click a country</div>
-                    </div>
-                    <!-- Country Search -->
-                    <div class="section">
-                        <select class="search-select" id="countrySearch" onchange="selectCountryByCode(this.value)">
-                            <option value="">-- Select country --</option>
-                        </select>
                     </div>
                     <!-- Road Trips: click region OR choose month to open list -->
                     <div class="section">
@@ -7728,6 +7820,9 @@
                 <button class="trip-nav-tab" data-tab="planning" onclick="switchTripTab('planning')">
                     📝 Planning
                 </button>
+                <button class="trip-nav-tab" data-tab="preparation" onclick="switchTripTab('preparation')">
+                    🛂 Préparation
+                </button>
                 <button class="trip-nav-tab" data-tab="community" onclick="switchTripTab('community')">
                     💬 Community
                 </button>
@@ -7921,6 +8016,46 @@
                     <div class="planning-steps-container">
                         <h3>📋 Step-by-Step Planning Guide</h3>
                         <div class="planning-timeline" id="tripPlanningSteps"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preparation Tab – visas, vaccines, legal by nationality -->
+            <div class="trip-tab-content" id="tab-preparation">
+                <div class="preparation-layout">
+                    <div class="preparation-intro">
+                        <h3>🛂 Préparation administrative & santé</h3>
+                        <p>En fonction de votre nationalité et du pays du road trip, voici les éléments à anticiper : visas, vaccins, permis et assurance. <strong>Vérifiez toujours les sources officielles</strong> avant de partir.</p>
+                    </div>
+                    <div class="preparation-selector-card">
+                        <label for="preparationNationality">Ma nationalité / Passeport :</label>
+                        <select id="preparationNationality" class="preparation-select" onchange="updatePreparationContent()">
+                            <option value="EU">🇪🇺 Union européenne / EEE / Suisse</option>
+                            <option value="UK">🇬🇧 Royaume-Uni</option>
+                            <option value="US">🇺🇸 États-Unis</option>
+                            <option value="CA">🇨🇦 Canada</option>
+                            <option value="AU">🇦🇺 Australie</option>
+                            <option value="NZ">🇳🇿 Nouvelle-Zélande</option>
+                            <option value="OTHER">🌍 Autre nationalité</option>
+                        </select>
+                    </div>
+                    <div class="preparation-cards" id="preparationCards">
+                        <div class="preparation-card" id="preparationVisaCard">
+                            <h4>📋 Visa & entrée</h4>
+                            <div id="preparationVisaContent" class="preparation-card-body">Sélectionnez une nationalité et un road trip.</div>
+                        </div>
+                        <div class="preparation-card" id="preparationVaccinesCard">
+                            <h4>💉 Vaccins</h4>
+                            <div id="preparationVaccinesContent" class="preparation-card-body">Recommandations selon la destination.</div>
+                        </div>
+                        <div class="preparation-card" id="preparationLegalCard">
+                            <h4>⚖️ Légal & pratique</h4>
+                            <div id="preparationLegalContent" class="preparation-card-body">Permis, assurance, douanes.</div>
+                        </div>
+                    </div>
+                    <div class="preparation-disclaimer">
+                        <p>⚠️ Ces informations sont indicatives. Consultez les sites officiels de votre pays et du pays de destination (gouvernement, ambassades, OMS) avant tout départ.</p>
+                        <div class="preparation-links" id="preparationLinks"></div>
                     </div>
                 </div>
             </div>
@@ -8512,6 +8647,103 @@
             restArea: false,
             mechanic: false
         };
+
+        // Preparation data: visas, vaccines, legal by destination country and nationality
+        const preparationByCountry = {
+            Norway: {
+                visas: { EU: { required: false, note: 'Espace Schengen. Pas de visa pour séjour &lt; 90 jours.' }, UK: { required: false, note: '90 jours / 180 jours (règles post-Brexit).' }, US: { required: false, note: '90 jours sans visa (VWP si éligible).' }, CA: { required: false, note: '90 jours sans visa.' }, AU: { required: false, note: '90 jours sans visa.' }, NZ: { required: false, note: '90 jours sans visa.' }, OTHER: { required: true, note: 'Visa Schengen requis. Contacter l\'ambassade.' } },
+                vaccines: { required: [], recommended: ['Routine (DTP, ROR, Covid selon recommandations OMS).'] },
+                legal: ['Permis de conduire national valide (ou permis international si hors UE/EEE).', 'Assurance véhicule (carte verte / extension internationale).', 'Allemannsretten : camping sauvage autorisé sous conditions (respect de la nature, pas de déchets).']
+            },
+            Scotland: {
+                visas: { EU: { required: false, note: 'Voyage sans visa (règles UK post-Brexit, vérifier durée selon passeport).' }, UK: { required: false, note: 'Résidents UK : pas de formalité.' }, US: { required: false, note: '6 mois sans visa (tourisme).' }, CA: { required: false, note: '6 mois sans visa.' }, AU: { required: false, note: '6 mois sans visa.' }, NZ: { required: false, note: '6 mois sans visa.' }, OTHER: { required: true, note: 'Visa UK requis. Vérifier gov.uk.' } },
+                vaccines: { required: [], recommended: ['Routine (DTP, ROR).'] },
+                legal: ['Permis de conduire valide (UE/UK reconnus). Conduite à gauche.', 'Assurance véhicule UK obligatoire.', 'Wild camping légal en Écosse (Scottish Outdoor Access Code).']
+            },
+            Iceland: {
+                visas: { EU: { required: false, note: 'Espace Schengen. Pas de visa &lt; 90 jours.' }, UK: { required: false, note: '90 jours / 180 jours.' }, US: { required: false, note: '90 jours sans visa (VWP).' }, CA: { required: false, note: '90 jours sans visa.' }, AU: { required: false, note: '90 jours sans visa.' }, NZ: { required: false, note: '90 jours sans visa.' }, OTHER: { required: true, note: 'Visa Schengen requis.' } },
+                vaccines: { required: [], recommended: ['Routine. Conditions météo rudes : prévoir santé générale.'] },
+                legal: ['Permis de conduire valide (international recommandé si hors UE/EEE).', 'Assurance véhicule obligatoire. Routes F non couvertes par toutes les assurances.', 'Camping uniquement dans les aires désignées (règlement strict).']
+            },
+            USA: {
+                visas: { EU: { required: true, note: 'ESTA (si éligible) ou visa B2. ESTA valable 2 ans, séjour max 90 jours.' }, UK: { required: true, note: 'ESTA ou visa B2.' }, US: { required: false, note: 'Résidents US.' }, CA: { required: false, note: 'Citoyens canadiens : pas de visa pour séjour touristique.' }, AU: { required: true, note: 'ESTA ou visa B2.' }, NZ: { required: true, note: 'ESTA ou visa B2.' }, OTHER: { required: true, note: 'Visa ou programme d\'exemption (ESTA). Vérifier travel.state.gov.' } },
+                vaccines: { required: [], recommended: ['Routine. Selon régions : rage (activités outdoors), encéphalite à tiques (Nord-Est).'] },
+                legal: ['Permis de conduire national valide (certains États exigent un permis international).', 'Assurance auto obligatoire (niveau minimal selon l\'État).', 'Vérifier règles par État (alcool, camping, feux).']
+            },
+            Australia: {
+                visas: { EU: { required: true, note: 'eVisitor (651) ou ETA. En ligne, payant.' }, UK: { required: true, note: 'eVisitor ou ETA.' }, US: { required: true, note: 'ETA (Electronic Travel Authority).' }, CA: { required: true, note: 'eVisitor ou ETA.' }, AU: { required: false, note: 'Résidents australiens.' }, NZ: { required: false, note: 'Citoyens NZ : pas de visa pour séjour court.' }, OTHER: { required: true, note: 'Visa requis (touriste, eVisitor, etc.). homeaffairs.gov.au.' } },
+                vaccines: { required: [], recommended: ['Routine. Pas de vaccin obligatoire pour tourisme standard.'] },
+                legal: ['Permis de conduire en anglais ou traduction officielle / permis international.', 'Assurance véhicule obligatoire. Camping : respecter les zones autorisées (variable par État).']
+            },
+            'New Zealand': {
+                visas: { EU: { required: true, note: 'NZeTA (Nouvelle-Zélande Electronic Travel Authority) + droit de passage international.' }, UK: { required: true, note: 'NZeTA.' }, US: { required: true, note: 'NZeTA.' }, CA: { required: true, note: 'NZeTA.' }, AU: { required: false, note: 'Citoyens australiens : pas de visa.' }, NZ: { required: false, note: 'Résidents NZ.' }, OTHER: { required: true, note: 'NZeTA ou visa. immigration.govt.nz.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire valide (international recommandé si non anglophone). Conduite à gauche.', 'Assurance véhicule obligatoire. DOC : camping dans les sites désignés.']
+            },
+            Ireland: {
+                visas: { EU: { required: false, note: 'Espace communautaire. Pas de visa.' }, UK: { required: false, note: 'Common Travel Area avec le Royaume-Uni.' }, US: { required: false, note: '90 jours sans visa (tourisme).' }, CA: { required: false, note: 'Séjour court sans visa.' }, AU: { required: false, note: '90 jours sans visa.' }, NZ: { required: false, note: '90 jours sans visa.' }, OTHER: { required: true, note: 'Vérifier visa Irlande (différent du UK).' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire valide. Conduite à gauche.', 'Assurance véhicule obligatoire.']
+            },
+            Portugal: {
+                visas: { EU: { required: false, note: 'Schengen. Pas de visa &lt; 90 jours.' }, UK: { required: false, note: '90 jours / 180 jours.' }, US: { required: false, note: '90 jours sans visa (Schengen).' }, CA: { required: false, note: '90 jours sans visa.' }, AU: { required: false, note: '90 jours sans visa.' }, NZ: { required: false, note: '90 jours sans visa.' }, OTHER: { required: true, note: 'Visa Schengen requis.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire UE/EEE valide. Sinon permis international.', 'Assurance véhicule (carte verte).']
+            },
+            Spain: {
+                visas: { EU: { required: false, note: 'Schengen.' }, UK: { required: false, note: '90/180 jours.' }, US: { required: false, note: '90 jours sans visa.' }, CA: { required: false, note: '90 jours.' }, AU: { required: false, note: '90 jours.' }, NZ: { required: false, note: '90 jours.' }, OTHER: { required: true, note: 'Visa Schengen.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire valide (UE ou international).', 'Assurance véhicule (carte verte).']
+            },
+            Italy: {
+                visas: { EU: { required: false, note: 'Schengen.' }, UK: { required: false, note: '90/180 jours.' }, US: { required: false, note: '90 jours.' }, CA: { required: false, note: '90 jours.' }, AU: { required: false, note: '90 jours.' }, NZ: { required: false, note: '90 jours.' }, OTHER: { required: true, note: 'Visa Schengen.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire UE ou international.', 'Assurance véhicule (carte verte).']
+            },
+            Switzerland: {
+                visas: { EU: { required: false, note: 'Accord Schengen. Pas de visa &lt; 90 jours.' }, UK: { required: false, note: '90/180 jours.' }, US: { required: false, note: '90 jours.' }, CA: { required: false, note: '90 jours.' }, AU: { required: false, note: '90 jours.' }, NZ: { required: false, note: '90 jours.' }, OTHER: { required: true, note: 'Visa Schengen.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire valide. Vignette autoroutière obligatoire (achat à la frontière).', 'Assurance véhicule (carte verte).']
+            },
+            Namibia: {
+                visas: { EU: { required: false, note: '90 jours sans visa (tourisme).' }, UK: { required: false, note: '90 jours sans visa.' }, US: { required: false, note: '90 jours sans visa.' }, CA: { required: false, note: '90 jours.' }, AU: { required: false, note: '90 jours.' }, NZ: { required: false, note: '90 jours.' }, OTHER: { required: true, note: 'Vérifier selon nationalité. Ambassade Namibie.' } },
+                vaccines: { required: [], recommended: ['Fièvre jaune si transit par zone endémique. Hépatite A, typhoïde recommandés. Rage si séjour prolongé en brousse.'] },
+                legal: ['Permis de conduire international recommandé. Conduite à gauche.', 'Assurance véhicule (extension Afrique souvent nécessaire). 4x4 recommandé pour certains circuits.']
+            },
+            Germany: {
+                visas: { EU: { required: false, note: 'Schengen.' }, UK: { required: false, note: '90/180 jours.' }, US: { required: false, note: '90 jours.' }, CA: { required: false, note: '90 jours.' }, AU: { required: false, note: '90 jours.' }, NZ: { required: false, note: '90 jours.' }, OTHER: { required: true, note: 'Visa Schengen.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire UE ou international.', 'Assurance véhicule (carte verte).']
+            },
+            France: {
+                visas: { EU: { required: false, note: 'Schengen.' }, UK: { required: false, note: '90/180 jours.' }, US: { required: false, note: '90 jours.' }, CA: { required: false, note: '90 jours.' }, AU: { required: false, note: '90 jours.' }, NZ: { required: false, note: '90 jours.' }, OTHER: { required: true, note: 'Visa Schengen.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire valide (UE ou international).', 'Assurance véhicule (carte verte).']
+            },
+            Romania: {
+                visas: { EU: { required: false, note: 'Schengen (à terme). Actuellement pas de visa &lt; 90 jours pour UE/EEE/Suisse.' }, UK: { required: false, note: '90 jours / 180 jours.' }, US: { required: false, note: '90 jours sans visa.' }, CA: { required: false, note: '90 jours.' }, AU: { required: false, note: '90 jours.' }, NZ: { required: false, note: '90 jours.' }, OTHER: { required: true, note: 'Vérifier selon nationalité. Ambassade Roumanie.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire UE ou international.', 'Assurance véhicule (carte verte).']
+            },
+            Canada: {
+                visas: { EU: { required: true, note: 'eTA (Electronic Travel Authorization) obligatoire pour vol. Pas de visa pour séjour court.' }, UK: { required: true, note: 'eTA obligatoire.' }, US: { required: false, note: 'Citoyens US : pas de visa.' }, CA: { required: false, note: 'Résidents canadiens.' }, AU: { required: true, note: 'eTA.' }, NZ: { required: true, note: 'eTA.' }, OTHER: { required: true, note: 'eTA ou visa. canada.ca/fr/immigration.' } },
+                vaccines: { required: [], recommended: ['Routine.'] },
+                legal: ['Permis de conduire valide (international recommandé si non canadien).', 'Assurance véhicule obligatoire.']
+            },
+            Multi: {
+                visas: { EU: { required: null, note: 'Plusieurs pays : vérifier visa pour chaque frontière (Schengen, UK, USA, etc.).' }, UK: { required: null, note: 'Vérifier chaque pays traversé.' }, US: { required: null, note: 'Vérifier chaque pays.' }, CA: { required: null, note: 'Vérifier chaque pays.' }, AU: { required: null, note: 'Vérifier chaque pays.' }, NZ: { required: null, note: 'Vérifier chaque pays.' }, OTHER: { required: true, note: 'Visa requis pour chaque pays du parcours. Planifier longtemps à l\'avance.' } },
+                vaccines: { required: [], recommended: ['Routine. Selon pays : fièvre jaune, rage, etc. Consulter OMS / centre de vaccination.'] },
+                legal: ['Permis international recommandé. Assurances multi-pays. Vérifier règles par pays (douanes, durée de séjour).']
+            }
+        };
+        // Map trip country names to preparation key (e.g. Scotland -> Scotland, UK -> United Kingdom if needed)
+        function getPreparationKey(countryName) {
+            if (!countryName) return null;
+            const key = countryName.trim();
+            if (preparationByCountry[key]) return key;
+            if (key === 'UK' || key === 'United Kingdom') return 'Scotland';
+            return key;
+        }
 
         // POI Database - Pre-loaded reference data for offline use
         const poiDatabase = {
@@ -10575,7 +10807,7 @@
             
             roadMap = L.map('roadMap', {
                 center: [35, 10],
-                zoom: 3,
+                zoom: 4,
                 zoomControl: false,
                 minZoom: 2,
                 maxZoom: 18
@@ -10587,38 +10819,40 @@
                 maxZoom: 19
             });
 
-            // Roads overlay - this shows highways prominently!
-            const roadsOverlay = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19
-            });
-
-            // Alternative: OpenStreetMap style showing roads better
+            // OpenStreetMap roads
             const osmRoads = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap',
                 maxZoom: 19,
                 className: 'osm-roads-layer'
             });
 
-            // Polarsteps-style: light, friendly base (CartoDB Voyager)
-            const cartoVoyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '© OpenStreetMap, © CARTO',
-                maxZoom: 19
+            // Vue naturelle de la Terre : relief, déserts, forêts (Esri World Physical)
+            const esriPhysical = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri',
+                maxZoom: 8
             });
 
-            // Stamen terrain for adventure feel
+            // Stamen Terrain – couleurs naturelles, relief (fallback si Esri limité en zoom)
             const stamenTerrain = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png', {
                 attribution: '© Stadia Maps, © OpenStreetMap',
                 maxZoom: 18
             });
 
-            // Default: Polarsteps-like light map – friendly, simple to read
-            cartoVoyager.addTo(roadMap);
+            // Carto Voyager (style léger)
+            const cartoVoyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CARTO',
+                maxZoom: 19
+            });
+
+            // Default: vue naturelle de la Terre (relief, déserts, forêts)
+            esriPhysical.addTo(roadMap);
 
             // Layer control
             const baseLayers = {
-                "☀️ Light (Polarsteps-style)": cartoVoyager,
+                "🌍 Terre (relief, forêts, déserts)": esriPhysical,
+                "🗺️ Terrain (détails)": stamenTerrain,
                 "🛣️ OpenStreetMap": osmRoads,
-                "🗺️ Terrain": stamenTerrain,
+                "☀️ Light": cartoVoyager,
                 "🌙 Dark Mode": darkBase
             };
             L.control.layers(baseLayers, null, { position: 'topright' }).addTo(roadMap);
@@ -11038,6 +11272,7 @@
         // ==================== COUNTRY SELECTION ====================
         function populateCountrySearch() {
             const select = document.getElementById('countrySearch');
+            if (!select) return;
             const sorted = countriesData
                 .map(d => ({ id: d.id, name: d.properties.name || "Unknown" }))
                 .sort((a, b) => a.name.localeCompare(b.name));
@@ -11069,9 +11304,12 @@
             currentCountryName = data.properties.name || "Unknown";
             d3.select(selectedCountry).classed("selected", true);
 
-            document.getElementById('selectedCountryName').textContent = currentCountryName;
-            document.getElementById('selectedDisplay').classList.add('has-selection');
-            document.getElementById('countrySearch').value = data.id;
+            const selName = document.getElementById('selectedCountryName');
+            const selDisplay = document.getElementById('selectedDisplay');
+            const countrySearchEl = document.getElementById('countrySearch');
+            if (selName) selName.textContent = currentCountryName;
+            if (selDisplay) selDisplay.classList.add('has-selection');
+            if (countrySearchEl) countrySearchEl.value = data.id;
 
             // Update vanlifer info and zoom to roads if in serendipity mode
             if (currentMode === 'serendipity') {
@@ -11556,6 +11794,86 @@
             
             // Load Guide Tab
             populateGuideTab(tripId);
+
+            // Preparation Tab (visas, vaccines, legal by nationality)
+            const savedNationality = localStorage.getItem('srndipity_preparation_nationality');
+            const nationalitySelect = document.getElementById('preparationNationality');
+            if (nationalitySelect && savedNationality) {
+                nationalitySelect.value = savedNationality;
+            }
+            updatePreparationContent();
+        }
+
+        function updatePreparationContent() {
+            const trip = currentDetailTrip;
+            const nationalityEl = document.getElementById('preparationNationality');
+            const nationality = nationalityEl ? nationalityEl.value : 'EU';
+            if (nationalityEl) {
+                try { localStorage.setItem('srndipity_preparation_nationality', nationality); } catch (e) {}
+            }
+            const key = getPreparationKey(trip ? trip.country : null);
+            const prep = key && preparationByCountry[key] ? preparationByCountry[key] : null;
+
+            const visaEl = document.getElementById('preparationVisaContent');
+            const vaccinesEl = document.getElementById('preparationVaccinesContent');
+            const legalEl = document.getElementById('preparationLegalContent');
+            const linksEl = document.getElementById('preparationLinks');
+
+            if (!trip) {
+                if (visaEl) visaEl.innerHTML = 'Ouvrez un road trip pour voir les informations de préparation.';
+                if (vaccinesEl) vaccinesEl.innerHTML = '—';
+                if (legalEl) legalEl.innerHTML = '—';
+                if (linksEl) linksEl.innerHTML = '';
+                return;
+            }
+
+            const countryLabel = trip.country || 'Destination';
+
+            if (!prep) {
+                if (visaEl) visaEl.innerHTML = '<p>Données de préparation non disponibles pour <strong>' + countryLabel + '</strong>. Consultez les sites officiels de votre pays et du pays de destination (ambassade, ministère des Affaires étrangères) pour les visas et formalités.</p>';
+                if (vaccinesEl) vaccinesEl.innerHTML = '<p>Vérifiez les recommandations OMS et les conseils aux voyageurs de votre pays (vaccins recommandés ou obligatoires).</p>';
+                if (legalEl) legalEl.innerHTML = '<p>Vérifiez les exigences en matière de permis de conduire et d\'assurance véhicule pour <strong>' + countryLabel + '</strong>.</p>';
+                if (linksEl) linksEl.innerHTML = '<a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/travel-advice" target="_blank" rel="noopener">OMS – Conseils voyage</a>';
+                return;
+            }
+
+            const visaInfo = prep.visas && prep.visas[nationality] ? prep.visas[nationality] : prep.visas && prep.visas.OTHER ? prep.visas.OTHER : { required: null, note: 'Vérifier selon votre nationalité.' };
+            const visaRequired = visaInfo.required === false ? 'Pas de visa requis' : visaInfo.required === true ? 'Visa ou autorisation requis' : 'Vérifier selon votre nationalité';
+            if (visaEl) {
+                visaEl.innerHTML = '<span class="prep-badge ' + (visaInfo.required === false ? 'ok' : visaInfo.required === true ? 'required' : 'recommended') + '">' + visaRequired + '</span><p>' + (visaInfo.note || '') + '</p>';
+            }
+            if (vaccinesEl) {
+                const req = prep.vaccines && prep.vaccines.required && prep.vaccines.required.length ? '<ul><li><strong>Obligatoires :</strong> ' + prep.vaccines.required.join(', ') + '</li></ul>' : '';
+                const rec = prep.vaccines && prep.vaccines.recommended && prep.vaccines.recommended.length ? '<p><strong>Recommandés :</strong></p><ul><li>' + prep.vaccines.recommended.join('</li><li>') + '</li></ul>' : '<p>Vaccins de routine (DTP, ROR, Covid selon recommandations). Consulter un centre de vaccination.</p>';
+                vaccinesEl.innerHTML = req + rec;
+            }
+            if (legalEl && prep.legal && prep.legal.length) {
+                legalEl.innerHTML = '<ul><li>' + prep.legal.join('</li><li>') + '</li></ul>';
+            } else if (legalEl) {
+                legalEl.innerHTML = '<p>Vérifiez les exigences locales (permis, assurance, douanes).</p>';
+            }
+            const officialLinks = {
+                Norway: [{ label: 'UDI Norway', url: 'https://www.udi.no/en/' }, { label: 'OMS', url: 'https://www.who.int/emergencies/diseases/novel-coronavirus-2019/travel-advice' }],
+                Scotland: [{ label: 'GOV.UK visas', url: 'https://www.gov.uk/check-uk-visa' }, { label: 'NHS travel', url: 'https://www.nhs.uk/conditions/travel-immunisation/' }],
+                Iceland: [{ label: 'Iceland travel', url: 'https://www.government.is/topics/foreign-affairs/travel-to-iceland/' }, { label: 'OMS', url: 'https://www.who.int/emergencies/diseases/novel-coronavirus-2019/travel-advice' }],
+                USA: [{ label: 'Travel.State.Gov', url: 'https://travel.state.gov/content/travel/en.html' }, { label: 'CDC travel', url: 'https://wwwnc.cdc.gov/travel' }],
+                Australia: [{ label: 'Home Affairs', url: 'https://www.homeaffairs.gov.au/' }, { label: 'Smartraveller', url: 'https://www.smartraveller.gov.au/' }],
+                'New Zealand': [{ label: 'Immigration NZ', url: 'https://www.immigration.govt.nz/' }, { label: 'SafeTravel', url: 'https://www.safetravel.govt.nz/' }],
+                Ireland: [{ label: 'Citizens Information', url: 'https://www.citizensinformation.ie/en/moving-country/irish-citizens-moving-abroad/working-abroad/visas-for-ireland/' }],
+                Portugal: [{ label: 'Vistos Portugal', url: 'https://www.vistos.mne.gov.pt/' }],
+                Spain: [{ label: 'Min. Asuntos Exteriores', url: 'https://www.exteriores.gob.es/' }],
+                Italy: [{ label: 'Ministero Esteri', url: 'https://www.esteri.it/' }],
+                Switzerland: [{ label: 'SEM', url: 'https://www.sem.admin.ch/sem/en/home.html' }],
+                Namibia: [{ label: 'Ministry of Home Affairs', url: 'https://www.mha.gov.na/' }],
+                Germany: [{ label: 'Auswärtiges Amt', url: 'https://www.auswaertiges-amt.de/en' }],
+                France: [{ label: 'France-Visas', url: 'https://france-visas.gouv.fr/' }],
+                Romania: [{ label: 'MAE Roumanie', url: 'https://www.mae.ro/en' }],
+                Canada: [{ label: 'Immigration Canada', url: 'https://www.canada.ca/en/immigration-refugees-citizenship.html' }, { label: 'Voyage.gc.ca', url: 'https://travel.gc.ca/' }]
+            };
+            const links = officialLinks[key] || [];
+            if (linksEl) {
+                linksEl.innerHTML = links.map(function(l) { return '<a href="' + l.url + '" target="_blank" rel="noopener">' + l.label + '</a>'; }).join(' · ');
+            }
         }
 
         function closeTripDetailModal() {
@@ -14338,9 +14656,12 @@
                 g.selectAll("path").style('fill', DEFAULT_COLOR);
                 countryColors = {};
                 selectedCountry = null;
-                document.getElementById('selectedCountryName').textContent = 'Click a country';
-                document.getElementById('selectedDisplay').classList.remove('has-selection');
-                document.getElementById('countrySearch').value = '';
+                const sn = document.getElementById('selectedCountryName');
+                const sd = document.getElementById('selectedDisplay');
+                const cs = document.getElementById('countrySearch');
+                if (sn) sn.textContent = 'Click a country';
+                if (sd) sd.classList.remove('has-selection');
+                if (cs) cs.value = '';
                 saveToStorage();
                 updateStats();
             }
@@ -15020,15 +15341,15 @@
 
         // ==================== FILTER ROAD TRIPS BY REGION ====================
         
-        // Region bounds for map zoom when user clicks a zone (south, west, north, east)
+        // Region bounds for map zoom when user clicks a zone – zoom prononcé pour se focaliser sur le pays/région
         const regionBounds = {
-            'all': { center: [35, 10], zoom: 3 },
-            'Europe': { bounds: [[35, -12], [72, 42]], center: [52, 10], zoom: 4 },
-            'North America': { bounds: [[15, -170], [72, -50]], center: [45, -100], zoom: 4 },
-            'South America': { bounds: [[-56, -82], [13, -35]], center: [-15, -60], zoom: 4 },
-            'Asia': { bounds: [[10, 60], [55, 150]], center: [35, 100], zoom: 4 },
-            'Africa': { bounds: [[-35, -18], [38, 52]], center: [5, 20], zoom: 4 },
-            'Oceania': { bounds: [[-48, 110], [0, 180]], center: [-25, 140], zoom: 4 }
+            'all': { center: [35, 10], zoom: 4 },
+            'Europe': { bounds: [[35, -12], [72, 42]], center: [52, 10], zoom: 5 },
+            'North America': { bounds: [[15, -170], [72, -50]], center: [45, -100], zoom: 5 },
+            'South America': { bounds: [[-56, -82], [13, -35]], center: [-15, -60], zoom: 5 },
+            'Asia': { bounds: [[10, 60], [55, 150]], center: [35, 100], zoom: 5 },
+            'Africa': { bounds: [[-35, -18], [38, 52]], center: [5, 20], zoom: 5 },
+            'Oceania': { bounds: [[-48, 110], [0, 180]], center: [-25, 140], zoom: 5 }
         };
 
         function updateRoadTripsPanelVisibility() {
@@ -15068,7 +15389,7 @@
             if (roadMap && regionBounds[region]) {
                 const r = regionBounds[region];
                 if (r.bounds) {
-                    roadMap.fitBounds(L.latLngBounds(r.bounds[0], r.bounds[1]), { padding: [30, 30], maxZoom: 6 });
+                    roadMap.fitBounds(L.latLngBounds(r.bounds[0], r.bounds[1]), { padding: [20, 20], maxZoom: 9 });
                 } else if (r.center) {
                     roadMap.flyTo(r.center, r.zoom, { duration: 1.2, easeLinearity: 0.25 });
                 }
