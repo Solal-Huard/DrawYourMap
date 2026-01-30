@@ -1252,6 +1252,19 @@
             padding: 16px;
         }
 
+        .sidebar-merged .sidebar-block {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-merged .section-title-index {
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        .sidebar-merged .section-title-index::before {
+            content: none;
+        }
+
         .sidebar-content::-webkit-scrollbar {
             width: 6px;
         }
@@ -1583,15 +1596,7 @@
             color: var(--accent-primary);
         }
 
-        /* ==================== SERENDIPITY PANEL ==================== */
-        .serendipity-content {
-            display: none;
-        }
-
-        .serendipity-content.active {
-            display: block;
-        }
-
+        /* ==================== MERGED SIDEBAR (Map + Road Trips) ==================== */
         .road-trip-card {
             background: var(--bg-elevated);
             border: 2px solid var(--border-subtle);
@@ -1743,7 +1748,7 @@
             opacity: 1;
         }
 
-        /* Trip Fullscreen Modal - New Design */
+        /* Trip Fullscreen Modal – coherent with Safari/adventure theme */
         .trip-fullscreen-modal {
             position: fixed;
             top: 0;
@@ -1761,14 +1766,14 @@
             display: flex;
         }
 
-        /* Hero Header */
+        /* Hero Header – Safari palette */
         .trip-hero {
             position: relative;
-            min-height: 280px;
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+            min-height: 260px;
+            background: linear-gradient(135deg, var(--safari-brown) 0%, var(--safari-rust) 40%, var(--safari-terracotta) 100%);
             display: flex;
             align-items: flex-end;
-            padding: 40px 60px;
+            padding: 32px 48px;
             overflow: hidden;
         }
 
@@ -1778,8 +1783,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.5;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.4;
         }
 
         .trip-close-btn {
@@ -1788,11 +1793,11 @@
             right: 20px;
             width: 44px;
             height: 44px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.35);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+            border: 1px solid var(--safari-gold);
+            color: var(--safari-cream);
             font-size: 1.2rem;
             cursor: pointer;
             display: flex;
@@ -1803,8 +1808,8 @@
         }
 
         .trip-close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
+            background: var(--safari-terracotta);
+            border-color: var(--safari-cream);
         }
 
         .trip-hero-content {
@@ -1816,59 +1821,60 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            margin-bottom: 16px;
+            width: 72px;
+            height: 72px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--safari-gold);
+            border-radius: 16px;
+            margin-bottom: 14px;
         }
 
         .hero-icon {
-            font-size: 3rem;
+            font-size: 2.5rem;
         }
 
         .trip-hero-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: white;
-            margin: 0 0 12px 0;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--safari-cream);
+            margin: 0 0 10px 0;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.5px;
         }
 
         .trip-hero-meta {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--safari-sand);
+            margin-bottom: 10px;
         }
 
         .hero-meta-divider {
-            opacity: 0.4;
+            opacity: 0.5;
         }
 
         .trip-hero-rating {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .hero-stars {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .hero-rating-value {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: #fbbf24;
+            color: var(--safari-gold);
         }
 
         .hero-reviews-count {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
+            color: var(--safari-sand);
+            font-size: 0.85rem;
         }
 
         .trip-hero-tags {
@@ -1878,22 +1884,23 @@
         }
 
         .trip-hero-tags .tag {
-            padding: 6px 14px;
-            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--safari-gold);
             border-radius: 20px;
-            color: white;
-            font-size: 0.8rem;
+            color: var(--safari-cream);
+            font-size: 0.78rem;
             font-weight: 500;
         }
 
-        /* Navigation Tabs */
+        /* Navigation Tabs – same accent as sidebar */
         .trip-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 60px;
-            background: var(--bg-elevated);
-            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 48px;
+            background: var(--bg-panel);
+            border-bottom: 2px solid var(--border-subtle);
         }
 
         .trip-nav-tabs {
@@ -1902,11 +1909,11 @@
         }
 
         .trip-nav-tab {
-            padding: 18px 28px;
+            padding: 16px 24px;
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             border-bottom: 3px solid transparent;
@@ -1915,7 +1922,7 @@
 
         .trip-nav-tab:hover {
             color: var(--text-primary);
-            background: rgba(99, 102, 241, 0.1);
+            background: var(--bg-hover);
         }
 
         .trip-nav-tab.active {
@@ -1925,24 +1932,24 @@
 
         .trip-nav-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .trip-action-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: var(--bg-dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .trip-action-btn:hover {
             background: var(--accent-primary);
-            color: white;
+            color: var(--safari-cream);
             border-color: var(--accent-primary);
         }
 
@@ -2835,29 +2842,33 @@
             text-transform: uppercase;
         }
 
-        /* Trip Cards */
+        /* Trip Cards – coherent with sidebar Safari theme */
         .trip-card {
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 24px;
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 20px;
         }
 
         .trip-card h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin: 0 0 16px 0;
+            margin: 0 0 14px 0;
             color: var(--text-primary);
+            font-family: 'Georgia', serif;
         }
 
         .trip-card.warning-card {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(249, 115, 22, 0.1));
-            border-color: rgba(251, 191, 36, 0.3);
+            border-left-color: var(--warning);
+            background: linear-gradient(135deg, rgba(212, 168, 75, 0.08), rgba(198, 93, 59, 0.08));
+            border-color: rgba(212, 168, 75, 0.25);
         }
 
         .trip-card.recommendations-card {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 184, 166, 0.1));
-            border-color: rgba(34, 197, 94, 0.3);
+            border-left-color: var(--success);
+            background: linear-gradient(135deg, rgba(122, 139, 110, 0.1), rgba(74, 93, 64, 0.1));
+            border-color: rgba(122, 139, 110, 0.25);
         }
 
         .trip-description {
@@ -2874,12 +2885,12 @@
         }
 
         .trip-highlights .highlight-tag {
-            padding: 10px 18px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 25px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, rgba(198, 93, 59, 0.15), rgba(212, 168, 75, 0.15));
+            border: 1px solid rgba(198, 93, 59, 0.35);
+            border-radius: 20px;
             color: var(--text-primary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
         }
 
@@ -2891,9 +2902,9 @@
         }
 
         .must-know-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-            font-size: 0.95rem;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.9rem;
             color: var(--text-secondary);
         }
 
@@ -2953,9 +2964,110 @@
             border-left: 3px solid var(--warning);
         }
 
-        /* Route Tab */
+        /* Route Tab – map + issues + waypoints */
+        .route-tab-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1000px;
+        }
+
+        .route-map-section {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .route-map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .route-map-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .route-poi-toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .route-poi-btn {
+            padding: 8px 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .route-poi-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .route-poi-btn.active {
+            background: rgba(198, 93, 59, 0.2);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .route-map-container {
+            position: relative;
+            height: 420px;
+            background: var(--bg-dark);
+        }
+
+        .trip-detail-map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .route-map-legend {
+            padding: 8px 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 16px;
+        }
+
+        .route-issues-card {
+            margin: 0;
+        }
+
+        .route-issues-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .route-issues-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .route-issues-list li:last-child {
+            border-bottom: none;
+        }
+
         .route-card {
-            max-width: 800px;
+            max-width: 100%;
         }
 
         .route-header {
@@ -2972,7 +3084,7 @@
         .stops-count {
             padding: 6px 14px;
             background: var(--accent-primary);
-            color: white;
+            color: var(--safari-cream);
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -6788,15 +6900,10 @@
                 </div>
             </header>
 
-            <!-- Mode Tabs -->
-            <div class="mode-tabs">
-                <button class="mode-tab active" onclick="switchMode('diary')" id="diaryModeTab">🗺️ Map</button>
-                <button class="mode-tab serendipity" onclick="switchMode('serendipity')" id="serendipityModeTab">🛣️ Road Trips</button>
-            </div>
-
-            <div class="sidebar-content">
-                <!-- ==================== DIARY MODE CONTENT ==================== -->
-                <div id="diaryContent" class="mode-content">
+            <div class="sidebar-content sidebar-merged">
+                <!-- ==================== 1. SEARCH TOOLS – Find your ideal road trip ==================== -->
+                <div class="sidebar-block">
+                    <div class="section-title section-title-index">🔍 Search – Find your ideal road trip</div>
                     <!-- Travel Stats -->
                     <div class="travel-stats">
                         <div class="stat-box">
@@ -6808,154 +6915,27 @@
                             <div class="stat-label">Continents</div>
                         </div>
                     </div>
-
+                    <div class="travel-stats" style="margin-top: 8px;">
+                        <div class="stat-box">
+                            <div class="stat-value" id="routesExplored">0</div>
+                            <div class="stat-label">Routes</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="kmTraveled">0</div>
+                            <div class="stat-label">Miles</div>
+                        </div>
+                    </div>
                     <!-- Selected Country -->
                     <div class="selected-display" id="selectedDisplay">
                         <div class="selected-label">Selected</div>
                         <div class="selected-name" id="selectedCountryName">Click a country</div>
                     </div>
-
-                    <!-- Search -->
+                    <!-- Country Search -->
                     <div class="section">
-                        <div class="section-title">🔍 Search</div>
                         <select class="search-select" id="countrySearch" onchange="selectCountryByCode(this.value)">
                             <option value="">-- Select country --</option>
                         </select>
                     </div>
-
-                    <!-- Quick Actions -->
-                    <div class="section">
-                        <div class="section-title">⚡ Quick Actions</div>
-                        <button class="btn btn-primary" onclick="markAsVisited()" style="margin-bottom: 8px;">✅ Mark Visited</button>
-                        <button class="btn btn-secondary" onclick="openMemoryBook()" style="margin-bottom: 8px;">📖 Memory Book</button>
-                        <button class="btn btn-secondary" onclick="resetMap()" style="margin-bottom: 8px;">🔄 Reset All</button>
-                        <button class="btn go-premium-btn" onclick="openPrintPosterModal()">🖼️ Print Travel Poster</button>
-                    </div>
-
-                    <!-- Traveler's Toolkit - Partner Products -->
-                    <div class="toolkit-section" id="toolkitSection">
-                        <div class="toolkit-header">
-                            <span class="toolkit-title">🧰 Traveler's Toolkit</span>
-                            <span class="toolkit-label">Partner picks</span>
-                        </div>
-                        <div class="toolkit-items" id="toolkitItems">
-                            <!-- Dynamically populated -->
-                        </div>
-                    </div>
-
-                    <!-- Contextual Partner Recommendation -->
-                    <div class="partner-recommendation" id="partnerRec1">
-                        <div class="partner-rec-header">
-                            <span class="partner-rec-label">💡 Recommended for travelers</span>
-                            <button class="partner-rec-dismiss" onclick="dismissPartnerRec('partnerRec1')" title="Dismiss">×</button>
-                        </div>
-                        <div class="partner-rec-content">
-                            <div class="partner-rec-icon">🖼️</div>
-                            <div class="partner-rec-info">
-                                <div class="partner-rec-title">Print Your Travel Map</div>
-                                <div class="partner-rec-desc">Turn your adventures into a beautiful poster to hang on your wall.</div>
-                                <a href="javascript:openPrintPosterModal()" class="partner-rec-cta">Create Poster →</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Plan Road Trip (NEW FEATURE) -->
-                    <div class="section plan-trip-section">
-                        <div class="section-title">🗺️ Plan Your Road Trip</div>
-                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">
-                            Select a country above, then draw your route on the map!
-                        </p>
-                        <button class="btn btn-serendipity" onclick="openTripPlannerModal()" id="planTripBtn" disabled>
-                            ✏️ Draw Route on Map
-                        </button>
-                        
-                        <!-- My Planned Trips -->
-                        <div id="myPlannedTrips" style="margin-top: 12px;">
-                            <div class="mini-title">📋 My Planned Trips</div>
-                            <div id="plannedTripsList"></div>
-                        </div>
-                    </div>
-
-                    <!-- Quick External Links -->
-                    <div class="section">
-                        <div class="section-title">🔗 Useful Travel Apps</div>
-                        <div class="external-links-grid">
-                            <a href="https://www.google.com/maps" target="_blank" class="ext-link-card">
-                                <span class="ext-icon">🗺️</span>
-                                <span class="ext-name">Google Maps</span>
-                            </a>
-                            <a href="https://www.ioverlander.com" target="_blank" class="ext-link-card">
-                                <span class="ext-icon">🏕️</span>
-                                <span class="ext-name">iOverlander</span>
-                            </a>
-                            <a href="https://park4night.com" target="_blank" class="ext-link-card">
-                                <span class="ext-icon">🚐</span>
-                                <span class="ext-name">Park4Night</span>
-                            </a>
-                            <a href="https://www.gasbuddy.com" target="_blank" class="ext-link-card">
-                                <span class="ext-icon">⛽</span>
-                                <span class="ext-name">GasBuddy</span>
-                            </a>
-                            <a href="https://www.booking.com" target="_blank" class="ext-link-card">
-                                <span class="ext-icon">🏨</span>
-                                <span class="ext-name">Booking</span>
-                            </a>
-                            <a href="https://maps.me" target="_blank" class="ext-link-card">
-                                <span class="ext-icon">📱</span>
-                                <span class="ext-name">Maps.me</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Export -->
-                    <div class="section">
-                        <div class="section-title">💾 Save/Load</div>
-                        <div class="btn-group">
-                            <button class="btn btn-secondary" onclick="exportData()">📤 Export</button>
-                            <button class="btn btn-secondary" onclick="importData()">📥 Import</button>
-                        </div>
-                        <input type="file" id="fileInput" class="hidden-input" accept=".json" onchange="handleImport(event)">
-                    </div>
-                </div>
-
-                <!-- ==================== SERENDIPITY MODE CONTENT ==================== -->
-                <div id="serendipityContent" class="mode-content serendipity-content">
-                    <!-- Vintage Header Banner -->
-                    <div class="vintage-banner">
-                        <div class="vintage-banner-content">
-                            <div class="vintage-title">ROAD TRIPS</div>
-                            <div class="vintage-subtitle">Discover your next adventure</div>
-                        </div>
-                        <div class="vintage-stats">
-                            <div class="vintage-stat">
-                                <span class="vintage-stat-value" id="routesExplored">0</span>
-                                <span class="vintage-stat-label">Routes</span>
-                            </div>
-                            <div class="vintage-stat">
-                                <span class="vintage-stat-value" id="kmTraveled">0</span>
-                                <span class="vintage-stat-label">Miles</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Traveler Tips - Vintage Style -->
-                    <div class="vintage-tips">
-                        <div class="vintage-tip">
-                            <span class="tip-icon">📜</span>
-                            <div class="tip-content">
-                                <div class="tip-text">"The Wild Atlantic Way in Ireland is absolutely breathtaking. Skip the Ring of Kerry crowds!"</div>
-                                <div class="tip-source">— Fellow Traveler • Ireland</div>
-                            </div>
-                        </div>
-                        <div class="vintage-tip">
-                            <span class="tip-icon">💡</span>
-                            <div class="tip-content">
-                                <div class="tip-text">"iOverlander app is essential for finding free camping spots"</div>
-                                <div class="tip-source">— Road Warrior • Europe</div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Road Trips Filter -->
                     <div class="section">
                         <div class="section-title">🌍 Filter by Region</div>
@@ -6968,8 +6948,6 @@
                             <button class="filter-chip" onclick="filterRoadTrips('Asia', this)">🌏 Asia</button>
                             <button class="filter-chip" onclick="filterRoadTrips('Oceania', this)">🌏 Oceania</button>
                         </div>
-                        
-                        <!-- Travel Month Selector -->
                         <div class="travel-month-selector">
                             <label>📅 When are you traveling?</label>
                             <select onchange="setTravelMonth(this.value)" id="travelMonthSelect">
@@ -6988,20 +6966,16 @@
                             </select>
                         </div>
                     </div>
-
-                    <!-- Iconic Road Trips -->
+                    <!-- Road Trips List -->
                     <div class="section">
                         <div class="section-title">🛣️ <span id="roadTripsCount">0</span> Road Trips</div>
-                        <div id="roadTripsList">
-                            <!-- Populated dynamically -->
-                        </div>
+                        <div id="roadTripsList"></div>
                         <p class="dblclick-hint">💡 Double-click any trip for detailed guide</p>
                     </div>
-
-                    <!-- Vanlifer Country Info -->
+                    <!-- Vanlifer Country Info (contextual) -->
                     <div class="country-vanlifer-info" id="vanliferCountryInfo" style="display: none;">
                         <div class="country-vanlifer-header">
-                            <h4>🚐 <span id="vanliferCountryName">Country</span> - Vanlifer Info</h4>
+                            <h4>🚐 <span id="vanliferCountryName">Country</span> – Vanlifer Info</h4>
                         </div>
                         <div class="vanlifer-details">
                             <div class="detail-row">
@@ -7030,8 +7004,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Route Details Panel (for selected route) -->
                     <div id="routeDetailsPanel" style="display: none;">
                         <div class="section">
                             <div class="section-title">🚗 Location 4x4 avec tente de toit</div>
@@ -7042,70 +7014,132 @@
                             <div id="campingSitesList"></div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Contextual Sponsored Tip -->
-                    <div class="sponsored-tip" id="sponsoredTip1">
-                        <span class="sponsored-tip-icon">💡</span>
-                        <div class="sponsored-tip-content">
-                            <div class="sponsored-tip-text">Planning an overlanding trip? Find free campsites, water points, and fuel stations worldwide.</div>
-                            <div class="sponsored-tip-source">
-                                <span class="sponsored-badge">Ad</span>
-                                Tip from <a href="https://www.ioverlander.com" target="_blank" rel="noopener">iOverlander</a>
-                            </div>
+                <!-- ==================== 2. TRAVELER'S TOOLKIT ==================== -->
+                <div class="sidebar-block">
+                    <div class="toolkit-section" id="toolkitSection">
+                        <div class="toolkit-header">
+                            <span class="toolkit-title">🧰 Traveler's Toolkit</span>
+                            <span class="toolkit-label">Partner picks</span>
                         </div>
+                        <div class="toolkit-items" id="toolkitItems"></div>
                     </div>
+                </div>
 
-                    <!-- Road Trip League -->
-                    <div class="section league-section">
-                        <div class="section-title">🏆 Road Trip League</div>
-                        <div class="league-stats">
-                            <div class="league-stat-card">
-                                <div class="league-stat-value" id="completedTripsCount">0</div>
-                                <div class="league-stat-label">Completed</div>
-                            </div>
-                            <div class="league-stat-card">
-                                <div class="league-stat-value" id="totalKmCount">0</div>
-                                <div class="league-stat-label">Total km</div>
-                            </div>
-                            <div class="league-stat-card">
-                                <div class="league-stat-value" id="userRank">-</div>
-                                <div class="league-stat-label">Rank</div>
-                            </div>
-                        </div>
-                        <div class="league-badge" id="leagueBadge">
-                            <span class="badge-icon">🌱</span>
-                            <span class="badge-title">Beginner Explorer</span>
-                        </div>
-                        <button class="btn btn-secondary" style="margin-top: 10px; font-size: 0.8rem;" onclick="openLeaderboardModal()">👑 View Leaderboard</button>
-                    </div>
-
-                    <!-- Create Road Trip -->
+                <!-- ==================== 3. QUICK ACTIONS ==================== -->
+                <div class="sidebar-block">
                     <div class="section">
-                        <div class="section-title">✨ Create Road Trip</div>
-                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Share your own adventure with the community!</p>
-                        <button class="btn btn-serendipity" onclick="openCreateTripModal()">+ Create New Trip</button>
+                        <div class="section-title">⚡ Quick Actions</div>
+                        <button class="btn btn-primary" onclick="markAsVisited()" style="margin-bottom: 8px;">✅ Mark Visited</button>
+                        <button class="btn btn-secondary" onclick="openMemoryBook()" style="margin-bottom: 8px;">📖 Memory Book</button>
+                        <button class="btn btn-secondary" onclick="resetMap()" style="margin-bottom: 8px;">🔄 Reset All</button>
+                        <button class="btn go-premium-btn" onclick="openPrintPosterModal()">🖼️ Print Travel Poster</button>
                     </div>
+                </div>
 
-                    <!-- Country Roads Viewer -->
-                    <div class="section">
-                        <div class="section-title">🗺️ Explore Country Roads</div>
-                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Click any country on the map to zoom in and see main highways.</p>
-                        <div id="countryRoadsInfo" style="display: none;">
-                            <div class="country-roads-card">
-                                <h4 id="selectedRoadsCountry">-</h4>
-                                <button class="btn btn-secondary" style="font-size: 0.75rem;" onclick="resetRoadMapView()">🔙 Back to World View</button>
-                            </div>
+                <!-- ==================== MORE ==================== -->
+                <div class="partner-recommendation" id="partnerRec1">
+                    <div class="partner-rec-header">
+                        <span class="partner-rec-label">💡 Recommended for travelers</span>
+                        <button class="partner-rec-dismiss" onclick="dismissPartnerRec('partnerRec1')" title="Dismiss">×</button>
+                    </div>
+                    <div class="partner-rec-content">
+                        <div class="partner-rec-icon">🖼️</div>
+                        <div class="partner-rec-info">
+                            <div class="partner-rec-title">Print Your Travel Map</div>
+                            <div class="partner-rec-desc">Turn your adventures into a beautiful poster to hang on your wall.</div>
+                            <a href="javascript:openPrintPosterModal()" class="partner-rec-cta">Create Poster →</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Community Alerts -->
-                    <div class="section community-alerts">
-                        <div class="section-title">⚠️ Community Alerts</div>
-                        <div id="alertsList">
-                            <!-- Populated dynamically -->
-                        </div>
-                        <button class="add-alert-btn" onclick="openAlertModal()">+ Add Road Alert</button>
+                <div class="section plan-trip-section">
+                    <div class="section-title">🗺️ Plan Your Road Trip</div>
+                    <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Select a country above, then draw your route on the map!</p>
+                    <button class="btn btn-serendipity" onclick="openTripPlannerModal()" id="planTripBtn" disabled>✏️ Draw Route on Map</button>
+                    <div id="myPlannedTrips" style="margin-top: 12px;">
+                        <div class="mini-title">📋 My Planned Trips</div>
+                        <div id="plannedTripsList"></div>
                     </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🔗 Useful Travel Apps</div>
+                    <div class="external-links-grid">
+                        <a href="https://www.google.com/maps" target="_blank" class="ext-link-card"><span class="ext-icon">🗺️</span><span class="ext-name">Google Maps</span></a>
+                        <a href="https://www.ioverlander.com" target="_blank" class="ext-link-card"><span class="ext-icon">🏕️</span><span class="ext-name">iOverlander</span></a>
+                        <a href="https://park4night.com" target="_blank" class="ext-link-card"><span class="ext-icon">🚐</span><span class="ext-name">Park4Night</span></a>
+                        <a href="https://www.gasbuddy.com" target="_blank" class="ext-link-card"><span class="ext-icon">⛽</span><span class="ext-name">GasBuddy</span></a>
+                        <a href="https://www.booking.com" target="_blank" class="ext-link-card"><span class="ext-icon">🏨</span><span class="ext-name">Booking</span></a>
+                        <a href="https://maps.me" target="_blank" class="ext-link-card"><span class="ext-icon">📱</span><span class="ext-name">Maps.me</span></a>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">💾 Save/Load</div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="exportData()">📤 Export</button>
+                        <button class="btn btn-secondary" onclick="importData()">📥 Import</button>
+                    </div>
+                    <input type="file" id="fileInput" class="hidden-input" accept=".json" onchange="handleImport(event)">
+                </div>
+
+                <div class="sponsored-tip" id="sponsoredTip1">
+                    <span class="sponsored-tip-icon">💡</span>
+                    <div class="sponsored-tip-content">
+                        <div class="sponsored-tip-text">Planning an overlanding trip? Find free campsites, water points, and fuel stations worldwide.</div>
+                        <div class="sponsored-tip-source">
+                            <span class="sponsored-badge">Ad</span>
+                            Tip from <a href="https://www.ioverlander.com" target="_blank" rel="noopener">iOverlander</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section league-section">
+                    <div class="section-title">🏆 Road Trip League</div>
+                    <div class="league-stats">
+                        <div class="league-stat-card">
+                            <div class="league-stat-value" id="completedTripsCount">0</div>
+                            <div class="league-stat-label">Completed</div>
+                        </div>
+                        <div class="league-stat-card">
+                            <div class="league-stat-value" id="totalKmCount">0</div>
+                            <div class="league-stat-label">Total km</div>
+                        </div>
+                        <div class="league-stat-card">
+                            <div class="league-stat-value" id="userRank">-</div>
+                            <div class="league-stat-label">Rank</div>
+                        </div>
+                    </div>
+                    <div class="league-badge" id="leagueBadge">
+                        <span class="badge-icon">🌱</span>
+                        <span class="badge-title">Beginner Explorer</span>
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top: 10px; font-size: 0.8rem;" onclick="openLeaderboardModal()">👑 View Leaderboard</button>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">✨ Create Road Trip</div>
+                    <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Share your own adventure with the community!</p>
+                    <button class="btn btn-serendipity" onclick="openCreateTripModal()">+ Create New Trip</button>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🗺️ Explore Country Roads</div>
+                    <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Click any country on the map to zoom in and see main highways.</p>
+                    <div id="countryRoadsInfo" style="display: none;">
+                        <div class="country-roads-card">
+                            <h4 id="selectedRoadsCountry">-</h4>
+                            <button class="btn btn-secondary" style="font-size: 0.75rem;" onclick="resetRoadMapView()">🔙 Back to World View</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section community-alerts">
+                    <div class="section-title">⚠️ Community Alerts</div>
+                    <div id="alertsList"></div>
+                    <button class="add-alert-btn" onclick="openAlertModal()">+ Add Road Alert</button>
                 </div>
             </div>
         </aside>
@@ -7595,14 +7629,42 @@
                 </div>
             </div>
 
-            <!-- Route Tab -->
+            <!-- Route Tab: map + issues + POI + waypoints -->
             <div class="trip-tab-content" id="tab-route">
-                <div class="trip-card route-card">
-                    <div class="route-header">
-                        <h3>🗺️ Route & Stops</h3>
-                        <span class="stops-count"><span id="waypointsCount">0</span> stops</span>
+                <div class="route-tab-layout">
+                    <!-- Map: zoom on road, POI layers -->
+                    <div class="route-map-section">
+                        <div class="route-map-header">
+                            <h3>🗺️ Route Map</h3>
+                            <div class="route-poi-toggles" id="tripRoutePoiToggles">
+                                <button type="button" class="route-poi-btn active" data-poi="fuel" title="Fuel">⛽ Fuel</button>
+                                <button type="button" class="route-poi-btn active" data-poi="campsiteFree" title="Free camping">⛺ Camp (free)</button>
+                                <button type="button" class="route-poi-btn active" data-poi="campsitePaid" title="Paid camping">🏕️ Camp (paid)</button>
+                                <button type="button" class="route-poi-btn active" data-poi="grocery" title="Food & shops">🛒 Food</button>
+                                <button type="button" class="route-poi-btn" data-poi="viewpoint" title="Viewpoints">📸 Views</button>
+                            </div>
+                        </div>
+                        <div class="route-map-container" id="tripDetailMapContainer">
+                            <div id="tripDetailMap" class="trip-detail-map"></div>
+                            <div class="route-map-legend">
+                                <span class="legend-route">—— Route</span>
+                                <span class="legend-poi">● POI</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="route-timeline" id="tripDetailWaypoints"></div>
+                    <!-- Potential issues (from Must Know) -->
+                    <div class="trip-card route-issues-card warning-card">
+                        <h3>⚠️ Potential Issues & Must Know</h3>
+                        <ul class="route-issues-list" id="tripRouteIssuesList"></ul>
+                    </div>
+                    <!-- Waypoints / pitstops -->
+                    <div class="trip-card route-card">
+                        <div class="route-header">
+                            <h3>🛤️ Stops & Pitstops</h3>
+                            <span class="stops-count"><span id="waypointsCount">0</span> stops</span>
+                        </div>
+                        <div class="route-timeline" id="tripDetailWaypoints"></div>
+                    </div>
                 </div>
             </div>
 
@@ -8216,6 +8278,8 @@
         let svg, g, projection, path;
         let countriesData = [];
         let roadMap = null;
+        let tripDetailMap = null;
+        let tripDetailPoiLayers = {};
         let activeRoute = null;
         let communityAlerts = [];
         let completedTrips = [];  // Track completed road trips
@@ -10711,51 +10775,34 @@
             }
         }
 
-        // ==================== MODE SWITCHING ====================
+        // ==================== MODE SWITCHING (Map view only – sidebar is merged) ====================
         function switchMode(mode) {
             currentMode = mode;
             
-            // Update tabs
-            document.getElementById('diaryModeTab').classList.toggle('active', mode === 'diary');
-            document.getElementById('serendipityModeTab').classList.toggle('active', mode === 'serendipity');
-            
-            // Update content visibility
-            document.getElementById('diaryContent').classList.toggle('hidden', mode !== 'diary');
-            document.getElementById('serendipityContent').classList.toggle('active', mode === 'serendipity');
-            
-            // Toggle vintage theme for Serendipity mode
+            // Toggle vintage theme when viewing road map
             document.body.classList.toggle('vintage-mode', mode === 'serendipity');
             
-            // Update logo
             const logoIcon = document.getElementById('logoIcon');
             const logoText = document.getElementById('logoText');
             
             if (mode === 'serendipity') {
-                logoIcon.textContent = '🛣️';
-                logoIcon.classList.add('serendipity-mode');
-                logoText.textContent = 'Road Trips';
+                if (logoIcon) { logoIcon.textContent = '🛣️'; logoIcon.classList.add('serendipity-mode'); }
+                if (logoText) logoText.textContent = 'Road Trips';
 
-                // Show road map
                 document.getElementById('worldMap').style.display = 'none';
                 document.getElementById('roadMap').classList.add('active');
                 document.getElementById('zoomControls').style.display = 'none';
 
                 initRoadMap();
-                setTimeout(() => roadMap.invalidateSize(), 100);
-                
-                // Show POI controls
+                setTimeout(() => roadMap && roadMap.invalidateSize(), 100);
                 updatePoiControlsVisibility('serendipity');
             } else {
-                logoIcon.textContent = '🗺️';
-                logoIcon.classList.remove('serendipity-mode');
-                logoText.textContent = 'Srndipity';
+                if (logoIcon) { logoIcon.textContent = '🔍'; logoIcon.classList.remove('serendipity-mode'); }
+                if (logoText) logoText.textContent = 'Srndipity';
                 
-                // Show world map
                 document.getElementById('worldMap').style.display = 'block';
                 document.getElementById('roadMap').classList.remove('active');
                 document.getElementById('zoomControls').style.display = 'flex';
-                
-                // Hide POI controls
                 updatePoiControlsVisibility('diary');
             }
         }
@@ -11008,6 +11055,11 @@
             document.querySelectorAll('.trip-tab-content').forEach(content => {
                 content.classList.toggle('active', content.id === `tab-${tabName}`);
             });
+            
+            // When Route tab is shown, init map with zoom on road + POI
+            if (tabName === 'route' && currentDetailTrip) {
+                setTimeout(function() { initTripDetailMap(currentDetailTrip); }, 150);
+            }
         }
 
         function openTripDetail(tripId) {
@@ -11067,6 +11119,15 @@
             } else {
                 mustKnowList.innerHTML = '<li>📝 No specific tips available yet. Check the community tab for discussions!</li>';
             }
+            // Route tab: potential issues (same as Must Know)
+            const routeIssuesList = document.getElementById('tripRouteIssuesList');
+            if (routeIssuesList) {
+                if (trip.mustKnow && trip.mustKnow.length > 0) {
+                    routeIssuesList.innerHTML = trip.mustKnow.map(item => `<li>${item}</li>`).join('');
+                } else {
+                    routeIssuesList.innerHTML = '<li>No specific issues listed. Check Overview tab for tips.</li>';
+                }
+            }
 
             // Recommendations
             const recommendationsContainer = document.getElementById('tripRecommendations');
@@ -11109,16 +11170,20 @@
                 adSlot.innerHTML = '';
             }
 
-            // Waypoints (Route Tab)
+            // Waypoints (Route Tab) – support [lat, lng, name] or { name, desc }
             const waypointsList = document.getElementById('tripDetailWaypoints');
             if (trip.waypoints && trip.waypoints.length > 0) {
                 document.getElementById('waypointsCount').textContent = trip.waypoints.length;
-                waypointsList.innerHTML = trip.waypoints.map((wp, idx) => `
+                waypointsList.innerHTML = trip.waypoints.map((wp, idx) => {
+                    const name = Array.isArray(wp) ? (wp[2] || 'Stop ' + (idx + 1)) : (wp.name || 'Stop ' + (idx + 1));
+                    const desc = Array.isArray(wp) ? wp[3] : wp.desc;
+                    return `
                     <div class="waypoint-item">
-                        <div class="waypoint-name">${wp[2] || 'Stop ' + (idx + 1)}</div>
-                        ${wp[3] ? `<div class="waypoint-desc">${wp[3]}</div>` : ''}
+                        <div class="waypoint-name">${name}</div>
+                        ${desc ? `<div class="waypoint-desc">${desc}</div>` : ''}
                     </div>
-                `).join('');
+                `;
+                }).join('');
             } else {
                 document.getElementById('waypointsCount').textContent = '0';
                 waypointsList.innerHTML = '<p style="color: var(--text-muted); padding: 20px;">No detailed waypoints available. Check the map view for the route.</p>';
@@ -11206,9 +11271,86 @@
         }
 
         function closeTripDetailModal() {
+            if (tripDetailMap) {
+                tripDetailMap.remove();
+                tripDetailMap = null;
+                tripDetailPoiLayers = {};
+            }
             document.getElementById('tripDetailModal').classList.remove('active');
             document.body.style.overflow = ''; // Restore scrolling
             currentDetailTrip = null;
+        }
+
+        // Route tab: map with zoom on road, POI (fuel, camp, food, views)
+        function initTripDetailMap(trip) {
+            if (!trip || !document.getElementById('tripDetailMap')) return;
+            if (tripDetailMap) {
+                tripDetailMap.remove();
+                tripDetailMap = null;
+                tripDetailPoiLayers = {};
+            }
+            const container = document.getElementById('tripDetailMap');
+            if (!container || !window.L) return;
+
+            tripDetailMap = L.map('tripDetailMap', {
+                center: [40, 0],
+                zoom: 4,
+                zoomControl: true
+            });
+            L.control.zoom({ position: 'topright' }).addTo(tripDetailMap);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(tripDetailMap);
+
+            let latlngs = [];
+            if (trip.waypoints && trip.waypoints.length > 0 && Array.isArray(trip.waypoints[0])) {
+                latlngs = trip.waypoints.map(wp => [wp[0], wp[1]]);
+            } else if (trip.coordinates && trip.coordinates.length >= 2) {
+                latlngs = trip.coordinates;
+            }
+            if (latlngs.length >= 2) {
+                const routeLine = L.polyline(latlngs, { color: '#C65D3B', weight: 4, opacity: 0.9 });
+                routeLine.addTo(tripDetailMap);
+                tripDetailMap.fitBounds(routeLine.getBounds(), { padding: [40, 40], maxZoom: 10 });
+                latlngs.forEach((ll, i) => {
+                    const name = trip.waypoints && trip.waypoints[i] && (Array.isArray(trip.waypoints[i]) ? trip.waypoints[i][2] : trip.waypoints[i].name);
+                    L.marker(ll).addTo(tripDetailMap).bindPopup('<strong>' + (name || 'Stop ' + (i + 1)) + '</strong>');
+                });
+            } else if (latlngs.length === 1) {
+                tripDetailMap.setView(latlngs[0], 8);
+            }
+
+            // POI: filter by trip country or region (fuel, camp, food, views)
+            const country = (trip.country || '').toLowerCase();
+            const regionName = (trip.name || '').toLowerCase();
+            const poiKeys = ['fuel', 'campsiteFree', 'campsitePaid', 'grocery', 'viewpoint'];
+            poiKeys.forEach(key => {
+                if (!poiDatabase[key]) return;
+                const filtered = poiDatabase[key].filter(p => {
+                    const c = (p.country || '').toLowerCase();
+                    const r = (p.region || '').toLowerCase();
+                    return c && (c.includes(country) || country.includes(c) || r.includes(regionName) || regionName.includes(r));
+                });
+                const layer = L.layerGroup();
+                filtered.forEach(p => {
+                    const popup = '<strong>' + (p.name || '') + '</strong>' + (p.tip ? '<br><small>' + p.tip + '</small>' : '') + (p.price ? '<br><small>' + p.price + '</small>' : '');
+                    L.marker([p.lat, p.lng]).addTo(layer).bindPopup(popup);
+                });
+                tripDetailPoiLayers[key] = layer;
+                if (key !== 'viewpoint') layer.addTo(tripDetailMap);
+            });
+
+            // POI toggle buttons
+            document.querySelectorAll('.route-poi-btn').forEach(btn => {
+                btn.onclick = function() {
+                    const key = this.getAttribute('data-poi');
+                    if (!key || !tripDetailPoiLayers[key] || !tripDetailMap) return;
+                    this.classList.toggle('active');
+                    if (this.classList.contains('active')) {
+                        tripDetailMap.addLayer(tripDetailPoiLayers[key]);
+                    } else {
+                        tripDetailMap.removeLayer(tripDetailPoiLayers[key]);
+                    }
+                };
+            });
         }
 
         // Populate Guide Tab with comprehensive road trip information
