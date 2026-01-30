@@ -1582,6 +1582,11 @@
             font-family: 'DM Sans', sans-serif;
         }
 
+        /* Route lines and markers: clear pointer for clickable map elements */
+        .leaflet-interactive {
+            cursor: pointer;
+        }
+
         /* Leaflet control styling */
         .leaflet-control-layers {
             background: var(--bg-panel) !important;
@@ -8391,6 +8396,7 @@
         let tripDetailMap = null;
         let tripDetailPoiLayers = {};
         let activeRoute = null;
+        let routeLayers = {};  // tripId -> { polyline, markers[] } for map highlight & sync
         let communityAlerts = [];
         let completedTrips = [];  // Track completed road trips
         let userCreatedTrips = []; // User-created road trips
@@ -10472,6 +10478,13 @@
                 checkPremiumStatus();
                 initializeAds();
 
+                // Default: show the real world map (Leaflet) with road trip traces and pins, not the country-highlight map
+                initRoadMap();
+                setTimeout(function() {
+                    if (roadMap) roadMap.invalidateSize();
+                }, 150);
+                switchMode('serendipity');
+
             } catch (err) {
                 console.error("Map init error:", err);
                 var loadingEl = document.getElementById('mapLoading');
@@ -10516,9 +10529,8 @@
                 maxZoom: 18
             });
 
-            // Default: Dark with roads
-            darkBase.addTo(roadMap);
-            roadsOverlay.addTo(roadMap);
+            // Default: traditional map (OpenStreetMap) – classic road map visual
+            osmRoads.addTo(roadMap);
 
             // Layer control
             const baseLayers = {
@@ -10527,8 +10539,10 @@
                 "🛣️ OpenStreetMap": osmRoads
             };
             L.control.layers(baseLayers, null, { position: 'topright' }).addTo(roadMap);
+            L.control.zoom({ position: 'bottomright' }).addTo(roadMap);
 
-            // Add road trip routes
+            // Add road trip routes (store refs for highlight when user selects a trip)
+            routeLayers = {};
             roadTrips.forEach(trip => {
                 if (trip.waypoints && trip.waypoints.length > 1) {
                     const coords = trip.waypoints.map(w => [w[0], w[1]]);
@@ -10542,22 +10556,29 @@
                         dashArray: trip.personalTrip ? null : '10, 5'
                     }).addTo(roadMap);
 
+                    routeLayers[trip.id] = { polyline: routeLine, markers: [] };
+
+                    // Single-click: select trip, highlight route, zoom to route, scroll sidebar to card
+                    routeLine.on('click', function(e) {
+                        L.DomEvent.stopPropagation(e);
+                        selectRoute(trip.id);
+                    });
                     // Double-click on route line opens trip detail
                     routeLine.on('dblclick', function(e) {
                         L.DomEvent.stopPropagation(e);
                         openTripDetail(trip.id);
                     });
 
-                    // Hover effect for route lines
+                    // Hover effect for route lines (cursor + slight emphasis)
                     routeLine.on('mouseover', function() {
-                        this.setStyle({ weight: 6, opacity: 1 });
+                        if (activeRoute !== trip.id) this.setStyle({ weight: 5, opacity: 1 });
                     });
                     routeLine.on('mouseout', function() {
-                        this.setStyle({ weight: trip.personalTrip ? 4 : 3, opacity: 0.9 });
+                        if (activeRoute !== trip.id) this.setStyle({ weight: trip.personalTrip ? 4 : 3, opacity: 0.9 });
                     });
 
                     // Add tooltip on hover showing trip name
-                    routeLine.bindTooltip(`<strong>${trip.icon} ${trip.name}</strong><br>Double-click for details`, {
+                    routeLine.bindTooltip(`<strong>${trip.icon} ${trip.name}</strong><br>Click to select • Double-click for details`, {
                         sticky: true,
                         className: 'route-tooltip'
                     });
@@ -10575,6 +10596,7 @@
                                 iconSize: [30, 30]
                             })
                         }).addTo(roadMap);
+                        if (routeLayers[trip.id]) routeLayers[trip.id].markers.push(marker);
 
                         // Create popup with click action to open trip detail
                         const popupContent = `
@@ -11101,7 +11123,7 @@
                     : '';
                 
                 return `
-                <div class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''} ${isSponsored ? 'sponsored' : ''} ${seasonStatus.status === 'best' ? 'season-best' : ''} ${seasonStatus.status === 'avoid' ? 'season-avoid' : ''}" onclick="selectRoute('${trip.id}')" ondblclick="event.stopPropagation(); openTripDetail('${trip.id}')">
+                <div id="trip-card-${trip.id}" class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''} ${isSponsored ? 'sponsored' : ''} ${seasonStatus.status === 'best' ? 'season-best' : ''} ${seasonStatus.status === 'avoid' ? 'season-avoid' : ''}" onclick="selectRoute('${trip.id}')" ondblclick="event.stopPropagation(); openTripDetail('${trip.id}')">
                     ${isCompleted ? '<div class="trip-completed-badge">✓</div>' : ''}
                     <div class="road-trip-header">
                         <span class="road-trip-icon">${trip.icon}</span>
@@ -11164,17 +11186,42 @@
             updateLeagueStats();
         }
 
+        function highlightRouteOnMap(routeId) {
+            Object.keys(routeLayers).forEach(function(id) {
+                var layer = routeLayers[id];
+                if (!layer || !layer.polyline) return;
+                var trip = getAllTrips().find(function(t) { return t.id === id; });
+                var isSelected = id === routeId;
+                var baseWeight = (trip && trip.personalTrip) ? 4 : 3;
+                var baseColor = (trip && trip.personalTrip) ? '#22c55e' : '#f472b6';
+                layer.polyline.setStyle({
+                    weight: isSelected ? 6 : baseWeight,
+                    opacity: isSelected ? 1 : 0.9,
+                    color: isSelected ? '#e8a84a' : baseColor
+                });
+                if (isSelected) layer.polyline.bringToFront();
+            });
+        }
+
         function selectRoute(routeId) {
             activeRoute = routeId;
-            renderRoadTrips();
-            
             const allTrips = getAllTrips();
             const trip = allTrips.find(t => t.id === routeId);
-            if (trip && roadMap && trip.waypoints) {
+            
+            // If list is hidden, open the trip's region so the card appears in the sidebar
+            const panel = document.getElementById('roadTripsListPanel');
+            if (trip && panel && panel.style.display === 'none' && trip.continent) {
+                currentRegionFilter = trip.continent;
+                renderRoadTrips();
+            } else {
+                renderRoadTrips();
+            }
+            highlightRouteOnMap(routeId);
+            
+            if (trip && roadMap && trip.waypoints && Array.isArray(trip.waypoints[0])) {
                 const bounds = L.latLngBounds(trip.waypoints.map(w => [w[0], w[1]]));
-                roadMap.fitBounds(bounds, { padding: [50, 50] });
+                roadMap.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
                 
-                // Show route details panel if route has rental/camping info
                 const detailsPanel = document.getElementById('routeDetailsPanel');
                 if (trip.rentalProviders || trip.campingSites) {
                     detailsPanel.style.display = 'block';
@@ -11183,6 +11230,12 @@
                     detailsPanel.style.display = 'none';
                 }
             }
+            
+            // Scroll sidebar so the selected trip card is visible
+            setTimeout(function() {
+                const card = document.getElementById('trip-card-' + routeId);
+                if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
             
             updateStats();
         }
@@ -14848,15 +14901,15 @@
 
         // ==================== FILTER ROAD TRIPS BY REGION ====================
         
-        // Region coordinates for auto-zoom
+        // Region bounds for map zoom when user clicks a zone (south, west, north, east)
         const regionBounds = {
             'all': { center: [35, 10], zoom: 3 },
-            'Europe': { center: [50, 10], zoom: 4 },
-            'North America': { center: [45, -100], zoom: 4 },
-            'South America': { center: [-15, -60], zoom: 4 },
-            'Asia': { center: [35, 100], zoom: 4 },
-            'Africa': { center: [5, 20], zoom: 4 },
-            'Oceania': { center: [-25, 140], zoom: 4 }
+            'Europe': { bounds: [[35, -12], [72, 42]], center: [52, 10], zoom: 4 },
+            'North America': { bounds: [[15, -170], [72, -50]], center: [45, -100], zoom: 4 },
+            'South America': { bounds: [[-56, -82], [13, -35]], center: [-15, -60], zoom: 4 },
+            'Asia': { bounds: [[10, 60], [55, 150]], center: [35, 100], zoom: 4 },
+            'Africa': { bounds: [[-35, -18], [38, 52]], center: [5, 20], zoom: 4 },
+            'Oceania': { bounds: [[-48, 110], [0, 180]], center: [-25, 140], zoom: 4 }
         };
 
         function updateRoadTripsPanelVisibility() {
@@ -14894,8 +14947,12 @@
             currentRegionFilter = region;
             renderRoadTrips();
             if (roadMap && regionBounds[region]) {
-                const bounds = regionBounds[region];
-                roadMap.flyTo(bounds.center, bounds.zoom, { duration: 1.5, easeLinearity: 0.25 });
+                const r = regionBounds[region];
+                if (r.bounds) {
+                    roadMap.fitBounds(L.latLngBounds(r.bounds[0], r.bounds[1]), { padding: [30, 30], maxZoom: 6 });
+                } else if (r.center) {
+                    roadMap.flyTo(r.center, r.zoom, { duration: 1.2, easeLinearity: 0.25 });
+                }
             }
             if (region) showSeasonalTip(region);
         }
