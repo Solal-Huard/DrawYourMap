@@ -886,6 +886,76 @@
             box-shadow: 0 2px 8px rgba(198, 93, 59, 0.3);
         }
 
+        /* Region cards – click to open road trips in that zone */
+        .region-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .region-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .region-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 12px;
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .region-card:hover {
+            background: var(--bg-hover);
+            border-color: var(--safari-gold);
+        }
+        .region-card.active {
+            background: linear-gradient(135deg, rgba(198, 93, 59, 0.25), rgba(166, 75, 42, 0.2));
+            border-color: var(--accent-primary);
+        }
+        .region-icon { font-size: 1.4rem; }
+        .region-name { flex: 1; }
+        .road-trips-list-panel .road-trips-list-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .back-to-regions-btn {
+            padding: 8px 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .back-to-regions-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+        .road-trips-list-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .road-trips-placeholder {
+            padding: 24px 16px;
+            text-align: center;
+        }
+        .placeholder-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
         /* Season badges */
         .season-badge {
             font-size: 0.65rem;
@@ -1438,15 +1508,12 @@
             border-color: var(--accent-primary);
         }
 
-        /* Map Container - Safari Adventure Style */
+        /* Map Container – minimalist earth, black ocean, road trips highlighted */
         .map-container {
             flex: 1;
             position: relative;
-            background: var(--bg-dark);
+            background: #0a0a0c;
             overflow: hidden;
-            background-image: 
-                radial-gradient(ellipse at 20% 30%, rgba(212, 168, 75, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(198, 93, 59, 0.05) 0%, transparent 50%);
         }
 
         #worldMap {
@@ -1454,6 +1521,7 @@
             height: 100%;
             cursor: grab;
             display: block;
+            background: #0a0a0c;
         }
 
         #worldMap:active {
@@ -1461,16 +1529,31 @@
         }
 
         #worldMap path {
-            stroke: rgba(212, 168, 75, 0.15);
             stroke-width: 0.5;
-            transition: filter 0.15s, stroke 0.15s;
+            transition: fill 0.2s, stroke 0.2s, filter 0.15s;
+        }
+
+        #worldMap path.road-trip-country {
+            fill: #22c55e;
+            stroke: #e8a84a;
+            stroke-width: 1.2;
+        }
+
+        #worldMap path:not(.road-trip-country) {
+            stroke: rgba(100, 100, 120, 0.4);
         }
 
         #worldMap path:hover {
             stroke: var(--accent-primary);
-            stroke-width: 1;
-            filter: brightness(1.3);
+            stroke-width: 1.5;
+            filter: brightness(1.25);
             cursor: pointer;
+        }
+
+        #worldMap path.road-trip-country:hover {
+            stroke: #f0b84a;
+            stroke-width: 2;
+            filter: brightness(1.15);
         }
 
         #worldMap path.selected {
@@ -6936,21 +7019,40 @@
                             <option value="">-- Select country --</option>
                         </select>
                     </div>
-                    <!-- Road Trips Filter -->
+                    <!-- Road Trips: click region OR choose month to open list -->
                     <div class="section">
-                        <div class="section-title">🌍 Filter by Region</div>
-                        <div class="filter-chips">
-                            <button class="filter-chip active" onclick="filterRoadTrips('all', this)">All</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Europe', this)">🇪🇺 Europe</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('North America', this)">🌎 N. America</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('South America', this)">🌎 S. America</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Africa', this)">🌍 Africa</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Asia', this)">🌏 Asia</button>
-                            <button class="filter-chip" onclick="filterRoadTrips('Oceania', this)">🌏 Oceania</button>
+                        <div class="section-title">🌍 Where do you want to go?</div>
+                        <p class="region-hint">Click a region to see road trips in that zone</p>
+                        <div class="region-cards" id="regionCards">
+                            <button type="button" class="region-card" data-region="Europe" onclick="selectRegion('Europe')">
+                                <span class="region-icon">🇪🇺</span>
+                                <span class="region-name">Europe</span>
+                            </button>
+                            <button type="button" class="region-card" data-region="North America" onclick="selectRegion('North America')">
+                                <span class="region-icon">🌎</span>
+                                <span class="region-name">North America</span>
+                            </button>
+                            <button type="button" class="region-card" data-region="South America" onclick="selectRegion('South America')">
+                                <span class="region-icon">🌎</span>
+                                <span class="region-name">South America</span>
+                            </button>
+                            <button type="button" class="region-card" data-region="Africa" onclick="selectRegion('Africa')">
+                                <span class="region-icon">🌍</span>
+                                <span class="region-name">Africa</span>
+                            </button>
+                            <button type="button" class="region-card" data-region="Asia" onclick="selectRegion('Asia')">
+                                <span class="region-icon">🌏</span>
+                                <span class="region-name">Asia</span>
+                            </button>
+                            <button type="button" class="region-card" data-region="Oceania" onclick="selectRegion('Oceania')">
+                                <span class="region-icon">🌏</span>
+                                <span class="region-name">Oceania</span>
+                            </button>
                         </div>
                         <div class="travel-month-selector">
-                            <label>📅 When are you traveling?</label>
+                            <label>📅 Or choose a month for recommended trips</label>
                             <select onchange="setTravelMonth(this.value)" id="travelMonthSelect">
+                                <option value="">-- Any month --</option>
                                 <option value="0">January</option>
                                 <option value="1">February</option>
                                 <option value="2">March</option>
@@ -6966,11 +7068,19 @@
                             </select>
                         </div>
                     </div>
-                    <!-- Road Trips List -->
-                    <div class="section">
-                        <div class="section-title">🛣️ <span id="roadTripsCount">0</span> Road Trips</div>
+                    <!-- Road Trips List (shown when region selected OR month selected) -->
+                    <div class="section road-trips-list-panel" id="roadTripsListPanel" style="display: none;">
+                        <div class="road-trips-list-header">
+                            <button type="button" class="back-to-regions-btn" id="backToRegionsBtn" onclick="backToRegions()" style="display: none;">◀ Back to regions</button>
+                            <div class="section-title" id="roadTripsListTitle">🛣️ Road Trips</div>
+                        </div>
+                        <div class="road-trips-list-subtitle" id="roadTripsListSubtitle"></div>
+                        <div class="section-title"><span id="roadTripsCount">0</span> trips</div>
                         <div id="roadTripsList"></div>
                         <p class="dblclick-hint">💡 Double-click any trip for detailed guide</p>
+                    </div>
+                    <div class="section road-trips-placeholder" id="roadTripsPlaceholder">
+                        <p class="placeholder-text">Select a region above or choose a month to see road trips.</p>
                     </div>
                     <!-- Vanlifer Country Info (contextual) -->
                     <div class="country-vanlifer-info" id="vanliferCountryInfo" style="display: none;">
@@ -8294,8 +8404,10 @@
         let satelliteMap = null; // Leaflet map for satellite view
         let currentSatelliteLayer = 'satellite'; // Current layer type
         let satelliteLayers = {}; // Store layer references
-        const DEFAULT_COLOR = '#3a3a4d';
+        const DEFAULT_COLOR = '#2d2d3a';
         const VISITED_COLOR = '#22c55e';
+        const ROAD_TRIP_FILL = '#22c55e';
+        const ROAD_TRIP_STROKE = '#e8a84a';
         
         // POI Layer Groups for Road Map
         let poiLayers = {
@@ -10316,13 +10428,12 @@
                 var world = await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
                 var countries = topojson.feature(world, world.objects.countries);
                 
-                // Draw countries
+                // Draw countries – minimalist: default fill, then highlights applied below
                 g.selectAll("path")
                     .data(countries.features)
                     .enter()
                     .append("path")
                     .attr("d", path)
-                    .style("fill", DEFAULT_COLOR)
                     .attr("id", function(d) { return "country_" + d.id; })
                     .attr("data-id", function(d) { return d.id; })
                     .attr("data-name", function(d) { return d.properties.name || "Unknown"; })
@@ -10336,9 +10447,15 @@
                         openCountrySatelliteView(d.properties.name || "Unknown");
                     })
                     .append("title")
-                    .text(function(d) { return d.properties.name || "Unknown"; });
+                    .text(function(d) {
+                        var name = d.properties.name || "Unknown";
+                        var rt = getRoadTripCountryNames();
+                        if (rt.has(name)) return name + " – Road trips available";
+                        return name;
+                    });
 
                 countriesData = countries.features;
+                applyWorldMapHighlights();
                 
                 // Hide loading indicator
                 if (loadingEl) loadingEl.style.display = 'none';
@@ -10347,6 +10464,7 @@
                 populateCountrySearch();
                 setupZoom();
                 loadFromStorage();
+                applyWorldMapHighlights();
                 updateStats();
                 renderRoadTrips();
                 renderAlerts();
@@ -10874,8 +10992,8 @@
         }
 
         // ==================== ROAD TRIPS ====================
-        let currentRegionFilter = 'all';  // MUST be defined before renderRoadTrips uses it
-        let selectedTravelMonth = new Date().getMonth(); // Default to current month
+        let currentRegionFilter = null;   // null = no region selected; user clicks region to open list
+        let selectedTravelMonth = null;  // null = any month; when set, "recommended for this month" list
         
         // Best seasons for road trips - defined early so renderRoadTrips can use it
         const tripSeasons = {
@@ -10907,6 +11025,7 @@
 
         // Check if a trip is good for selected month
         function getTripSeasonStatus(tripId) {
+            if (selectedTravelMonth === null || selectedTravelMonth === undefined) return { status: 'unknown', reason: null };
             const seasonInfo = tripSeasons[tripId];
             if (!seasonInfo) return { status: 'unknown', reason: null };
             
@@ -10927,16 +11046,44 @@
             const container = document.getElementById('roadTripsList');
             let allTrips = getAllTrips();
             
-            // Apply region filter
-            if (currentRegionFilter && currentRegionFilter !== 'all') {
+            const hasRegion = currentRegionFilter && currentRegionFilter !== 'all';
+            const hasMonth = selectedTravelMonth !== null && selectedTravelMonth !== undefined;
+            
+            // Show list only when user picked a region OR a month
+            if (!hasRegion && !hasMonth) {
+                if (container) container.innerHTML = '';
+                const countElement = document.getElementById('roadTripsCount');
+                if (countElement) countElement.textContent = '0';
+                updateRoadTripsPanelVisibility();
+                return;
+            }
+            
+            // Apply region filter (when user clicked a region)
+            if (hasRegion) {
                 allTrips = allTrips.filter(trip => trip.continent === currentRegionFilter);
+            }
+            
+            // When only month is selected (no region): show recommended trips for that period
+            if (!hasRegion && hasMonth) {
+                allTrips = allTrips.filter(trip => getTripSeasonStatus(trip.id).status === 'best');
+                allTrips.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+            }
+            
+            // When region + month: sort so "best this month" first
+            if (hasRegion && hasMonth) {
+                allTrips.sort((a, b) => {
+                    const aBest = getTripSeasonStatus(a.id).status === 'best' ? 1 : 0;
+                    const bBest = getTripSeasonStatus(b.id).status === 'best' ? 1 : 0;
+                    if (bBest !== aBest) return bBest - aBest;
+                    return (b.rating || 0) - (a.rating || 0);
+                });
             }
             
             // Update count
             const countElement = document.getElementById('roadTripsCount');
-            if (countElement) {
-                countElement.textContent = allTrips.length;
-            }
+            if (countElement) countElement.textContent = allTrips.length;
+            
+            updateRoadTripsPanelVisibility();
             
             // Generate trip cards with potential sponsored insertion
             let tripCards = allTrips.map((trip, index) => {
@@ -14077,6 +14224,177 @@
             }
         }
 
+        // Minimalist world map: countries with road trips highlighted (green + yellow-orange outline)
+        var tripCountryToGeoJSON = {
+            'USA': ['United States of America'],
+            'United States': ['United States of America'],
+            'UK': ['United Kingdom'],
+            'United Kingdom': ['United Kingdom'],
+            'Scotland': ['United Kingdom'],
+            'Ireland': ['Ireland'],
+            'France': ['France'],
+            'Spain': ['Spain'],
+            'Italy': ['Italy'],
+            'Germany': ['Germany'],
+            'Switzerland': ['Switzerland'],
+            'Portugal': ['Portugal'],
+            'Romania': ['Romania'],
+            'Norway': ['Norway'],
+            'Iceland': ['Iceland'],
+            'Morocco': ['Morocco'],
+            'South Africa': ['South Africa'],
+            'Namibia': ['Namibia'],
+            'Botswana': ['Botswana'],
+            'Tanzania': ['Tanzania'],
+            'Kenya': ['Kenya'],
+            'Egypt': ['Egypt'],
+            'Jordan': ['Jordan'],
+            'Oman': ['Oman'],
+            'UAE': ['United Arab Emirates'],
+            'India': ['India'],
+            'Japan': ['Japan'],
+            'Vietnam': ['Viet Nam'],
+            'Sri Lanka': ['Sri Lanka'],
+            'Taiwan': ['Taiwan'],
+            'China': ['China'],
+            'Australia': ['Australia'],
+            'New Zealand': ['New Zealand'],
+            'Chile': ['Chile'],
+            'Argentina': ['Argentina'],
+            'Mexico': ['Mexico'],
+            'Canada': ['Canada'],
+            'Brazil': ['Brazil'],
+            'Peru': ['Peru'],
+            'Colombia': ['Colombia'],
+            'South Korea': ['Korea, Republic of'],
+            'North Korea': ['Korea, Democratic People\'s Republic of'],
+            'Russia': ['Russian Federation'],
+            'Turkey': ['Turkey'],
+            'Greece': ['Greece'],
+            'Netherlands': ['Netherlands'],
+            'Belgium': ['Belgium'],
+            'Austria': ['Austria'],
+            'Czech Republic': ['Czech Republic'],
+            'Poland': ['Poland'],
+            'Croatia': ['Croatia'],
+            'Slovenia': ['Slovenia'],
+            'Hungary': ['Hungary'],
+            'Serbia': ['Serbia'],
+            'Bulgaria': ['Bulgaria'],
+            'Algeria': ['Algeria'],
+            'Tunisia': ['Tunisia'],
+            'Ethiopia': ['Ethiopia'],
+            'Kenya': ['Kenya'],
+            'Uganda': ['Uganda'],
+            'Rwanda': ['Rwanda'],
+            'Zambia': ['Zambia'],
+            'Zimbabwe': ['Zimbabwe'],
+            'Mozambique': ['Mozambique'],
+            'Madagascar': ['Madagascar'],
+            'Thailand': ['Thailand'],
+            'Malaysia': ['Malaysia'],
+            'Indonesia': ['Indonesia'],
+            'Philippines': ['Philippines'],
+            'Nepal': ['Nepal'],
+            'Mongolia': ['Mongolia'],
+            'Iran': ['Iran, Islamic Republic of'],
+            'Pakistan': ['Pakistan'],
+            'Bangladesh': ['Bangladesh'],
+            'Myanmar': ['Myanmar'],
+            'Cambodia': ['Cambodia'],
+            'Laos': ['Lao People\'s Democratic Republic'],
+            'Singapore': ['Singapore'],
+            'Hong Kong': ['Hong Kong'],
+            'Israel': ['Israel'],
+            'Lebanon': ['Lebanon'],
+            'Syria': ['Syrian Arab Republic'],
+            'Iraq': ['Iraq'],
+            'Saudi Arabia': ['Saudi Arabia'],
+            'Yemen': ['Yemen'],
+            'Kuwait': ['Kuwait'],
+            'Qatar': ['Qatar'],
+            'Bahrain': ['Bahrain'],
+            'Georgia': ['Georgia'],
+            'Armenia': ['Armenia'],
+            'Azerbaijan': ['Azerbaijan'],
+            'Kazakhstan': ['Kazakhstan'],
+            'Uzbekistan': ['Uzbekistan'],
+            'Turkmenistan': ['Turkmenistan'],
+            'Kyrgyzstan': ['Kyrgyzstan'],
+            'Tajikistan': ['Tajikistan'],
+            'Afghanistan': ['Afghanistan'],
+            'Ecuador': ['Ecuador'],
+            'Bolivia': ['Bolivia'],
+            'Paraguay': ['Paraguay'],
+            'Uruguay': ['Uruguay'],
+            'Venezuela': ['Venezuela, Bolivarian Republic of'],
+            'Costa Rica': ['Costa Rica'],
+            'Panama': ['Panama'],
+            'Nicaragua': ['Nicaragua'],
+            'Honduras': ['Honduras'],
+            'Guatemala': ['Guatemala'],
+            'Belize': ['Belize'],
+            'El Salvador': ['El Salvador'],
+            'Cuba': ['Cuba'],
+            'Jamaica': ['Jamaica'],
+            'Dominican Republic': ['Dominican Republic'],
+            'Puerto Rico': ['Puerto Rico'],
+            'Trinidad and Tobago': ['Trinidad and Tobago'],
+            'South Sudan': ['South Sudan'],
+            'Sudan': ['Sudan'],
+            'Libya': ['Libya'],
+            'Mali': ['Mali'],
+            'Niger': ['Niger'],
+            'Chad': ['Chad'],
+            'Mauritania': ['Mauritania'],
+            'Senegal': ['Senegal'],
+            'Ivory Coast': ['Côte d\'Ivoire'],
+            'Ghana': ['Ghana'],
+            'Nigeria': ['Nigeria'],
+            'Cameroon': ['Cameroon'],
+            'DRC': ['Congo, Democratic Republic of the'],
+            'Angola': ['Angola'],
+            'Malawi': ['Malawi'],
+            'Lesotho': ['Lesotho'],
+            'Swaziland': ['Eswatini'],
+            'Eswatini': ['Eswatini']
+        };
+
+        function getRoadTripCountryNames() {
+            var set = new Set();
+            try {
+                var all = getAllTrips ? getAllTrips() : (roadTrips || []);
+                all.forEach(function(t) {
+                    var c = (t.country || '').trim();
+                    if (!c) return;
+                    var geoNames = tripCountryToGeoJSON[c] || [c];
+                    geoNames.forEach(function(g) { set.add(g); });
+                    set.add(c);
+                });
+            } catch (e) {}
+            return set;
+        }
+
+        function applyWorldMapHighlights() {
+            if (!g || !countriesData || !countriesData.length) return;
+            var roadTripNames = getRoadTripCountryNames();
+            g.selectAll('path').each(function(d) {
+                var el = this;
+                var id = d.id;
+                var name = (d.properties && d.properties.name) ? d.properties.name : '';
+                var isRoadTrip = roadTripNames.has(name);
+                var visitedColor = countryColors[id];
+                d3.select(el).classed('road-trip-country', isRoadTrip);
+                if (isRoadTrip) {
+                    d3.select(el).style('fill', ROAD_TRIP_FILL).style('stroke', ROAD_TRIP_STROKE).style('stroke-width', '1.2px');
+                } else if (visitedColor) {
+                    d3.select(el).style('fill', visitedColor).style('stroke', 'rgba(100,100,120,0.4)').style('stroke-width', '0.5px');
+                } else {
+                    d3.select(el).style('fill', DEFAULT_COLOR).style('stroke', 'rgba(100,100,120,0.4)').style('stroke-width', '0.5px');
+                }
+            });
+        }
+
         // ==================== STORAGE ====================
         function saveToStorage() {
             const data = {
@@ -14541,33 +14859,60 @@
             'Oceania': { center: [-25, 140], zoom: 4 }
         };
 
-        function filterRoadTrips(region, element) {
-            currentRegionFilter = region;
+        function updateRoadTripsPanelVisibility() {
+            const panel = document.getElementById('roadTripsListPanel');
+            const placeholder = document.getElementById('roadTripsPlaceholder');
+            const backBtn = document.getElementById('backToRegionsBtn');
+            const titleEl = document.getElementById('roadTripsListTitle');
+            const subtitleEl = document.getElementById('roadTripsListSubtitle');
+            const showList = currentRegionFilter || (selectedTravelMonth !== null && selectedTravelMonth !== undefined);
             
-            // Update active filter chip
-            document.querySelectorAll('.filter-chip').forEach(chip => {
-                chip.classList.remove('active');
-            });
-            if (element) {
-                element.classList.add('active');
-            } else if (event && event.target) {
-                event.target.classList.add('active');
+            if (panel) panel.style.display = showList ? 'block' : 'none';
+            if (placeholder) placeholder.style.display = showList ? 'none' : 'block';
+            if (backBtn) backBtn.style.display = currentRegionFilter ? 'inline-block' : 'none';
+            
+            if (showList && titleEl) {
+                if (currentRegionFilter) {
+                    titleEl.textContent = '🛣️ Road trips in ' + currentRegionFilter;
+                    if (selectedTravelMonth !== null && selectedTravelMonth !== undefined) {
+                        const monthName = new Date(2024, selectedTravelMonth).toLocaleString('en', { month: 'long' });
+                        if (subtitleEl) subtitleEl.textContent = 'Best in ' + monthName + ' at top';
+                    } else if (subtitleEl) subtitleEl.textContent = '';
+                } else {
+                    const monthName = new Date(2024, selectedTravelMonth).toLocaleString('en', { month: 'long' });
+                    titleEl.textContent = '☀️ Recommended for ' + monthName;
+                    if (subtitleEl) subtitleEl.textContent = 'Trips that are best this month';
+                }
             }
             
-            // Auto-zoom to region on the road map
+            document.querySelectorAll('.region-card').forEach(card => {
+                card.classList.toggle('active', card.getAttribute('data-region') === currentRegionFilter);
+            });
+        }
+
+        function selectRegion(region) {
+            currentRegionFilter = region;
+            renderRoadTrips();
             if (roadMap && regionBounds[region]) {
                 const bounds = regionBounds[region];
-                roadMap.flyTo(bounds.center, bounds.zoom, {
-                    duration: 1.5,
-                    easeLinearity: 0.25
-                });
+                roadMap.flyTo(bounds.center, bounds.zoom, { duration: 1.5, easeLinearity: 0.25 });
             }
-            
-            // Re-render trips with filter and seasonal info
-            renderRoadTrips();
-            
-            // Show seasonal tip for the region
-            showSeasonalTip(region);
+            if (region) showSeasonalTip(region);
+        }
+
+        function backToRegions() {
+            currentRegionFilter = null;
+            if (selectedTravelMonth !== null && selectedTravelMonth !== undefined) {
+                renderRoadTrips();
+            } else {
+                updateRoadTripsPanelVisibility();
+                document.getElementById('roadTripsList').innerHTML = '';
+                document.getElementById('roadTripsCount').textContent = '0';
+            }
+        }
+
+        function filterRoadTrips(region, element) {
+            selectRegion(region);
         }
 
         // Show seasonal tip based on region and current/selected month
@@ -14613,24 +14958,29 @@
             return { best, avoid };
         }
 
-        // Update selected travel month
+        // Update selected travel month – show recommended trips for that period when no region selected
         function setTravelMonth(month) {
-            selectedTravelMonth = parseInt(month);
-            renderRoadTrips();
-            
-            // Show tip for new month
-            if (currentRegionFilter) {
-                showSeasonalTip(currentRegionFilter);
+            if (month === '' || month === undefined) {
+                selectedTravelMonth = null;
+            } else {
+                selectedTravelMonth = parseInt(month, 10);
             }
+            if (currentRegionFilter || selectedTravelMonth !== null) {
+                renderRoadTrips();
+            } else {
+                updateRoadTripsPanelVisibility();
+            }
+            if (currentRegionFilter) showSeasonalTip(currentRegionFilter);
         }
         
         // ==================== INITIALIZE APP ====================
-        // Initialize travel month selector to current month
+        // Initialize travel month selector – default "Any month" so list shows only after user picks region or month
         function initTravelMonthSelector() {
             const select = document.getElementById('travelMonthSelect');
             if (select) {
-                select.value = new Date().getMonth().toString();
+                select.value = '';
             }
+            updateRoadTripsPanelVisibility();
         }
         
         // Wait for DOM to be ready, then initialize
