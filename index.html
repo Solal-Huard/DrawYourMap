@@ -34,8 +34,8 @@
     <meta name="twitter:image:alt" content="Srndipity road trip planning interface">
     
     <!-- ==================== ADDITIONAL SEO META ==================== -->
-    <meta name="theme-color" content="#6366f1">
-    <meta name="msapplication-TileColor" content="#6366f1">
+    <meta name="theme-color" content="#5A7022">
+    <meta name="msapplication-TileColor" content="#5A7022">
     <meta name="apple-mobile-web-app-title" content="Srndipity">
     <meta name="application-name" content="Srndipity">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -278,7 +278,7 @@
     <!-- ==================== FONTS & STYLES ==================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Leaflet CSS for road maps -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -289,67 +289,95 @@
         }
 
         :root {
-            /* Safari Adventure Color Palette */
-            --bg-dark: #1a1410;
-            --bg-panel: #231c16;
-            --bg-elevated: #2d2419;
-            --bg-hover: #3a2f22;
+            /* ========== SRNDIPITY INC. GRAPHIC CHARTER – JUST LOOK UP ========== */
+            /* Primary brand colors – max readability for maps & navigation */
+            --srndipity-orange: #FFBC42;   /* Accent, active states, route highlight, CTAs */
+            --srndipity-olive: #5A7022;    /* Backgrounds, secondary, unselected routes */
+            --srndipity-cream: #F7E8C8;    /* Light text on dark, parchment */
+            --srndipity-cream-dark: #E8D5A3;
+            --srndipity-dark: #2D2A1E;     /* Text on light backgrounds */
+            --srndipity-peach: #F5E6D3;    /* Light cards, subtle bg */
+            --srndipity-olive-dark: #3d4a1a;
+            --srndipity-olive-darker: #2a3018;
             
-            /* Warm Safari Tones */
-            --safari-cream: #F5F0E1;
-            --safari-sand: #E8DCC8;
-            --safari-terracotta: #C65D3B;
-            --safari-rust: #A64B2A;
-            --safari-brown: #5C2018;
-            --safari-sage: #7A8B6E;
-            --safari-olive: #6B7B5C;
-            --safari-gold: #D4A84B;
-            --safari-amber: #E8B84A;
+            /* Backgrounds – olive & dark for contrast */
+            --bg-dark: #1e2318;
+            --bg-panel: #2a301a;
+            --bg-elevated: #353d22;
+            --bg-hover: #424d28;
             
-            /* Primary Accent - Terracotta/Rust */
-            --accent-primary: #C65D3B;
-            --accent-secondary: #D4A84B;
-            --accent-glow: rgba(198, 93, 59, 0.4);
+            /* Safari / charter aliases */
+            --safari-cream: #F7E8C8;
+            --safari-sand: #E8D5A3;
+            --safari-terracotta: #FFBC42;
+            --safari-rust: #e5a838;
+            --safari-brown: #2D2A1E;
+            --safari-sage: #6B7B5C;
+            --safari-olive: #5A7022;
+            --safari-gold: #FFBC42;
+            --safari-amber: #F7D042;
             
-            /* Text */
-            --text-primary: #F5F0E1;
-            --text-secondary: #BDB3A0;
-            --text-muted: #7A7062;
+            /* Primary Accent – orange charter */
+            --accent-primary: #FFBC42;
+            --accent-secondary: #F7D042;
+            --accent-glow: rgba(255, 188, 66, 0.35);
+            
+            /* Text – high contrast for readability */
+            --text-primary: #F7E8C8;
+            --text-secondary: #c4b896;
+            --text-muted: #8a8268;
             
             /* Borders */
-            --border-subtle: rgba(245, 240, 225, 0.1);
-            --border-accent: rgba(198, 93, 59, 0.5);
+            --border-subtle: rgba(247, 232, 200, 0.12);
+            --border-accent: rgba(255, 188, 66, 0.5);
             
-            /* Status Colors */
-            --success: #7A8B6E;
-            --warning: #D4A84B;
-            --danger: #C65D3B;
-            --serendipity: #C65D3B;
-            --road-primary: #D4A84B;
+            /* Status */
+            --success: #5A7022;
+            --warning: #F7D042;
+            --danger: #c94a2e;
+            --serendipity: #FFBC42;
+            --road-primary: #FFBC42;
             
-            /* Adventure Theme */
-            --adventure-cream: #F5F0E1;
-            --adventure-paper: #E8DCC8;
-            --adventure-tan: #C9B896;
-            --adventure-brown: #8B7355;
-            --adventure-dark: #3D2F1E;
-            --adventure-red: #C65D3B;
-            --adventure-orange: #D97B4A;
-            --adventure-gold: #D4A84B;
-            --adventure-sage: #7A8B6E;
-            --adventure-forest: #4A5D40;
+            /* Adventure / theme aliases */
+            --adventure-cream: #F7E8C8;
+            --adventure-paper: #F5E6D3;
+            --adventure-tan: #E8D5A3;
+            --adventure-brown: #2D2A1E;
+            --adventure-dark: #2a3018;
+            --adventure-red: #FFBC42;
+            --adventure-orange: #FFBC42;
+            --adventure-gold: #FFBC42;
+            --adventure-sage: #5A7022;
+            --adventure-forest: #3d4a1a;
+            
+            /* Vintage mode (charter-aligned) */
+            --vintage-cream: #F7E8C8;
+            --vintage-paper: #F5E6D3;
+            --vintage-tan: #E8D5A3;
+            --vintage-dark: #2D2A1E;
+            --vintage-brown: #3d4528;
+            --vintage-gold: #FFBC42;
+            --vintage-red: #e5a838;
+            --vintage-orange: #FFBC42;
+            --vintage-teal: #5A7022;
         }
 
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-dark);
             background-image: 
-                radial-gradient(ellipse at 20% 80%, rgba(198, 93, 59, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(212, 168, 75, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(122, 139, 110, 0.04) 0%, transparent 70%);
+                radial-gradient(ellipse at 20% 80%, rgba(255, 188, 66, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(90, 112, 34, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(90, 112, 34, 0.05) 0%, transparent 70%);
             color: var(--text-primary);
             overflow: hidden;
             min-height: 100vh;
+        }
+        
+        /* Brand typography – retro for headlines only; body stays DM Sans for readability */
+        .logo, .trip-hero-title, .section-title-index, .sidebar-header .logo {
+            font-family: 'Fredoka', 'DM Sans', sans-serif;
+            letter-spacing: 0.02em;
         }
 
         /* =====================================================
@@ -779,19 +807,19 @@
         /* Sidebar - Safari Adventure Style */
         .sidebar {
             width: 320px;
-            background: linear-gradient(180deg, var(--bg-panel) 0%, rgba(35, 28, 22, 0.98) 100%);
-            border-right: 1px solid rgba(212, 168, 75, 0.2);
+            background: linear-gradient(180deg, var(--bg-panel) 0%, var(--srndipity-olive-darker) 100%);
+            border-right: 1px solid rgba(255, 188, 66, 0.2);
             display: flex;
             flex-direction: column;
             z-index: 100;
             transition: transform 0.3s;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
         }
 
         .sidebar-header {
             padding: 20px;
-            border-bottom: 2px solid var(--safari-terracotta);
-            background: linear-gradient(135deg, var(--adventure-dark), var(--bg-panel));
+            border-bottom: 2px solid var(--accent-primary);
+            background: linear-gradient(135deg, var(--srndipity-olive-dark), var(--bg-panel));
             position: relative;
         }
 
@@ -812,20 +840,20 @@
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--safari-cream);
-            font-family: 'Georgia', serif;
-            letter-spacing: 1px;
+            font-family: 'Fredoka', 'DM Sans', sans-serif;
+            letter-spacing: 0.02em;
         }
 
         .logo-icon {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-rust));
+            background: linear-gradient(135deg, var(--srndipity-orange), var(--safari-amber));
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.4rem;
-            box-shadow: 0 4px 12px rgba(198, 93, 59, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 188, 66, 0.35);
             position: relative;
         }
 
@@ -834,12 +862,12 @@
             position: absolute;
             inset: -2px;
             border-radius: 14px;
-            border: 2px solid var(--safari-gold);
-            opacity: 0.5;
+            border: 2px solid var(--srndipity-olive);
+            opacity: 0.6;
         }
 
         .logo-icon.serendipity-mode {
-            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-gold));
+            background: linear-gradient(135deg, var(--srndipity-orange), var(--safari-amber));
         }
         
         /* Brand tagline under logo */
@@ -880,10 +908,10 @@
         }
         
         .filter-chip.active {
-            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-rust));
-            border-color: var(--safari-gold);
-            color: var(--safari-cream);
-            box-shadow: 0 2px 8px rgba(198, 93, 59, 0.3);
+            background: linear-gradient(135deg, var(--srndipity-orange), var(--safari-amber));
+            border-color: var(--accent-primary);
+            color: var(--srndipity-dark);
+            box-shadow: 0 2px 8px rgba(255, 188, 66, 0.35);
         }
 
         /* Region cards – click to open road trips in that zone */
@@ -918,7 +946,7 @@
             border-color: var(--safari-gold);
         }
         .region-card.active {
-            background: linear-gradient(135deg, rgba(198, 93, 59, 0.25), rgba(166, 75, 42, 0.2));
+            background: linear-gradient(135deg, rgba(255, 188, 66, 0.2), rgba(90, 112, 34, 0.25));
             border-color: var(--accent-primary);
         }
         .region-icon { font-size: 1.4rem; }
@@ -1049,17 +1077,17 @@
             color: var(--vintage-brown);
         }
 
-        /* POI Layer Controls */
+        /* POI Layer Controls – charter + high readability */
         .poi-controls {
             position: absolute;
             bottom: 20px;
             left: 20px;
             z-index: 1000;
-            background: rgba(21, 21, 32, 0.95);
+            background: rgba(42, 48, 26, 0.96);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 12px;
-            border: 1px solid var(--border-subtle);
+            border: 1px solid rgba(255, 188, 66, 0.25);
             max-width: 280px;
         }
 
@@ -1113,7 +1141,7 @@
         .poi-toggle.active {
             background: var(--accent-primary);
             border-color: var(--accent-primary);
-            color: white;
+            color: var(--srndipity-dark);
         }
 
         .poi-toggle .poi-icon {
@@ -1442,15 +1470,15 @@
         }
 
         .btn-serendipity {
-            background: linear-gradient(135deg, var(--safari-terracotta), var(--safari-gold));
-            color: var(--safari-cream);
+            background: linear-gradient(135deg, var(--srndipity-orange), var(--safari-amber));
+            color: var(--srndipity-dark);
             font-weight: 600;
-            border-color: var(--safari-gold);
+            border-color: var(--accent-primary);
         }
 
         .btn-serendipity:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 168, 75, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 188, 66, 0.4);
         }
 
         .btn-group {
@@ -1535,7 +1563,7 @@
 
         #worldMap path.road-trip-country {
             fill: #22c55e;
-            stroke: #e8a84a;
+            stroke: #FFBC42;
             stroke-width: 1.2;
         }
 
@@ -1578,7 +1606,7 @@
         }
 
         .leaflet-container {
-            background: #1a1a2e;
+            background: var(--bg-dark);
             font-family: 'DM Sans', sans-serif;
         }
 
@@ -1705,22 +1733,22 @@
             right: 0;
             width: 60px;
             height: 60px;
-            background: radial-gradient(circle, rgba(212, 168, 75, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 188, 66, 0.12) 0%, transparent 70%);
             pointer-events: none;
         }
 
         .road-trip-card:hover {
-            border-color: var(--safari-gold);
-            border-left-color: var(--safari-gold);
+            border-color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(198, 93, 59, 0.3);
-            background: rgba(198, 93, 59, 0.05);
+            box-shadow: 0 6px 24px rgba(255, 188, 66, 0.25);
+            background: rgba(255, 188, 66, 0.06);
         }
 
         .road-trip-card.active {
-            border-color: var(--safari-gold);
-            border-left-color: var(--safari-gold);
-            background: linear-gradient(135deg, rgba(198, 93, 59, 0.1), rgba(212, 168, 75, 0.05));
+            border-color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
+            background: linear-gradient(135deg, rgba(255, 188, 66, 0.12), rgba(90, 112, 34, 0.08));
         }
 
         .road-trip-header {
@@ -1824,7 +1852,7 @@
             padding: 6px 12px;
             font-size: 0.7rem;
             background: var(--accent-primary);
-            color: white;
+            color: var(--srndipity-dark);
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -1858,7 +1886,7 @@
         .trip-hero {
             position: relative;
             min-height: 260px;
-            background: linear-gradient(135deg, var(--safari-brown) 0%, var(--safari-rust) 40%, var(--safari-terracotta) 100%);
+            background: linear-gradient(135deg, var(--srndipity-olive-dark) 0%, var(--srndipity-olive) 35%, var(--srndipity-orange) 100%);
             display: flex;
             align-items: flex-end;
             padding: 32px 48px;
@@ -1926,8 +1954,8 @@
             font-weight: 700;
             color: var(--safari-cream);
             margin: 0 0 10px 0;
-            font-family: 'Georgia', serif;
-            letter-spacing: 0.5px;
+            font-family: 'Fredoka', 'DM Sans', sans-serif;
+            letter-spacing: 0.02em;
         }
 
         .trip-hero-meta {
@@ -3052,12 +3080,12 @@
             border-left: 3px solid var(--warning);
         }
 
-        /* Route Tab – map + issues + waypoints */
+        /* Route Tab – map + issues + waypoints (tour-operator style: large precise map) */
         .route-tab-layout {
             display: flex;
             flex-direction: column;
             gap: 24px;
-            max-width: 1000px;
+            max-width: none;
         }
 
         .route-map-section {
@@ -3066,6 +3094,7 @@
             border-left: 4px solid var(--accent-primary);
             border-radius: 12px;
             overflow: hidden;
+            width: 100%;
         }
 
         .route-map-header {
@@ -3109,14 +3138,15 @@
         }
 
         .route-poi-btn.active {
-            background: rgba(198, 93, 59, 0.2);
+            background: rgba(255, 188, 66, 0.2);
             border-color: var(--accent-primary);
             color: var(--accent-primary);
         }
 
         .route-map-container {
             position: relative;
-            height: 420px;
+            min-height: 72vh;
+            height: 72vh;
             background: var(--bg-dark);
         }
 
@@ -3126,11 +3156,16 @@
         }
 
         .route-map-legend {
-            padding: 8px 20px;
-            font-size: 0.75rem;
+            padding: 10px 20px;
+            font-size: 0.8rem;
             color: var(--text-muted);
             display: flex;
+            flex-wrap: wrap;
             gap: 16px;
+            align-items: center;
+        }
+        .route-map-legend span {
+            white-space: nowrap;
         }
 
         .route-issues-card {
@@ -3172,7 +3207,7 @@
         .stops-count {
             padding: 6px 14px;
             background: var(--accent-primary);
-            color: var(--safari-cream);
+            color: var(--srndipity-dark);
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -6150,6 +6185,37 @@
             background: rgba(34, 197, 94, 0.2);
         }
 
+        /* Route waypoint markers – grandes étapes vs start/end */
+        .route-waypoint-marker {
+            background: transparent !important;
+            border: none !important;
+        }
+        .route-marker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            border: 2px solid #fff;
+        }
+        .route-marker.start {
+            background: linear-gradient(135deg, var(--srndipity-olive), #4a5d2a);
+            color: var(--srndipity-cream);
+        }
+        .route-marker.end {
+            background: linear-gradient(135deg, var(--srndipity-orange), #e5a838);
+            color: var(--srndipity-dark);
+        }
+        .route-marker.etape {
+            background: linear-gradient(135deg, var(--accent-primary), var(--safari-amber));
+            color: var(--srndipity-dark);
+            font-size: 0.85rem;
+        }
+
         /* Reddit Tips */
         .reddit-tips {
             background: linear-gradient(135deg, #ff4500, #ff6b35);
@@ -6568,8 +6634,8 @@
         }
 
         .add-memory-card:hover {
-            border-color: #e07a39;
-            color: #e07a39;
+            border-color: #FFBC42;
+            color: #FFBC42;
             transform: translateY(-5px);
         }
 
@@ -6663,7 +6729,7 @@
         }
 
         .memory-edit-btn {
-            background: #e07a39;
+            background: #FFBC42;
             color: white;
         }
 
@@ -6982,7 +7048,7 @@
                         <span style="position: absolute; top: -4px; right: -4px; font-size: 0.9rem; opacity: 0.8;">🐆</span>
                     </div>
                     <div>
-                        <span id="logoText" style="font-family: 'Georgia', serif; font-style: italic;">Srndipity</span>
+                        <span id="logoText" style="font-family: 'Fredoka', 'DM Sans', sans-serif;">Srndipity</span>
                         <div class="logo-tagline">for those with eyes to see</div>
                     </div>
                 </div>
@@ -7325,7 +7391,10 @@
                     </button>
                 </div>
                 <div class="poi-legend">
-                    💡 Reference data for offline planning. Verify on Google Maps before visiting.
+                    <strong>Sur la carte :</strong> 🚗 Départ • 🏁 Arrivée • 1,2,3… Grandes étapes • Boutons ci‑dessus = ⛽ Essence, ⛺🏕️ Camping, 🛒 Courses, etc.
+                </div>
+                <div class="poi-legend" style="margin-top: 4px;">
+                    💡 Données de référence. Vérifier sur Google Maps avant de partir.
                 </div>
             </div>
             
@@ -7761,9 +7830,16 @@
                         </div>
                         <div class="route-map-container" id="tripDetailMapContainer">
                             <div id="tripDetailMap" class="trip-detail-map"></div>
-                            <div class="route-map-legend">
+                            <div class="route-map-legend" id="tripRouteMapLegend">
                                 <span class="legend-route">—— Route</span>
-                                <span class="legend-poi">● POI</span>
+                                <span class="legend-start">🚗 Départ</span>
+                                <span class="legend-end">🏁 Arrivée</span>
+                                <span class="legend-etape">1,2,3… Étapes</span>
+                                <span class="legend-poi">⛽ Essence</span>
+                                <span class="legend-poi">⛺ Camp gratuit</span>
+                                <span class="legend-poi">🏕️ Camp payant</span>
+                                <span class="legend-poi">🛒 Courses</span>
+                                <span class="legend-poi">📸 Points de vue</span>
                             </div>
                         </div>
                     </div>
@@ -8413,7 +8489,7 @@
         const DEFAULT_COLOR = '#2d2d3a';
         const VISITED_COLOR = '#22c55e';
         const ROAD_TRIP_FILL = '#22c55e';
-        const ROAD_TRIP_STROKE = '#e8a84a';
+        const ROAD_TRIP_STROKE = '#FFBC42';
         
         // POI Layer Groups for Road Map
         let poiLayers = {
@@ -10523,20 +10599,27 @@
                 className: 'osm-roads-layer'
             });
 
+            // Polarsteps-style: light, friendly base (CartoDB Voyager)
+            const cartoVoyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CARTO',
+                maxZoom: 19
+            });
+
             // Stamen terrain for adventure feel
             const stamenTerrain = L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png', {
                 attribution: '© Stadia Maps, © OpenStreetMap',
                 maxZoom: 18
             });
 
-            // Default: traditional map (OpenStreetMap) – classic road map visual
-            osmRoads.addTo(roadMap);
+            // Default: Polarsteps-like light map – friendly, simple to read
+            cartoVoyager.addTo(roadMap);
 
             // Layer control
             const baseLayers = {
-                "🌙 Dark Mode": darkBase,
+                "☀️ Light (Polarsteps-style)": cartoVoyager,
+                "🛣️ OpenStreetMap": osmRoads,
                 "🗺️ Terrain": stamenTerrain,
-                "🛣️ OpenStreetMap": osmRoads
+                "🌙 Dark Mode": darkBase
             };
             L.control.layers(baseLayers, null, { position: 'topright' }).addTo(roadMap);
             L.control.zoom({ position: 'bottomright' }).addTo(roadMap);
@@ -10547,13 +10630,14 @@
                 if (trip.waypoints && trip.waypoints.length > 1) {
                     const coords = trip.waypoints.map(w => [w[0], w[1]]);
                     
-                    // Draw route line - different color for personal trips
-                    const routeColor = trip.personalTrip ? '#22c55e' : '#f472b6';
+                    // Draw route line – SRNDIPITY charter: orange (active) / olive (routes)
+                    const routeColor = trip.personalTrip ? '#5A7022' : '#FFBC42';
                     const routeLine = L.polyline(coords, {
                         color: routeColor,
-                        weight: trip.personalTrip ? 4 : 3,
-                        opacity: 0.9,
-                        dashArray: trip.personalTrip ? null : '10, 5'
+                        weight: trip.personalTrip ? 4 : 4,
+                        opacity: 0.92,
+                        lineCap: 'round',
+                        lineJoin: 'round'
                     }).addTo(roadMap);
 
                     routeLayers[trip.id] = { polyline: routeLine, markers: [] };
@@ -10574,7 +10658,7 @@
                         if (activeRoute !== trip.id) this.setStyle({ weight: 5, opacity: 1 });
                     });
                     routeLine.on('mouseout', function() {
-                        if (activeRoute !== trip.id) this.setStyle({ weight: trip.personalTrip ? 4 : 3, opacity: 0.9 });
+                        if (activeRoute !== trip.id) this.setStyle({ weight: 4, opacity: 0.92 });
                     });
 
                     // Add tooltip on hover showing trip name
@@ -10583,17 +10667,21 @@
                         className: 'route-tooltip'
                     });
 
-                    // Add markers for waypoints
+                    // Add markers for waypoints – distinguish grandes étapes (start, end, numbered stops)
                     trip.waypoints.forEach((wp, idx) => {
                         const isStart = idx === 0;
                         const isEnd = idx === trip.waypoints.length - 1;
-                        const markerIcon = isStart ? '🚗' : (isEnd ? '🏁' : '📍');
+                        let html;
+                        if (isStart) html = '<span class="route-marker start">🚗</span>';
+                        else if (isEnd) html = '<span class="route-marker end">🏁</span>';
+                        else html = '<span class="route-marker etape">' + (idx) + '</span>';
                         
                         const marker = L.marker([wp[0], wp[1]], {
                             icon: L.divIcon({
-                                className: `custom-marker ${trip.personalTrip ? 'poi-marker' : 'poi-marker'}`,
-                                html: markerIcon,
-                                iconSize: [30, 30]
+                                className: 'custom-marker route-waypoint-marker',
+                                html: html,
+                                iconSize: [32, 32],
+                                iconAnchor: [16, 16]
                             })
                         }).addTo(roadMap);
                         if (routeLayers[trip.id]) routeLayers[trip.id].markers.push(marker);
@@ -10606,8 +10694,8 @@
                                 ${trip.personalTrip ? '<div style="color: #22c55e; font-size: 0.8rem;">✓ Visité</div>' : ''}
                                 <div style="font-size: 0.8rem; color: #9494a8; margin-bottom: 10px;">${trip.description || ''}</div>
                                 <button onclick="openTripDetail('${trip.id}')" style="
-                                    background: #e07a39;
-                                    color: white;
+                                    background: #FFBC42;
+                                    color: #2D2A1E;
                                     border: none;
                                     padding: 8px 16px;
                                     border-radius: 6px;
@@ -11192,12 +11280,12 @@
                 if (!layer || !layer.polyline) return;
                 var trip = getAllTrips().find(function(t) { return t.id === id; });
                 var isSelected = id === routeId;
-                var baseWeight = (trip && trip.personalTrip) ? 4 : 3;
-                var baseColor = (trip && trip.personalTrip) ? '#22c55e' : '#f472b6';
+                var baseWeight = 4;
+                var baseColor = (trip && trip.personalTrip) ? '#5A7022' : '#FFBC42';
                 layer.polyline.setStyle({
                     weight: isSelected ? 6 : baseWeight,
-                    opacity: isSelected ? 1 : 0.9,
-                    color: isSelected ? '#e8a84a' : baseColor
+                    opacity: isSelected ? 1 : 0.92,
+                    color: isSelected ? '#FFBC42' : baseColor
                 });
                 if (isSelected) layer.polyline.bringToFront();
             });
@@ -11481,7 +11569,7 @@
             currentDetailTrip = null;
         }
 
-        // Route tab: map with zoom on road, POI (fuel, camp, food, views)
+        // Route tab: large tour-operator style map – precise, OSM base, POI (fuel, camp, food, views)
         function initTripDetailMap(trip) {
             if (!trip || !document.getElementById('tripDetailMap')) return;
             if (tripDetailMap) {
@@ -11494,11 +11582,17 @@
 
             tripDetailMap = L.map('tripDetailMap', {
                 center: [40, 0],
-                zoom: 4,
-                zoomControl: true
+                zoom: 5,
+                zoomControl: true,
+                minZoom: 4,
+                maxZoom: 18
             });
             L.control.zoom({ position: 'topright' }).addTo(tripDetailMap);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(tripDetailMap);
+            // OSM base for clarity – roads and place names for driver preparation
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap',
+                maxZoom: 19
+            }).addTo(tripDetailMap);
 
             let latlngs = [];
             if (trip.waypoints && trip.waypoints.length > 0 && Array.isArray(trip.waypoints[0])) {
@@ -11506,19 +11600,27 @@
             } else if (trip.coordinates && trip.coordinates.length >= 2) {
                 latlngs = trip.coordinates;
             }
+            let routeLine = null;
             if (latlngs.length >= 2) {
-                const routeLine = L.polyline(latlngs, { color: '#C65D3B', weight: 4, opacity: 0.9 });
+                routeLine = L.polyline(latlngs, { color: '#FFBC42', weight: 5, opacity: 0.95, lineCap: 'round', lineJoin: 'round' });
                 routeLine.addTo(tripDetailMap);
-                tripDetailMap.fitBounds(routeLine.getBounds(), { padding: [40, 40], maxZoom: 10 });
+                tripDetailMap.fitBounds(routeLine.getBounds(), { padding: [24, 24], maxZoom: 12 });
                 latlngs.forEach((ll, i) => {
                     const name = trip.waypoints && trip.waypoints[i] && (Array.isArray(trip.waypoints[i]) ? trip.waypoints[i][2] : trip.waypoints[i].name);
-                    L.marker(ll).addTo(tripDetailMap).bindPopup('<strong>' + (name || 'Stop ' + (i + 1)) + '</strong>');
+                    const isStart = i === 0;
+                    const isEnd = i === latlngs.length - 1;
+                    const iconHtml = isStart ? '<span class="route-marker start">🚗</span>' : (isEnd ? '<span class="route-marker end">🏁</span>' : '<span class="route-marker etape">' + (i) + '</span>');
+                    L.marker(ll, {
+                        icon: L.divIcon({ className: 'route-waypoint-marker', html: iconHtml, iconSize: [32, 32], iconAnchor: [16, 16] })
+                    }).addTo(tripDetailMap).bindPopup('<strong>' + (name || (isStart ? 'Départ' : isEnd ? 'Arrivée' : 'Étape ' + i)) + '</strong>');
                 });
             } else if (latlngs.length === 1) {
                 tripDetailMap.setView(latlngs[0], 8);
             }
 
-            // POI: filter by trip country or region (fuel, camp, food, views)
+            // POI: filter by trip country or region (fuel, camp, food, views) – distinct icons for driver prep
+            const poiIcons = { fuel: '⛽', campsiteFree: '⛺', campsitePaid: '🏕️', grocery: '🛒', viewpoint: '📸' };
+            const poiClass = { fuel: 'fuel', campsiteFree: 'campsite-free', campsitePaid: 'campsite-paid', grocery: 'grocery', viewpoint: 'viewpoint' };
             const country = (trip.country || '').toLowerCase();
             const regionName = (trip.name || '').toLowerCase();
             const poiKeys = ['fuel', 'campsiteFree', 'campsitePaid', 'grocery', 'viewpoint'];
@@ -11530,9 +11632,18 @@
                     return c && (c.includes(country) || country.includes(c) || r.includes(regionName) || regionName.includes(r));
                 });
                 const layer = L.layerGroup();
+                const iconChar = poiIcons[key] || '●';
+                const cssClass = poiClass[key] || key;
                 filtered.forEach(p => {
                     const popup = '<strong>' + (p.name || '') + '</strong>' + (p.tip ? '<br><small>' + p.tip + '</small>' : '') + (p.price ? '<br><small>' + p.price + '</small>' : '');
-                    L.marker([p.lat, p.lng]).addTo(layer).bindPopup(popup);
+                    L.marker([p.lat, p.lng], {
+                        icon: L.divIcon({
+                            className: 'poi-marker detail-poi',
+                            html: '<div class="poi-marker-icon ' + cssClass + '">' + iconChar + '</div>',
+                            iconSize: [26, 26],
+                            iconAnchor: [13, 13]
+                        })
+                    }).addTo(layer).bindPopup(popup);
                 });
                 tripDetailPoiLayers[key] = layer;
                 if (key !== 'viewpoint') layer.addTo(tripDetailMap);
@@ -11551,6 +11662,14 @@
                     }
                 };
             });
+
+            // After container is visible, fix map size (large tour-operator panel)
+            setTimeout(function() {
+                if (tripDetailMap && routeLine) {
+                    tripDetailMap.invalidateSize();
+                    tripDetailMap.fitBounds(routeLine.getBounds(), { padding: [24, 24], maxZoom: 12 });
+                }
+            }, 350);
         }
 
         // Populate Guide Tab with comprehensive road trip information
