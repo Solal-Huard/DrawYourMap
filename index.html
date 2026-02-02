@@ -977,6 +977,88 @@
             color: var(--text-muted);
             margin-bottom: 12px;
         }
+        .road-trips-list-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .road-trips-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .sort-by-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+        .sort-by-select {
+            padding: 6px 10px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        .load-more-wrap {
+            text-align: center;
+            padding: 12px 0;
+        }
+        .load-more-btn {
+            padding: 10px 24px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--brand-forest);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .load-more-btn:hover {
+            border-color: var(--brand-orange);
+            color: var(--brand-orange);
+        }
+        .trip-card-save {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: color 0.2s, transform 0.2s;
+            z-index: 2;
+        }
+        .trip-card-save:hover {
+            color: var(--brand-orange);
+        }
+        .trip-card-save.saved {
+            color: var(--brand-orange);
+        }
+        .trip-card-save .icon { width: 1.25rem; height: 1.25rem; }
+        .badge-4x4 {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: rgba(45, 62, 51, 0.12);
+            color: var(--brand-forest);
+            margin-left: 6px;
+        }
+        .badge-4x4 .icon { width: 0.9rem; height: 0.9rem; }
         .road-trips-placeholder {
             padding: 24px 16px;
             text-align: center;
@@ -7067,6 +7149,8 @@
             <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></symbol>
             <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></symbol>
             <symbol id="icon-prep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+            <symbol id="icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></symbol>
+            <symbol id="icon-heart-filled" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></symbol>
         </defs>
     </svg>
     <!-- Skip Navigation for Accessibility -->
@@ -7264,9 +7348,20 @@
                             <div class="section-title" id="roadTripsListTitle"><svg class="icon icon--lg" aria-hidden="true"><use href="#icon-route"></use></svg> Road Trips</div>
                         </div>
                         <div class="road-trips-list-subtitle" id="roadTripsListSubtitle"></div>
-                        <div class="section-title"><span id="roadTripsCount">0</span> trips</div>
-                        <div id="roadTripsList"></div>
-                        <p class="dblclick-hint">💡 Double-click any trip for detailed guide</p>
+                        <div class="road-trips-list-toolbar">
+                            <span class="road-trips-count"><span id="roadTripsCount">0</span> trips</span>
+                            <label class="sort-by-label" for="roadTripsSortBy">Sort by</label>
+                            <select id="roadTripsSortBy" class="sort-by-select" aria-label="Sort trips" onchange="renderRoadTrips()">
+                                <option value="topRated">Top Rated</option>
+                                <option value="shortest">Shortest</option>
+                                <option value="newest">Newest</option>
+                            </select>
+                        </div>
+                        <div id="roadTripsList" class="road-trips-list-cards"></div>
+                        <div id="roadTripsLoadMoreWrap" class="load-more-wrap" style="display: none;">
+                            <button type="button" id="roadTripsLoadMoreBtn" class="load-more-btn" onclick="loadMoreTrips()">Load more</button>
+                        </div>
+                        <p class="dblclick-hint">Double-click any trip for detailed guide</p>
                     </div>
                     <div class="section road-trips-placeholder" id="roadTripsPlaceholder">
                         <p class="placeholder-text">Select a region above or choose a month to see road trips.</p>
@@ -8636,6 +8731,10 @@
         let routeLayers = {};  // tripId -> { polyline, markers[] } for map highlight & sync
         let communityAlerts = [];
         let completedTrips = [];  // Track completed road trips
+        let garageTripIds = [];   // Save to Garage (wishlist)
+        const TRIPS_PAGE_SIZE = 12;
+        let visibleTripCount = TRIPS_PAGE_SIZE;
+        let lastTripListKey = '';
         let userCreatedTrips = []; // User-created road trips
         let userName = 'Anonymous Explorer'; // User's display name
         let plannedTrips = []; // User's planned trips from diary mode
@@ -11599,80 +11698,131 @@
             return all.map(t => ({ ...t, continent: t.continent || countryToContinent[t.country] || 'Europe' }));
         }
 
+        function parseDistanceForSort(distanceStr) {
+            if (!distanceStr || typeof distanceStr !== 'string') return 999999;
+            const num = parseInt(distanceStr.replace(/[^0-9]/g, ''), 10);
+            return isNaN(num) ? 999999 : num;
+        }
+
+        function applyTripSort(trips, sortBy) {
+            const arr = [...trips];
+            if (sortBy === 'topRated') {
+                arr.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+            } else if (sortBy === 'shortest') {
+                arr.sort((a, b) => parseDistanceForSort(a.distance) - parseDistanceForSort(b.distance));
+            } else if (sortBy === 'newest') {
+                const all = getAllTrips();
+                const order = {};
+                all.forEach((t, i) => { order[t.id] = i; });
+                arr.sort((a, b) => (order[b.id] ?? 0) - (order[a.id] ?? 0));
+            }
+            return arr;
+        }
+
+        function toggleSaveToGarage(tripId) {
+            if (garageTripIds.includes(tripId)) {
+                garageTripIds = garageTripIds.filter(id => id !== tripId);
+            } else {
+                garageTripIds.push(tripId);
+            }
+            try { localStorage.setItem('srndipity_garage', JSON.stringify(garageTripIds)); } catch (e) {}
+            renderRoadTrips();
+        }
+
+        function loadMoreTrips() {
+            visibleTripCount += TRIPS_PAGE_SIZE;
+            renderRoadTrips();
+        }
+
         function renderRoadTrips() {
             const container = document.getElementById('roadTripsList');
+            const sortSelect = document.getElementById('roadTripsSortBy');
+            const loadMoreWrap = document.getElementById('roadTripsLoadMoreWrap');
             let allTrips = getAllTrips();
             
             const hasRegion = currentRegionFilter && currentRegionFilter !== 'all';
             const hasMonth = selectedTravelMonth !== null && selectedTravelMonth !== undefined;
             
-            // Show list only when user picked a region OR a month
             if (!hasRegion && !hasMonth) {
                 if (container) container.innerHTML = '';
                 const countElement = document.getElementById('roadTripsCount');
                 if (countElement) countElement.textContent = '0';
+                if (loadMoreWrap) loadMoreWrap.style.display = 'none';
                 updateRoadTripsPanelVisibility();
                 return;
             }
             
-            // Apply region filter (when user clicked a region)
             if (hasRegion) {
                 allTrips = allTrips.filter(trip => trip.continent === currentRegionFilter);
             }
             
-            // When only month is selected (no region): show recommended trips for that period
             if (!hasRegion && hasMonth) {
                 allTrips = allTrips.filter(trip => getTripSeasonStatus(trip.id).status === 'best');
-                allTrips.sort((a, b) => (b.rating || 0) - (a.rating || 0));
             }
             
-            // When region + month: sort so "best this month" first
+            const sortBy = (sortSelect && sortSelect.value) ? sortSelect.value : 'topRated';
+            allTrips = applyTripSort(allTrips, sortBy);
+            
             if (hasRegion && hasMonth) {
                 allTrips.sort((a, b) => {
                     const aBest = getTripSeasonStatus(a.id).status === 'best' ? 1 : 0;
                     const bBest = getTripSeasonStatus(b.id).status === 'best' ? 1 : 0;
                     if (bBest !== aBest) return bBest - aBest;
-                    return (b.rating || 0) - (a.rating || 0);
+                    return (sortBy === 'shortest' ? parseDistanceForSort(a.distance) - parseDistanceForSort(b.distance) : (b.rating || 0) - (a.rating || 0));
                 });
             }
             
-            // Update count
+            const listKey = (currentRegionFilter || '') + (selectedTravelMonth ?? '') + sortBy;
+            if (listKey !== lastTripListKey) {
+                visibleTripCount = TRIPS_PAGE_SIZE;
+                lastTripListKey = listKey;
+            }
+            
+            const totalCount = allTrips.length;
+            const toShow = allTrips.slice(0, visibleTripCount);
+            const hasMore = totalCount > visibleTripCount;
+            
             const countElement = document.getElementById('roadTripsCount');
-            if (countElement) countElement.textContent = allTrips.length;
+            if (countElement) countElement.textContent = totalCount;
             
             updateRoadTripsPanelVisibility();
             
-            // Generate trip cards with potential sponsored insertion
-            let tripCards = allTrips.map((trip, index) => {
+            let tripCards = toShow.map((trip) => {
                 const isCompleted = completedTrips.includes(trip.id);
+                const isSaved = garageTripIds.includes(trip.id);
                 const ratingStars = trip.rating ? '⭐'.repeat(Math.floor(trip.rating)) : '';
                 const difficultyClass = trip.difficulty || 'moderate';
                 const isSponsored = trip.sponsored || false;
+                const isRugged = (trip.difficulty === 'challenging') || (trip.tags && trip.tags.includes('fourx4'));
                 
-                // Get seasonal status
                 const seasonStatus = getTripSeasonStatus(trip.id);
                 const seasonBadge = seasonStatus.status === 'best' 
-                    ? `<span class="season-badge best" title="${seasonStatus.reason || 'Great time to visit!'}">☀️ Best Season</span>`
+                    ? `<span class="season-badge best" title="${(seasonStatus.reason || 'Great time to visit!').replace(/"/g, '&quot;')}">Best Season</span>`
                     : seasonStatus.status === 'avoid' 
-                    ? `<span class="season-badge avoid" title="${seasonStatus.reason || 'Consider another time'}">⚠️ Off-Season</span>`
+                    ? `<span class="season-badge avoid" title="${(seasonStatus.reason || 'Consider another time').replace(/"/g, '&quot;')}">Off-Season</span>`
                     : '';
+                
+                const saveBtn = `<button type="button" class="trip-card-save ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSaveToGarage('${trip.id}')" title="${isSaved ? 'Remove from Garage' : 'Save to Garage'}" aria-label="${isSaved ? 'Remove from Garage' : 'Save to Garage'}">${isSaved ? '<svg class="icon" aria-hidden="true"><use href="#icon-heart-filled"></use></svg>' : '<svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>'}</button>`;
+                const badge4x4 = isRugged ? `<span class="badge-4x4" title="4x4 Recommended"><svg class="icon" aria-hidden="true"><use href="#icon-car"></use></svg> 4x4 Recommended</span>` : '';
                 
                 return `
                 <div id="trip-card-${trip.id}" class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''} ${isSponsored ? 'sponsored' : ''} ${seasonStatus.status === 'best' ? 'season-best' : ''} ${seasonStatus.status === 'avoid' ? 'season-avoid' : ''}" onclick="selectRoute('${trip.id}')" ondblclick="event.stopPropagation(); openTripDetail('${trip.id}')">
-                    ${isCompleted ? '<div class="trip-completed-badge">✓</div>' : ''}
+                    ${saveBtn}
+                    ${isCompleted ? '<div class="trip-completed-badge"><svg class="icon icon--sm" aria-hidden="true"><use href="#icon-check"></use></svg></div>' : ''}
                     <div class="road-trip-header">
                         <span class="road-trip-icon">${trip.icon}</span>
                         <span class="road-trip-name">${trip.name}</span>
+                        ${badge4x4}
                         ${seasonBadge}
-                        ${trip.personalTrip ? `<span class="personal-badge">✓ Mon voyage</span>` : ''}
-                        ${trip.userCreated ? `<span class="user-created-badge">✨ Community</span>` : ''}
+                        ${trip.personalTrip ? `<span class="personal-badge">Mon voyage</span>` : ''}
+                        ${trip.userCreated ? `<span class="user-created-badge">Community</span>` : ''}
                         ${isSponsored ? `<span class="sponsored-badge">Sponsored</span>` : ''}
                         ${trip.difficulty ? `<span class="difficulty-badge ${difficultyClass}">${difficultyClass}</span>` : ''}
                     </div>
                     <div class="road-trip-meta">
-                        <span>📍 ${trip.country}</span>
-                        <span>📏 ${trip.distance}</span>
-                        <span>⏱️ ${trip.duration}</span>
+                        <span>${trip.country}</span>
+                        <span>${trip.distance}</span>
+                        <span>${trip.duration}</span>
                     </div>
                     ${trip.rating ? `
                         <div class="road-trip-rating">
@@ -11682,17 +11832,16 @@
                         </div>
                     ` : ''}
                     ${seasonStatus.reason ? `<div class="season-tip">${seasonStatus.reason}</div>` : ''}
-                    ${trip.tripDate ? `<div style="font-size: 0.7rem; color: var(--success); margin-top: 4px;">📅 ${trip.tripDate}</div>` : ''}
+                    ${trip.tripDate ? `<div style="font-size: 0.7rem; color: var(--success); margin-top: 4px;">${trip.tripDate}</div>` : ''}
                     <div class="road-trip-tags">
-                        ${trip.tags.map(t => `<span class="road-tag ${t}">${t === 'fourx4' ? '4x4' : t}</span>`).join('')}
+                        ${(trip.tags || []).map(t => `<span class="road-tag ${t}">${t === 'fourx4' ? '4x4' : t}</span>`).join('')}
                     </div>
-                    <button class="view-details-btn" onclick="event.stopPropagation(); openTripDetail('${trip.id}')">View Details →</button>
-                    ${!isCompleted ? `<button class="complete-btn" onclick="event.stopPropagation(); markTripCompleted('${trip.id}')">✓ Done</button>` : ''}
+                    <button class="view-details-btn" onclick="event.stopPropagation(); openTripDetail('${trip.id}')">View Details</button>
+                    ${!isCompleted ? `<button class="complete-btn" onclick="event.stopPropagation(); markTripCompleted('${trip.id}')">Done</button>` : ''}
                 </div>
             `;
             });
             
-            // Insert sponsored content at position 4 (after first 3 trips) for free users
             if (!isPremiumUser && tripCards.length > 3 && advertisers.sponsoredTrips.length > 0) {
                 const sponsoredTrip = advertisers.sponsoredTrips[0];
                 const sponsoredCard = `
@@ -11703,21 +11852,26 @@
                             <span class="sponsored-badge">Sponsored by ${sponsoredTrip.sponsor}</span>
                         </div>
                         <div class="road-trip-meta">
-                            <span>📍 ${sponsoredTrip.country}</span>
-                            <span>📏 ${sponsoredTrip.distance}</span>
-                            <span>⏱️ ${sponsoredTrip.duration}</span>
+                            <span>${sponsoredTrip.country}</span>
+                            <span>${sponsoredTrip.distance}</span>
+                            <span>${sponsoredTrip.duration}</span>
                         </div>
                         <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px;">${sponsoredTrip.description}</p>
                         <div class="road-trip-tags">
-                            ${sponsoredTrip.tags.map(t => `<span class="road-tag ${t}">${t}</span>`).join('')}
+                            ${(sponsoredTrip.tags || []).map(t => `<span class="road-tag ${t}">${t}</span>`).join('')}
                         </div>
-                        <a href="${sponsoredTrip.sponsorUrl}" target="_blank" class="view-details-btn" style="opacity: 1;" onclick="event.stopPropagation(); trackAdClick('${sponsoredTrip.id}', 'trip-list')">Learn More →</a>
+                        <a href="${sponsoredTrip.sponsorUrl}" target="_blank" class="view-details-btn" style="opacity: 1;" onclick="event.stopPropagation(); trackAdClick('${sponsoredTrip.id}', 'trip-list')">Learn More</a>
                     </div>
                 `;
                 tripCards.splice(3, 0, sponsoredCard);
             }
             
             container.innerHTML = tripCards.join('');
+            
+            if (loadMoreWrap) {
+                loadMoreWrap.style.display = hasMore ? 'block' : 'none';
+            }
+            
             updateLeagueStats();
         }
 
@@ -15129,7 +15283,10 @@
                     if (data.userCreatedTrips) userCreatedTrips = data.userCreatedTrips;
                     if (data.plannedTrips) plannedTrips = data.plannedTrips;
                     if (data.userName) userName = data.userName;
+                    if (data.garageTripIds) garageTripIds = data.garageTripIds;
                 }
+                const garage = localStorage.getItem('srndipity_garage');
+                if (garage) try { garageTripIds = JSON.parse(garage); } catch (e) {}
             } catch (e) {
                 console.error('Error loading data:', e);
             }
