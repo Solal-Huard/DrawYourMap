@@ -2027,14 +2027,14 @@
             opacity: 1;
         }
 
-        /* Trip Fullscreen Modal – coherent with Safari/adventure theme */
+        /* Trip Fullscreen Modal – light background for accessibility */
         .trip-fullscreen-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: var(--bg-dark);
+            background: #f8fafc;
             z-index: 10000;
             display: none;
             flex-direction: column;
@@ -2115,10 +2115,11 @@
         .trip-hero-title {
             font-size: 2.2rem;
             font-weight: 700;
-            color: var(--safari-cream);
+            color: #ffffff;
             margin: 0 0 10px 0;
-            font-family: 'Fredoka', 'DM Sans', sans-serif;
-            letter-spacing: 0.02em;
+            font-family: 'Inter', system-ui, sans-serif;
+            letter-spacing: -0.02em;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .trip-hero-meta {
@@ -2126,12 +2127,12 @@
             align-items: center;
             gap: 12px;
             font-size: 0.95rem;
-            color: var(--safari-sand);
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 10px;
         }
 
         .hero-meta-divider {
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
         .trip-hero-rating {
@@ -2143,16 +2144,17 @@
 
         .hero-stars {
             font-size: 1rem;
+            color: #fbbf24;
         }
 
         .hero-rating-value {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--safari-gold);
+            color: #fcd34d;
         }
 
         .hero-reviews-count {
-            color: var(--safari-sand);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.85rem;
         }
 
@@ -2232,11 +2234,12 @@
             border-color: var(--accent-primary);
         }
 
-        /* Tab Content */
+        /* Tab Content – light bg, high contrast text */
         .trip-content-container {
             flex: 1;
             overflow-y: auto;
             padding: 32px 60px;
+            background: #f8fafc;
         }
 
         .trip-tab-content {
@@ -2364,12 +2367,12 @@
             align-items: flex-start;
             gap: 10px;
             padding: 12px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.25);
             border-radius: 8px;
             margin-bottom: 8px;
             font-size: 0.85rem;
-            color: #fca5a5;
+            color: #b91c1c;
         }
 
         /* Best Time Card */
@@ -2420,7 +2423,7 @@
 
         .best-time-reason {
             font-size: 0.85rem;
-            color: var(--text-secondary);
+            color: #475569;
             line-height: 1.5;
         }
 
@@ -3095,65 +3098,76 @@
             gap: 16px;
         }
 
+        /* Stat cards – uniform modern style, high contrast */
         .trip-stat-card {
             display: flex;
             align-items: center;
             gap: 16px;
-            padding: 20px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
+            padding: 18px 20px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .trip-stat-card .stat-icon {
-            font-size: 2rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(224, 122, 95, 0.12);
+            border-radius: 12px;
         }
 
         .trip-stat-card .stat-value {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #0f172a;
         }
 
         .trip-stat-card .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 0.7rem;
+            color: #64748b;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
         }
 
-        /* Trip Cards – coherent with sidebar Safari theme */
+        /* Trip Cards – light bg, clear contrast */
         .trip-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-left: 4px solid var(--accent-primary);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .trip-card h3 {
             font-size: 1rem;
             font-weight: 600;
             margin: 0 0 14px 0;
-            color: var(--text-primary);
-            font-family: 'Georgia', serif;
+            color: #0f172a;
+            font-family: 'Inter', system-ui, sans-serif;
         }
 
         .trip-card.warning-card {
-            border-left-color: var(--warning);
-            background: linear-gradient(135deg, rgba(212, 168, 75, 0.08), rgba(198, 93, 59, 0.08));
-            border-color: rgba(212, 168, 75, 0.25);
+            border-left-color: #f59e0b;
+            background: #ffffff;
+            border: 1px solid #fde68a;
         }
 
         .trip-card.recommendations-card {
-            border-left-color: var(--success);
-            background: linear-gradient(135deg, rgba(122, 139, 110, 0.1), rgba(74, 93, 64, 0.1));
-            border-color: rgba(122, 139, 110, 0.25);
+            border-left-color: #22c55e;
+            background: #ffffff;
+            border: 1px solid #bbf7d0;
         }
 
         .trip-description {
             font-size: 1rem;
             line-height: 1.7;
-            color: var(--text-secondary);
+            color: #475569;
         }
 
         /* Highlights */
@@ -3165,10 +3179,10 @@
 
         .trip-highlights .highlight-tag {
             padding: 8px 14px;
-            background: linear-gradient(135deg, rgba(198, 93, 59, 0.15), rgba(212, 168, 75, 0.15));
-            border: 1px solid rgba(198, 93, 59, 0.35);
+            background: rgba(224, 122, 95, 0.12);
+            border: 1px solid rgba(224, 122, 95, 0.3);
             border-radius: 20px;
-            color: var(--text-primary);
+            color: #0f172a;
             font-size: 0.85rem;
             font-weight: 500;
         }
@@ -3182,9 +3196,9 @@
 
         .must-know-list li {
             padding: 10px 0;
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px solid #e2e8f0;
             font-size: 0.9rem;
-            color: var(--text-secondary);
+            color: #475569;
         }
 
         .must-know-list li:last-child {
@@ -3203,8 +3217,9 @@
             display: flex;
             gap: 14px;
             padding: 14px;
-            background: var(--bg-dark);
+            background: #f1f5f9;
             border-radius: 12px;
+            border: 1px solid #e2e8f0;
         }
 
         .recommendation-item .rec-icon {
@@ -3214,12 +3229,12 @@
         .recommendation-item .rec-title {
             font-weight: 600;
             font-size: 0.9rem;
-            color: var(--text-primary);
+            color: #0f172a;
         }
 
         .recommendation-item .rec-desc {
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: #64748b;
         }
 
         /* Packing List */
@@ -8769,6 +8784,28 @@
         let tripDetailMap = null;
         let tripDetailPoiLayers = {};
         let activeRoute = null;
+
+        /* Routing API – OSRM (free, no key) or Mapbox (set window.__MAPBOX_ACCESS_TOKEN__)
+           Override base URL: window.__ROUTING_API_BASE__ = 'https://your-osrm-host' */
+        const ROUTING_CONFIG = {
+            apiBase: (typeof window !== 'undefined' && window.__ROUTING_API_BASE__) || 'https://router.project-osrm.org',
+            apiKey: (typeof window !== 'undefined' && window.__MAPBOX_ACCESS_TOKEN__) || '',
+            useRealRoutes: true
+        };
+
+        async function fetchOsrmRoute(latlngs) {
+            if (!latlngs || latlngs.length < 2 || !ROUTING_CONFIG.useRealRoutes) return null;
+            const coords = latlngs.map(ll => ll[1] + ',' + ll[0]).join(';');
+            const url = ROUTING_CONFIG.apiBase + '/route/v1/driving/' + coords + '?overview=full&geometries=geojson';
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.code === 'Ok' && data.routes && data.routes[0] && data.routes[0].geometry && data.routes[0].geometry.coordinates) {
+                    return data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                }
+            } catch (e) { console.warn('OSRM route fetch failed, using straight line:', e); }
+            return null;
+        }
         let routeLayers = {};  // tripId -> { polyline, markers[] } for map highlight & sync
         let communityAlerts = [];
         let completedTrips = [];  // Track completed road trips
@@ -8791,7 +8828,7 @@
         const VISITED_COLOR = '#22c55e';
         const ROAD_TRIP_FILL = '#22c55e';
         const ROAD_TRIP_STROKE = '#E07A5F';
-        
+
         // POI Layer Groups for Road Map
         let poiLayers = {
             campsiteFree: null,
@@ -12075,7 +12112,7 @@
                     </div>
                 `).join('');
             } else {
-                recommendationsContainer.innerHTML = '<p style="color: var(--text-muted);">No recommendations yet. Share yours in the community!</p>';
+                recommendationsContainer.innerHTML = '<p style="color: #64748b;">No recommendations yet. Share yours in the community!</p>';
             }
 
             // Packing List
@@ -12297,8 +12334,8 @@
             currentDetailTrip = null;
         }
 
-        // Route tab: large tour-operator style map – precise, OSM base, POI (fuel, camp, food, views)
-        function initTripDetailMap(trip) {
+        // Route tab: large tour-operator style map – real road routing via OSRM, POI layers
+        async function initTripDetailMap(trip) {
             if (!trip || !document.getElementById('tripDetailMap')) return;
             if (tripDetailMap) {
                 tripDetailMap.remove();
@@ -12330,7 +12367,9 @@
             }
             let routeLine = null;
             if (latlngs.length >= 2) {
-                routeLine = L.polyline(latlngs, { color: '#E07A5F', weight: 5, opacity: 0.95, lineCap: 'round', lineJoin: 'round' });
+                let routeCoords = await fetchOsrmRoute(latlngs);
+                if (!routeCoords || routeCoords.length < 2) routeCoords = latlngs;
+                routeLine = L.polyline(routeCoords, { color: '#E07A5F', weight: 5, opacity: 0.95, lineCap: 'round', lineJoin: 'round' });
                 routeLine.addTo(tripDetailMap);
                 tripDetailMap.fitBounds(routeLine.getBounds(), { padding: [24, 24], maxZoom: 12 });
                 latlngs.forEach((ll, i) => {
