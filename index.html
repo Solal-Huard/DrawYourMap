@@ -2249,7 +2249,7 @@
             overflow-y: auto;
             padding: 32px 60px;
             background: #f8fafc;
-            transition: padding 0.35s ease;
+            transition: padding 0.4s cubic-bezier(.4,0,.2,1);
         }
 
         /* Dynamic layout: fullwidth mode for non-overview tabs */
@@ -2261,11 +2261,87 @@
             max-width: 1100px;
             margin: 0 auto;
         }
-        .trip-content-container.fullwidth-mode .route-tab-layout {
-            max-width: 100%;
+
+        /* ===== ROUTE FULLSCREEN MODE ===== */
+        /* Hero collapses */
+        .trip-fullscreen-modal.route-active .trip-hero {
+            max-height: 0;
+            min-height: 0;
+            padding: 0;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height 0.45s cubic-bezier(.4,0,.2,1),
+                        min-height 0.45s cubic-bezier(.4,0,.2,1),
+                        padding 0.45s cubic-bezier(.4,0,.2,1),
+                        opacity 0.3s ease;
         }
-        .trip-content-container.fullwidth-mode .trip-detail-map {
-            min-height: 500px;
+        /* Content takes all space, zero padding */
+        .trip-fullscreen-modal.route-active .trip-content-container {
+            padding: 0;
+            overflow: hidden;
+        }
+        /* Route layout fills entire container */
+        .trip-fullscreen-modal.route-active .route-tab-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 0;
+        }
+        /* Map section grows to fill all available space */
+        .trip-fullscreen-modal.route-active .route-map-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .trip-fullscreen-modal.route-active .route-map-header {
+            flex-shrink: 0;
+            border-radius: 0;
+            padding: 10px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .trip-fullscreen-modal.route-active .route-map-section {
+            border-radius: 0;
+            border: none;
+            border-left: none;
+        }
+        .trip-fullscreen-modal.route-active .route-map-container {
+            flex: 1;
+            height: auto;
+            min-height: 0;
+            border-radius: 0;
+        }
+        .trip-fullscreen-modal.route-active .route-map-legend {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(8px);
+            z-index: 800;
+            padding: 8px 20px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+        /* Hide issues and waypoints in fullscreen route */
+        .trip-fullscreen-modal.route-active .route-issues-card,
+        .trip-fullscreen-modal.route-active .route-card {
+            display: none;
+        }
+        /* Tab content fills all space in route mode */
+        .trip-fullscreen-modal.route-active #tab-route {
+            height: 100%;
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        /* Restore hero transition when leaving route */
+        .trip-hero {
+            transition: max-height 0.45s cubic-bezier(.4,0,.2,1),
+                        min-height 0.45s cubic-bezier(.4,0,.2,1),
+                        padding 0.45s cubic-bezier(.4,0,.2,1),
+                        opacity 0.35s ease;
         }
 
         .trip-tab-content {
@@ -12334,6 +12410,7 @@
             // Dynamic layout: split for overview, fullwidth for all other tabs
             const contentContainer = document.querySelector('.trip-content-container');
             const sideCols = document.querySelectorAll('.trip-side-col');
+            const modal = document.getElementById('tripDetailModal');
             if (contentContainer) {
                 if (tabName === 'overview') {
                     contentContainer.classList.remove('fullwidth-mode');
@@ -12343,10 +12420,25 @@
                     sideCols.forEach(sc => sc.classList.add('hidden-col'));
                 }
             }
+
+            // Route fullscreen: collapse hero, map fills 100% viewport
+            if (modal) {
+                if (tabName === 'route') {
+                    modal.classList.add('route-active');
+                } else {
+                    modal.classList.remove('route-active');
+                }
+            }
             
             // When Route tab is shown, init map with zoom on road + POI
             if (tabName === 'route' && currentDetailTrip) {
-                setTimeout(function() { initTripDetailMap(currentDetailTrip); }, 150);
+                setTimeout(function() {
+                    initTripDetailMap(currentDetailTrip);
+                    // Force map to recalculate size after layout transition
+                    if (tripDetailMap) {
+                        setTimeout(function() { tripDetailMap.invalidateSize(); }, 500);
+                    }
+                }, 200);
             }
 
             // Re-render Lucide icons for dynamically populated tabs
