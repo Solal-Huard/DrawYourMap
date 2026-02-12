@@ -2329,6 +2329,138 @@
         .trip-fullscreen-modal.route-active .route-card {
             display: none;
         }
+
+        /* ===== ROUTE VARIANTS SYSTEM ===== */
+        .variant-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+        .variant-bar-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+        .variant-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .variant-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .variant-chip:hover {
+            border-color: #E07A5F;
+            color: #E07A5F;
+            background: rgba(224,122,95,0.06);
+        }
+        .variant-chip.active {
+            background: linear-gradient(135deg, #E07A5F, #d4694e);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 2px 8px rgba(224,122,95,0.3);
+        }
+        .variant-chip .chip-days {
+            font-weight: 700;
+        }
+        .variant-chip .chip-votes {
+            font-size: 0.65rem;
+            opacity: 0.8;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .variant-community-switcher {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .variant-community-select {
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            font-size: 0.78rem;
+            color: #475569;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        .variant-community-select:focus {
+            outline: none;
+            border-color: #E07A5F;
+        }
+        /* Variant info strip below chips */
+        .variant-info-strip {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.78rem;
+            color: #64748b;
+            flex-shrink: 0;
+        }
+        .variant-info-strip .vi-label {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .variant-info-strip .vi-stat {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .variant-upvote-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: auto;
+        }
+        .variant-upvote-btn:hover {
+            border-color: #22c55e;
+            color: #22c55e;
+            background: rgba(34,197,94,0.06);
+        }
+        .variant-upvote-btn.upvoted {
+            background: #22c55e;
+            color: #ffffff;
+            border-color: #22c55e;
+        }
+        /* Ghost route (master route faded when variant active) */
+        .leaflet-ghost-route {
+            opacity: 0.2 !important;
+            stroke-dasharray: 8, 6;
+        }
         /* Tab content fills all space in route mode */
         .trip-fullscreen-modal.route-active #tab-route {
             height: 100%;
@@ -8420,6 +8552,31 @@
 
             <!-- Route Tab: map + issues + POI + waypoints -->
             <div class="trip-tab-content" id="tab-route">
+                <!-- Variant Duration Bar -->
+                <div class="variant-bar" id="variantBar" style="display:none;">
+                    <span class="variant-bar-label"><i data-lucide="clock" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px;"></i> Duration</span>
+                    <div class="variant-chips" id="variantChips">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <div class="variant-community-switcher">
+                        <i data-lucide="users" style="width:13px;height:13px;color:#64748b;"></i>
+                        <select class="variant-community-select" id="variantCommunitySelect" onchange="switchVariantCommunity(this.value)">
+                            <option value="top">Top Rated</option>
+                            <option value="newest">Newest</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Variant Info Strip -->
+                <div class="variant-info-strip" id="variantInfoStrip" style="display:none;">
+                    <span class="vi-label" id="variantName">Full Route</span>
+                    <span class="vi-stat"><i data-lucide="map-pin" style="width:12px;height:12px;"></i> <span id="variantStops">0</span> stops</span>
+                    <span class="vi-stat"><i data-lucide="ruler" style="width:12px;height:12px;"></i> <span id="variantDistance">0 km</span></span>
+                    <span class="vi-stat"><i data-lucide="star" style="width:12px;height:12px;color:#f59e0b;"></i> <span id="variantScore">0</span></span>
+                    <button class="variant-upvote-btn" id="variantUpvoteBtn" onclick="upvoteCurrentVariant()">
+                        <i data-lucide="thumbs-up" style="width:12px;height:12px;"></i> <span id="variantUpvoteCount">0</span>
+                    </button>
+                </div>
+
                 <div class="route-tab-layout">
                     <!-- Map: zoom on road, POI layers -->
                     <div class="route-map-section">
@@ -9165,6 +9322,322 @@
         let tripDetailMap = null;
         let tripDetailPoiLayers = {};
         let activeRoute = null;
+
+        // ========== ROUTE VARIANTS SYSTEM ==========
+        let currentVariantId = null;      // null = master/full route
+        let variantGhostLayer = null;     // Faded master polyline
+        let variantActiveLayer = null;    // Bold variant polyline
+        let variantMarkers = [];          // Markers for the variant
+        let upvotedVariants = JSON.parse(localStorage.getItem('srndipity_upvoted_variants') || '{}');
+
+        // ========== ROUTE VARIANT FUNCTIONS ==========
+
+        /**
+         * Auto-generate variants from a trip's waypoints.
+         * Parent-child: variants reference subsets of the master waypoints.
+         */
+        function getVariantsForTrip(trip) {
+            if (!trip || !trip.waypoints || trip.waypoints.length < 4) return [];
+            const wps = trip.waypoints;
+            const total = wps.length;
+            const savedVariantVotes = JSON.parse(localStorage.getItem('srndipity_variant_votes_' + trip.id) || '{}');
+
+            // Short variant: first ~30% of waypoints
+            const shortEnd = Math.max(3, Math.floor(total * 0.35));
+            // Medium variant: first ~60% of waypoints
+            const medEnd = Math.max(shortEnd + 1, Math.floor(total * 0.65));
+
+            const variants = [
+                {
+                    id: trip.id + '_full',
+                    label: 'Full Route',
+                    tag: 'full',
+                    durationDays: parseInt(trip.duration) || 14,
+                    durationLabel: trip.duration || '10-14 days',
+                    waypoints: wps,
+                    communityScore: savedVariantVotes[trip.id + '_full'] || Math.floor(Math.random() * 40) + 60,
+                    upvotes: savedVariantVotes[trip.id + '_full'] || Math.floor(Math.random() * 30) + 15,
+                    description: 'The complete ' + trip.name + ' experience. Every stop, every highlight.'
+                },
+                {
+                    id: trip.id + '_short',
+                    label: getShortDays(trip) + '-Day Express',
+                    tag: 'short',
+                    durationDays: getShortDays(trip),
+                    durationLabel: getShortDays(trip) + ' days',
+                    waypoints: wps.slice(0, shortEnd),
+                    communityScore: savedVariantVotes[trip.id + '_short'] || Math.floor(Math.random() * 30) + 40,
+                    upvotes: savedVariantVotes[trip.id + '_short'] || Math.floor(Math.random() * 20) + 5,
+                    description: 'Hit the key highlights of ' + trip.name + ' in a long weekend. Perfect for limited time.'
+                },
+                {
+                    id: trip.id + '_medium',
+                    label: getMedDays(trip) + '-Day Deep Dive',
+                    tag: 'medium',
+                    durationDays: getMedDays(trip),
+                    durationLabel: getMedDays(trip) + ' days',
+                    waypoints: wps.slice(0, medEnd),
+                    communityScore: savedVariantVotes[trip.id + '_medium'] || Math.floor(Math.random() * 35) + 50,
+                    upvotes: savedVariantVotes[trip.id + '_medium'] || Math.floor(Math.random() * 25) + 10,
+                    description: 'A balanced itinerary covering most of ' + trip.name + '. Best value for time.'
+                }
+            ];
+            // Sort by community score descending
+            variants.sort((a, b) => b.communityScore - a.communityScore);
+            return variants;
+        }
+
+        function getShortDays(trip) {
+            const d = parseInt(trip.duration) || 10;
+            return Math.max(2, Math.floor(d * 0.3));
+        }
+        function getMedDays(trip) {
+            const d = parseInt(trip.duration) || 10;
+            return Math.max(4, Math.floor(d * 0.6));
+        }
+
+        /** Render the variant chip bar in the Route tab */
+        function renderVariantChips(trip) {
+            const bar = document.getElementById('variantBar');
+            const chipsContainer = document.getElementById('variantChips');
+            if (!bar || !chipsContainer) return;
+
+            const variants = getVariantsForTrip(trip);
+            if (variants.length === 0) {
+                bar.style.display = 'none';
+                return;
+            }
+            bar.style.display = 'flex';
+
+            chipsContainer.innerHTML = variants.map(v => {
+                const isActive = (currentVariantId === v.id) || (!currentVariantId && v.tag === 'full');
+                const isUpvoted = upvotedVariants[v.id];
+                return `<button class="variant-chip ${isActive ? 'active' : ''}" onclick="selectVariant('${v.id}', '${trip.id}')" data-variant="${v.id}">
+                    <span class="chip-days">${v.tag === 'full' ? 'Full' : v.durationLabel}</span>
+                    <span class="chip-votes"><i data-lucide="arrow-up" style="width:10px;height:10px;"></i>${v.upvotes}</span>
+                </button>`;
+            }).join('');
+
+            // Show info strip for current variant
+            updateVariantInfoStrip(trip, currentVariantId);
+
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+        }
+
+        /** Select a variant: update map with ghost + active route */
+        async function selectVariant(variantId, tripId) {
+            const allTrips = getAllTrips();
+            const trip = allTrips.find(t => t.id === tripId);
+            if (!trip) return;
+
+            const variants = getVariantsForTrip(trip);
+            const variant = variants.find(v => v.id === variantId);
+            if (!variant) return;
+
+            currentVariantId = variantId;
+
+            // Update chip active state
+            document.querySelectorAll('.variant-chip').forEach(chip => {
+                chip.classList.toggle('active', chip.dataset.variant === variantId);
+            });
+
+            // Update info strip
+            updateVariantInfoStrip(trip, variantId);
+
+            // Update the map: ghost full route + highlight variant
+            await renderVariantOnMap(trip, variant, variants.find(v => v.tag === 'full'));
+
+            // Update recommendations for variant
+            updateRecommendationsForVariant(trip, variant);
+        }
+
+        /** Draw ghost master + bold variant on the detail map */
+        async function renderVariantOnMap(trip, variant, fullVariant) {
+            if (!tripDetailMap) return;
+
+            // Clear previous variant layers
+            if (variantGhostLayer) { tripDetailMap.removeLayer(variantGhostLayer); variantGhostLayer = null; }
+            if (variantActiveLayer) { tripDetailMap.removeLayer(variantActiveLayer); variantActiveLayer = null; }
+            variantMarkers.forEach(m => tripDetailMap.removeLayer(m));
+            variantMarkers = [];
+
+            // Also clear the main route layer if present
+            tripDetailMap.eachLayer(l => {
+                if (l instanceof L.Polyline || (l instanceof L.Marker && l._icon && l._icon.classList && l._icon.classList.contains('route-step-marker'))) {
+                    tripDetailMap.removeLayer(l);
+                }
+            });
+
+            // Full route waypoints as latlngs
+            const fullWps = (fullVariant ? fullVariant.waypoints : trip.waypoints) || [];
+            const fullLatLngs = fullWps.filter(wp => Array.isArray(wp)).map(wp => [wp[0], wp[1]]);
+
+            // Variant waypoints as latlngs
+            const varWps = variant.waypoints || [];
+            const varLatLngs = varWps.filter(wp => Array.isArray(wp)).map(wp => [wp[0], wp[1]]);
+
+            // Draw ghost (full route) if variant is not the full route
+            if (variant.tag !== 'full' && fullLatLngs.length >= 2) {
+                let ghostCoords = await fetchOsrmRoute(fullLatLngs);
+                if (!ghostCoords || ghostCoords.length < 2) ghostCoords = fullLatLngs;
+                variantGhostLayer = L.polyline(ghostCoords, {
+                    color: '#94a3b8',
+                    weight: 3,
+                    opacity: 0.35,
+                    dashArray: '8, 8',
+                    lineCap: 'round'
+                }).addTo(tripDetailMap);
+            }
+
+            // Draw active variant route
+            if (varLatLngs.length >= 2) {
+                let activeCoords = await fetchOsrmRoute(varLatLngs);
+                if (!activeCoords || activeCoords.length < 2) activeCoords = varLatLngs;
+                variantActiveLayer = L.polyline(activeCoords, {
+                    color: '#E07A5F',
+                    weight: 5,
+                    opacity: 0.95,
+                    lineCap: 'round',
+                    lineJoin: 'round'
+                }).addTo(tripDetailMap);
+
+                // Fit to active route
+                tripDetailMap.fitBounds(variantActiveLayer.getBounds(), { padding: [30, 30], maxZoom: 12 });
+            }
+
+            // Add numbered markers for variant stops
+            varWps.forEach((wp, i) => {
+                if (!Array.isArray(wp)) return;
+                const name = wp[2] || 'Stop ' + (i + 1);
+                const isStart = i === 0;
+                const isEnd = i === varWps.length - 1;
+                const markerColor = isStart ? '#22c55e' : isEnd ? '#ef4444' : '#E07A5F';
+                const markerLabel = isStart ? 'A' : isEnd ? 'Z' : String(i);
+
+                const icon = L.divIcon({
+                    className: 'route-step-marker',
+                    html: `<div style="width:28px;height:28px;border-radius:50%;background:${markerColor};color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);">${markerLabel}</div>`,
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14]
+                });
+                const marker = L.marker([wp[0], wp[1]], { icon }).addTo(tripDetailMap);
+                marker.bindPopup(`<strong>${name}</strong>${wp[3] ? '<br><em>' + wp[3] + '</em>' : ''}`);
+                variantMarkers.push(marker);
+            });
+        }
+
+        /** Update the info strip below the chips */
+        function updateVariantInfoStrip(trip, variantId) {
+            const strip = document.getElementById('variantInfoStrip');
+            if (!strip) return;
+
+            const variants = getVariantsForTrip(trip);
+            const variant = variants.find(v => v.id === variantId) || variants.find(v => v.tag === 'full');
+            if (!variant) { strip.style.display = 'none'; return; }
+
+            strip.style.display = 'flex';
+            document.getElementById('variantName').textContent = variant.label;
+            document.getElementById('variantStops').textContent = variant.waypoints ? variant.waypoints.length : 0;
+
+            // Estimate distance from waypoint count
+            const totalKm = parseInt(trip.distance) || 500;
+            const ratio = (variant.waypoints ? variant.waypoints.length : 0) / (trip.waypoints ? trip.waypoints.length : 1);
+            document.getElementById('variantDistance').textContent = Math.round(totalKm * ratio) + ' km';
+
+            document.getElementById('variantScore').textContent = variant.communityScore;
+            document.getElementById('variantUpvoteCount').textContent = variant.upvotes;
+
+            const btn = document.getElementById('variantUpvoteBtn');
+            if (btn) {
+                btn.classList.toggle('upvoted', !!upvotedVariants[variant.id]);
+            }
+        }
+
+        /** Upvote the current variant */
+        function upvoteCurrentVariant() {
+            if (!currentVariantId || !currentDetailTrip) return;
+            const trip = currentDetailTrip;
+            const vid = currentVariantId;
+
+            if (upvotedVariants[vid]) {
+                // Un-upvote
+                delete upvotedVariants[vid];
+                // Decrement
+                const votes = JSON.parse(localStorage.getItem('srndipity_variant_votes_' + trip.id) || '{}');
+                if (votes[vid]) votes[vid] = Math.max(0, votes[vid] - 1);
+                localStorage.setItem('srndipity_variant_votes_' + trip.id, JSON.stringify(votes));
+            } else {
+                // Upvote
+                upvotedVariants[vid] = true;
+                const votes = JSON.parse(localStorage.getItem('srndipity_variant_votes_' + trip.id) || '{}');
+                votes[vid] = (votes[vid] || 0) + 1;
+                localStorage.setItem('srndipity_variant_votes_' + trip.id, JSON.stringify(votes));
+            }
+            localStorage.setItem('srndipity_upvoted_variants', JSON.stringify(upvotedVariants));
+
+            // Re-render chips to reflect new counts
+            renderVariantChips(trip);
+        }
+
+        /** Community switcher: sort variants by score or newest */
+        function switchVariantCommunity(sortBy) {
+            // Just re-render chips (sort is handled in getVariantsForTrip by score already)
+            if (currentDetailTrip) renderVariantChips(currentDetailTrip);
+        }
+
+        /** Update recommendations to match variant scope */
+        function updateRecommendationsForVariant(trip, variant) {
+            const recsContainer = document.getElementById('tripRecommendations');
+            if (!recsContainer || !trip.recommendations) return;
+
+            // For the full route, show all. For sub-routes, show subset
+            const recs = trip.recommendations || [];
+            if (variant.tag === 'full') {
+                // Show all
+                const gygQuery = encodeURIComponent((trip.name || '') + ' ' + (trip.country || ''));
+                recsContainer.innerHTML = recs.map(rec => `
+                    <div class="recommendation-item">
+                        <div class="rec-icon">${rec.icon}</div>
+                        <div style="flex:1;">
+                            <div class="rec-title">${rec.title}</div>
+                            <div class="rec-desc">${rec.desc}</div>
+                            <div class="rec-booking" style="margin-top:8px;">
+                                <a href="https://www.getyourguide.com/s/?q=${gygQuery}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
+                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                // Show only first N recs proportional to variant size
+                const ratio = (variant.waypoints ? variant.waypoints.length : 1) / Math.max(1, (trip.waypoints ? trip.waypoints.length : 1));
+                const count = Math.max(1, Math.ceil(recs.length * ratio));
+                const subset = recs.slice(0, count);
+                const stopNames = (variant.waypoints || []).filter(w => Array.isArray(w) && w[2]).map(w => w[2]).join(', ');
+                const gygQuery = encodeURIComponent(stopNames + ' ' + (trip.country || ''));
+                recsContainer.innerHTML = `
+                    <div style="padding:10px 14px;background:#f0fdf4;border-radius:12px;border:1px solid #bbf7d0;margin-bottom:12px;font-size:0.8rem;color:#166534;">
+                        <i data-lucide="info" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>
+                        Showing recommendations for the <strong>${variant.label}</strong> variant (${variant.waypoints ? variant.waypoints.length : 0} stops)
+                    </div>
+                ` + subset.map(rec => `
+                    <div class="recommendation-item">
+                        <div class="rec-icon">${rec.icon}</div>
+                        <div style="flex:1;">
+                            <div class="rec-title">${rec.title}</div>
+                            <div class="rec-desc">${rec.desc}</div>
+                            <div class="rec-booking" style="margin-top:8px;">
+                                <a href="https://www.getyourguide.com/s/?q=${gygQuery}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
+                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 80);
+        }
 
         /* Routing API – OSRM (free, no key) or Mapbox (set window.__MAPBOX_ACCESS_TOKEN__)
            Override base URL: window.__ROUTING_API_BASE__ = 'https://your-osrm-host' */
@@ -9924,6 +10397,11 @@
                     { name: 'Okaukuejo (NWR)', location: 'Etosha', type: 'NWR', price: '~450 NAD', facilities: 'Waterhole illuminé la nuit!', coords: [-18.9000, 15.9200] },
                     { name: 'Halali (NWR)', location: 'Etosha', type: 'NWR', price: '~400 NAD', facilities: 'Central, waterhole', coords: [-18.7600, 16.5000] },
                     { name: 'Namutoni (NWR)', location: 'Etosha', type: 'NWR', price: '~450 NAD', facilities: 'Fort historique, waterhole', coords: [-18.8100, 16.9300] }
+                ],
+                variants: [
+                    { id: 'nam-express-5', label: '5-Day Express', durationDays: 5, tag: 'short', communityScore: 42, description: 'Windhoek → Sossusvlei → Swakopmund → Windhoek. Best-of highlights sprint.', waypoints: [[-22.5609,17.0658,'Windhoek'],[-24.7275,15.7390,'Sossusvlei'],[-22.6792,14.5272,'Swakopmund'],[-22.5609,17.0658,'Windhoek']], recommendations: ['Dune 45 sunrise','Deadvlei','Swakopmund adventure sports'] },
+                    { id: 'nam-classic-10', label: '10-Day Classic', durationDays: 10, tag: 'medium', communityScore: 87, description: 'The sweet spot. Sossusvlei + Skeleton Coast + Etosha with comfortable pace.', waypoints: [[-22.5609,17.0658,'Windhoek'],[-24.7275,15.7390,'Sossusvlei'],[-22.6792,14.5272,'Swakopmund'],[-19.5833,13.1000,'Skeleton Coast'],[-19.0154,15.9150,'Palmwag'],[-18.8558,16.1568,'Etosha'],[-22.5609,17.0658,'Windhoek']], recommendations: ['Dune 45 sunrise','Skeleton Coast seals','Etosha night waterhole','Palmwag elephants'] },
+                    { id: 'nam-deep-16', label: '16-Day Deep Dive', durationDays: 16, tag: 'long', communityScore: 63, description: 'Full circuit including Caprivi Strip, Fish River Canyon, and Damaraland rock art.', waypoints: [[-22.5609,17.0658,'Windhoek'],[-24.7275,15.7390,'Sossusvlei'],[-22.6792,14.5272,'Swakopmund'],[-19.5833,13.1000,'Skeleton Coast'],[-19.1738,15.9494,'Twyfelfontein'],[-19.0154,15.9150,'Palmwag'],[-18.8558,16.1568,'Etosha (Okaukuejo)'],[-18.7878,16.9306,'Etosha (Halali)'],[-18.8111,17.0667,'Etosha (Namutoni)'],[-22.5609,17.0658,'Windhoek']], recommendations: ['Dune 45 sunrise','Deadvlei','Skeleton Coast','Etosha night waterhole','Desert elephants','Twyfelfontein rock engravings'] }
                 ]
             },
             {
@@ -12430,8 +12908,10 @@
                 }
             }
             
-            // When Route tab is shown, init map with zoom on road + POI
+            // When Route tab is shown, init map + render variant chips
             if (tabName === 'route' && currentDetailTrip) {
+                currentVariantId = null; // Reset to full route
+                renderVariantChips(currentDetailTrip);
                 setTimeout(function() {
                     initTripDetailMap(currentDetailTrip);
                     // Force map to recalculate size after layout transition
