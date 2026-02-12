@@ -337,7 +337,8 @@
             --srndipity-olive-dark: #1e2820;
             --srndipity-olive-darker: #1e2820;
 
-            --bg-dark: #1e2820;
+            --bg-dark: #f1f5f9;
+            --bg-dark-true: #1e2820;
             --bg-panel: rgba(255, 255, 255, 0.80);
             --bg-elevated: rgba(255, 255, 255, 0.60);
             --bg-hover: rgba(255, 255, 255, 0.90);
@@ -1765,7 +1766,7 @@
         }
 
         .leaflet-container {
-            background: var(--bg-dark);
+            background: var(--bg-dark-true);
             font-family: 'DM Sans', sans-serif;
         }
 
@@ -2062,8 +2063,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.4;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.15) 100%);
+            z-index: 1;
         }
 
         .trip-close-btn {
@@ -2093,7 +2094,7 @@
 
         .trip-hero-content {
             position: relative;
-            z-index: 5;
+            z-index: 3;
         }
 
         .trip-hero-badge {
@@ -2174,14 +2175,14 @@
             font-weight: 500;
         }
 
-        /* Navigation Tabs – same accent as sidebar */
+        /* Navigation Tabs – light, high contrast */
         .trip-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 48px;
-            background: var(--bg-panel);
-            border-bottom: 2px solid var(--border-subtle);
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .trip-nav-tabs {
@@ -2193,22 +2194,27 @@
             padding: 16px 24px;
             background: none;
             border: none;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            color: #64748b;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             border-bottom: 3px solid transparent;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .trip-nav-tab:hover {
-            color: var(--text-primary);
-            background: var(--bg-hover);
+            color: #0f172a;
+            background: #f8fafc;
         }
 
         .trip-nav-tab.active {
             color: var(--brand-orange);
             border-bottom-color: var(--brand-orange);
+            font-weight: 600;
         }
 
         .trip-nav-actions {
@@ -2219,19 +2225,22 @@
         .trip-action-btn {
             width: 40px;
             height: 40px;
-            border-radius: 10px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-secondary);
+            border-radius: 12px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .trip-action-btn:hover {
-            background: var(--accent-primary);
-            color: var(--safari-cream);
-            border-color: var(--accent-primary);
+            background: var(--brand-orange);
+            color: #ffffff;
+            border-color: var(--brand-orange);
         }
 
         /* Tab Content – light bg, high contrast text */
@@ -2240,6 +2249,23 @@
             overflow-y: auto;
             padding: 32px 60px;
             background: #f8fafc;
+            transition: padding 0.35s ease;
+        }
+
+        /* Dynamic layout: fullwidth mode for non-overview tabs */
+        .trip-content-container.fullwidth-mode {
+            padding: 24px 32px;
+        }
+        .trip-content-container.fullwidth-mode .trip-grid {
+            grid-template-columns: 1fr;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .trip-content-container.fullwidth-mode .route-tab-layout {
+            max-width: 100%;
+        }
+        .trip-content-container.fullwidth-mode .trip-detail-map {
+            min-height: 500px;
         }
 
         .trip-tab-content {
@@ -3083,12 +3109,22 @@
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 32px;
+            transition: grid-template-columns 0.35s ease;
         }
 
         .trip-main-col, .trip-side-col {
             display: flex;
             flex-direction: column;
             gap: 24px;
+            transition: opacity 0.35s ease, max-width 0.35s ease;
+        }
+
+        .trip-side-col.hidden-col {
+            opacity: 0;
+            max-width: 0;
+            overflow: hidden;
+            padding: 0;
+            gap: 0;
         }
 
         /* Stats Row */
@@ -3237,6 +3273,223 @@
             color: #64748b;
         }
 
+        /* Booking / Affiliate Links */
+        .recommendation-item .rec-booking {
+            margin-top: 8px;
+        }
+        .rec-booking-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #E07A5F, #d4694e);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .rec-booking-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(224, 122, 95, 0.35);
+        }
+        .rec-booking-link svg, .rec-booking-link i {
+            width: 12px;
+            height: 12px;
+        }
+        .rec-affiliate-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            color: #94a3b8;
+            margin-left: 6px;
+            font-style: italic;
+        }
+
+        /* Expert Local Card */
+        .expert-local-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .expert-local-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .expert-local-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .expert-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2D3E33, #3d5247);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .expert-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .expert-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .expert-certified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #ffffff;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .expert-specialty {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        .expert-local-body {
+            padding: 16px 20px;
+        }
+        .expert-description {
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+        .expert-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .expert-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        .expert-stat strong {
+            color: #0f172a;
+            font-weight: 700;
+        }
+        .expert-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .expert-btn-primary {
+            flex: 1;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #2D3E33, #3d5247);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .expert-btn-primary:hover {
+            background: linear-gradient(135deg, #3d5247, #4a6358);
+            box-shadow: 0 4px 16px rgba(45, 62, 51, 0.3);
+        }
+        .expert-btn-secondary {
+            padding: 10px 16px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .expert-btn-secondary:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .expert-experiences {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .expert-experience-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+        }
+        .expert-experience-item:hover {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+        }
+        .experience-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(224, 122, 95, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .experience-info {
+            flex: 1;
+        }
+        .experience-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .experience-detail {
+            font-size: 0.72rem;
+            color: #94a3b8;
+        }
+        .experience-price {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #E07A5F;
+            white-space: nowrap;
+        }
+
         /* Packing List */
         .packing-list {
             display: grid;
@@ -3279,10 +3532,10 @@
             width: 100%;
             max-width: 320px;
             padding: 10px 14px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-subtle);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 10px;
-            color: var(--text-primary);
+            color: #1e293b;
             font-size: 0.95rem;
             font-family: inherit;
         }
@@ -3362,9 +3615,10 @@
             align-items: center;
             gap: 8px;
             padding: 10px 12px;
-            background: var(--bg-dark);
+            background: #f1f5f9;
             border-radius: 10px;
             font-size: 0.85rem;
+            color: #334155;
         }
 
         .packing-item.essential {
@@ -3441,7 +3695,7 @@
             position: relative;
             min-height: 72vh;
             height: 72vh;
-            background: var(--bg-dark);
+            background: var(--bg-dark-true);
         }
 
         .trip-detail-map {
@@ -8006,6 +8260,9 @@
                 <button class="trip-nav-tab" data-tab="guide" onclick="switchTripTab('guide')">
                     <i data-lucide="book-open" style="width:14px;height:14px;"></i> Guide
                 </button>
+                <button class="trip-nav-tab" data-tab="booking" onclick="switchTripTab('booking')">
+                    <i data-lucide="ticket" style="width:14px;height:14px;"></i> Booking
+                </button>
             </div>
             <div class="trip-nav-actions">
                 <button class="trip-action-btn" onclick="viewTripOnMap()" title="View on Map"><i data-lucide="map" style="width:16px;height:16px;"></i></button>
@@ -8401,6 +8658,54 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Booking Tab -->
+            <div class="trip-tab-content" id="tab-booking">
+                <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px;">
+                    <!-- Booking Header -->
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 4px;">
+                        <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #E07A5F, #d4694e); display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="ticket" style="width:24px;height:24px;color:#fff;"></i>
+                        </div>
+                        <div>
+                            <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #0f172a;">Book Experiences</h2>
+                            <p style="margin: 2px 0 0; font-size: 0.85rem; color: #64748b;">Curated activities, guided tours & immersive local experiences</p>
+                        </div>
+                    </div>
+
+                    <!-- Expert Locals Section -->
+                    <div>
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 16px; display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="shield-check" style="width:18px;height:18px;color:#22c55e;"></i> Certified Local Experts
+                        </h3>
+                        <div id="bookingExperts" style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Affiliate Activities Section -->
+                    <div>
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 16px; display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="compass" style="width:18px;height:18px;color:#E07A5F;"></i> Popular Activities
+                            <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 400; font-style: italic; margin-left: auto;">Affiliate links</span>
+                        </h3>
+                        <div id="bookingActivities" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Accommodations -->
+                    <div>
+                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 16px; display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="bed-double" style="width:18px;height:18px;color:#8b5cf6;"></i> Where to Stay
+                        </h3>
+                        <div id="bookingAccommodations" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -11281,8 +11586,8 @@
                         const isStart = idx === 0;
                         const isEnd = idx === trip.waypoints.length - 1;
                         let html;
-                        if (isStart) html = '<span class="route-marker start">🚗</span>';
-                        else if (isEnd) html = '<span class="route-marker end">🏁</span>';
+                        if (isStart) html = '<span class="route-marker start">A</span>';
+                        else if (isEnd) html = '<span class="route-marker end">B</span>';
                         else html = '<span class="route-marker etape">' + (idx) + '</span>';
                         
                         const marker = L.marker([wp[0], wp[1]], {
@@ -12025,11 +12330,27 @@
             document.querySelectorAll('.trip-tab-content').forEach(content => {
                 content.classList.toggle('active', content.id === `tab-${tabName}`);
             });
+
+            // Dynamic layout: split for overview, fullwidth for all other tabs
+            const contentContainer = document.querySelector('.trip-content-container');
+            const sideCols = document.querySelectorAll('.trip-side-col');
+            if (contentContainer) {
+                if (tabName === 'overview') {
+                    contentContainer.classList.remove('fullwidth-mode');
+                    sideCols.forEach(sc => sc.classList.remove('hidden-col'));
+                } else {
+                    contentContainer.classList.add('fullwidth-mode');
+                    sideCols.forEach(sc => sc.classList.add('hidden-col'));
+                }
+            }
             
             // When Route tab is shown, init map with zoom on road + POI
             if (tabName === 'route' && currentDetailTrip) {
                 setTimeout(function() { initTripDetailMap(currentDetailTrip); }, 150);
             }
+
+            // Re-render Lucide icons for dynamically populated tabs
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 100);
         }
 
         function openTripDetail(tripId) {
@@ -12099,15 +12420,22 @@
                 }
             }
 
-            // Recommendations
+            // Recommendations – with booking affiliate links
             const recommendationsContainer = document.getElementById('tripRecommendations');
             if (trip.recommendations && trip.recommendations.length > 0) {
+                const gygQuery = encodeURIComponent((trip.name || '') + ' ' + (trip.country || ''));
                 recommendationsContainer.innerHTML = trip.recommendations.map(rec => `
                     <div class="recommendation-item">
                         <div class="rec-icon">${rec.icon}</div>
-                        <div>
+                        <div style="flex:1;">
                             <div class="rec-title">${rec.title}</div>
                             <div class="rec-desc">${rec.desc}</div>
+                            <div class="rec-booking" style="margin-top: 8px;">
+                                <a href="https://www.getyourguide.com/s/?q=${gygQuery}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
+                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book Activity
+                                </a>
+                                <span class="rec-affiliate-badge">via GetYourGuide</span>
+                            </div>
                         </div>
                     </div>
                 `).join('');
@@ -12125,10 +12453,10 @@
                 `).join('');
             } else {
                 packingContainer.innerHTML = `
-                    <div class="packing-item essential">📱 Offline maps</div>
-                    <div class="packing-item essential">💧 Water bottles</div>
-                    <div class="packing-item">📷 Camera</div>
-                    <div class="packing-item essential">🔌 Phone charger</div>
+                    <div class="packing-item essential"><i data-lucide="smartphone" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Offline maps</div>
+                    <div class="packing-item essential"><i data-lucide="droplet" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Water bottles</div>
+                    <div class="packing-item"><i data-lucide="camera" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Camera</div>
+                    <div class="packing-item essential"><i data-lucide="plug" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Phone charger</div>
                 `;
             }
 
@@ -12247,6 +12575,9 @@
             }
             updatePreparationContent();
 
+            // Booking Tab – Expert Locals + Activities + Accommodations
+            populateBookingTab(trip);
+
             // Re-initialize Lucide icons after populating modal
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
@@ -12321,6 +12652,242 @@
             if (linksEl) {
                 linksEl.innerHTML = links.map(function(l) { return '<a href="' + l.url + '" target="_blank" rel="noopener">' + l.label + '</a>'; }).join(' · ');
             }
+        }
+
+        // ========== BOOKING TAB – Expert Locals + Activities + Accommodations ==========
+        function populateBookingTab(trip) {
+            if (!trip) return;
+            const country = trip.country || 'Unknown';
+            const region = trip.region || 'Europe';
+            const name = trip.name || 'Road Trip';
+
+            // Generate Expert Locals for this trip
+            const experts = generateLocalExperts(trip);
+            const expertsContainer = document.getElementById('bookingExperts');
+            if (expertsContainer) {
+                expertsContainer.innerHTML = experts.map(exp => `
+                    <div class="expert-local-card">
+                        <div class="expert-local-header">
+                            <div class="expert-avatar">${exp.initials}</div>
+                            <div class="expert-info">
+                                <div class="expert-name">
+                                    ${exp.name}
+                                    <span class="expert-certified-badge">
+                                        <i data-lucide="shield-check" style="width:10px;height:10px;"></i> Certified
+                                    </span>
+                                </div>
+                                <div class="expert-specialty">${exp.specialty} · ${country}</div>
+                            </div>
+                        </div>
+                        <div class="expert-local-body">
+                            <div class="expert-description">${exp.description}</div>
+                            <div class="expert-stats">
+                                <div class="expert-stat"><i data-lucide="star" style="width:12px;height:12px;color:#f59e0b;"></i> <strong>${exp.rating}</strong>/5</div>
+                                <div class="expert-stat"><i data-lucide="users" style="width:12px;height:12px;"></i> <strong>${exp.tripsDone}</strong> trips</div>
+                                <div class="expert-stat"><i data-lucide="message-circle" style="width:12px;height:12px;"></i> <strong>${exp.languages}</strong></div>
+                            </div>
+                            <div class="expert-experiences">
+                                ${exp.experiences.map(xp => `
+                                    <div class="expert-experience-item">
+                                        <div class="experience-icon"><i data-lucide="${xp.icon}" style="width:18px;height:18px;color:#E07A5F;"></i></div>
+                                        <div class="experience-info">
+                                            <div class="experience-name">${xp.name}</div>
+                                            <div class="experience-detail">${xp.duration} · ${xp.type}</div>
+                                        </div>
+                                        <div class="experience-price">${xp.price}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="expert-actions" style="margin-top: 16px;">
+                                <button class="expert-btn-primary" onclick="contactExpert('${exp.id}')">
+                                    <i data-lucide="phone" style="width:14px;height:14px;"></i> Contact
+                                </button>
+                                <button class="expert-btn-secondary" onclick="bookExpert('${exp.id}')">
+                                    <i data-lucide="calendar" style="width:14px;height:14px;"></i> Book
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Affiliate Activities (GetYourGuide-style)
+            const activities = generateAffiliateActivities(trip);
+            const activitiesContainer = document.getElementById('bookingActivities');
+            if (activitiesContainer) {
+                activitiesContainer.innerHTML = activities.map(act => `
+                    <div class="recommendation-item" style="flex-direction: column; padding: 0; overflow: hidden; border-radius: 14px;">
+                        <div style="height: 120px; background: linear-gradient(135deg, ${act.bgFrom}, ${act.bgTo}); display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="${act.icon}" style="width:40px;height:40px;color:rgba(255,255,255,0.9);"></i>
+                        </div>
+                        <div style="padding: 14px 16px;">
+                            <div class="rec-title" style="margin-bottom: 4px;">${act.title}</div>
+                            <div class="rec-desc">${act.desc}</div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
+                                <span style="font-size: 1rem; font-weight: 700; color: #0f172a;">${act.price}</span>
+                                <a href="${act.url}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
+                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book Now
+                                </a>
+                            </div>
+                            <span class="rec-affiliate-badge">via GetYourGuide</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Accommodations
+            const accommodations = generateAccommodations(trip);
+            const accomContainer = document.getElementById('bookingAccommodations');
+            if (accomContainer) {
+                accomContainer.innerHTML = accommodations.map(acc => `
+                    <div class="recommendation-item" style="flex-direction: column; padding: 0; overflow: hidden; border-radius: 14px;">
+                        <div style="height: 90px; background: linear-gradient(135deg, ${acc.bgFrom}, ${acc.bgTo}); display: flex; align-items: center; justify-content: center; position: relative;">
+                            <i data-lucide="${acc.icon}" style="width:32px;height:32px;color:rgba(255,255,255,0.9);"></i>
+                            <span style="position:absolute; top:10px; right:10px; background: rgba(0,0,0,0.5); color: #fff; font-size: 0.65rem; padding: 2px 8px; border-radius: 8px;">${acc.type}</span>
+                        </div>
+                        <div style="padding: 14px 16px;">
+                            <div class="rec-title" style="margin-bottom: 2px;">${acc.name}</div>
+                            <div class="rec-desc">${acc.location}</div>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 6px;">
+                                <i data-lucide="star" style="width:12px;height:12px;color:#f59e0b;"></i>
+                                <span style="font-size: 0.8rem; font-weight: 600; color: #0f172a;">${acc.rating}</span>
+                                <span style="font-size: 0.7rem; color: #94a3b8;">(${acc.reviews} reviews)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
+                                <span style="font-size: 1rem; font-weight: 700; color: #0f172a;">${acc.price}<span style="font-size: 0.7rem; font-weight: 400; color: #94a3b8;">/night</span></span>
+                                <a href="${acc.url}" target="_blank" rel="noopener sponsored" class="rec-booking-link" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Re-init icons for booking tab
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        // Generate contextual local experts based on trip data
+        function generateLocalExperts(trip) {
+            const country = trip.country || 'Unknown';
+            const expertDb = {
+                'Norway': [
+                    { id: 'exp-no-1', name: 'Erik Nordfjord', initials: 'EN', specialty: 'Arctic & Fjord Expert', description: 'Former park ranger with 15 years guiding through Norway\'s most remote fjords and Arctic landscapes. Specializes in winter driving and Northern Lights excursions.', rating: 4.9, tripsDone: 342, languages: 'NO, EN, DE', experiences: [
+                        { name: 'Private Fjord Photography Tour', duration: '6h', type: 'Guided tour', price: '€189', icon: 'camera' },
+                        { name: 'Northern Lights Chase', duration: '4h', type: 'Night expedition', price: '€149', icon: 'sparkles' },
+                        { name: 'Off-Road Arctic Adventure', duration: '2 days', type: 'Expedition', price: '€490', icon: 'mountain' }
+                    ]}
+                ],
+                'Iceland': [
+                    { id: 'exp-is-1', name: 'Sigrid Björnsdóttir', initials: 'SB', specialty: 'Highland & Geothermal Guide', description: 'Certified Highland guide specializing in F-road navigation, volcanic landscapes and hidden hot springs. Over 200 guided expeditions in Iceland\'s interior.', rating: 4.8, tripsDone: 218, languages: 'IS, EN', experiences: [
+                        { name: 'F-Road Expedition (Landmannalaugar)', duration: '10h', type: 'Full day', price: '€275', icon: 'mountain' },
+                        { name: 'Secret Hot Springs Tour', duration: '5h', type: 'Guided tour', price: '€165', icon: 'flame' },
+                        { name: 'Ice Cave & Glacier Walk', duration: '4h', type: 'Adventure', price: '€195', icon: 'snowflake' }
+                    ]}
+                ],
+                'Scotland': [
+                    { id: 'exp-sc-1', name: 'Angus McLeod', initials: 'AM', specialty: 'Highlands & Whisky Trail', description: 'Born and raised in the Scottish Highlands. Expert in single-track road navigation, wildlife spotting, and curated whisky distillery experiences.', rating: 4.7, tripsDone: 156, languages: 'EN, GD', experiences: [
+                        { name: 'NC500 Guided Drive (3 days)', duration: '3 days', type: 'Multi-day', price: '£680', icon: 'map' },
+                        { name: 'Highland Wildlife Safari', duration: '6h', type: 'Nature tour', price: '£120', icon: 'binoculars' },
+                        { name: 'Whisky Trail Tasting', duration: '4h', type: 'Cultural', price: '£95', icon: 'wine' }
+                    ]}
+                ],
+                'USA': [
+                    { id: 'exp-us-1', name: 'Jake Sullivan', initials: 'JS', specialty: 'Desert & Canyon Overlander', description: 'Veteran overlander with 20+ years exploring America\'s Southwest. Expert in 4x4 trail navigation, desert survival, and national park backcountry access.', rating: 4.9, tripsDone: 520, languages: 'EN, ES', experiences: [
+                        { name: 'Moab 4x4 Adventure (2 days)', duration: '2 days', type: 'Off-road', price: '$450', icon: 'truck' },
+                        { name: 'Grand Canyon Rim-to-Rim Guide', duration: '8h', type: 'Hiking', price: '$220', icon: 'mountain' },
+                        { name: 'Desert Star Photography', duration: '4h', type: 'Night tour', price: '$150', icon: 'camera' }
+                    ]}
+                ],
+                'Australia': [
+                    { id: 'exp-au-1', name: 'Mia Kowalski', initials: 'MK', specialty: 'Outback & Coastal Expert', description: 'Indigenous-approved tour guide with deep knowledge of Australian bush routes, marine wildlife, and Aboriginal cultural heritage sites.', rating: 4.8, tripsDone: 289, languages: 'EN', experiences: [
+                        { name: 'Great Ocean Road VIP Tour', duration: '10h', type: 'Full day', price: 'A$310', icon: 'waves' },
+                        { name: 'Outback Survival & Bush Tucker', duration: '6h', type: 'Cultural', price: 'A$195', icon: 'leaf' },
+                        { name: 'Uluru Sunrise Ceremony', duration: '4h', type: 'Cultural', price: 'A$175', icon: 'sunrise' }
+                    ]}
+                ],
+                'New Zealand': [
+                    { id: 'exp-nz-1', name: 'Tane Aroha', initials: 'TA', specialty: 'South Island & Alpine Guide', description: 'Certified mountain guide and Māori cultural ambassador. Expert in alpine driving conditions, glacier access, and off-grid camping throughout New Zealand.', rating: 4.9, tripsDone: 175, languages: 'EN, MI', experiences: [
+                        { name: 'Milford Sound Private Charter', duration: '6h', type: 'Boat tour', price: 'NZ$380', icon: 'anchor' },
+                        { name: 'Alpine 4WD Expedition', duration: '8h', type: 'Off-road', price: 'NZ$290', icon: 'mountain' },
+                        { name: 'Māori Cultural Immersion', duration: '3h', type: 'Cultural', price: 'NZ$120', icon: 'flame' }
+                    ]}
+                ],
+                'Namibia': [
+                    { id: 'exp-na-1', name: 'Kgosi Mweneni', initials: 'KM', specialty: 'Desert & Safari Expert', description: 'Third-generation safari guide born in the Namib. Specialist in desert-adapted wildlife tracking, sand dune navigation, and Himba community immersion.', rating: 4.9, tripsDone: 412, languages: 'EN, AF, OT', experiences: [
+                        { name: 'Skeleton Coast Expedition', duration: '3 days', type: 'Multi-day', price: '$890', icon: 'compass' },
+                        { name: 'Sossusvlei Sunrise & Photography', duration: '5h', type: 'Guided tour', price: '$150', icon: 'camera' },
+                        { name: 'Himba Village Cultural Visit', duration: '4h', type: 'Cultural', price: '$120', icon: 'users' }
+                    ]}
+                ]
+            };
+            // Find matching experts or generate a generic one
+            let experts = expertDb[country];
+            if (!experts || experts.length === 0) {
+                experts = [{
+                    id: 'exp-gen-1',
+                    name: 'Local Expert',
+                    initials: country.substring(0, 2).toUpperCase(),
+                    specialty: country + ' Road Trip Specialist',
+                    description: `Experienced local guide offering curated ${country} road trip experiences. Expert knowledge of local roads, hidden gems, and cultural insights.`,
+                    rating: 4.7,
+                    tripsDone: Math.floor(Math.random() * 200) + 50,
+                    languages: 'EN, Local',
+                    experiences: [
+                        { name: 'Guided Scenic Drive', duration: '6h', type: 'Guided tour', price: '€150', icon: 'map' },
+                        { name: 'Local Food & Culture Tour', duration: '4h', type: 'Cultural', price: '€95', icon: 'utensils' },
+                        { name: 'Off-the-Beaten-Path Adventure', duration: '8h', type: 'Adventure', price: '€220', icon: 'compass' }
+                    ]
+                }];
+            }
+            return experts;
+        }
+
+        // Generate contextual affiliate activities
+        function generateAffiliateActivities(trip) {
+            const country = trip.country || 'Unknown';
+            const baseUrl = 'https://www.getyourguide.com/s/?q=';
+            const query = encodeURIComponent(trip.name + ' ' + country);
+            const gradients = [
+                { from: '#E07A5F', to: '#d4694e' },
+                { from: '#2D3E33', to: '#3d5247' },
+                { from: '#8b5cf6', to: '#7c3aed' },
+                { from: '#0891b2', to: '#0e7490' }
+            ];
+            const activityTypes = [
+                { icon: 'camera', title: `${country} Photography Tour`, desc: `Capture stunning landscapes with a professional photographer guide along the ${trip.name} route.`, price: 'From €89' },
+                { icon: 'utensils', title: `Local Food Experience`, desc: `Taste authentic ${country} cuisine at hidden gems and local markets along your road trip.`, price: 'From €65' },
+                { icon: 'mountain', title: `Guided Nature Hike`, desc: `Explore scenic trails and viewpoints near the ${trip.name} with an experienced naturalist.`, price: 'From €45' },
+                { icon: 'compass', title: `Off-Road Adventure`, desc: `Get off the beaten path with a guided 4x4 experience through ${country}'s wild terrain.`, price: 'From €120' }
+            ];
+            return activityTypes.map((act, i) => ({
+                ...act,
+                bgFrom: gradients[i % gradients.length].from,
+                bgTo: gradients[i % gradients.length].to,
+                url: baseUrl + query
+            }));
+        }
+
+        // Generate contextual accommodations
+        function generateAccommodations(trip) {
+            const country = trip.country || 'Unknown';
+            const baseUrl = 'https://www.booking.com/searchresults.html?ss=';
+            const query = encodeURIComponent(country + ' road trip');
+            const types = [
+                { icon: 'tent', type: 'Campsite', name: `Wild Camp ${country}`, location: `Along the ${trip.name} route`, rating: 4.6, reviews: Math.floor(Math.random() * 300) + 50, price: '€25', bgFrom: '#22c55e', bgTo: '#16a34a' },
+                { icon: 'home', type: 'Cabin', name: `Mountain Lodge`, location: `Scenic viewpoint near ${trip.name}`, rating: 4.8, reviews: Math.floor(Math.random() * 200) + 30, price: '€85', bgFrom: '#8b5cf6', bgTo: '#7c3aed' },
+                { icon: 'bed-double', type: 'Hotel', name: `Roadside Inn & Spa`, location: `Midpoint of ${trip.name}`, rating: 4.5, reviews: Math.floor(Math.random() * 500) + 100, price: '€110', bgFrom: '#0891b2', bgTo: '#0e7490' },
+                { icon: 'caravan', type: 'Vanlife Spot', name: `Overlander Park`, location: `Free parking near ${trip.name}`, rating: 4.3, reviews: Math.floor(Math.random() * 150) + 20, price: 'Free', bgFrom: '#E07A5F', bgTo: '#d4694e' }
+            ];
+            return types.map(t => ({ ...t, url: baseUrl + query }));
+        }
+
+        function contactExpert(expertId) {
+            alert('Contact request sent! The expert will reply within 24h. (Feature coming soon)');
+        }
+        function bookExpert(expertId) {
+            alert('Booking calendar opening soon. Please check back! (Feature coming soon)');
         }
 
         function closeTripDetailModal() {
