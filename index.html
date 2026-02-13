@@ -7650,6 +7650,407 @@
         .skip-link:focus {
             top: 0;
         }
+
+        /* ==================== GPX EXPORT SYSTEM ==================== */
+        .gpx-export-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            margin: 12px 0;
+        }
+        .gpx-export-bar .gpx-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #166534;
+            white-space: nowrap;
+        }
+        .gpx-export-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: #fff;
+        }
+        .gpx-export-btn.gpx-file { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .gpx-export-btn.google-maps { background: linear-gradient(135deg, #4285F4, #3367d6); }
+        .gpx-export-btn.apple-maps { background: linear-gradient(135deg, #333, #111); }
+        .gpx-export-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .gpx-export-btn i, .gpx-export-btn svg { width: 12px; height: 12px; }
+
+        /* ==================== INTERACTIVE PACKING CHECKLIST ==================== */
+        .packing-checklist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+        .packing-check-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .packing-check-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        .packing-check-item.checked {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+        .packing-check-item.checked .packing-checkbox {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: #fff;
+        }
+        .packing-check-item.essential { border-left: 3px solid var(--brand-orange); }
+        .packing-check-item.essential.checked { border-left-color: #22c55e; }
+        .packing-checkbox {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            transition: all 0.2s;
+        }
+        .packing-item-label {
+            flex: 1;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .packing-buy-link {
+            display: none;
+            padding: 3px 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: #ff9900;
+            color: #fff;
+            border-radius: 10px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .packing-check-item:not(.checked) .packing-buy-link { display: inline-flex; }
+        .packing-buy-link:hover { background: #e88b00; transform: translateY(-1px); }
+        .packing-checklist-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .packing-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .packing-progress-bar {
+            width: 100px;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .packing-progress-fill {
+            height: 100%;
+            background: var(--brand-orange);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .packing-progress-fill.complete { background: #22c55e; }
+        .packing-amazon-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: #ff9900;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .packing-amazon-btn:hover { background: #e88b00; transform: translateY(-1px); }
+
+        /* ==================== ENHANCED BOOKING BUTTONS ==================== */
+        .rec-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .rec-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            color: #fff;
+        }
+        .rec-action-btn.book-guide { background: linear-gradient(135deg, #E07A5F, #d4694e); }
+        .rec-action-btn.check-avail { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .rec-action-btn.book-hotel { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .rec-action-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .rec-action-btn i, .rec-action-btn svg { width: 12px; height: 12px; }
+        .rec-partner-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .rec-partner-badge {
+            font-size: 0.6rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* ==================== USER BADGE SYSTEM ==================== */
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .user-badge.badge-expert {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+        .user-badge.badge-explorer {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        .user-badge.badge-local {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+        .user-badge.badge-newcomer {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .user-badge i, .user-badge svg { width: 10px; height: 10px; }
+        .variant-creator-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        /* ==================== SEARCH FILTERS (Vehicle, Budget, Weather) ==================== */
+        .search-filters-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            padding-bottom: 8px;
+        }
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+        }
+        .filter-tag:hover { background: var(--bg-hover); border-color: #cbd5e1; }
+        .filter-tag.active {
+            background: var(--brand-orange);
+            color: #fff;
+            border-color: var(--brand-orange);
+        }
+        .filter-tag i, .filter-tag svg { width: 12px; height: 12px; }
+        .budget-filter-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .budget-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+        .budget-chip:hover { background: var(--bg-hover); }
+        .budget-chip.active { background: var(--brand-orange); color: #fff; border-color: var(--brand-orange); }
+        .weather-icon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 10px;
+            color: #1d4ed8;
+        }
+        .weather-icon-badge.hot { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #dc2626; }
+        .weather-icon-badge.mild { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); color: #16a34a; }
+        .weather-icon-badge.cold { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2); color: #1d4ed8; }
+
+        /* ==================== DRAG & DROP POI ==================== */
+        .poi-drag-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            z-index: 1200;
+        }
+        .poi-drag-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            cursor: grab;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .poi-drag-item:hover { background: #fff; border-color: var(--brand-orange); color: var(--brand-orange); }
+        .poi-drag-item:active { cursor: grabbing; transform: scale(0.95); }
+        .poi-drag-item .poi-drag-icon { font-size: 1.2rem; }
+        .poi-placed-count {
+            font-size: 0.6rem;
+            padding: 1px 6px;
+            background: var(--brand-orange);
+            color: #fff;
+            border-radius: 8px;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        /* ==================== DARK MODE / NIGHT MAP ==================== */
+        .night-mode-toggle {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        .night-mode-toggle:hover { background: rgba(255,255,255,1); }
+        .night-mode-toggle.night-active {
+            background: rgba(30, 41, 59, 0.9);
+            color: #f1f5f9;
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* ==================== UX: COMPACT STAT CARDS ==================== */
+        .trip-stats-row.compact .trip-stat-card {
+            padding: 12px 14px;
+            gap: 10px;
+        }
+        .trip-stats-row.compact .stat-icon {
+            width: 36px;
+            height: 36px;
+        }
+        .trip-stats-row.compact .stat-value {
+            font-size: 0.95rem;
+        }
+
+        /* Vehicle tag badges on road trip cards */
+        .vehicle-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+        .vehicle-badge.van { background: #dbeafe; color: #1e40af; }
+        .vehicle-badge.motorcycle { background: #fef3c7; color: #92400e; }
+        .vehicle-badge.fourx4 { background: #dcfce7; color: #166534; }
+        .vehicle-badge.car { background: #f1f5f9; color: #475569; }
     </style>
 </head>
 <body>
@@ -7874,6 +8275,20 @@
                                 <option value="shortest">Shortest</option>
                                 <option value="newest">Newest</option>
                             </select>
+                        </div>
+                        <!-- Vehicle Type Filters -->
+                        <div class="search-filters-row" id="vehicleFilters">
+                            <button class="filter-tag" data-vehicle="all" onclick="setVehicleFilter('all', this)"><i data-lucide="car" style="width:12px;height:12px;"></i> All</button>
+                            <button class="filter-tag" data-vehicle="van" onclick="setVehicleFilter('van', this)"><i data-lucide="truck" style="width:12px;height:12px;"></i> Van-Friendly</button>
+                            <button class="filter-tag" data-vehicle="motorcycle" onclick="setVehicleFilter('motorcycle', this)"><i data-lucide="bike" style="width:12px;height:12px;"></i> Motorcycle Epic</button>
+                            <button class="filter-tag" data-vehicle="fourx4" onclick="setVehicleFilter('fourx4', this)"><svg class="icon" aria-hidden="true" style="width:12px;height:12px;"><use href="#icon-car"></use></svg> 4x4 Required</button>
+                        </div>
+                        <!-- Budget Filter -->
+                        <div class="budget-filter-row" id="budgetFilters">
+                            <button class="budget-chip" data-budget="all" onclick="setBudgetFilter('all', this)">All Budgets</button>
+                            <button class="budget-chip" data-budget="budget" onclick="setBudgetFilter('budget', this)">💰 Budget</button>
+                            <button class="budget-chip" data-budget="moderate" onclick="setBudgetFilter('moderate', this)">💰💰 Moderate</button>
+                            <button class="budget-chip" data-budget="luxury" onclick="setBudgetFilter('luxury', this)">💰💰💰 Luxury</button>
                         </div>
                         <div id="roadTripsList" class="road-trips-list-cards"></div>
                         <div id="roadTripsLoadMoreWrap" class="load-more-wrap" style="display: none;">
@@ -8460,7 +8875,7 @@
                     <!-- Left Column -->
                     <div class="trip-main-col">
                         <!-- Quick Stats -->
-                        <div class="trip-stats-row">
+                        <div class="trip-stats-row compact">
                             <div class="trip-stat-card">
                                 <div class="stat-icon"><i data-lucide="gauge" style="width:20px;height:20px;color:var(--brand-orange);"></i></div>
                                 <div class="stat-info">
@@ -8565,6 +8980,13 @@
                 <div class="route-tab-layout">
                     <!-- Map: zoom on road, POI layers -->
                     <div class="route-map-section">
+                        <!-- GPX Export Bar -->
+                        <div class="gpx-export-bar" id="gpxExportBar">
+                            <span class="gpx-label"><i data-lucide="download" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Export Route:</span>
+                            <button class="gpx-export-btn gpx-file" onclick="exportRouteGPX()"><i data-lucide="file-down" style="width:12px;height:12px;"></i> GPX File</button>
+                            <a class="gpx-export-btn google-maps" id="googleMapsExportLink" href="#" target="_blank" rel="noopener" onclick="exportToGoogleMaps(event)"><i data-lucide="map" style="width:12px;height:12px;"></i> Google Maps</a>
+                            <a class="gpx-export-btn apple-maps" id="appleMapsExportLink" href="#" target="_blank" rel="noopener" onclick="exportToAppleMaps(event)"><i data-lucide="smartphone" style="width:12px;height:12px;"></i> Apple Maps</a>
+                        </div>
                         <div class="route-map-header">
                             <h3><i data-lucide="map" style="width:18px;height:18px;vertical-align:-3px;margin-right:6px;"></i> Route Map</h3>
                             <div class="route-poi-toggles" id="tripRoutePoiToggles">
@@ -8573,9 +8995,13 @@
                                 <button type="button" class="route-poi-btn active" data-poi="campsitePaid" title="Paid camping"><svg class="icon" aria-hidden="true"><use href="#icon-tent"></use></svg> Camp (paid)</button>
                                 <button type="button" class="route-poi-btn active" data-poi="grocery" title="Food & shops"><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> Food</button>
                                 <button type="button" class="route-poi-btn" data-poi="viewpoint" title="Viewpoints"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg> Views</button>
+                                <button type="button" class="route-poi-btn" style="background:var(--brand-orange);color:#fff;border-color:var(--brand-orange);" onclick="togglePoiPlaceMode()" title="Add POI to map"><i data-lucide="plus-circle" style="width:14px;height:14px;"></i> Add POI</button>
                             </div>
                         </div>
-                        <div class="route-map-container" id="tripDetailMapContainer">
+                        <div class="route-map-container" id="tripDetailMapContainer" style="position:relative;">
+                            <button class="night-mode-toggle" id="nightModeToggle" onclick="toggleNightMode()" title="Toggle Night Mode">
+                                <i data-lucide="moon" style="width:14px;height:14px;"></i> <span id="nightModeLabel">Night Mode</span>
+                            </button>
                             <div id="tripDetailMap" class="trip-detail-map"></div>
                             <div class="route-map-legend" id="tripRouteMapLegend">
                                 <span class="legend-route">—— Route</span>
@@ -8587,6 +9013,38 @@
                                 <span class="legend-poi"><svg class="icon icon--sm" aria-hidden="true"><use href="#icon-tent"></use></svg> Camp payant</span>
                                 <span class="legend-poi"><svg class="icon icon--sm" aria-hidden="true"><use href="#icon-document"></use></svg> Courses</span>
                                 <span class="legend-poi"><svg class="icon icon--sm" aria-hidden="true"><use href="#icon-camera"></use></svg> Points de vue</span>
+                            </div>
+                            <!-- POI Drag & Drop Panel -->
+                            <div class="poi-drag-panel" id="poiDragPanel" style="display:none;">
+                                <div class="poi-drag-item" draggable="true" data-poi-type="viewpoint" ondragstart="onPoiDragStart(event, 'viewpoint')" onclick="placePoiOnMap('viewpoint')">
+                                    <span class="poi-drag-icon">📸</span>
+                                    <span>Viewpoint</span>
+                                    <span class="poi-placed-count" id="poiCount_viewpoint">0</span>
+                                </div>
+                                <div class="poi-drag-item" draggable="true" data-poi-type="restaurant" ondragstart="onPoiDragStart(event, 'restaurant')" onclick="placePoiOnMap('restaurant')">
+                                    <span class="poi-drag-icon">🍽️</span>
+                                    <span>Restaurant</span>
+                                    <span class="poi-placed-count" id="poiCount_restaurant">0</span>
+                                </div>
+                                <div class="poi-drag-item" draggable="true" data-poi-type="hotel" ondragstart="onPoiDragStart(event, 'hotel')" onclick="placePoiOnMap('hotel')">
+                                    <span class="poi-drag-icon">🏨</span>
+                                    <span>Hotel</span>
+                                    <span class="poi-placed-count" id="poiCount_hotel">0</span>
+                                </div>
+                                <div class="poi-drag-item" draggable="true" data-poi-type="attraction" ondragstart="onPoiDragStart(event, 'attraction')" onclick="placePoiOnMap('attraction')">
+                                    <span class="poi-drag-icon">⭐</span>
+                                    <span>Attraction</span>
+                                    <span class="poi-placed-count" id="poiCount_attraction">0</span>
+                                </div>
+                                <div class="poi-drag-item" draggable="true" data-poi-type="danger" ondragstart="onPoiDragStart(event, 'danger')" onclick="placePoiOnMap('danger')">
+                                    <span class="poi-drag-icon">⚠️</span>
+                                    <span>Warning</span>
+                                    <span class="poi-placed-count" id="poiCount_danger">0</span>
+                                </div>
+                                <button class="poi-drag-item" style="border-style:solid;border-color:#ef4444;color:#ef4444;" onclick="togglePoiPlaceMode()">
+                                    <span class="poi-drag-icon">✕</span>
+                                    <span>Done</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -9620,32 +10078,16 @@
             const recsContainer = document.getElementById('tripRecommendations');
             if (!recsContainer || !trip.recommendations) return;
 
-            // For the full route, show all. For sub-routes, show subset
             const recs = trip.recommendations || [];
+            const bookingQuery = encodeURIComponent((trip.country || '') + ' hotels');
             if (variant.tag === 'full') {
-                // Show all
-                const gygQuery = encodeURIComponent((trip.name || '') + ' ' + (trip.country || ''));
-                recsContainer.innerHTML = recs.map(rec => `
-                    <div class="recommendation-item">
-                        <div class="rec-icon">${rec.icon}</div>
-                        <div style="flex:1;">
-                            <div class="rec-title">${rec.title}</div>
-                            <div class="rec-desc">${rec.desc}</div>
-                            <div class="rec-booking" style="margin-top:8px;">
-                                <a href="https://www.getyourguide.com/s/?q=${gygQuery}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
-                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
+                renderRecommendationsWithBooking(trip);
             } else {
-                // Show only first N recs proportional to variant size
                 const ratio = (variant.waypoints ? variant.waypoints.length : 1) / Math.max(1, (trip.waypoints ? trip.waypoints.length : 1));
                 const count = Math.max(1, Math.ceil(recs.length * ratio));
                 const subset = recs.slice(0, count);
                 const stopNames = (variant.waypoints || []).filter(w => Array.isArray(w) && w[2]).map(w => w[2]).join(', ');
-                const gygQuery = encodeURIComponent(stopNames + ' ' + (trip.country || ''));
+                const recQuery = encodeURIComponent(stopNames + ' ' + (trip.country || ''));
                 recsContainer.innerHTML = `
                     <div style="padding:10px 14px;background:#f0fdf4;border-radius:12px;border:1px solid #bbf7d0;margin-bottom:12px;font-size:0.8rem;color:#166534;">
                         <i data-lucide="info" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>
@@ -9657,10 +10099,21 @@
                         <div style="flex:1;">
                             <div class="rec-title">${rec.title}</div>
                             <div class="rec-desc">${rec.desc}</div>
-                            <div class="rec-booking" style="margin-top:8px;">
-                                <a href="https://www.getyourguide.com/s/?q=${gygQuery}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
-                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book
+                            <div class="rec-actions">
+                                <a href="https://www.getyourguide.com/s/?q=${recQuery}" target="_blank" rel="noopener sponsored" class="rec-action-btn book-guide">
+                                    <i data-lucide="users" style="width:12px;height:12px;"></i> Book a Guide
                                 </a>
+                                <a href="https://www.viator.com/searchResults/all?text=${recQuery}" target="_blank" rel="noopener sponsored" class="rec-action-btn check-avail">
+                                    <i data-lucide="calendar-check" style="width:12px;height:12px;"></i> Check Availability
+                                </a>
+                                <a href="https://www.booking.com/searchresults.html?ss=${bookingQuery}" target="_blank" rel="noopener sponsored" class="rec-action-btn book-hotel">
+                                    <i data-lucide="bed-double" style="width:12px;height:12px;"></i> Nearby Hotels
+                                </a>
+                            </div>
+                            <div class="rec-partner-row">
+                                <span class="rec-partner-badge">via GetYourGuide</span>
+                                <span class="rec-partner-badge">· Viator</span>
+                                <span class="rec-partner-badge">· Booking.com</span>
                             </div>
                         </div>
                     </div>
@@ -9780,8 +10233,8 @@
 
         function saveUserVariant() {
             if (!currentDetailTrip || variantDrawPoints.length < 2) return;
-            const name = document.getElementById('newVariantName').value.trim();
-            const creator = document.getElementById('newVariantCreator').value.trim() || 'Anonymous';
+            const name = (document.getElementById('variantNameInput') || document.getElementById('newVariantName')).value.trim();
+            const creator = (document.getElementById('variantCreatorName') || document.getElementById('newVariantCreator')).value.trim() || 'Anonymous';
             if (!name) { alert('Please name your variant.'); return; }
 
             localStorage.setItem('srndipity_username', creator);
@@ -9853,7 +10306,7 @@
                         <span style="font-weight:600;font-size:0.85rem;color:#0f172a;">${v.label}</span>
                         ${v._status === 'public' ? '<span style="background:#22c55e;color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:8px;font-weight:600;">PUBLIC</span>' : '<span style="background:#f59e0b;color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:8px;font-weight:600;">PENDING</span>'}
                     </div>
-                    <div style="font-size:0.75rem;color:#64748b;">by ${v.creator} · ${v.waypoints ? v.waypoints.length : 0} stops · ${new Date(v.createdAt).toLocaleDateString()}</div>
+                    <div class="variant-creator-info">by ${v.creator} ${renderUserBadge(v.creator)} · ${v.waypoints ? v.waypoints.length : 0} stops · ${new Date(v.createdAt).toLocaleDateString()}</div>
                     <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
                         <div style="flex:1;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;">
                             <div style="width:${pct}%;height:100%;background:${pct >= 100 ? '#22c55e' : '#E07A5F'};border-radius:3px;transition:width 0.3s;"></div>
@@ -12970,6 +13423,15 @@
             if (!hasRegion && hasMonth) {
                 allTrips = allTrips.filter(trip => getTripSeasonStatus(trip.id).status === 'best');
             }
+
+            // Apply vehicle filter
+            if (activeVehicleFilter && activeVehicleFilter !== 'all') {
+                allTrips = allTrips.filter(trip => tripMatchesVehicleFilter(trip));
+            }
+            // Apply budget filter
+            if (activeBudgetFilter && activeBudgetFilter !== 'all') {
+                allTrips = allTrips.filter(trip => classifyTripBudget(trip) === activeBudgetFilter);
+            }
             
             const sortBy = (sortSelect && sortSelect.value) ? sortSelect.value : 'topRated';
             allTrips = applyTripSort(allTrips, sortBy);
@@ -12983,7 +13445,7 @@
                 });
             }
             
-            const listKey = (currentRegionFilter || '') + (selectedTravelMonth ?? '') + sortBy;
+            const listKey = (currentRegionFilter || '') + (selectedTravelMonth ?? '') + sortBy + (activeVehicleFilter || '') + (activeBudgetFilter || '');
             if (listKey !== lastTripListKey) {
                 visibleTripCount = TRIPS_PAGE_SIZE;
                 lastTripListKey = listKey;
@@ -13016,6 +13478,22 @@
                 const saveBtn = `<button type="button" class="trip-card-save ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSaveToGarage('${trip.id}')" title="${isSaved ? 'Remove from Garage' : 'Save to Garage'}" aria-label="${isSaved ? 'Remove from Garage' : 'Save to Garage'}">${isSaved ? '<svg class="icon" aria-hidden="true"><use href="#icon-heart-filled"></use></svg>' : '<svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>'}</button>`;
                 const badge4x4 = isRugged ? `<span class="badge-4x4" title="4x4 Recommended"><svg class="icon" aria-hidden="true"><use href="#icon-car"></use></svg> 4x4 Recommended</span>` : '';
                 
+                // Weather icon for the trip
+                const weatherInfo = getWeatherIconForTrip(trip);
+                const weatherBadge = `<span class="weather-icon-badge ${weatherInfo.class}" title="Climate: ${weatherInfo.label}">${weatherInfo.emoji} ${weatherInfo.label}</span>`;
+                
+                // Vehicle type badge
+                const tags = (trip.tags || []).map(t => t.toLowerCase());
+                const tripDesc = ((trip.description || '') + ' ' + (trip.name || '')).toLowerCase();
+                let vehicleBadge = '';
+                if (tags.includes('van') || tags.includes('vanlife') || tags.includes('camping') || tripDesc.includes('van') || tripDesc.includes('camper')) {
+                    vehicleBadge = '<span class="vehicle-badge van">Van-Friendly</span>';
+                } else if (tags.includes('motorcycle') || tags.includes('moto') || tripDesc.includes('motorcycle')) {
+                    vehicleBadge = '<span class="vehicle-badge motorcycle">Motorcycle Epic</span>';
+                } else if (isRugged) {
+                    vehicleBadge = '<span class="vehicle-badge fourx4">4x4 Required</span>';
+                }
+                
                 return `
                 <div id="trip-card-${trip.id}" class="road-trip-card ${activeRoute === trip.id ? 'active' : ''} ${trip.personalTrip ? 'personal' : ''} ${isCompleted ? 'completed' : ''} ${trip.userCreated ? 'user-created' : ''} ${isSponsored ? 'sponsored' : ''} ${seasonStatus.status === 'best' ? 'season-best' : ''} ${seasonStatus.status === 'avoid' ? 'season-avoid' : ''}" onclick="selectRoute('${trip.id}')" ondblclick="event.stopPropagation(); openTripDetail('${trip.id}')">
                     ${saveBtn}
@@ -13034,7 +13512,9 @@
                         <span>${trip.country}</span>
                         <span>${trip.distance}</span>
                         <span>${trip.duration}</span>
+                        ${weatherBadge}
                     </div>
+                    ${vehicleBadge ? `<div style="margin-top:4px;">${vehicleBadge}</div>` : ''}
                     ${trip.rating ? `
                         <div class="road-trip-rating">
                             <span>${ratingStars}</span>
@@ -13267,45 +13747,11 @@
                 }
             }
 
-            // Recommendations – with booking affiliate links
-            const recommendationsContainer = document.getElementById('tripRecommendations');
-            if (trip.recommendations && trip.recommendations.length > 0) {
-                const gygQuery = encodeURIComponent((trip.name || '') + ' ' + (trip.country || ''));
-                recommendationsContainer.innerHTML = trip.recommendations.map(rec => `
-                    <div class="recommendation-item">
-                        <div class="rec-icon">${rec.icon}</div>
-                        <div style="flex:1;">
-                            <div class="rec-title">${rec.title}</div>
-                            <div class="rec-desc">${rec.desc}</div>
-                            <div class="rec-booking" style="margin-top: 8px;">
-                                <a href="https://www.getyourguide.com/s/?q=${gygQuery}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
-                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book Activity
-                                </a>
-                                <span class="rec-affiliate-badge">via GetYourGuide</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                recommendationsContainer.innerHTML = '<p style="color: #64748b;">No recommendations yet. Share yours in the community!</p>';
-            }
+            // Recommendations – with enhanced booking action buttons
+            renderRecommendationsWithBooking(trip);
 
-            // Packing List
-            const packingContainer = document.getElementById('tripPackingList');
-            if (trip.packingList && trip.packingList.length > 0) {
-                packingContainer.innerHTML = trip.packingList.map(item => `
-                    <div class="packing-item ${item.essential ? 'essential' : ''}">
-                        <span>${item.item}</span>
-                    </div>
-                `).join('');
-            } else {
-                packingContainer.innerHTML = `
-                    <div class="packing-item essential"><i data-lucide="smartphone" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Offline maps</div>
-                    <div class="packing-item essential"><i data-lucide="droplet" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Water bottles</div>
-                    <div class="packing-item"><i data-lucide="camera" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Camera</div>
-                    <div class="packing-item essential"><i data-lucide="plug" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Phone charger</div>
-                `;
-            }
+            // Packing List – interactive checklist with affiliate links
+            renderPackingChecklist(trip);
 
             // Insert contextual native ad
             const adSlot = document.getElementById('tripDetailAdSlot');
@@ -16789,6 +17235,387 @@
                 if (garage) try { garageTripIds = JSON.parse(garage); } catch (e) {}
             } catch (e) {
                 console.error('Error loading data:', e);
+            }
+        }
+
+        // ==================== GPX EXPORT SYSTEM ====================
+        function exportRouteGPX() {
+            if (!currentDetailTrip) return;
+            const trip = currentDetailTrip;
+            const wps = trip.waypoints || [];
+            if (wps.length < 2) { alert('No waypoints to export.'); return; }
+
+            let gpxContent = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="DrawYourMap - Srndipity Inc."
+     xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>${escapeXml(trip.name)}</name>
+    <desc>${escapeXml(trip.description || '')}</desc>
+    <author><name>DrawYourMap</name></author>
+    <time>${new Date().toISOString()}</time>
+  </metadata>
+  <trk>
+    <name>${escapeXml(trip.name)}</name>
+    <trkseg>
+`;
+            wps.forEach(wp => {
+                if (!Array.isArray(wp)) return;
+                gpxContent += `      <trkpt lat="${wp[0]}" lon="${wp[1]}">
+        <name>${escapeXml(wp[2] || '')}</name>
+      </trkpt>\n`;
+            });
+            gpxContent += `    </trkseg>
+  </trk>
+`;
+            // Also add waypoints as GPX waypoints for GPS devices
+            wps.forEach(wp => {
+                if (!Array.isArray(wp)) return;
+                gpxContent += `  <wpt lat="${wp[0]}" lon="${wp[1]}">
+    <name>${escapeXml(wp[2] || 'Waypoint')}</name>
+    ${wp[3] ? '<desc>' + escapeXml(wp[3]) + '</desc>' : ''}
+  </wpt>\n`;
+            });
+            gpxContent += `</gpx>`;
+
+            const blob = new Blob([gpxContent], { type: 'application/gpx+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (trip.name || 'route').replace(/[^a-zA-Z0-9]/g, '_') + '.gpx';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function escapeXml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+        }
+
+        function exportToGoogleMaps(e) {
+            e.preventDefault();
+            if (!currentDetailTrip) return;
+            const wps = currentDetailTrip.waypoints || [];
+            if (wps.length < 2) return;
+            // Google Maps directions URL (max ~25 waypoints)
+            const origin = wps[0][0] + ',' + wps[0][1];
+            const dest = wps[wps.length - 1][0] + ',' + wps[wps.length - 1][1];
+            const mid = wps.slice(1, -1).slice(0, 23).map(w => w[0] + ',' + w[1]).join('|');
+            const url = 'https://www.google.com/maps/dir/?api=1&origin=' + origin + '&destination=' + dest + (mid ? '&waypoints=' + mid : '') + '&travelmode=driving';
+            window.open(url, '_blank');
+        }
+
+        function exportToAppleMaps(e) {
+            e.preventDefault();
+            if (!currentDetailTrip) return;
+            const wps = currentDetailTrip.waypoints || [];
+            if (wps.length < 2) return;
+            const dest = wps[wps.length - 1][0] + ',' + wps[wps.length - 1][1];
+            const destName = wps[wps.length - 1][2] || 'Destination';
+            const url = 'https://maps.apple.com/?daddr=' + dest + '&dirflg=d&t=m';
+            window.open(url, '_blank');
+        }
+
+        // ==================== INTERACTIVE PACKING CHECKLIST ====================
+        let packingCheckedItems = JSON.parse(localStorage.getItem('srndipity_packing_checked') || '{}');
+
+        function renderPackingChecklist(trip) {
+            const container = document.getElementById('tripPackingList');
+            if (!container) return;
+
+            const tripId = trip.id;
+            const checkedKey = 'packing_' + tripId;
+            const checkedItems = packingCheckedItems[checkedKey] || [];
+
+            let items = [];
+            if (trip.packingList && trip.packingList.length > 0) {
+                items = trip.packingList.map((item, i) => ({
+                    id: i,
+                    label: item.item,
+                    essential: item.essential || false
+                }));
+            } else {
+                items = [
+                    { id: 0, label: '📱 Offline maps', essential: true },
+                    { id: 1, label: '💧 Water bottles', essential: true },
+                    { id: 2, label: '📷 Camera', essential: false },
+                    { id: 3, label: '🔌 Phone charger', essential: true },
+                    { id: 4, label: '🧴 Sunscreen', essential: false },
+                    { id: 5, label: '🩹 First aid kit', essential: true }
+                ];
+            }
+
+            const totalItems = items.length;
+            const checkedCount = items.filter(item => checkedItems.includes(item.id)).length;
+            const uncheckedItems = items.filter(item => !checkedItems.includes(item.id));
+            const pctDone = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
+
+            container.innerHTML = `
+                <div class="packing-checklist">
+                    ${items.map(item => {
+                        const isChecked = checkedItems.includes(item.id);
+                        const searchQuery = encodeURIComponent(item.label.replace(/[^\w\s]/g, '').trim());
+                        return `<div class="packing-check-item ${isChecked ? 'checked' : ''} ${item.essential ? 'essential' : ''}" onclick="togglePackingItem('${tripId}', ${item.id})">
+                            <span class="packing-checkbox">${isChecked ? '✓' : ''}</span>
+                            <span class="packing-item-label">${item.label}</span>
+                            <a href="https://www.amazon.com/s?k=${searchQuery}" target="_blank" rel="noopener sponsored" class="packing-buy-link" onclick="event.stopPropagation();">Buy</a>
+                        </div>`;
+                    }).join('')}
+                </div>
+                <div class="packing-checklist-footer">
+                    <div class="packing-progress">
+                        <div class="packing-progress-bar">
+                            <div class="packing-progress-fill ${pctDone === 100 ? 'complete' : ''}" style="width:${pctDone}%"></div>
+                        </div>
+                        <span>${checkedCount}/${totalItems} packed</span>
+                    </div>
+                    ${uncheckedItems.length > 0 ? `<a class="packing-amazon-btn" href="https://www.amazon.com/s?k=${encodeURIComponent(uncheckedItems.map(i => i.label.replace(/[^\w\s]/g, '').trim()).join(' '))}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation();">
+                        <i data-lucide="shopping-cart" style="width:12px;height:12px;"></i> Buy Missing Items
+                    </a>` : '<span style="font-size:0.75rem;color:#22c55e;font-weight:600;">✓ All packed!</span>'}
+                </div>
+            `;
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 60);
+        }
+
+        function togglePackingItem(tripId, itemId) {
+            const checkedKey = 'packing_' + tripId;
+            if (!packingCheckedItems[checkedKey]) packingCheckedItems[checkedKey] = [];
+            const idx = packingCheckedItems[checkedKey].indexOf(itemId);
+            if (idx > -1) {
+                packingCheckedItems[checkedKey].splice(idx, 1);
+            } else {
+                packingCheckedItems[checkedKey].push(itemId);
+            }
+            localStorage.setItem('srndipity_packing_checked', JSON.stringify(packingCheckedItems));
+            if (currentDetailTrip) renderPackingChecklist(currentDetailTrip);
+        }
+
+        // ==================== ENHANCED BOOKING BUTTONS ====================
+        function renderRecommendationsWithBooking(trip) {
+            const container = document.getElementById('tripRecommendations');
+            if (!container) return;
+
+            const recs = trip.recommendations || [];
+            if (recs.length === 0) {
+                container.innerHTML = '<p style="color: #64748b;">No recommendations yet. Share yours in the community!</p>';
+                return;
+            }
+
+            const gygQuery = encodeURIComponent((trip.name || '') + ' ' + (trip.country || ''));
+            const viatorQuery = encodeURIComponent((trip.country || '') + ' tours');
+            const bookingQuery = encodeURIComponent((trip.country || '') + ' hotels');
+
+            container.innerHTML = recs.map(rec => {
+                const recQuery = encodeURIComponent((rec.title || '') + ' ' + (trip.country || ''));
+                return `<div class="recommendation-item">
+                    <div class="rec-icon">${rec.icon}</div>
+                    <div style="flex:1;">
+                        <div class="rec-title">${rec.title}</div>
+                        <div class="rec-desc">${rec.desc}</div>
+                        <div class="rec-actions">
+                            <a href="https://www.getyourguide.com/s/?q=${recQuery}" target="_blank" rel="noopener sponsored" class="rec-action-btn book-guide">
+                                <i data-lucide="users" style="width:12px;height:12px;"></i> Book a Guide
+                            </a>
+                            <a href="https://www.viator.com/searchResults/all?text=${recQuery}" target="_blank" rel="noopener sponsored" class="rec-action-btn check-avail">
+                                <i data-lucide="calendar-check" style="width:12px;height:12px;"></i> Check Availability
+                            </a>
+                            <a href="https://www.booking.com/searchresults.html?ss=${bookingQuery}" target="_blank" rel="noopener sponsored" class="rec-action-btn book-hotel">
+                                <i data-lucide="bed-double" style="width:12px;height:12px;"></i> Nearby Hotels
+                            </a>
+                        </div>
+                        <div class="rec-partner-row">
+                            <span class="rec-partner-badge">via GetYourGuide</span>
+                            <span class="rec-partner-badge">· Viator</span>
+                            <span class="rec-partner-badge">· Booking.com</span>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 60);
+        }
+
+        // ==================== USER BADGE SYSTEM ====================
+        function getUserBadge(creatorName) {
+            // Count total upvotes across all variants by this creator
+            let totalUpvotes = 0;
+            const allTrips = getAllTrips();
+            allTrips.forEach(trip => {
+                const userVars = getUserVariants(trip.id);
+                userVars.forEach(v => {
+                    if (v.creator === creatorName) {
+                        totalUpvotes += (v.upvotes || 0);
+                    }
+                });
+            });
+
+            if (totalUpvotes >= 100) {
+                return { class: 'badge-expert', label: 'Expert', icon: 'award' };
+            } else if (totalUpvotes >= 50) {
+                return { class: 'badge-local', label: 'Local', icon: 'map-pin' };
+            } else if (totalUpvotes >= 20) {
+                return { class: 'badge-explorer', label: 'Explorer', icon: 'compass' };
+            } else {
+                return { class: 'badge-newcomer', label: 'Newcomer', icon: 'user' };
+            }
+        }
+
+        function renderUserBadge(creatorName) {
+            const badge = getUserBadge(creatorName);
+            return `<span class="user-badge ${badge.class}"><i data-lucide="${badge.icon}" style="width:10px;height:10px;"></i> ${badge.label}</span>`;
+        }
+
+        // ==================== SEARCH FILTERS (Vehicle, Budget) ====================
+        let activeVehicleFilter = 'all';
+        let activeBudgetFilter = 'all';
+
+        function setVehicleFilter(type, btn) {
+            activeVehicleFilter = type;
+            document.querySelectorAll('#vehicleFilters .filter-tag').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderRoadTrips();
+        }
+
+        function setBudgetFilter(level, btn) {
+            activeBudgetFilter = level;
+            document.querySelectorAll('#budgetFilters .budget-chip').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderRoadTrips();
+        }
+
+        function classifyTripBudget(trip) {
+            const budgetStr = (trip.budget || '').toLowerCase();
+            const total = (trip.costs && trip.costs.total) ? trip.costs.total.toLowerCase() : budgetStr;
+            // Extract numeric values
+            const nums = total.match(/[\d,]+/g);
+            if (nums && nums.length > 0) {
+                const val = parseInt(nums[0].replace(/,/g, ''));
+                if (val <= 500) return 'budget';
+                if (val <= 2000) return 'moderate';
+                return 'luxury';
+            }
+            if (budgetStr.includes('budget') || budgetStr.includes('cheap')) return 'budget';
+            if (budgetStr.includes('luxury') || budgetStr.includes('premium')) return 'luxury';
+            return 'moderate';
+        }
+
+        function tripMatchesVehicleFilter(trip) {
+            if (activeVehicleFilter === 'all') return true;
+            const tags = (trip.tags || []).map(t => t.toLowerCase());
+            const desc = ((trip.description || '') + ' ' + (trip.name || '')).toLowerCase();
+            switch (activeVehicleFilter) {
+                case 'van': return tags.includes('van') || tags.includes('vanlife') || tags.includes('camping') || desc.includes('van') || desc.includes('camper');
+                case 'motorcycle': return tags.includes('motorcycle') || tags.includes('moto') || desc.includes('motorcycle') || desc.includes('moto') || desc.includes('bike');
+                case 'fourx4': return tags.includes('fourx4') || tags.includes('4x4') || tags.includes('offroad') || (trip.difficulty === 'challenging');
+                default: return true;
+            }
+        }
+
+        function getWeatherIconForTrip(trip) {
+            const season = (trip.bestSeason || '').toLowerCase();
+            if (season.includes('summer') || season.includes('jun') || season.includes('jul') || season.includes('aug') || season.includes('hot') || season.includes('dry')) {
+                return { emoji: '☀️', label: 'Hot', class: 'hot' };
+            } else if (season.includes('winter') || season.includes('dec') || season.includes('jan') || season.includes('feb') || season.includes('cold') || season.includes('snow')) {
+                return { emoji: '❄️', label: 'Cold', class: 'cold' };
+            } else if (season.includes('spring') || season.includes('autumn') || season.includes('fall') || season.includes('year')) {
+                return { emoji: '🌤️', label: 'Mild', class: 'mild' };
+            }
+            return { emoji: '🌤️', label: 'Mild', class: 'mild' };
+        }
+
+        // ==================== POI DRAG & DROP ====================
+        let poiPlaceMode = false;
+        let currentPoiType = null;
+        let userPlacedPois = [];
+        let poiPlaceCounts = { viewpoint: 0, restaurant: 0, hotel: 0, attraction: 0, danger: 0 };
+
+        function togglePoiPlaceMode() {
+            const panel = document.getElementById('poiDragPanel');
+            if (!panel) return;
+            poiPlaceMode = !poiPlaceMode;
+            panel.style.display = poiPlaceMode ? 'flex' : 'none';
+            if (poiPlaceMode) {
+                currentPoiType = 'viewpoint';
+                if (tripDetailMap) {
+                    tripDetailMap.getContainer().style.cursor = 'crosshair';
+                    tripDetailMap.on('click', onPoiPlaceClick);
+                }
+            } else {
+                currentPoiType = null;
+                if (tripDetailMap) {
+                    tripDetailMap.getContainer().style.cursor = '';
+                    tripDetailMap.off('click', onPoiPlaceClick);
+                }
+            }
+        }
+
+        function placePoiOnMap(type) {
+            currentPoiType = type;
+            if (tripDetailMap) {
+                tripDetailMap.getContainer().style.cursor = 'crosshair';
+            }
+        }
+
+        function onPoiDragStart(e, type) {
+            currentPoiType = type;
+            e.dataTransfer.setData('text/plain', type);
+        }
+
+        const POI_ICONS = {
+            viewpoint: '📸', restaurant: '🍽️', hotel: '🏨', attraction: '⭐', danger: '⚠️'
+        };
+
+        function onPoiPlaceClick(e) {
+            if (!poiPlaceMode || !currentPoiType || !tripDetailMap) return;
+            const ll = [e.latlng.lat, e.latlng.lng];
+            const icon = L.divIcon({
+                className: 'custom-poi-marker',
+                html: `<div style="font-size:1.3rem;text-shadow:0 2px 6px rgba(0,0,0,0.4);cursor:pointer;" title="${currentPoiType}">${POI_ICONS[currentPoiType] || '📍'}</div>`,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
+            });
+            const marker = L.marker(ll, { icon, draggable: true }).addTo(tripDetailMap);
+            const poiName = prompt('Name this point of interest:', currentPoiType.charAt(0).toUpperCase() + currentPoiType.slice(1));
+            if (poiName) {
+                marker.bindPopup(`<strong>${POI_ICONS[currentPoiType]} ${poiName}</strong><br><em>${currentPoiType}</em><br><button onclick="this.closest('.leaflet-popup').remove()" style="margin-top:6px;padding:3px 10px;font-size:0.7rem;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;">Close</button>`);
+            }
+            userPlacedPois.push({ type: currentPoiType, lat: ll[0], lng: ll[1], name: poiName || currentPoiType, marker });
+            poiPlaceCounts[currentPoiType] = (poiPlaceCounts[currentPoiType] || 0) + 1;
+            const countEl = document.getElementById('poiCount_' + currentPoiType);
+            if (countEl) countEl.textContent = poiPlaceCounts[currentPoiType];
+        }
+
+        // ==================== NIGHT MODE FOR MAP ====================
+        let nightModeActive = false;
+        let nightTileLayer = null;
+
+        function toggleNightMode() {
+            nightModeActive = !nightModeActive;
+            const toggle = document.getElementById('nightModeToggle');
+            const label = document.getElementById('nightModeLabel');
+            if (!tripDetailMap) return;
+
+            if (nightModeActive) {
+                if (toggle) toggle.classList.add('night-active');
+                if (label) label.textContent = 'Day Mode';
+                // Apply dark tiles
+                nightTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '© CARTO, © OpenStreetMap',
+                    maxZoom: 19
+                });
+                tripDetailMap.eachLayer(l => {
+                    if (l instanceof L.TileLayer) tripDetailMap.removeLayer(l);
+                });
+                nightTileLayer.addTo(tripDetailMap);
+            } else {
+                if (toggle) toggle.classList.remove('night-active');
+                if (label) label.textContent = 'Night Mode';
+                if (nightTileLayer) tripDetailMap.removeLayer(nightTileLayer);
+                // Restore default tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap',
+                    maxZoom: 19
+                }).addTo(tripDetailMap);
+                nightTileLayer = null;
             }
         }
 
