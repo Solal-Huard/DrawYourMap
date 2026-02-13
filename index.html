@@ -3517,185 +3517,505 @@
         }
 
         /* Expert Local Card */
-        .expert-local-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+        /* ==================== BOOKING SECTION – PREMIUM DARK THEME ==================== */
+        .bk-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .bk-hero {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            margin-bottom: 28px;
+        }
+        .bk-hero-icon {
+            width: 56px; height: 56px;
             border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .expert-local-card:hover {
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-        .expert-local-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 18px 20px;
-            background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .expert-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #2D3E33, #3d5247);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-size: 1.3rem;
-            font-weight: 700;
+            background: linear-gradient(135deg, #E07A5F, #d4694e);
+            display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
-        .expert-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .expert-name {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #0f172a;
+        .bk-hero h2 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #f1f5f9; letter-spacing: -0.02em; }
+        .bk-hero p { margin: 4px 0 0; font-size: 0.88rem; color: #94a3b8; }
+
+        /* --- Category Tabs --- */
+        .bk-tabs {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            gap: 6px;
+            margin-bottom: 24px;
+            padding: 4px;
+            background: #1e1e32;
+            border-radius: 14px;
+            overflow-x: auto;
         }
-        .expert-certified-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: #ffffff;
-            font-size: 0.6rem;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .expert-specialty {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 2px;
-        }
-        .expert-local-body {
-            padding: 16px 20px;
-        }
-        .expert-description {
-            font-size: 0.85rem;
-            color: #475569;
-            line-height: 1.55;
-            margin-bottom: 14px;
-        }
-        .expert-stats {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        .expert-stat {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        .expert-stat strong {
-            color: #0f172a;
-            font-weight: 700;
-        }
-        .expert-actions {
-            display: flex;
-            gap: 10px;
-        }
-        .expert-btn-primary {
+        .bk-tab {
             flex: 1;
             padding: 10px 16px;
-            background: linear-gradient(135deg, #2D3E33, #3d5247);
-            color: #ffffff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #94a3b8;
+            background: transparent;
             border: none;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.25s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            white-space: nowrap;
         }
-        .expert-btn-primary:hover {
-            background: linear-gradient(135deg, #3d5247, #4a6358);
-            box-shadow: 0 4px 16px rgba(45, 62, 51, 0.3);
+        .bk-tab:hover { color: #e2e8f0; background: rgba(255,255,255,0.05); }
+        .bk-tab.active {
+            background: linear-gradient(135deg, #E07A5F, #d4694e);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(224, 122, 95, 0.3);
         }
-        .expert-btn-secondary {
-            padding: 10px 16px;
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+        .bk-tab i, .bk-tab svg { width: 14px; height: 14px; }
+
+        /* --- Section panels --- */
+        .bk-section { display: none; }
+        .bk-section.active { display: block; }
+
+        /* --- Card Grid --- */
+        .bk-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
-        .expert-btn-secondary:hover {
-            background: #e2e8f0;
-            color: #1e293b;
-        }
-        .expert-experiences {
+        @media (min-width: 640px) { .bk-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 960px) { .bk-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        /* --- The Card --- */
+        .bk-card {
+            background: #1e1e32;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid #f1f5f9;
         }
-        .expert-experience-item {
+        .bk-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35), 0 0 0 1px rgba(224, 122, 95, 0.15);
+            border-color: rgba(224, 122, 95, 0.2);
+        }
+        .bk-card.featured {
+            border: 1.5px solid rgba(224, 122, 95, 0.4);
+            box-shadow: 0 0 0 1px rgba(224, 122, 95, 0.08), 0 8px 30px rgba(224, 122, 95, 0.08);
+        }
+        .bk-card.featured:hover {
+            box-shadow: 0 20px 50px rgba(224, 122, 95, 0.15), 0 0 0 1px rgba(224, 122, 95, 0.3);
+        }
+
+        /* --- Card Image Area --- */
+        .bk-card-img {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+            background: #16213e;
+        }
+        .bk-card-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .bk-card:hover .bk-card-img img { transform: scale(1.08); }
+        .bk-card-img::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(0deg, rgba(30,30,50,0.7) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .bk-card-img .bk-badge-row {
+            position: absolute;
+            top: 12px; left: 12px; right: 12px;
+            display: flex;
+            gap: 6px;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+        .bk-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            backdrop-filter: blur(8px);
+        }
+        .bk-badge.coup-coeur { background: rgba(239, 68, 68, 0.85); color: #fff; }
+        .bk-badge.expert-local { background: rgba(34, 197, 94, 0.85); color: #fff; }
+        .bk-badge.best-price { background: rgba(59, 130, 246, 0.85); color: #fff; }
+        .bk-badge.sponsored { background: rgba(224, 122, 95, 0.9); color: #fff; }
+        .bk-badge.new { background: rgba(139, 92, 246, 0.85); color: #fff; }
+        .bk-badge i, .bk-badge svg { width: 10px; height: 10px; }
+
+        .bk-card-price-tag {
+            position: absolute;
+            bottom: 12px; left: 12px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 2;
+        }
+        .bk-card-price-tag small {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: #cbd5e1;
+            margin-right: 2px;
+        }
+
+        .bk-card-wishlist {
+            position: absolute;
+            top: 12px; right: 12px;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(8px);
+            border: none;
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 3;
+        }
+        .bk-card-wishlist:hover { background: rgba(239, 68, 68, 0.7); transform: scale(1.1); }
+        .bk-card-wishlist.saved { background: #ef4444; }
+
+        /* --- Card Body --- */
+        .bk-card-body {
+            padding: 16px 18px 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .bk-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin: 0 0 6px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .bk-card-desc {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin: 0 0 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+        .bk-card-meta {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 14px;
-            background: #f8fafc;
+            margin-bottom: 10px;
+        }
+        .bk-stars {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        .bk-stars .bk-star-count {
+            color: #94a3b8;
+            font-weight: 400;
+            font-size: 0.7rem;
+            margin-left: 2px;
+        }
+        .bk-popularity {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            color: #ef4444;
+            font-weight: 600;
+        }
+        .bk-popularity-dot {
+            width: 6px; height: 6px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: bk-pulse 1.5s infinite;
+        }
+        @keyframes bk-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* --- Pro Tip --- */
+        .bk-protip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #E07A5F;
+            cursor: pointer;
+            padding: 4px 0;
+            margin-bottom: 8px;
+        }
+        .bk-protip i, .bk-protip svg { width: 12px; height: 12px; }
+        .bk-protip-bubble {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 0; right: 0;
+            background: #0f172a;
+            border: 1px solid rgba(224, 122, 95, 0.25);
+            color: #e2e8f0;
+            font-size: 0.72rem;
+            font-weight: 400;
+            line-height: 1.45;
+            padding: 10px 14px;
             border-radius: 12px;
-            border: 1px solid #f1f5f9;
-            transition: all 0.2s ease;
+            margin-bottom: 6px;
+            z-index: 20;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            white-space: normal;
         }
-        .expert-experience-item:hover {
-            background: #f1f5f9;
-            border-color: #e2e8f0;
+        .bk-protip-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -6px; left: 20px;
+            width: 12px; height: 12px;
+            background: #0f172a;
+            border-right: 1px solid rgba(224, 122, 95, 0.25);
+            border-bottom: 1px solid rgba(224, 122, 95, 0.25);
+            transform: rotate(45deg);
         }
-        .experience-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(224, 122, 95, 0.1);
+        .bk-protip:hover .bk-protip-bubble,
+        .bk-protip.active .bk-protip-bubble { display: block; }
+
+        /* --- Card Footer / CTA --- */
+        .bk-card-footer {
+            padding: 0 18px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .bk-cta {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            gap: 6px;
+            width: 100%;
+            padding: 11px 16px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #E07A5F, #c9684e);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
-        .experience-info {
-            flex: 1;
+        .bk-cta:hover {
+            background: linear-gradient(135deg, #d4694e, #b85a40);
+            box-shadow: 0 8px 24px rgba(224, 122, 95, 0.35);
+            transform: translateY(-1px);
         }
-        .experience-name {
-            font-size: 0.85rem;
+        .bk-cta i, .bk-cta svg { width: 14px; height: 14px; }
+        .bk-cta-secondary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 9px 16px;
+            font-size: 0.75rem;
             font-weight: 600;
-            color: #0f172a;
+            color: #94a3b8;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
         }
-        .experience-detail {
+        .bk-cta-secondary:hover { background: rgba(255,255,255,0.08); color: #e2e8f0; border-color: rgba(255,255,255,0.15); }
+        .bk-cta-secondary i, .bk-cta-secondary svg { width: 12px; height: 12px; }
+
+        .bk-partner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.62rem;
+            color: #64748b;
+            font-style: italic;
+            padding-top: 2px;
+        }
+        .bk-partner-icon {
+            width: 14px; height: 14px;
+            border-radius: 3px;
+            background: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.5rem; font-weight: 800; color: #1e293b;
+        }
+
+        /* --- Expert Card (full-width variant) --- */
+        .bk-expert-card {
+            grid-column: 1 / -1;
+            display: flex;
+            background: #1e1e32;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bk-expert-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+        .bk-expert-left {
+            width: 260px;
+            min-height: 220px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 24px;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            position: relative;
+        }
+        .bk-expert-avatar {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E07A5F, #d4694e);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 800;
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+        .bk-expert-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            text-align: center;
+        }
+        .bk-expert-specialty {
             font-size: 0.72rem;
             color: #94a3b8;
+            text-align: center;
         }
-        .experience-price {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #E07A5F;
-            white-space: nowrap;
+        .bk-expert-right {
+            flex: 1;
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .bk-expert-desc {
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            line-height: 1.55;
+        }
+        .bk-expert-stats-row {
+            display: flex;
+            gap: 20px;
+        }
+        .bk-expert-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .bk-expert-stat strong { color: #f1f5f9; font-weight: 700; }
+        .bk-expert-xps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .bk-expert-xp {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            flex: 1;
+            min-width: 200px;
+            transition: all 0.2s;
+        }
+        .bk-expert-xp:hover { background: rgba(255,255,255,0.07); border-color: rgba(224, 122, 95, 0.2); }
+        .bk-expert-xp-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: rgba(224, 122, 95, 0.12);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .bk-expert-xp-name { font-size: 0.8rem; font-weight: 600; color: #f1f5f9; }
+        .bk-expert-xp-detail { font-size: 0.68rem; color: #64748b; }
+        .bk-expert-xp-price { font-size: 0.85rem; font-weight: 700; color: #E07A5F; margin-left: auto; white-space: nowrap; }
+        .bk-expert-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        /* Responsive: expert card stacks on mobile */
+        @media (max-width: 768px) {
+            .bk-expert-card { flex-direction: column; }
+            .bk-expert-left { width: 100%; min-height: auto; padding: 20px; flex-direction: row; gap: 16px; }
+            .bk-expert-avatar { width: 56px; height: 56px; font-size: 1.2rem; }
+            .bk-expert-xps { flex-direction: column; }
+            .bk-expert-xp { min-width: unset; }
+        }
+
+        /* --- Copied Toast --- */
+        .bk-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e1e32;
+            color: #f1f5f9;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(224, 122, 95, 0.25);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        .bk-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
         /* Packing List */
@@ -9335,51 +9655,51 @@
                 </div>
             </div>
 
-            <!-- Booking Tab -->
+            <!-- Booking Tab – Premium Dark UI -->
             <div class="trip-tab-content" id="tab-booking">
-                <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px;">
-                    <!-- Booking Header -->
-                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 4px;">
-                        <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #E07A5F, #d4694e); display: flex; align-items: center; justify-content: center;">
-                            <i data-lucide="ticket" style="width:24px;height:24px;color:#fff;"></i>
+                <div class="bk-container">
+                    <!-- Hero Header -->
+                    <div class="bk-hero">
+                        <div class="bk-hero-icon">
+                            <i data-lucide="ticket" style="width:26px;height:26px;color:#fff;"></i>
                         </div>
                         <div>
-                            <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #0f172a;">Book Experiences</h2>
-                            <p style="margin: 2px 0 0; font-size: 0.85rem; color: #64748b;">Curated activities, guided tours & immersive local experiences</p>
+                            <h2>Book Experiences</h2>
+                            <p>Curated activities, guided tours & immersive local experiences</p>
                         </div>
                     </div>
 
-                    <!-- Expert Locals Section -->
-                    <div>
-                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 16px; display: flex; align-items: center; gap: 8px;">
-                            <i data-lucide="shield-check" style="width:18px;height:18px;color:#22c55e;"></i> Certified Local Experts
-                        </h3>
-                        <div id="bookingExperts" style="display: flex; flex-direction: column; gap: 16px;">
-                            <!-- Populated dynamically -->
-                        </div>
+                    <!-- Category Tabs -->
+                    <div class="bk-tabs" id="bkTabs">
+                        <button class="bk-tab active" data-bk="experts" onclick="switchBookingSection('experts')">
+                            <i data-lucide="shield-check"></i> Local Experts
+                        </button>
+                        <button class="bk-tab" data-bk="activities" onclick="switchBookingSection('activities')">
+                            <i data-lucide="compass"></i> Activities
+                        </button>
+                        <button class="bk-tab" data-bk="accommodations" onclick="switchBookingSection('accommodations')">
+                            <i data-lucide="bed-double"></i> Where to Stay
+                        </button>
                     </div>
 
-                    <!-- Affiliate Activities Section -->
-                    <div>
-                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 16px; display: flex; align-items: center; gap: 8px;">
-                            <i data-lucide="compass" style="width:18px;height:18px;color:#E07A5F;"></i> Popular Activities
-                            <span style="font-size: 0.65rem; color: #94a3b8; font-weight: 400; font-style: italic; margin-left: auto;">Affiliate links</span>
-                        </h3>
-                        <div id="bookingActivities" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
-                            <!-- Populated dynamically -->
-                        </div>
+                    <!-- Experts Section -->
+                    <div class="bk-section active" id="bkSectionExperts">
+                        <div class="bk-grid" id="bookingExperts"></div>
                     </div>
 
-                    <!-- Accommodations -->
-                    <div>
-                        <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 16px; display: flex; align-items: center; gap: 8px;">
-                            <i data-lucide="bed-double" style="width:18px;height:18px;color:#8b5cf6;"></i> Where to Stay
-                        </h3>
-                        <div id="bookingAccommodations" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
-                            <!-- Populated dynamically -->
-                        </div>
+                    <!-- Activities Section -->
+                    <div class="bk-section" id="bkSectionActivities">
+                        <div class="bk-grid" id="bookingActivities"></div>
+                    </div>
+
+                    <!-- Accommodations Section -->
+                    <div class="bk-section" id="bkSectionAccommodations">
+                        <div class="bk-grid" id="bookingAccommodations"></div>
                     </div>
                 </div>
+
+                <!-- Shared Toast -->
+                <div class="bk-toast" id="bkToast">Link copied!</div>
             </div>
 
         </div>
@@ -13947,186 +14267,279 @@
             }
         }
 
-        // ========== BOOKING TAB – Expert Locals + Activities + Accommodations ==========
+        // ========== BOOKING TAB – PREMIUM DARK UI (Airbnb / GYG style) ==========
+
+        function switchBookingSection(section) {
+            document.querySelectorAll('#bkTabs .bk-tab').forEach(t => t.classList.toggle('active', t.dataset.bk === section));
+            document.querySelectorAll('.bk-section').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById('bkSection' + section.charAt(0).toUpperCase() + section.slice(1));
+            if (target) target.classList.add('active');
+        }
+
+        // Utility: show toast
+        function bkShowToast(msg) {
+            const toast = document.getElementById('bkToast');
+            if (!toast) return;
+            toast.textContent = msg || 'Link copied!';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        // Utility: share link
+        function bkShareLink(title, url) {
+            const shareText = title + ' — ' + url;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText).then(() => bkShowToast('Link copied to clipboard!')).catch(() => bkShowToast('Could not copy'));
+            } else {
+                bkShowToast('Share: ' + shareText);
+            }
+        }
+
+        // Utility: toggle protip
+        function bkToggleProTip(el) {
+            el.classList.toggle('active');
+        }
+
+        // ——— High-quality Unsplash images keyed by activity/country type ———
+        const bkImages = {
+            photography: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop',
+            food: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop',
+            hiking: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop',
+            offroad: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&h=400&fit=crop',
+            cultural: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&h=400&fit=crop',
+            wildlife: 'https://images.unsplash.com/photo-1474511320723-9a56873571b7?w=600&h=400&fit=crop',
+            camping: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&h=400&fit=crop',
+            cabin: 'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=600&h=400&fit=crop',
+            hotel: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop',
+            vanlife: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=600&h=400&fit=crop',
+            sunset: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop',
+            mountain: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop',
+            desert: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&h=400&fit=crop',
+            glacier: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&h=400&fit=crop',
+            coast: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop'
+        };
+
         function populateBookingTab(trip) {
             if (!trip) return;
             const country = trip.country || 'Unknown';
-            const region = trip.region || 'Europe';
             const name = trip.name || 'Road Trip';
 
-            // Generate Expert Locals for this trip
+            // Reset to first tab
+            switchBookingSection('experts');
+
+            // ======= EXPERTS =======
             const experts = generateLocalExperts(trip);
             const expertsContainer = document.getElementById('bookingExperts');
             if (expertsContainer) {
-                expertsContainer.innerHTML = experts.map(exp => `
-                    <div class="expert-local-card">
-                        <div class="expert-local-header">
-                            <div class="expert-avatar">${exp.initials}</div>
-                            <div class="expert-info">
-                                <div class="expert-name">
-                                    ${exp.name}
-                                    <span class="expert-certified-badge">
-                                        <i data-lucide="shield-check" style="width:10px;height:10px;"></i> Certified
-                                    </span>
-                                </div>
-                                <div class="expert-specialty">${exp.specialty} · ${country}</div>
-                            </div>
+                expertsContainer.innerHTML = experts.map((exp, idx) => {
+                    const isFeatured = idx === 0;
+                    const popularity = Math.floor(Math.random() * 15) + 5;
+                    const proTip = exp.proTip || 'Book at least 2 weeks in advance for the best availability with this guide.';
+                    return `
+                    <div class="bk-expert-card ${isFeatured ? 'featured' : ''}">
+                        <div class="bk-expert-left">
+                            ${isFeatured ? '<span class="bk-badge sponsored" style="position:absolute;top:12px;left:12px;"><i data-lucide="award" style="width:10px;height:10px;"></i> Recommended</span>' : ''}
+                            <div class="bk-expert-avatar">${exp.initials}</div>
+                            <div class="bk-expert-name">${exp.name}</div>
+                            <div class="bk-expert-specialty">${exp.specialty}</div>
+                            <span class="bk-badge expert-local" style="margin-top:4px;"><i data-lucide="shield-check" style="width:10px;height:10px;"></i> Certified</span>
                         </div>
-                        <div class="expert-local-body">
-                            <div class="expert-description">${exp.description}</div>
-                            <div class="expert-stats">
-                                <div class="expert-stat"><i data-lucide="star" style="width:12px;height:12px;color:#f59e0b;"></i> <strong>${exp.rating}</strong>/5</div>
-                                <div class="expert-stat"><i data-lucide="users" style="width:12px;height:12px;"></i> <strong>${exp.tripsDone}</strong> trips</div>
-                                <div class="expert-stat"><i data-lucide="message-circle" style="width:12px;height:12px;"></i> <strong>${exp.languages}</strong></div>
+                        <div class="bk-expert-right">
+                            <div class="bk-expert-desc">${exp.description}</div>
+                            <div class="bk-expert-stats-row">
+                                <div class="bk-expert-stat"><i data-lucide="star" style="width:13px;height:13px;color:#fbbf24;"></i> <strong>${exp.rating}</strong>/5</div>
+                                <div class="bk-expert-stat"><i data-lucide="users" style="width:13px;height:13px;"></i> <strong>${exp.tripsDone}</strong> trips</div>
+                                <div class="bk-expert-stat"><i data-lucide="globe" style="width:13px;height:13px;"></i> <strong>${exp.languages}</strong></div>
+                                <div class="bk-popularity"><span class="bk-popularity-dot"></span> Booked ${popularity} times today</div>
                             </div>
-                            <div class="expert-experiences">
+                            <div class="bk-protip" onclick="bkToggleProTip(this)">
+                                <i data-lucide="lightbulb" style="width:12px;height:12px;"></i> Pro Tip
+                                <div class="bk-protip-bubble">${proTip}</div>
+                            </div>
+                            <div class="bk-expert-xps">
                                 ${exp.experiences.map(xp => `
-                                    <div class="expert-experience-item">
-                                        <div class="experience-icon"><i data-lucide="${xp.icon}" style="width:18px;height:18px;color:#E07A5F;"></i></div>
-                                        <div class="experience-info">
-                                            <div class="experience-name">${xp.name}</div>
-                                            <div class="experience-detail">${xp.duration} · ${xp.type}</div>
+                                    <div class="bk-expert-xp">
+                                        <div class="bk-expert-xp-icon"><i data-lucide="${xp.icon}" style="width:16px;height:16px;color:#E07A5F;"></i></div>
+                                        <div>
+                                            <div class="bk-expert-xp-name">${xp.name}</div>
+                                            <div class="bk-expert-xp-detail">${xp.duration} · ${xp.type}</div>
                                         </div>
-                                        <div class="experience-price">${xp.price}</div>
+                                        <span class="bk-expert-xp-price">${xp.price}</span>
                                     </div>
                                 `).join('')}
                             </div>
-                            <div class="expert-actions" style="margin-top: 16px;">
-                                <button class="expert-btn-primary" onclick="contactExpert('${exp.id}')">
-                                    <i data-lucide="phone" style="width:14px;height:14px;"></i> Contact
-                                </button>
-                                <button class="expert-btn-secondary" onclick="bookExpert('${exp.id}')">
-                                    <i data-lucide="calendar" style="width:14px;height:14px;"></i> Book
+                            <div class="bk-expert-actions">
+                                <a href="https://www.getyourguide.com/s/?q=${encodeURIComponent(exp.name + ' ' + country)}" target="_blank" rel="noopener sponsored" class="bk-cta" style="flex:1;">
+                                    <i data-lucide="calendar-check" style="width:14px;height:14px;"></i> Check Availability
+                                </a>
+                                <button class="bk-cta-secondary" onclick="bkShareLink('${exp.name} – ${country}', 'https://www.getyourguide.com/s/?q=${encodeURIComponent(exp.name + ' ' + country)}')">
+                                    <i data-lucide="share-2" style="width:12px;height:12px;"></i> Share
                                 </button>
                             </div>
+                            <div class="bk-partner"><div class="bk-partner-icon">G</div> via GetYourGuide — Trusted Partner</div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`;
+                }).join('');
             }
 
-            // Affiliate Activities (GetYourGuide-style)
+            // ======= ACTIVITIES =======
             const activities = generateAffiliateActivities(trip);
             const activitiesContainer = document.getElementById('bookingActivities');
             if (activitiesContainer) {
-                activitiesContainer.innerHTML = activities.map(act => `
-                    <div class="recommendation-item" style="flex-direction: column; padding: 0; overflow: hidden; border-radius: 14px;">
-                        <div style="height: 120px; background: linear-gradient(135deg, ${act.bgFrom}, ${act.bgTo}); display: flex; align-items: center; justify-content: center;">
-                            <i data-lucide="${act.icon}" style="width:40px;height:40px;color:rgba(255,255,255,0.9);"></i>
-                        </div>
-                        <div style="padding: 14px 16px;">
-                            <div class="rec-title" style="margin-bottom: 4px;">${act.title}</div>
-                            <div class="rec-desc">${act.desc}</div>
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
-                                <span style="font-size: 1rem; font-weight: 700; color: #0f172a;">${act.price}</span>
-                                <a href="${act.url}" target="_blank" rel="noopener sponsored" class="rec-booking-link">
-                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> Book Now
-                                </a>
+                activitiesContainer.innerHTML = activities.map((act, idx) => {
+                    const isFeatured = act.featured || idx === 0;
+                    const popularity = Math.floor(Math.random() * 20) + 8;
+                    const reviewCount = Math.floor(Math.random() * 400) + 50;
+                    return `
+                    <div class="bk-card ${isFeatured ? 'featured' : ''}">
+                        <div class="bk-card-img">
+                            <img src="${act.image}" alt="${act.title}" loading="lazy" onerror="this.style.display='none'">
+                            <div class="bk-badge-row">
+                                ${isFeatured ? '<span class="bk-badge coup-coeur"><i data-lucide="heart" style="width:10px;height:10px;"></i> Coup de coeur</span>' : ''}
+                                ${act.badge ? `<span class="bk-badge ${act.badge.class}"><i data-lucide="${act.badge.icon}" style="width:10px;height:10px;"></i> ${act.badge.label}</span>` : ''}
                             </div>
-                            <span class="rec-affiliate-badge">via GetYourGuide</span>
+                            <button class="bk-card-wishlist" onclick="event.stopPropagation(); this.classList.toggle('saved');" title="Save">
+                                <i data-lucide="heart" style="width:16px;height:16px;"></i>
+                            </button>
+                            <div class="bk-card-price-tag"><small>From</small> ${act.price}</div>
                         </div>
-                    </div>
-                `).join('');
+                        <div class="bk-card-body">
+                            <h4 class="bk-card-title">${act.title}</h4>
+                            <p class="bk-card-desc">${act.desc}</p>
+                            <div class="bk-card-meta">
+                                <div class="bk-stars">★ ${act.rating} <span class="bk-star-count">(${reviewCount})</span></div>
+                                <div class="bk-popularity"><span class="bk-popularity-dot"></span> ${popularity}x today</div>
+                            </div>
+                            <div class="bk-protip" onclick="bkToggleProTip(this)">
+                                <i data-lucide="lightbulb" style="width:12px;height:12px;"></i> Pro Tip
+                                <div class="bk-protip-bubble">${act.proTip || 'Book early morning slots to avoid crowds and get the best light for photos.'}</div>
+                            </div>
+                        </div>
+                        <div class="bk-card-footer">
+                            <a href="${act.url}" target="_blank" rel="noopener sponsored" class="bk-cta">
+                                <i data-lucide="calendar-check" style="width:14px;height:14px;"></i> Check Availability
+                            </a>
+                            <button class="bk-cta-secondary" onclick="bkShareLink('${act.title.replace(/'/g, "\\'")}', '${act.url}')">
+                                <i data-lucide="share-2" style="width:12px;height:12px;"></i> Share this deal
+                            </button>
+                            <div class="bk-partner"><div class="bk-partner-icon">G</div> via GetYourGuide</div>
+                        </div>
+                    </div>`;
+                }).join('');
             }
 
-            // Accommodations
+            // ======= ACCOMMODATIONS =======
             const accommodations = generateAccommodations(trip);
             const accomContainer = document.getElementById('bookingAccommodations');
             if (accomContainer) {
-                accomContainer.innerHTML = accommodations.map(acc => `
-                    <div class="recommendation-item" style="flex-direction: column; padding: 0; overflow: hidden; border-radius: 14px;">
-                        <div style="height: 90px; background: linear-gradient(135deg, ${acc.bgFrom}, ${acc.bgTo}); display: flex; align-items: center; justify-content: center; position: relative;">
-                            <i data-lucide="${acc.icon}" style="width:32px;height:32px;color:rgba(255,255,255,0.9);"></i>
-                            <span style="position:absolute; top:10px; right:10px; background: rgba(0,0,0,0.5); color: #fff; font-size: 0.65rem; padding: 2px 8px; border-radius: 8px;">${acc.type}</span>
-                        </div>
-                        <div style="padding: 14px 16px;">
-                            <div class="rec-title" style="margin-bottom: 2px;">${acc.name}</div>
-                            <div class="rec-desc">${acc.location}</div>
-                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 6px;">
-                                <i data-lucide="star" style="width:12px;height:12px;color:#f59e0b;"></i>
-                                <span style="font-size: 0.8rem; font-weight: 600; color: #0f172a;">${acc.rating}</span>
-                                <span style="font-size: 0.7rem; color: #94a3b8;">(${acc.reviews} reviews)</span>
+                accomContainer.innerHTML = accommodations.map((acc, idx) => {
+                    const isFeatured = idx === 1;
+                    const popularity = Math.floor(Math.random() * 12) + 3;
+                    return `
+                    <div class="bk-card ${isFeatured ? 'featured' : ''}">
+                        <div class="bk-card-img">
+                            <img src="${acc.image}" alt="${acc.name}" loading="lazy" onerror="this.style.display='none'">
+                            <div class="bk-badge-row">
+                                ${isFeatured ? '<span class="bk-badge best-price"><i data-lucide="tag" style="width:10px;height:10px;"></i> Best Price</span>' : ''}
+                                <span class="bk-badge new">${acc.type}</span>
                             </div>
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
-                                <span style="font-size: 1rem; font-weight: 700; color: #0f172a;">${acc.price}<span style="font-size: 0.7rem; font-weight: 400; color: #94a3b8;">/night</span></span>
-                                <a href="${acc.url}" target="_blank" rel="noopener sponsored" class="rec-booking-link" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-                                    <i data-lucide="external-link" style="width:12px;height:12px;"></i> View
-                                </a>
+                            <button class="bk-card-wishlist" onclick="event.stopPropagation(); this.classList.toggle('saved');" title="Save">
+                                <i data-lucide="heart" style="width:16px;height:16px;"></i>
+                            </button>
+                            <div class="bk-card-price-tag">${acc.price}<small>/night</small></div>
+                        </div>
+                        <div class="bk-card-body">
+                            <h4 class="bk-card-title">${acc.name}</h4>
+                            <p class="bk-card-desc">${acc.location}</p>
+                            <div class="bk-card-meta">
+                                <div class="bk-stars">★ ${acc.rating} <span class="bk-star-count">(${acc.reviews})</span></div>
+                                <div class="bk-popularity"><span class="bk-popularity-dot"></span> ${popularity}x today</div>
+                            </div>
+                            <div class="bk-protip" onclick="bkToggleProTip(this)">
+                                <i data-lucide="lightbulb" style="width:12px;height:12px;"></i> Pro Tip
+                                <div class="bk-protip-bubble">${acc.proTip || 'Book with free cancellation to keep your road trip flexible.'}</div>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                        <div class="bk-card-footer">
+                            <a href="${acc.url}" target="_blank" rel="noopener sponsored" class="bk-cta" ${acc.type === 'Hotel' || acc.type === 'Cabin' ? 'style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);"' : ''}>
+                                <i data-lucide="calendar-check" style="width:14px;height:14px;"></i> Check Availability
+                            </a>
+                            <button class="bk-cta-secondary" onclick="bkShareLink('${acc.name.replace(/'/g, "\\'")}', '${acc.url}')">
+                                <i data-lucide="share-2" style="width:12px;height:12px;"></i> Share this deal
+                            </button>
+                            <div class="bk-partner"><div class="bk-partner-icon">B</div> via Booking.com</div>
+                        </div>
+                    </div>`;
+                }).join('');
             }
 
-            // Re-init icons for booking tab
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            // Re-init Lucide icons
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 100);
         }
 
-        // Generate contextual local experts based on trip data
+        // ——— Data generators (enriched with images, badges, proTips) ———
+
         function generateLocalExperts(trip) {
             const country = trip.country || 'Unknown';
             const expertDb = {
                 'Norway': [
-                    { id: 'exp-no-1', name: 'Erik Nordfjord', initials: 'EN', specialty: 'Arctic & Fjord Expert', description: 'Former park ranger with 15 years guiding through Norway\'s most remote fjords and Arctic landscapes. Specializes in winter driving and Northern Lights excursions.', rating: 4.9, tripsDone: 342, languages: 'NO, EN, DE', experiences: [
+                    { id: 'exp-no-1', name: 'Erik Nordfjord', initials: 'EN', specialty: 'Arctic & Fjord Expert', description: 'Former park ranger with 15 years guiding through Norway\'s most remote fjords and Arctic landscapes. Specializes in winter driving and Northern Lights excursions.', rating: 4.9, tripsDone: 342, languages: 'NO, EN, DE', proTip: 'Tip: Book Erik\'s Northern Lights Chase on a clear-forecast night – he offers free rebooking if clouds roll in.', experiences: [
                         { name: 'Private Fjord Photography Tour', duration: '6h', type: 'Guided tour', price: '€189', icon: 'camera' },
                         { name: 'Northern Lights Chase', duration: '4h', type: 'Night expedition', price: '€149', icon: 'sparkles' },
                         { name: 'Off-Road Arctic Adventure', duration: '2 days', type: 'Expedition', price: '€490', icon: 'mountain' }
                     ]}
                 ],
                 'Iceland': [
-                    { id: 'exp-is-1', name: 'Sigrid Björnsdóttir', initials: 'SB', specialty: 'Highland & Geothermal Guide', description: 'Certified Highland guide specializing in F-road navigation, volcanic landscapes and hidden hot springs. Over 200 guided expeditions in Iceland\'s interior.', rating: 4.8, tripsDone: 218, languages: 'IS, EN', experiences: [
+                    { id: 'exp-is-1', name: 'Sigrid Björnsdóttir', initials: 'SB', specialty: 'Highland & Geothermal Guide', description: 'Certified Highland guide specializing in F-road navigation, volcanic landscapes and hidden hot springs. Over 200 guided expeditions in Iceland\'s interior.', rating: 4.8, tripsDone: 218, languages: 'IS, EN', proTip: 'Tip: Sigrid knows 3 secret hot springs not on any map – ask about the "hidden trio" experience.', experiences: [
                         { name: 'F-Road Expedition (Landmannalaugar)', duration: '10h', type: 'Full day', price: '€275', icon: 'mountain' },
                         { name: 'Secret Hot Springs Tour', duration: '5h', type: 'Guided tour', price: '€165', icon: 'flame' },
                         { name: 'Ice Cave & Glacier Walk', duration: '4h', type: 'Adventure', price: '€195', icon: 'snowflake' }
                     ]}
                 ],
                 'Scotland': [
-                    { id: 'exp-sc-1', name: 'Angus McLeod', initials: 'AM', specialty: 'Highlands & Whisky Trail', description: 'Born and raised in the Scottish Highlands. Expert in single-track road navigation, wildlife spotting, and curated whisky distillery experiences.', rating: 4.7, tripsDone: 156, languages: 'EN, GD', experiences: [
+                    { id: 'exp-sc-1', name: 'Angus McLeod', initials: 'AM', specialty: 'Highlands & Whisky Trail', description: 'Born and raised in the Scottish Highlands. Expert in single-track road navigation, wildlife spotting, and curated whisky distillery experiences.', rating: 4.7, tripsDone: 156, languages: 'EN, GD', proTip: 'Tip: Angus has VIP access to closed distillery sessions – request the "Master\'s Reserve" option.', experiences: [
                         { name: 'NC500 Guided Drive (3 days)', duration: '3 days', type: 'Multi-day', price: '£680', icon: 'map' },
                         { name: 'Highland Wildlife Safari', duration: '6h', type: 'Nature tour', price: '£120', icon: 'binoculars' },
                         { name: 'Whisky Trail Tasting', duration: '4h', type: 'Cultural', price: '£95', icon: 'wine' }
                     ]}
                 ],
                 'USA': [
-                    { id: 'exp-us-1', name: 'Jake Sullivan', initials: 'JS', specialty: 'Desert & Canyon Overlander', description: 'Veteran overlander with 20+ years exploring America\'s Southwest. Expert in 4x4 trail navigation, desert survival, and national park backcountry access.', rating: 4.9, tripsDone: 520, languages: 'EN, ES', experiences: [
+                    { id: 'exp-us-1', name: 'Jake Sullivan', initials: 'JS', specialty: 'Desert & Canyon Overlander', description: 'Veteran overlander with 20+ years exploring America\'s Southwest. Expert in 4x4 trail navigation, desert survival, and national park backcountry access.', rating: 4.9, tripsDone: 520, languages: 'EN, ES', proTip: 'Tip: Jake can get you backcountry permits for restricted trails in Moab – ask 4 weeks ahead.', experiences: [
                         { name: 'Moab 4x4 Adventure (2 days)', duration: '2 days', type: 'Off-road', price: '$450', icon: 'truck' },
                         { name: 'Grand Canyon Rim-to-Rim Guide', duration: '8h', type: 'Hiking', price: '$220', icon: 'mountain' },
                         { name: 'Desert Star Photography', duration: '4h', type: 'Night tour', price: '$150', icon: 'camera' }
                     ]}
                 ],
                 'Australia': [
-                    { id: 'exp-au-1', name: 'Mia Kowalski', initials: 'MK', specialty: 'Outback & Coastal Expert', description: 'Indigenous-approved tour guide with deep knowledge of Australian bush routes, marine wildlife, and Aboriginal cultural heritage sites.', rating: 4.8, tripsDone: 289, languages: 'EN', experiences: [
+                    { id: 'exp-au-1', name: 'Mia Kowalski', initials: 'MK', specialty: 'Outback & Coastal Expert', description: 'Indigenous-approved tour guide with deep knowledge of Australian bush routes, marine wildlife, and Aboriginal cultural heritage sites.', rating: 4.8, tripsDone: 289, languages: 'EN', proTip: 'Tip: Mia\'s Uluru ceremony includes a private Anangu elder welcome – truly once-in-a-lifetime.', experiences: [
                         { name: 'Great Ocean Road VIP Tour', duration: '10h', type: 'Full day', price: 'A$310', icon: 'waves' },
                         { name: 'Outback Survival & Bush Tucker', duration: '6h', type: 'Cultural', price: 'A$195', icon: 'leaf' },
                         { name: 'Uluru Sunrise Ceremony', duration: '4h', type: 'Cultural', price: 'A$175', icon: 'sunrise' }
                     ]}
                 ],
                 'New Zealand': [
-                    { id: 'exp-nz-1', name: 'Tane Aroha', initials: 'TA', specialty: 'South Island & Alpine Guide', description: 'Certified mountain guide and Māori cultural ambassador. Expert in alpine driving conditions, glacier access, and off-grid camping throughout New Zealand.', rating: 4.9, tripsDone: 175, languages: 'EN, MI', experiences: [
+                    { id: 'exp-nz-1', name: 'Tane Aroha', initials: 'TA', specialty: 'South Island & Alpine Guide', description: 'Certified mountain guide and Māori cultural ambassador. Expert in alpine driving conditions, glacier access, and off-grid camping throughout New Zealand.', rating: 4.9, tripsDone: 175, languages: 'EN, MI', proTip: 'Tip: Tane offers a "sunrise-to-sunset" combo: Milford Sound + alpine drive at a 20% discount.', experiences: [
                         { name: 'Milford Sound Private Charter', duration: '6h', type: 'Boat tour', price: 'NZ$380', icon: 'anchor' },
                         { name: 'Alpine 4WD Expedition', duration: '8h', type: 'Off-road', price: 'NZ$290', icon: 'mountain' },
                         { name: 'Māori Cultural Immersion', duration: '3h', type: 'Cultural', price: 'NZ$120', icon: 'flame' }
                     ]}
                 ],
                 'Namibia': [
-                    { id: 'exp-na-1', name: 'Kgosi Mweneni', initials: 'KM', specialty: 'Desert & Safari Expert', description: 'Third-generation safari guide born in the Namib. Specialist in desert-adapted wildlife tracking, sand dune navigation, and Himba community immersion.', rating: 4.9, tripsDone: 412, languages: 'EN, AF, OT', experiences: [
+                    { id: 'exp-na-1', name: 'Kgosi Mweneni', initials: 'KM', specialty: 'Desert & Safari Expert', description: 'Third-generation safari guide born in the Namib. Specialist in desert-adapted wildlife tracking, sand dune navigation, and Himba community immersion.', rating: 4.9, tripsDone: 412, languages: 'EN, AF, OT', proTip: 'Tip: Kgosi\'s 3-day Skeleton Coast expedition includes a fly-in segment over the shipwrecks – incredible!', experiences: [
                         { name: 'Skeleton Coast Expedition', duration: '3 days', type: 'Multi-day', price: '$890', icon: 'compass' },
                         { name: 'Sossusvlei Sunrise & Photography', duration: '5h', type: 'Guided tour', price: '$150', icon: 'camera' },
                         { name: 'Himba Village Cultural Visit', duration: '4h', type: 'Cultural', price: '$120', icon: 'users' }
                     ]}
                 ]
             };
-            // Find matching experts or generate a generic one
             let experts = expertDb[country];
             if (!experts || experts.length === 0) {
                 experts = [{
-                    id: 'exp-gen-1',
-                    name: 'Local Expert',
-                    initials: country.substring(0, 2).toUpperCase(),
+                    id: 'exp-gen-1', name: 'Local Expert', initials: country.substring(0, 2).toUpperCase(),
                     specialty: country + ' Road Trip Specialist',
                     description: `Experienced local guide offering curated ${country} road trip experiences. Expert knowledge of local roads, hidden gems, and cultural insights.`,
-                    rating: 4.7,
-                    tripsDone: Math.floor(Math.random() * 200) + 50,
-                    languages: 'EN, Local',
+                    rating: 4.7, tripsDone: Math.floor(Math.random() * 200) + 50, languages: 'EN, Local',
+                    proTip: 'Tip: Contact this guide directly for custom multi-day itineraries at group discounts.',
                     experiences: [
                         { name: 'Guided Scenic Drive', duration: '6h', type: 'Guided tour', price: '€150', icon: 'map' },
                         { name: 'Local Food & Culture Tour', duration: '4h', type: 'Cultural', price: '€95', icon: 'utensils' },
@@ -14137,41 +14550,30 @@
             return experts;
         }
 
-        // Generate contextual affiliate activities
         function generateAffiliateActivities(trip) {
             const country = trip.country || 'Unknown';
             const baseUrl = 'https://www.getyourguide.com/s/?q=';
             const query = encodeURIComponent(trip.name + ' ' + country);
-            const gradients = [
-                { from: '#E07A5F', to: '#d4694e' },
-                { from: '#2D3E33', to: '#3d5247' },
-                { from: '#8b5cf6', to: '#7c3aed' },
-                { from: '#0891b2', to: '#0e7490' }
+            const activities = [
+                { icon: 'camera', title: `${country} Photography Tour`, desc: `Capture stunning landscapes with a professional photographer guide along the ${trip.name} route.`, price: '€89', rating: 4.8, image: bkImages.photography, featured: true, badge: { class: 'coup-coeur', icon: 'heart', label: 'Coup de coeur' }, proTip: 'Arrive 30 min before the scheduled time to catch the best golden hour light.' },
+                { icon: 'utensils', title: `Local Food Experience`, desc: `Taste authentic ${country} cuisine at hidden gems and local markets along your road trip.`, price: '€65', rating: 4.7, image: bkImages.food, badge: { class: 'best-price', icon: 'tag', label: 'Best Price' }, proTip: 'Ask your guide for the "off-menu" local speciality – they always know one!' },
+                { icon: 'mountain', title: `Guided Nature Hike`, desc: `Explore scenic trails and viewpoints near the ${trip.name} with an experienced naturalist.`, price: '€45', rating: 4.6, image: bkImages.hiking, badge: { class: 'expert-local', icon: 'shield-check', label: 'Expert Local' }, proTip: 'Bring water shoes – many of the best viewpoints require small stream crossings.' },
+                { icon: 'compass', title: `Off-Road Adventure`, desc: `Get off the beaten path with a guided 4x4 experience through ${country}'s wild terrain.`, price: '€120', rating: 4.9, image: bkImages.offroad, badge: { class: 'new', icon: 'sparkles', label: 'New' }, proTip: 'This tour has limited 6-person groups – book ahead for a private-feel experience.' },
+                { icon: 'binoculars', title: `Wildlife Safari Drive`, desc: `Spot ${country}'s iconic wildlife from the comfort of an expert-driven safari vehicle.`, price: '€95', rating: 4.8, image: bkImages.wildlife, badge: null, proTip: 'Dawn departures have 3x more wildlife sightings than afternoon slots.' },
+                { icon: 'sparkles', title: `Sunset Cultural Tour`, desc: `Experience local traditions, music, and storytelling as the sun sets over ${country}'s landscapes.`, price: '€75', rating: 4.5, image: bkImages.cultural, badge: null, proTip: 'This tour is BYOB-friendly – grab local wine at the first stop!' }
             ];
-            const activityTypes = [
-                { icon: 'camera', title: `${country} Photography Tour`, desc: `Capture stunning landscapes with a professional photographer guide along the ${trip.name} route.`, price: 'From €89' },
-                { icon: 'utensils', title: `Local Food Experience`, desc: `Taste authentic ${country} cuisine at hidden gems and local markets along your road trip.`, price: 'From €65' },
-                { icon: 'mountain', title: `Guided Nature Hike`, desc: `Explore scenic trails and viewpoints near the ${trip.name} with an experienced naturalist.`, price: 'From €45' },
-                { icon: 'compass', title: `Off-Road Adventure`, desc: `Get off the beaten path with a guided 4x4 experience through ${country}'s wild terrain.`, price: 'From €120' }
-            ];
-            return activityTypes.map((act, i) => ({
-                ...act,
-                bgFrom: gradients[i % gradients.length].from,
-                bgTo: gradients[i % gradients.length].to,
-                url: baseUrl + query
-            }));
+            return activities.map(act => ({ ...act, url: baseUrl + query }));
         }
 
-        // Generate contextual accommodations
         function generateAccommodations(trip) {
             const country = trip.country || 'Unknown';
             const baseUrl = 'https://www.booking.com/searchresults.html?ss=';
             const query = encodeURIComponent(country + ' road trip');
             const types = [
-                { icon: 'tent', type: 'Campsite', name: `Wild Camp ${country}`, location: `Along the ${trip.name} route`, rating: 4.6, reviews: Math.floor(Math.random() * 300) + 50, price: '€25', bgFrom: '#22c55e', bgTo: '#16a34a' },
-                { icon: 'home', type: 'Cabin', name: `Mountain Lodge`, location: `Scenic viewpoint near ${trip.name}`, rating: 4.8, reviews: Math.floor(Math.random() * 200) + 30, price: '€85', bgFrom: '#8b5cf6', bgTo: '#7c3aed' },
-                { icon: 'bed-double', type: 'Hotel', name: `Roadside Inn & Spa`, location: `Midpoint of ${trip.name}`, rating: 4.5, reviews: Math.floor(Math.random() * 500) + 100, price: '€110', bgFrom: '#0891b2', bgTo: '#0e7490' },
-                { icon: 'caravan', type: 'Vanlife Spot', name: `Overlander Park`, location: `Free parking near ${trip.name}`, rating: 4.3, reviews: Math.floor(Math.random() * 150) + 20, price: 'Free', bgFrom: '#E07A5F', bgTo: '#d4694e' }
+                { icon: 'tent', type: 'Campsite', name: `Wild Camp ${country}`, location: `Along the ${trip.name} route`, rating: 4.6, reviews: Math.floor(Math.random() * 300) + 50, price: '€25', image: bkImages.camping, proTip: 'Arrive before 4 PM to snag the best spots with a view – they fill fast in summer.' },
+                { icon: 'home', type: 'Cabin', name: `Mountain Lodge & Spa`, location: `Scenic viewpoint near ${trip.name}`, rating: 4.8, reviews: Math.floor(Math.random() * 200) + 30, price: '€85', image: bkImages.cabin, proTip: 'Ask for a room upgrade at check-in – midweek stays often get free bumps.' },
+                { icon: 'bed-double', type: 'Hotel', name: `Roadside Inn & Spa`, location: `Midpoint of ${trip.name}`, rating: 4.5, reviews: Math.floor(Math.random() * 500) + 100, price: '€110', image: bkImages.hotel, proTip: 'Book the "road tripper" package – includes early breakfast and a packed lunch to go.' },
+                { icon: 'truck', type: 'Vanlife Spot', name: `Overlander Park`, location: `Free parking near ${trip.name}`, rating: 4.3, reviews: Math.floor(Math.random() * 150) + 20, price: 'Free', image: bkImages.vanlife, proTip: 'This spot has free showers and electric hookups – rare for a free park!' }
             ];
             return types.map(t => ({ ...t, url: baseUrl + query }));
         }
