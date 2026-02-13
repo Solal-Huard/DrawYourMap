@@ -302,6 +302,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Leaflet CSS for road maps -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <style>
         * {
             margin: 0;
@@ -8371,6 +8373,295 @@
         .vehicle-badge.motorcycle { background: #fef3c7; color: #92400e; }
         .vehicle-badge.fourx4 { background: #dcfce7; color: #166534; }
         .vehicle-badge.car { background: #f1f5f9; color: #475569; }
+
+        /* ==================== ROUTE MODULE V2 – NESTED FILTERS ==================== */
+        .poi-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        .poi-filter-group {
+            position: relative;
+        }
+        .poi-filter-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .poi-filter-toggle:hover { border-color: #cbd5e1; color: var(--text-primary); }
+        .poi-filter-toggle.active { background: rgba(224,122,95,0.12); border-color: var(--brand-orange); color: var(--brand-orange); }
+        .poi-filter-toggle.has-sub::after { content: '▾'; font-size: 0.6rem; margin-left: 2px; }
+        .poi-filter-toggle i, .poi-filter-toggle svg { width: 14px; height: 14px; }
+        .poi-filter-toggle .poi-f-count {
+            padding: 1px 7px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .poi-filter-toggle.active .poi-f-count { background: rgba(224,122,95,0.2); }
+
+        .poi-sub-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+            min-width: 220px;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+            z-index: 100;
+            animation: poiSubIn 0.15s ease;
+        }
+        .poi-filter-group.open .poi-sub-menu { display: block; }
+        @keyframes poiSubIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        .poi-sub-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #334155;
+            transition: all 0.15s;
+        }
+        .poi-sub-item:hover { background: #f1f5f9; }
+        .poi-sub-item.active { background: rgba(224,122,95,0.08); color: var(--brand-orange); font-weight: 600; }
+        .poi-sub-check {
+            width: 18px; height: 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 5px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .poi-sub-item.active .poi-sub-check { background: var(--brand-orange); border-color: var(--brand-orange); color: #fff; }
+        .poi-sub-icon { font-size: 1.1rem; }
+        .poi-sub-label { flex: 1; }
+        .poi-sub-count { font-size: 0.65rem; color: #94a3b8; }
+
+        /* Night-mode compat for all new Route V2 components */
+        .night-mode-toggle.night-active ~ .poi-sub-menu,
+        .night-active .poi-sub-menu {
+            background: #1e1e32;
+            border-color: rgba(255,255,255,0.1);
+        }
+        .night-active .poi-sub-item { color: #e2e8f0; }
+        .night-active .poi-sub-item:hover { background: rgba(255,255,255,0.06); }
+        .night-active .poi-sub-check { border-color: rgba(255,255,255,0.2); }
+        .night-active .poi-filter-toggle { background: rgba(30,41,59,0.8); border-color: rgba(255,255,255,0.1); color: #94a3b8; }
+        .night-active .poi-filter-toggle:hover { color: #e2e8f0; }
+        .night-active .poi-filter-toggle.active { background: rgba(224,122,95,0.2); }
+        .night-active .poi-drag-panel { background: rgba(15,23,42,0.95); border-color: rgba(255,255,255,0.1); }
+        .night-active .poi-drag-item { background: rgba(30,41,59,0.8); border-color: rgba(255,255,255,0.1); color: #94a3b8; }
+
+        /* ==================== COMMUNITY VALIDATION (POI Popups) ==================== */
+        .poi-popup-v2 { min-width: 260px; font-family: 'Inter', system-ui, sans-serif; }
+        .poi-popup-v2 .poi-v2-header {
+            display: flex; align-items: center; gap: 10px;
+            padding-bottom: 10px; margin-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .poi-v2-icon-wrap {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .poi-v2-title { font-weight: 700; font-size: 0.92rem; color: #0f172a; }
+        .poi-v2-type { font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.03em; }
+        .poi-v2-verified {
+            display: inline-flex; align-items: center; gap: 3px;
+            padding: 2px 8px; border-radius: 8px; font-size: 0.6rem; font-weight: 700;
+            background: #dcfce7; color: #166534;
+            text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .poi-v2-details { font-size: 0.8rem; color: #475569; line-height: 1.5; }
+        .poi-v2-details p { margin: 3px 0; }
+        .poi-v2-tip {
+            margin-top: 8px; padding: 8px 10px;
+            background: #f0f9ff; border-radius: 8px; border-left: 3px solid #0ea5e9;
+            font-size: 0.75rem; color: #0369a1;
+        }
+        .poi-v2-vote-row {
+            display: flex; align-items: center; gap: 8px;
+            margin-top: 10px; padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .poi-v2-vote-label { font-size: 0.72rem; color: #64748b; font-weight: 500; }
+        .poi-v2-vote-btn {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px; border: 1px solid #e2e8f0; border-radius: 8px;
+            background: #fff; font-size: 0.72rem; font-weight: 600;
+            cursor: pointer; transition: all 0.15s; color: #475569;
+        }
+        .poi-v2-vote-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
+        .poi-v2-vote-btn.voted-up { background: #dcfce7; border-color: #86efac; color: #166534; }
+        .poi-v2-vote-btn.voted-down { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+        .poi-v2-vote-count { font-size: 0.65rem; color: #94a3b8; margin-left: auto; }
+        .poi-v2-report {
+            display: flex; gap: 6px; margin-top: 8px;
+        }
+        .poi-v2-report-btn {
+            flex: 1; padding: 5px; text-align: center; font-size: 0.68rem;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+            cursor: pointer; transition: all 0.15s; color: #64748b; font-weight: 500;
+        }
+        .poi-v2-report-btn:hover { background: #f1f5f9; color: #334155; }
+        .poi-v2-actions {
+            display: flex; gap: 6px; margin-top: 8px;
+        }
+        .poi-v2-actions a, .poi-v2-actions button {
+            flex: 1; padding: 7px 6px; text-align: center;
+            background: #f3f4f6; border-radius: 8px; text-decoration: none;
+            font-size: 0.73rem; color: #374151; font-weight: 500;
+            border: none; cursor: pointer; transition: all 0.15s;
+        }
+        .poi-v2-actions a:hover, .poi-v2-actions button:hover { background: #e5e7eb; }
+
+        /* ==================== PREMIUM / PARTNER POI ==================== */
+        .poi-marker-icon.premium {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: 2px solid #fbbf24;
+            box-shadow: 0 2px 10px rgba(245,158,11,0.4), 0 0 0 3px rgba(245,158,11,0.15);
+            animation: premiumPulse 2s infinite;
+        }
+        @keyframes premiumPulse {
+            0%, 100% { box-shadow: 0 2px 10px rgba(245,158,11,0.4), 0 0 0 3px rgba(245,158,11,0.15); }
+            50% { box-shadow: 0 2px 14px rgba(245,158,11,0.6), 0 0 0 6px rgba(245,158,11,0.1); }
+        }
+        .poi-v2-partner-badge {
+            display: inline-flex; align-items: center; gap: 3px;
+            padding: 2px 8px; border-radius: 8px; font-size: 0.6rem; font-weight: 700;
+            background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e;
+            border: 1px solid #fcd34d;
+            text-transform: uppercase;
+        }
+        .poi-v2-book-btn {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            width: 100%; padding: 9px; margin-top: 8px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff; font-size: 0.8rem; font-weight: 700;
+            border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.25s; text-decoration: none;
+        }
+        .poi-v2-book-btn:hover { box-shadow: 0 6px 20px rgba(245,158,11,0.35); transform: translateY(-1px); }
+
+        /* ==================== ADD POI MODAL (Structured) ==================== */
+        .add-poi-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: none; align-items: center; justify-content: center;
+        }
+        .add-poi-overlay.active { display: flex; }
+        .add-poi-modal {
+            background: #fff;
+            border-radius: 20px;
+            width: 420px; max-width: 95vw;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+            animation: poiModalIn 0.2s ease;
+        }
+        @keyframes poiModalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } }
+        .add-poi-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 22px; border-bottom: 1px solid #f1f5f9;
+        }
+        .add-poi-header h3 { margin: 0; font-size: 1.1rem; font-weight: 700; color: #0f172a; }
+        .add-poi-close {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: none; background: #f1f5f9; font-size: 1.1rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: #64748b; transition: all 0.15s;
+        }
+        .add-poi-close:hover { background: #e2e8f0; color: #0f172a; }
+        .add-poi-body { padding: 20px 22px; }
+        .add-poi-field { margin-bottom: 16px; }
+        .add-poi-label {
+            display: block; font-size: 0.78rem; font-weight: 600;
+            color: #334155; margin-bottom: 6px;
+        }
+        .add-poi-input, .add-poi-textarea, .add-poi-select {
+            width: 100%; padding: 10px 14px;
+            border: 1px solid #e2e8f0; border-radius: 10px;
+            font-size: 0.88rem; font-family: inherit; color: #0f172a;
+            transition: border-color 0.2s;
+        }
+        .add-poi-input:focus, .add-poi-textarea:focus, .add-poi-select:focus {
+            outline: none; border-color: var(--brand-orange);
+        }
+        .add-poi-textarea { min-height: 70px; resize: vertical; }
+        .add-poi-cat-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        }
+        .add-poi-cat-btn {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 12px 6px; border: 2px solid #e2e8f0; border-radius: 12px;
+            background: #fff; cursor: pointer; transition: all 0.15s;
+            font-size: 0.72rem; font-weight: 600; color: #64748b;
+        }
+        .add-poi-cat-btn:hover { border-color: #cbd5e1; }
+        .add-poi-cat-btn.selected { border-color: var(--brand-orange); background: rgba(224,122,95,0.06); color: var(--brand-orange); }
+        .add-poi-cat-btn .cat-icon { font-size: 1.3rem; }
+        .add-poi-address {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 14px; background: #f8fafc; border-radius: 10px;
+            border: 1px solid #e2e8f0; font-size: 0.82rem; color: #475569;
+            min-height: 42px;
+        }
+        .add-poi-address i { color: var(--brand-orange); flex-shrink: 0; }
+        .add-poi-photo-area {
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px; border: 2px dashed #e2e8f0; border-radius: 12px;
+            cursor: pointer; transition: all 0.15s; text-align: center;
+            font-size: 0.8rem; color: #94a3b8; min-height: 80px;
+        }
+        .add-poi-photo-area:hover { border-color: var(--brand-orange); background: rgba(224,122,95,0.03); }
+        .add-poi-photo-area.has-photo { border-style: solid; border-color: #22c55e; color: #166534; background: #f0fdf4; }
+        .add-poi-footer {
+            display: flex; gap: 10px; padding: 16px 22px; border-top: 1px solid #f1f5f9;
+        }
+        .add-poi-submit {
+            flex: 1; padding: 11px; background: linear-gradient(135deg, #E07A5F, #c9684e);
+            color: #fff; font-size: 0.88rem; font-weight: 700;
+            border: none; border-radius: 12px; cursor: pointer; transition: all 0.25s;
+        }
+        .add-poi-submit:hover { box-shadow: 0 6px 20px rgba(224,122,95,0.3); }
+        .add-poi-cancel {
+            padding: 11px 20px; background: #f1f5f9; color: #475569;
+            border: none; border-radius: 12px; cursor: pointer; font-weight: 600;
+            font-size: 0.88rem; transition: all 0.15s;
+        }
+        .add-poi-cancel:hover { background: #e2e8f0; }
+
+        /* ==================== CLUSTER OVERRIDES ==================== */
+        .marker-cluster-small { background: rgba(224,122,95,0.25); }
+        .marker-cluster-small div { background: rgba(224,122,95,0.7); color: #fff; font-weight: 700; }
+        .marker-cluster-medium { background: rgba(224,122,95,0.35); }
+        .marker-cluster-medium div { background: rgba(224,122,95,0.8); color: #fff; font-weight: 700; }
+        .marker-cluster-large { background: rgba(224,122,95,0.45); }
+        .marker-cluster-large div { background: rgba(224,122,95,0.9); color: #fff; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -9309,13 +9600,55 @@
                         </div>
                         <div class="route-map-header">
                             <h3><i data-lucide="map" style="width:18px;height:18px;vertical-align:-3px;margin-right:6px;"></i> Route Map</h3>
-                            <div class="route-poi-toggles" id="tripRoutePoiToggles">
-                                <button type="button" class="route-poi-btn active" data-poi="fuel" title="Fuel"><svg class="icon" aria-hidden="true"><use href="#icon-fuel"></use></svg> Fuel</button>
-                                <button type="button" class="route-poi-btn active" data-poi="campsiteFree" title="Free camping"><svg class="icon" aria-hidden="true"><use href="#icon-tent"></use></svg> Camp (free)</button>
-                                <button type="button" class="route-poi-btn active" data-poi="campsitePaid" title="Paid camping"><svg class="icon" aria-hidden="true"><use href="#icon-tent"></use></svg> Camp (paid)</button>
-                                <button type="button" class="route-poi-btn active" data-poi="grocery" title="Food & shops"><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> Food</button>
-                                <button type="button" class="route-poi-btn" data-poi="viewpoint" title="Viewpoints"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg> Views</button>
-                                <button type="button" class="route-poi-btn" style="background:var(--brand-orange);color:#fff;border-color:var(--brand-orange);" onclick="togglePoiPlaceMode()" title="Add POI to map"><i data-lucide="plus-circle" style="width:14px;height:14px;"></i> Add POI</button>
+                            <div class="poi-filter-bar" id="tripRoutePoiToggles">
+                                <!-- Fuel -->
+                                <div class="poi-filter-group" id="pfg-fuel">
+                                    <button class="poi-filter-toggle active" data-poi="fuel" onclick="togglePoiFilter('fuel')"><svg class="icon" aria-hidden="true"><use href="#icon-fuel"></use></svg> Fuel <span class="poi-f-count" id="pfc-fuel">0</span></button>
+                                </div>
+                                <!-- Camp (nested) -->
+                                <div class="poi-filter-group" id="pfg-camp">
+                                    <button class="poi-filter-toggle has-sub active" onclick="togglePoiSubMenu('pfg-camp')"><svg class="icon" aria-hidden="true"><use href="#icon-tent"></use></svg> Camp <span class="poi-f-count" id="pfc-camp">0</span></button>
+                                    <div class="poi-sub-menu">
+                                        <div class="poi-sub-item active" data-sub="campsiteFree" onclick="togglePoiSub('campsiteFree', this)">
+                                            <span class="poi-sub-check">✓</span><span class="poi-sub-icon">⛺</span><span class="poi-sub-label">Wild spot with a view</span><span class="poi-sub-count" id="pfc-campsiteFree">0</span>
+                                        </div>
+                                        <div class="poi-sub-item active" data-sub="campsitePaid" onclick="togglePoiSub('campsitePaid', this)">
+                                            <span class="poi-sub-check">✓</span><span class="poi-sub-icon">🏕️</span><span class="poi-sub-label">Full-service Campsite</span><span class="poi-sub-count" id="pfc-campsitePaid">0</span>
+                                        </div>
+                                        <div class="poi-sub-item" data-sub="overnightParking" onclick="togglePoiSub('overnightParking', this)">
+                                            <span class="poi-sub-check"></span><span class="poi-sub-icon">🅿️</span><span class="poi-sub-label">Overnight Parking allowed</span><span class="poi-sub-count" id="pfc-overnightParking">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Food (nested) -->
+                                <div class="poi-filter-group" id="pfg-food">
+                                    <button class="poi-filter-toggle has-sub active" onclick="togglePoiSubMenu('pfg-food')"><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> Food <span class="poi-f-count" id="pfc-food">0</span></button>
+                                    <div class="poi-sub-menu">
+                                        <div class="poi-sub-item active" data-sub="grocery" onclick="togglePoiSub('grocery', this)">
+                                            <span class="poi-sub-check">✓</span><span class="poi-sub-icon">🛒</span><span class="poi-sub-label">Supermarket</span><span class="poi-sub-count" id="pfc-grocery">0</span>
+                                        </div>
+                                        <div class="poi-sub-item" data-sub="localProducer" onclick="togglePoiSub('localProducer', this)">
+                                            <span class="poi-sub-check"></span><span class="poi-sub-icon">🧑‍🌾</span><span class="poi-sub-label">Local Producer</span><span class="poi-sub-count" id="pfc-localProducer">0</span>
+                                        </div>
+                                        <div class="poi-sub-item" data-sub="organicRestaurant" onclick="togglePoiSub('organicRestaurant', this)">
+                                            <span class="poi-sub-check"></span><span class="poi-sub-icon">🥗</span><span class="poi-sub-label">Organic Restaurant</span><span class="poi-sub-count" id="pfc-organicRestaurant">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Views -->
+                                <div class="poi-filter-group" id="pfg-viewpoint">
+                                    <button class="poi-filter-toggle" data-poi="viewpoint" onclick="togglePoiFilter('viewpoint')"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg> Views <span class="poi-f-count" id="pfc-viewpoint">0</span></button>
+                                </div>
+                                <!-- Water -->
+                                <div class="poi-filter-group" id="pfg-water">
+                                    <button class="poi-filter-toggle" data-poi="water" onclick="togglePoiFilter('water')"><i data-lucide="droplets" style="width:14px;height:14px;"></i> Water</button>
+                                </div>
+                                <!-- Premium -->
+                                <div class="poi-filter-group" id="pfg-premium">
+                                    <button class="poi-filter-toggle" data-poi="premium" onclick="togglePoiFilter('premium')" style="border-color:#f59e0b;color:#d97706;"><i data-lucide="star" style="width:14px;height:14px;"></i> Partners</button>
+                                </div>
+                                <!-- Add POI -->
+                                <button class="poi-filter-toggle" style="background:var(--brand-orange);color:#fff;border-color:var(--brand-orange);" onclick="openAddPoiModal()" title="Add POI"><i data-lucide="plus-circle" style="width:14px;height:14px;"></i> Add POI</button>
                             </div>
                         </div>
                         <div class="route-map-container" id="tripDetailMapContainer" style="position:relative;">
@@ -9334,36 +9667,15 @@
                                 <span class="legend-poi"><svg class="icon icon--sm" aria-hidden="true"><use href="#icon-document"></use></svg> Courses</span>
                                 <span class="legend-poi"><svg class="icon icon--sm" aria-hidden="true"><use href="#icon-camera"></use></svg> Points de vue</span>
                             </div>
-                            <!-- POI Drag & Drop Panel -->
-                            <div class="poi-drag-panel" id="poiDragPanel" style="display:none;">
-                                <div class="poi-drag-item" draggable="true" data-poi-type="viewpoint" ondragstart="onPoiDragStart(event, 'viewpoint')" onclick="placePoiOnMap('viewpoint')">
-                                    <span class="poi-drag-icon">📸</span>
-                                    <span>Viewpoint</span>
-                                    <span class="poi-placed-count" id="poiCount_viewpoint">0</span>
+                            <!-- POI Placement Indicator -->
+                            <div class="poi-drag-panel" id="poiPlaceIndicator" style="display:none;">
+                                <div class="poi-drag-item" style="border-color:var(--brand-orange);color:var(--brand-orange);border-style:solid;cursor:default;">
+                                    <span class="poi-drag-icon" id="poiPlaceIconPreview">📍</span>
+                                    <span id="poiPlaceCatLabel">Click on the map</span>
                                 </div>
-                                <div class="poi-drag-item" draggable="true" data-poi-type="restaurant" ondragstart="onPoiDragStart(event, 'restaurant')" onclick="placePoiOnMap('restaurant')">
-                                    <span class="poi-drag-icon">🍽️</span>
-                                    <span>Restaurant</span>
-                                    <span class="poi-placed-count" id="poiCount_restaurant">0</span>
-                                </div>
-                                <div class="poi-drag-item" draggable="true" data-poi-type="hotel" ondragstart="onPoiDragStart(event, 'hotel')" onclick="placePoiOnMap('hotel')">
-                                    <span class="poi-drag-icon">🏨</span>
-                                    <span>Hotel</span>
-                                    <span class="poi-placed-count" id="poiCount_hotel">0</span>
-                                </div>
-                                <div class="poi-drag-item" draggable="true" data-poi-type="attraction" ondragstart="onPoiDragStart(event, 'attraction')" onclick="placePoiOnMap('attraction')">
-                                    <span class="poi-drag-icon">⭐</span>
-                                    <span>Attraction</span>
-                                    <span class="poi-placed-count" id="poiCount_attraction">0</span>
-                                </div>
-                                <div class="poi-drag-item" draggable="true" data-poi-type="danger" ondragstart="onPoiDragStart(event, 'danger')" onclick="placePoiOnMap('danger')">
-                                    <span class="poi-drag-icon">⚠️</span>
-                                    <span>Warning</span>
-                                    <span class="poi-placed-count" id="poiCount_danger">0</span>
-                                </div>
-                                <button class="poi-drag-item" style="border-style:solid;border-color:#ef4444;color:#ef4444;" onclick="togglePoiPlaceMode()">
+                                <button class="poi-drag-item" style="border-style:solid;border-color:#ef4444;color:#ef4444;" onclick="cancelPoiPlacement()">
                                     <span class="poi-drag-icon">✕</span>
-                                    <span>Done</span>
+                                    <span>Cancel</span>
                                 </button>
                             </div>
                         </div>
@@ -9702,6 +10014,67 @@
                 <div class="bk-toast" id="bkToast">Link copied!</div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- Structured Add POI Modal -->
+    <div class="add-poi-overlay" id="addPoiOverlay">
+        <div class="add-poi-modal">
+            <div class="add-poi-header">
+                <h3><i data-lucide="map-pin" style="width:18px;height:18px;vertical-align:-3px;margin-right:6px;color:var(--brand-orange);"></i> Add Point of Interest</h3>
+                <button class="add-poi-close" onclick="closeAddPoiModal()">×</button>
+            </div>
+            <div class="add-poi-body">
+                <!-- Step 1: Category -->
+                <div class="add-poi-field">
+                    <label class="add-poi-label">Category *</label>
+                    <div class="add-poi-cat-grid" id="addPoiCatGrid">
+                        <button class="add-poi-cat-btn" data-cat="viewpoint" onclick="selectAddPoiCat('viewpoint', this)"><span class="cat-icon">📸</span> Viewpoint</button>
+                        <button class="add-poi-cat-btn" data-cat="restaurant" onclick="selectAddPoiCat('restaurant', this)"><span class="cat-icon">🍽️</span> Restaurant</button>
+                        <button class="add-poi-cat-btn" data-cat="hotel" onclick="selectAddPoiCat('hotel', this)"><span class="cat-icon">🏨</span> Hotel</button>
+                        <button class="add-poi-cat-btn" data-cat="campsiteFree" onclick="selectAddPoiCat('campsiteFree', this)"><span class="cat-icon">⛺</span> Wild Camp</button>
+                        <button class="add-poi-cat-btn" data-cat="fuel" onclick="selectAddPoiCat('fuel', this)"><span class="cat-icon">⛽</span> Fuel</button>
+                        <button class="add-poi-cat-btn" data-cat="grocery" onclick="selectAddPoiCat('grocery', this)"><span class="cat-icon">🛒</span> Grocery</button>
+                        <button class="add-poi-cat-btn" data-cat="danger" onclick="selectAddPoiCat('danger', this)"><span class="cat-icon">⚠️</span> Warning</button>
+                        <button class="add-poi-cat-btn" data-cat="water" onclick="selectAddPoiCat('water', this)"><span class="cat-icon">💧</span> Water</button>
+                        <button class="add-poi-cat-btn" data-cat="attraction" onclick="selectAddPoiCat('attraction', this)"><span class="cat-icon">⭐</span> Attraction</button>
+                    </div>
+                </div>
+                <!-- Step 2: Location (auto-populated via reverse geocoding) -->
+                <div class="add-poi-field">
+                    <label class="add-poi-label">Location (click map to set) *</label>
+                    <div class="add-poi-address" id="addPoiAddress">
+                        <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
+                        <span id="addPoiAddressText">Click on the map to set location...</span>
+                    </div>
+                    <input type="hidden" id="addPoiLat">
+                    <input type="hidden" id="addPoiLng">
+                </div>
+                <!-- Step 3: Name -->
+                <div class="add-poi-field">
+                    <label class="add-poi-label">Name *</label>
+                    <input class="add-poi-input" id="addPoiName" placeholder="e.g. Sunset Viewpoint, Boulangerie Marcel...">
+                </div>
+                <!-- Step 4: Pro-Tip -->
+                <div class="add-poi-field">
+                    <label class="add-poi-label">💡 Pro-Tip (practical advice)</label>
+                    <textarea class="add-poi-textarea" id="addPoiTip" placeholder="e.g. Arrive 30 min before sunset for the best view. Parking available 200m below."></textarea>
+                </div>
+                <!-- Step 5: Photo -->
+                <div class="add-poi-field">
+                    <label class="add-poi-label">Photo (optional)</label>
+                    <div class="add-poi-photo-area" id="addPoiPhotoArea" onclick="document.getElementById('addPoiPhotoInput').click()">
+                        <span id="addPoiPhotoLabel"><i data-lucide="camera" style="width:20px;height:20px;"></i><br>Click to upload a photo</span>
+                    </div>
+                    <input type="file" id="addPoiPhotoInput" accept="image/*" style="display:none" onchange="handlePoiPhotoUpload(event)">
+                </div>
+            </div>
+            <div class="add-poi-footer">
+                <button class="add-poi-cancel" onclick="closeAddPoiModal()">Cancel</button>
+                <button class="add-poi-submit" id="addPoiSubmitBtn" onclick="submitAddPoi()" disabled>
+                    <i data-lucide="check" style="width:16px;height:16px;vertical-align:-2px;margin-right:4px;"></i> Add to Map
+                </button>
+            </div>
         </div>
     </div>
 
@@ -10115,6 +10488,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
     <script>
@@ -10732,24 +11106,14 @@
 
         // POI Layer Groups for Road Map
         let poiLayers = {
-            campsiteFree: null,
-            campsitePaid: null,
-            fuel: null,
-            grocery: null,
-            water: null,
-            viewpoint: null,
-            restArea: null,
-            mechanic: null
+            campsiteFree: null, campsitePaid: null, overnightParking: null,
+            fuel: null, grocery: null, localProducer: null, organicRestaurant: null,
+            water: null, viewpoint: null, restArea: null, mechanic: null, premium: null
         };
         let poiVisible = {
-            campsiteFree: false,
-            campsitePaid: false,
-            fuel: false,
-            grocery: false,
-            water: false,
-            viewpoint: false,
-            restArea: false,
-            mechanic: false
+            campsiteFree: false, campsitePaid: false, overnightParking: false,
+            fuel: false, grocery: false, localProducer: false, organicRestaurant: false,
+            water: false, viewpoint: false, restArea: false, mechanic: false, premium: false
         };
 
         // Preparation data: visas, vaccines, legal by destination country and nationality
@@ -10994,9 +11358,78 @@
                 { lat: 65.6835, lng: -18.0878, name: 'Akureyri Garage', region: 'Iceland Ring', country: 'Iceland', type: 'Full Service', tip: 'Only major service in North' },
                 { lat: 57.4778, lng: -4.2247, name: 'Halfords Inverness', region: 'NC500', country: 'Scotland', type: 'Parts & Basic', tip: 'Good for parts and basics' },
                 { lat: -38.3583, lng: 144.0500, name: 'Repco Geelong', region: 'Great Ocean Road', country: 'Australia', type: 'Parts', tip: 'Auto parts chain' }
+            ],
+            // ============ NEW: LOCAL PRODUCERS ============
+            localProducer: [
+                { lat: 43.7696, lng: 11.2558, name: 'Fattoria Toscana', region: 'Italy', country: 'Italy', tip: 'Fresh olive oil & wine tasting', type: 'Farm shop' },
+                { lat: 40.6337, lng: 14.6027, name: 'Limoni di Amalfi', region: 'Amalfi', country: 'Italy', tip: 'Famous local lemons, limoncello', type: 'Farm shop' },
+                { lat: 57.4778, lng: -4.2247, name: 'Highland Honey', region: 'NC500', country: 'Scotland', tip: 'Raw local heather honey', type: 'Farm shop' },
+                { lat: 62.1127, lng: 7.2066, name: 'Geiranger Gard', region: 'Trollstigen', country: 'Norway', tip: 'Local goat cheese & berries', type: 'Farm shop' }
+            ],
+            // ============ NEW: ORGANIC RESTAURANTS ============
+            organicRestaurant: [
+                { lat: 64.1466, lng: -21.9426, name: 'Gott Restaurant', region: 'Iceland Ring', country: 'Iceland', tip: 'Farm-to-table Icelandic cuisine', type: 'Restaurant', price: '$$' },
+                { lat: 43.7696, lng: 11.2558, name: 'Bio Trattoria', region: 'Italy', country: 'Italy', tip: 'Full organic menu with local wines', type: 'Restaurant', price: '$$' },
+                { lat: 48.8566, lng: 2.3522, name: 'Le Potager du Marais', region: 'France', country: 'France', tip: 'Vegan & organic in the heart of Paris', type: 'Restaurant', price: '$$' }
+            ],
+            // ============ NEW: OVERNIGHT PARKING ============
+            overnightParking: [
+                { lat: 35.6870, lng: -105.9378, name: 'Walmart Santa Fe', region: 'Route 66', country: 'USA', tip: 'Free overnight, ask permission at service desk', type: 'Parking' },
+                { lat: -38.6819, lng: 143.4764, name: 'Apollo Bay P&R', region: 'Great Ocean Road', country: 'Australia', tip: 'Free 24h parking, self-contained only', type: 'Parking' },
+                { lat: 57.8619, lng: -5.1589, name: 'Ullapool Car Park', region: 'NC500', country: 'Scotland', tip: 'Tolerated overnight, no facilities', type: 'Parking' }
+            ],
+            // ============ NEW: PREMIUM / PARTNER POIs ============
+            premium: [
+                { lat: 35.0844, lng: -106.6504, name: 'El Pinto Restaurant & Cantina', region: 'Route 66', country: 'USA', tip: 'Award-winning New Mexican cuisine. Mention DrawYourMap for 10% off.', type: 'Restaurant', price: 'From $25', partner: 'GetYourGuide', partnerUrl: 'https://www.getyourguide.com/', rating: 4.7, reviews: 482, isPremium: true },
+                { lat: 64.1466, lng: -21.9426, name: 'Blue Lagoon Premium', region: 'Iceland Ring', country: 'Iceland', tip: 'Skip the line with our partner link. Best at sunset.', type: 'Spa', price: 'From 75€', partner: 'Viator', partnerUrl: 'https://www.viator.com/', rating: 4.8, reviews: 1247, isPremium: true },
+                { lat: 57.4778, lng: -4.2247, name: 'Loch Ness Explorer Lodge', region: 'NC500', country: 'Scotland', tip: 'Boutique lodge with loch views. Free cancellation via our link.', type: 'Hotel', price: 'From 89€', partner: 'Booking.com', partnerUrl: 'https://www.booking.com/', rating: 4.6, reviews: 312, isPremium: true },
+                { lat: -38.7611, lng: 143.6667, name: 'Twelve Apostles Helicopter Tour', region: 'Great Ocean Road', country: 'Australia', tip: '15-min scenic flight. Book 48h ahead.', type: 'Activity', price: 'From A$149', partner: 'GetYourGuide', partnerUrl: 'https://www.getyourguide.com/', rating: 4.9, reviews: 856, isPremium: true },
+                { lat: 43.7696, lng: 11.2558, name: 'Chianti Wine Tour', region: 'Italy', country: 'Italy', tip: 'Full day guided tour with tastings. Small group.', type: 'Activity', price: 'From 69€', partner: 'Civitatis', partnerUrl: 'https://www.civitatis.com/', rating: 4.5, reviews: 623, isPremium: true },
+                { lat: 62.1127, lng: 7.2066, name: 'Trollstigen Sky Lodge', region: 'Trollstigen', country: 'Norway', tip: 'Glass-ceiling cabins with mountain views. Unique experience.', type: 'Hotel', price: 'From 195€', partner: 'Booking.com', partnerUrl: 'https://www.booking.com/', rating: 4.8, reviews: 178, isPremium: true }
             ]
         };
-        
+
+        // ==================== COMMUNITY VALIDATION SYSTEM ====================
+        const POI_VOTES_KEY = 'dym_poi_votes';
+        const POI_REPORTS_KEY = 'dym_poi_reports';
+        const COMMUNITY_VERIFIED_THRESHOLD = 5;
+
+        function getPoiVotes() {
+            try { return JSON.parse(localStorage.getItem(POI_VOTES_KEY)) || {}; } catch { return {}; }
+        }
+        function setPoiVotes(v) { localStorage.setItem(POI_VOTES_KEY, JSON.stringify(v)); }
+        function getPoiReports() {
+            try { return JSON.parse(localStorage.getItem(POI_REPORTS_KEY)) || {}; } catch { return {}; }
+        }
+        function setPoiReports(r) { localStorage.setItem(POI_REPORTS_KEY, JSON.stringify(r)); }
+
+        function getPoiId(poi) { return `${poi.lat}_${poi.lng}_${(poi.name||'').replace(/\s/g,'_')}`; }
+
+        function votePoiUp(lat, lng, name) {
+            const id = `${lat}_${lng}_${(name||'').replace(/\\s/g,'_')}`;
+            const votes = getPoiVotes();
+            if (!votes[id]) votes[id] = { up: 0, down: 0, myVote: null };
+            if (votes[id].myVote === 'up') { votes[id].up--; votes[id].myVote = null; }
+            else { if (votes[id].myVote === 'down') votes[id].down--; votes[id].up++; votes[id].myVote = 'up'; }
+            setPoiVotes(votes);
+            return votes[id];
+        }
+        function votePoiDown(lat, lng, name) {
+            const id = `${lat}_${lng}_${(name||'').replace(/\\s/g,'_')}`;
+            const votes = getPoiVotes();
+            if (!votes[id]) votes[id] = { up: 0, down: 0, myVote: null };
+            if (votes[id].myVote === 'down') { votes[id].down--; votes[id].myVote = null; }
+            else { if (votes[id].myVote === 'up') votes[id].up--; votes[id].down++; votes[id].myVote = 'down'; }
+            setPoiVotes(votes);
+            return votes[id];
+        }
+        function reportPoi(lat, lng, name, reason) {
+            const id = `${lat}_${lng}_${(name||'').replace(/\\s/g,'_')}`;
+            const reports = getPoiReports();
+            reports[id] = { reason, date: new Date().toISOString() };
+            setPoiReports(reports);
+        }
+
         // Major world cities database for trip planning snap-to feature
         const majorCities = [
             // Europe
@@ -13310,94 +13743,157 @@
             window.addEventListener('offline', updateOnlineStatus);
         }
 
-        // Populate POI markers from database
+        // Populate POI markers from database (main road map)
         function populatePoiMarkers() {
             const iconConfig = {
                 campsiteFree: { icon: '⛺', class: 'campsite-free' },
                 campsitePaid: { icon: '🏕️', class: 'campsite-paid' },
+                overnightParking: { icon: '🅿️', class: 'rest-area' },
                 fuel: { icon: '⛽', class: 'fuel' },
                 grocery: { icon: '🛒', class: 'grocery' },
+                localProducer: { icon: '🧑‍🌾', class: 'grocery' },
+                organicRestaurant: { icon: '🥗', class: 'grocery' },
                 water: { icon: '💧', class: 'water' },
                 viewpoint: { icon: '📸', class: 'viewpoint' },
                 restArea: { icon: '🅿️', class: 'rest-area' },
-                mechanic: { icon: '🔧', class: 'mechanic' }
+                mechanic: { icon: '🔧', class: 'mechanic' },
+                premium: { icon: '⭐', class: 'premium' }
             };
             
             Object.keys(poiDatabase).forEach(type => {
-                const config = iconConfig[type];
+                const config = iconConfig[type] || { icon: '📍', class: 'viewpoint' };
                 const pois = poiDatabase[type];
+                if (!pois || !poiLayers[type]) return;
                 
+                // Use MarkerCluster for the main map too
+                const clusterLayer = (L.markerClusterGroup) ? L.markerClusterGroup({
+                    maxClusterRadius: 50,
+                    showCoverageOnHover: false,
+                    disableClusteringAtZoom: 13
+                }) : L.layerGroup();
+
                 pois.forEach(poi => {
+                    const isPremium = type === 'premium';
                     const marker = L.marker([poi.lat, poi.lng], {
                         icon: L.divIcon({
                             className: 'poi-marker',
-                            html: `<div class="poi-marker-icon ${config.class}">${config.icon}</div>`,
+                            html: `<div class="poi-marker-icon ${config.class}${isPremium ? ' premium' : ''}">${config.icon}</div>`,
                             iconSize: [28, 28],
                             iconAnchor: [14, 14]
                         })
                     });
                     
-                    // Create popup content
                     const popupContent = createPoiPopup(poi, type);
-                    marker.bindPopup(popupContent, { maxWidth: 280 });
-                    
-                    // Add to layer group
-                    poiLayers[type].addLayer(marker);
+                    marker.bindPopup(popupContent, { maxWidth: 300, className: 'poi-popup-wrapper' });
+                    clusterLayer.addLayer(marker);
                 });
+                poiLayers[type] = clusterLayer;
             });
         }
 
         // Create popup content for POI
         function createPoiPopup(poi, type) {
             const typeLabels = {
-                campsiteFree: 'Free Campsite',
-                campsitePaid: 'Paid Campsite',
-                fuel: 'Fuel Station',
-                grocery: 'Grocery Store',
-                water: 'Water Refill',
-                viewpoint: 'Viewpoint',
-                restArea: 'Rest Area',
-                mechanic: 'Mechanic/Service'
+                campsiteFree: 'Wild spot with a view', campsitePaid: 'Full-service Campsite',
+                fuel: 'Fuel Station', grocery: 'Supermarket', water: 'Water Refill',
+                viewpoint: 'Viewpoint', restArea: 'Rest Area', mechanic: 'Mechanic/Service',
+                localProducer: 'Local Producer', organicRestaurant: 'Organic Restaurant',
+                overnightParking: 'Overnight Parking', premium: 'Verified Partner'
             };
-            
             const icons = {
-                campsiteFree: '⛺',
-                campsitePaid: '🏕️',
-                fuel: '⛽',
-                grocery: '🛒',
-                water: '💧',
-                viewpoint: '📸',
-                restArea: '🅿️',
-                mechanic: '🔧'
+                campsiteFree: '⛺', campsitePaid: '🏕️', fuel: '⛽', grocery: '🛒',
+                water: '💧', viewpoint: '📸', restArea: '🅿️', mechanic: '🔧',
+                localProducer: '🧑‍🌾', organicRestaurant: '🥗', overnightParking: '🅿️', premium: '⭐'
             };
-            
-            let html = `
-                <div class="poi-popup">
-                    <div class="poi-popup-header">
-                        <span class="poi-popup-icon">${icons[type]}</span>
-                        <div>
-                            <div class="poi-popup-title">${poi.name}</div>
-                            <div class="poi-popup-type">${typeLabels[type]}</div>
-                        </div>
+            const bgColors = {
+                campsiteFree: '#22c55e', campsitePaid: '#3b82f6', fuel: '#ef4444', grocery: '#f59e0b',
+                water: '#06b6d4', viewpoint: '#8b5cf6', restArea: '#6b7280', mechanic: '#dc2626',
+                localProducer: '#84cc16', organicRestaurant: '#10b981', overnightParking: '#6366f1',
+                premium: '#f59e0b'
+            };
+
+            const poiId = getPoiId(poi);
+            const votes = getPoiVotes();
+            const v = votes[poiId] || { up: 0, down: 0, myVote: null };
+            const net = v.up - v.down;
+            const isVerified = net >= COMMUNITY_VERIFIED_THRESHOLD;
+            const reports = getPoiReports();
+            const isReported = !!reports[poiId];
+            const isPremium = type === 'premium' || poi.isPremium;
+
+            let html = `<div class="poi-popup-v2">
+                <div class="poi-v2-header">
+                    <div class="poi-v2-icon-wrap" style="background:${bgColors[type] || '#6b7280'}20;">
+                        <span style="font-size:1.3rem;">${icons[type] || '📍'}</span>
                     </div>
-                    <div class="poi-popup-details">
-                        <p>📍 <strong>${poi.region}</strong>, ${poi.country}</p>
-                        ${poi.price ? `<p>💰 ${poi.price}</p>` : ''}
-                        ${poi.type ? `<p>🏷️ ${poi.type}</p>` : ''}
+                    <div style="flex:1;">
+                        <div class="poi-v2-title">${poi.name}</div>
+                        <div class="poi-v2-type">${typeLabels[type] || type}</div>
                     </div>
-                    ${poi.tip ? `<div class="poi-popup-tip">💡 ${poi.tip}</div>` : ''}
-                    <div class="poi-popup-actions">
-                        <a href="https://www.google.com/maps/search/?api=1&query=${poi.lat},${poi.lng}" target="_blank">
-                            🗺️ Google Maps
-                        </a>
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}" target="_blank">
-                            🚗 Directions
-                        </a>
-                    </div>
+                    ${isVerified ? '<span class="poi-v2-verified">✓ Community Verified</span>' : ''}
+                    ${isPremium ? '<span class="poi-v2-partner-badge">★ Verified Partner</span>' : ''}
                 </div>
-            `;
-            
+                <div class="poi-v2-details">
+                    <p>📍 <strong>${poi.region || ''}</strong>${poi.country ? ', ' + poi.country : ''}</p>
+                    ${poi.price ? `<p>💰 ${poi.price}</p>` : ''}
+                    ${poi.type ? `<p>🏷️ ${poi.type}</p>` : ''}
+                    ${poi.rating ? `<p>⭐ ${poi.rating}/5 (${poi.reviews || 0} reviews)</p>` : ''}
+                </div>
+                ${poi.tip ? `<div class="poi-v2-tip">💡 <strong>Pro-Tip:</strong> ${poi.tip}</div>` : ''}`;
+
+            // Premium CTA
+            if (isPremium && poi.partnerUrl) {
+                html += `<a href="${poi.partnerUrl}" target="_blank" rel="noopener sponsored" class="poi-v2-book-btn">
+                    🔗 Book Now ${poi.price ? '· ' + poi.price : ''} <span style="font-size:0.65rem;opacity:0.8;margin-left:4px;">via ${poi.partner || 'Partner'}</span>
+                </a>`;
+            }
+
+            // Community vote row
+            html += `<div class="poi-v2-vote-row">
+                <span class="poi-v2-vote-label">Still valid?</span>
+                <button class="poi-v2-vote-btn ${v.myVote === 'up' ? 'voted-up' : ''}" onclick="handlePoiVote('up',${poi.lat},${poi.lng},'${(poi.name||'').replace(/'/g,"\\'")}',this)">👍 ${v.up}</button>
+                <button class="poi-v2-vote-btn ${v.myVote === 'down' ? 'voted-down' : ''}" onclick="handlePoiVote('down',${poi.lat},${poi.lng},'${(poi.name||'').replace(/'/g,"\\'")}',this)">👎 ${v.down}</button>
+                <span class="poi-v2-vote-count">${isVerified ? '✓ Verified' : net + ' net'}</span>
+            </div>`;
+
+            // Report row
+            html += `<div class="poi-v2-report">
+                <button class="poi-v2-report-btn" onclick="handlePoiReport(${poi.lat},${poi.lng},'${(poi.name||'').replace(/'/g,"\\'")}','closed',this)" ${isReported ? 'disabled style="opacity:0.5;"' : ''}>
+                    ${isReported ? '⚠️ Reported' : '🚫 Closed'}
+                </button>
+                <button class="poi-v2-report-btn" onclick="handlePoiReport(${poi.lat},${poi.lng},'${(poi.name||'').replace(/'/g,"\\'")}','wrong_location',this)" ${isReported ? 'disabled style="opacity:0.5;"' : ''}>
+                    ${isReported ? '⚠️ Reported' : '📍 Wrong Location'}
+                </button>
+            </div>`;
+
+            // Actions
+            html += `<div class="poi-v2-actions">
+                <a href="https://www.google.com/maps/search/?api=1&query=${poi.lat},${poi.lng}" target="_blank">🗺️ Maps</a>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${poi.lat},${poi.lng}" target="_blank">🚗 Directions</a>
+            </div></div>`;
             return html;
+        }
+
+        function handlePoiVote(dir, lat, lng, name, btnEl) {
+            const result = dir === 'up' ? votePoiUp(lat, lng, name) : votePoiDown(lat, lng, name);
+            // Update the popup in place
+            const popup = btnEl.closest('.poi-popup-v2');
+            if (!popup) return;
+            const btns = popup.querySelectorAll('.poi-v2-vote-btn');
+            btns[0].className = 'poi-v2-vote-btn' + (result.myVote === 'up' ? ' voted-up' : '');
+            btns[0].innerHTML = '👍 ' + result.up;
+            btns[1].className = 'poi-v2-vote-btn' + (result.myVote === 'down' ? ' voted-down' : '');
+            btns[1].innerHTML = '👎 ' + result.down;
+            const net = result.up - result.down;
+            const countEl = popup.querySelector('.poi-v2-vote-count');
+            if (countEl) countEl.textContent = net >= COMMUNITY_VERIFIED_THRESHOLD ? '✓ Verified' : net + ' net';
+        }
+
+        function handlePoiReport(lat, lng, name, reason, btnEl) {
+            if (!confirm('Report this POI as "' + reason.replace('_', ' ') + '"?')) return;
+            reportPoi(lat, lng, name, reason);
+            const row = btnEl.closest('.poi-v2-report');
+            if (row) row.querySelectorAll('.poi-v2-report-btn').forEach(b => { b.disabled = true; b.style.opacity = '0.5'; b.innerHTML = '⚠️ Reported'; });
         }
 
         // Toggle POI layer visibility
@@ -14597,6 +15093,37 @@
         }
 
         // Route tab: large tour-operator style map – real road routing via OSRM, POI layers
+        // ==================== POI CONFIG (shared for filters & map) ====================
+        const POI_CONFIG = {
+            fuel:              { icon: '⛽', class: 'fuel',          label: 'Fuel', active: true },
+            campsiteFree:      { icon: '⛺', class: 'campsite-free', label: 'Wild Camp', active: true },
+            campsitePaid:      { icon: '🏕️', class: 'campsite-paid', label: 'Campsite', active: true },
+            overnightParking:  { icon: '🅿️', class: 'rest-area',    label: 'Parking', active: false },
+            grocery:           { icon: '🛒', class: 'grocery',       label: 'Supermarket', active: true },
+            localProducer:     { icon: '🧑‍🌾', class: 'grocery',      label: 'Local Producer', active: false },
+            organicRestaurant: { icon: '🥗', class: 'grocery',       label: 'Organic', active: false },
+            viewpoint:         { icon: '📸', class: 'viewpoint',     label: 'Views', active: false },
+            water:             { icon: '💧', class: 'water',         label: 'Water', active: false },
+            premium:           { icon: '⭐', class: 'premium',       label: 'Partners', active: false }
+        };
+
+        // Active sub-filter state
+        let activePoiSubs = {
+            fuel: true, campsiteFree: true, campsitePaid: true, overnightParking: false,
+            grocery: true, localProducer: false, organicRestaurant: false,
+            viewpoint: false, water: false, premium: false
+        };
+
+        function filterPoiByTrip(pois, trip) {
+            const country = (trip.country || '').toLowerCase();
+            const regionName = (trip.name || '').toLowerCase();
+            return pois.filter(p => {
+                const c = (p.country || '').toLowerCase();
+                const r = (p.region || '').toLowerCase();
+                return c && (c.includes(country) || country.includes(c) || r.includes(regionName) || regionName.includes(r));
+            });
+        }
+
         async function initTripDetailMap(trip) {
             if (!trip || !document.getElementById('tripDetailMap')) return;
             if (tripDetailMap) {
@@ -14608,19 +15135,14 @@
             if (!container || !window.L) return;
 
             tripDetailMap = L.map('tripDetailMap', {
-                center: [40, 0],
-                zoom: 5,
-                zoomControl: true,
-                minZoom: 4,
-                maxZoom: 18
+                center: [40, 0], zoom: 5, zoomControl: true, minZoom: 4, maxZoom: 18
             });
             L.control.zoom({ position: 'topright' }).addTo(tripDetailMap);
-            // OSM base for clarity – roads and place names for driver preparation
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap',
-                maxZoom: 19
+                attribution: '© OpenStreetMap', maxZoom: 19
             }).addTo(tripDetailMap);
 
+            // Route line
             let latlngs = [];
             if (trip.waypoints && trip.waypoints.length > 0 && Array.isArray(trip.waypoints[0])) {
                 latlngs = trip.waypoints.map(wp => [wp[0], wp[1]]);
@@ -14647,58 +15169,113 @@
                 tripDetailMap.setView(latlngs[0], 8);
             }
 
-            // POI: filter by trip country or region (fuel, camp, food, views) – distinct icons for driver prep
-            const poiIcons = { fuel: '⛽', campsiteFree: '⛺', campsitePaid: '🏕️', grocery: '🛒', viewpoint: '📸' };
-            const poiClass = { fuel: 'fuel', campsiteFree: 'campsite-free', campsitePaid: 'campsite-paid', grocery: 'grocery', viewpoint: 'viewpoint' };
-            const country = (trip.country || '').toLowerCase();
-            const regionName = (trip.name || '').toLowerCase();
-            const poiKeys = ['fuel', 'campsiteFree', 'campsitePaid', 'grocery', 'viewpoint'];
-            poiKeys.forEach(key => {
-                if (!poiDatabase[key]) return;
-                const filtered = poiDatabase[key].filter(p => {
-                    const c = (p.country || '').toLowerCase();
-                    const r = (p.region || '').toLowerCase();
-                    return c && (c.includes(country) || country.includes(c) || r.includes(regionName) || regionName.includes(r));
-                });
-                const layer = L.layerGroup();
-                const iconChar = poiIcons[key] || '●';
-                const cssClass = poiClass[key] || key;
+            // ===== POI Layers with MarkerCluster =====
+            const allPoiKeys = Object.keys(POI_CONFIG);
+            allPoiKeys.forEach(key => {
+                if (!poiDatabase[key]) { tripDetailPoiLayers[key] = L.layerGroup(); return; }
+                const filtered = filterPoiByTrip(poiDatabase[key], trip);
+                const cfg = POI_CONFIG[key];
+                // Use MarkerClusterGroup if available, else layerGroup
+                const layer = (window.L && L.markerClusterGroup) ? L.markerClusterGroup({
+                    maxClusterRadius: 40,
+                    spiderfyOnMaxZoom: true,
+                    showCoverageOnHover: false,
+                    disableClusteringAtZoom: 14
+                }) : L.layerGroup();
+
                 filtered.forEach(p => {
-                    const popup = '<strong>' + (p.name || '') + '</strong>' + (p.tip ? '<br><small>' + p.tip + '</small>' : '') + (p.price ? '<br><small>' + p.price + '</small>' : '');
+                    const isPremium = key === 'premium';
+                    const popup = createPoiPopup(p, key);
                     L.marker([p.lat, p.lng], {
                         icon: L.divIcon({
                             className: 'poi-marker detail-poi',
-                            html: '<div class="poi-marker-icon ' + cssClass + '">' + iconChar + '</div>',
-                            iconSize: [26, 26],
-                            iconAnchor: [13, 13]
+                            html: '<div class="poi-marker-icon ' + cfg.class + (isPremium ? ' premium' : '') + '">' + cfg.icon + '</div>',
+                            iconSize: [26, 26], iconAnchor: [13, 13]
                         })
-                    }).addTo(layer).bindPopup(popup);
+                    }).addTo(layer).bindPopup(popup, { maxWidth: 300, className: 'poi-popup-wrapper' });
                 });
+
                 tripDetailPoiLayers[key] = layer;
-                if (key !== 'viewpoint') layer.addTo(tripDetailMap);
+                // Update count in filter bar
+                const countEl = document.getElementById('pfc-' + key);
+                if (countEl) countEl.textContent = filtered.length;
+
+                // Auto-show active layers
+                if (activePoiSubs[key]) layer.addTo(tripDetailMap);
             });
 
-            // POI toggle buttons
-            document.querySelectorAll('.route-poi-btn').forEach(btn => {
-                btn.onclick = function() {
-                    const key = this.getAttribute('data-poi');
-                    if (!key || !tripDetailPoiLayers[key] || !tripDetailMap) return;
-                    this.classList.toggle('active');
-                    if (this.classList.contains('active')) {
-                        tripDetailMap.addLayer(tripDetailPoiLayers[key]);
-                    } else {
-                        tripDetailMap.removeLayer(tripDetailPoiLayers[key]);
-                    }
-                };
-            });
+            // Update parent counts (camp, food)
+            updateGroupCounts();
 
-            // After container is visible, fix map size (large tour-operator panel)
+            // After container is visible, fix map size
             setTimeout(function() {
                 if (tripDetailMap && routeLine) {
                     tripDetailMap.invalidateSize();
                     tripDetailMap.fitBounds(routeLine.getBounds(), { padding: [24, 24], maxZoom: 12 });
                 }
             }, 350);
+        }
+
+        function updateGroupCounts() {
+            // Camp group
+            const campCount = ['campsiteFree', 'campsitePaid', 'overnightParking'].reduce((s, k) => {
+                const el = document.getElementById('pfc-' + k);
+                return s + (el ? parseInt(el.textContent) || 0 : 0);
+            }, 0);
+            const campEl = document.getElementById('pfc-camp');
+            if (campEl) campEl.textContent = campCount;
+            // Food group
+            const foodCount = ['grocery', 'localProducer', 'organicRestaurant'].reduce((s, k) => {
+                const el = document.getElementById('pfc-' + k);
+                return s + (el ? parseInt(el.textContent) || 0 : 0);
+            }, 0);
+            const foodEl = document.getElementById('pfc-food');
+            if (foodEl) foodEl.textContent = foodCount;
+        }
+
+        // ==================== NESTED FILTER INTERACTIONS ====================
+        function togglePoiSubMenu(groupId) {
+            const el = document.getElementById(groupId);
+            if (!el) return;
+            // Close all others
+            document.querySelectorAll('.poi-filter-group.open').forEach(g => { if (g.id !== groupId) g.classList.remove('open'); });
+            el.classList.toggle('open');
+        }
+
+        // Close sub-menus on outside click
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.poi-filter-group')) {
+                document.querySelectorAll('.poi-filter-group.open').forEach(g => g.classList.remove('open'));
+            }
+        });
+
+        function togglePoiFilter(key) {
+            if (!tripDetailMap) return;
+            activePoiSubs[key] = !activePoiSubs[key];
+            const layer = tripDetailPoiLayers[key];
+            const btn = document.querySelector(`.poi-filter-toggle[data-poi="${key}"]`);
+            if (layer) {
+                if (activePoiSubs[key]) { tripDetailMap.addLayer(layer); if (btn) btn.classList.add('active'); }
+                else { tripDetailMap.removeLayer(layer); if (btn) btn.classList.remove('active'); }
+            }
+        }
+
+        function togglePoiSub(subKey, itemEl) {
+            if (!tripDetailMap) return;
+            activePoiSubs[subKey] = !activePoiSubs[subKey];
+            itemEl.classList.toggle('active');
+            const layer = tripDetailPoiLayers[subKey];
+            if (layer) {
+                if (activePoiSubs[subKey]) tripDetailMap.addLayer(layer);
+                else tripDetailMap.removeLayer(layer);
+            }
+            // Update parent toggle visual
+            const groupEl = itemEl.closest('.poi-filter-group');
+            if (groupEl) {
+                const anyActive = groupEl.querySelectorAll('.poi-sub-item.active').length > 0;
+                const toggle = groupEl.querySelector('.poi-filter-toggle');
+                if (toggle) toggle.classList.toggle('active', anyActive);
+            }
         }
 
         // Populate Guide Tab with comprehensive road trip information
@@ -17924,66 +18501,168 @@
             return { emoji: '🌤️', label: 'Mild', class: 'mild' };
         }
 
-        // ==================== POI DRAG & DROP ====================
+        // ==================== STRUCTURED ADD POI SYSTEM ====================
         let poiPlaceMode = false;
         let currentPoiType = null;
         let userPlacedPois = [];
-        let poiPlaceCounts = { viewpoint: 0, restaurant: 0, hotel: 0, attraction: 0, danger: 0 };
-
-        function togglePoiPlaceMode() {
-            const panel = document.getElementById('poiDragPanel');
-            if (!panel) return;
-            poiPlaceMode = !poiPlaceMode;
-            panel.style.display = poiPlaceMode ? 'flex' : 'none';
-            if (poiPlaceMode) {
-                currentPoiType = 'viewpoint';
-                if (tripDetailMap) {
-                    tripDetailMap.getContainer().style.cursor = 'crosshair';
-                    tripDetailMap.on('click', onPoiPlaceClick);
-                }
-            } else {
-                currentPoiType = null;
-                if (tripDetailMap) {
-                    tripDetailMap.getContainer().style.cursor = '';
-                    tripDetailMap.off('click', onPoiPlaceClick);
-                }
-            }
-        }
-
-        function placePoiOnMap(type) {
-            currentPoiType = type;
-            if (tripDetailMap) {
-                tripDetailMap.getContainer().style.cursor = 'crosshair';
-            }
-        }
-
-        function onPoiDragStart(e, type) {
-            currentPoiType = type;
-            e.dataTransfer.setData('text/plain', type);
-        }
+        let addPoiSelectedCat = null;
+        let addPoiPhotoData = null;
+        let addPoiPendingLatLng = null;
 
         const POI_ICONS = {
-            viewpoint: '📸', restaurant: '🍽️', hotel: '🏨', attraction: '⭐', danger: '⚠️'
+            viewpoint: '📸', restaurant: '🍽️', hotel: '🏨', attraction: '⭐', danger: '⚠️',
+            campsiteFree: '⛺', fuel: '⛽', grocery: '🛒', water: '💧'
         };
 
-        function onPoiPlaceClick(e) {
-            if (!poiPlaceMode || !currentPoiType || !tripDetailMap) return;
-            const ll = [e.latlng.lat, e.latlng.lng];
-            const icon = L.divIcon({
-                className: 'custom-poi-marker',
-                html: `<div style="font-size:1.3rem;text-shadow:0 2px 6px rgba(0,0,0,0.4);cursor:pointer;" title="${currentPoiType}">${POI_ICONS[currentPoiType] || '📍'}</div>`,
-                iconSize: [28, 28],
-                iconAnchor: [14, 14]
-            });
-            const marker = L.marker(ll, { icon, draggable: true }).addTo(tripDetailMap);
-            const poiName = prompt('Name this point of interest:', currentPoiType.charAt(0).toUpperCase() + currentPoiType.slice(1));
-            if (poiName) {
-                marker.bindPopup(`<strong>${POI_ICONS[currentPoiType]} ${poiName}</strong><br><em>${currentPoiType}</em><br><button onclick="this.closest('.leaflet-popup').remove()" style="margin-top:6px;padding:3px 10px;font-size:0.7rem;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;">Close</button>`);
+        function openAddPoiModal() {
+            const overlay = document.getElementById('addPoiOverlay');
+            if (!overlay) return;
+            // Reset form
+            addPoiSelectedCat = null;
+            addPoiPhotoData = null;
+            addPoiPendingLatLng = null;
+            document.querySelectorAll('.add-poi-cat-btn').forEach(b => b.classList.remove('selected'));
+            const nameInput = document.getElementById('addPoiName');
+            if (nameInput) nameInput.value = '';
+            const tipInput = document.getElementById('addPoiTip');
+            if (tipInput) tipInput.value = '';
+            const addrText = document.getElementById('addPoiAddressText');
+            if (addrText) addrText.textContent = 'Click on the map to set location...';
+            document.getElementById('addPoiLat').value = '';
+            document.getElementById('addPoiLng').value = '';
+            const photoArea = document.getElementById('addPoiPhotoArea');
+            if (photoArea) { photoArea.classList.remove('has-photo'); }
+            const photoLabel = document.getElementById('addPoiPhotoLabel');
+            if (photoLabel) photoLabel.innerHTML = '<i data-lucide="camera" style="width:20px;height:20px;"></i><br>Click to upload a photo';
+            const submitBtn = document.getElementById('addPoiSubmitBtn');
+            if (submitBtn) submitBtn.disabled = true;
+            overlay.classList.add('active');
+            // Enable map click for location
+            startPoiLocationPick();
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+        }
+
+        function closeAddPoiModal() {
+            const overlay = document.getElementById('addPoiOverlay');
+            if (overlay) overlay.classList.remove('active');
+            stopPoiLocationPick();
+        }
+
+        function selectAddPoiCat(cat, btnEl) {
+            addPoiSelectedCat = cat;
+            document.querySelectorAll('.add-poi-cat-btn').forEach(b => b.classList.remove('selected'));
+            btnEl.classList.add('selected');
+            validateAddPoiForm();
+            // Update placement indicator
+            const iconPreview = document.getElementById('poiPlaceIconPreview');
+            const catLabel = document.getElementById('poiPlaceCatLabel');
+            if (iconPreview) iconPreview.textContent = POI_ICONS[cat] || '📍';
+            if (catLabel) catLabel.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        }
+
+        function startPoiLocationPick() {
+            poiPlaceMode = true;
+            if (tripDetailMap) {
+                tripDetailMap.getContainer().style.cursor = 'crosshair';
+                tripDetailMap.on('click', onAddPoiMapClick);
             }
-            userPlacedPois.push({ type: currentPoiType, lat: ll[0], lng: ll[1], name: poiName || currentPoiType, marker });
-            poiPlaceCounts[currentPoiType] = (poiPlaceCounts[currentPoiType] || 0) + 1;
-            const countEl = document.getElementById('poiCount_' + currentPoiType);
-            if (countEl) countEl.textContent = poiPlaceCounts[currentPoiType];
+            const indicator = document.getElementById('poiPlaceIndicator');
+            if (indicator) indicator.style.display = 'flex';
+        }
+
+        function stopPoiLocationPick() {
+            poiPlaceMode = false;
+            if (tripDetailMap) {
+                tripDetailMap.getContainer().style.cursor = '';
+                tripDetailMap.off('click', onAddPoiMapClick);
+            }
+            const indicator = document.getElementById('poiPlaceIndicator');
+            if (indicator) indicator.style.display = 'none';
+        }
+
+        function cancelPoiPlacement() {
+            closeAddPoiModal();
+        }
+
+        async function onAddPoiMapClick(e) {
+            if (!poiPlaceMode) return;
+            addPoiPendingLatLng = [e.latlng.lat, e.latlng.lng];
+            document.getElementById('addPoiLat').value = e.latlng.lat;
+            document.getElementById('addPoiLng').value = e.latlng.lng;
+            // Reverse geocoding
+            const addrText = document.getElementById('addPoiAddressText');
+            if (addrText) addrText.textContent = `${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)} (loading address...)`;
+            validateAddPoiForm();
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${e.latlng.lat}&lon=${e.latlng.lng}&zoom=16&addressdetails=1`);
+                const data = await res.json();
+                if (data && data.display_name && addrText) {
+                    addrText.textContent = data.display_name;
+                }
+            } catch (err) {
+                if (addrText) addrText.textContent = `${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)}`;
+            }
+        }
+
+        function handlePoiPhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                addPoiPhotoData = e.target.result;
+                const photoArea = document.getElementById('addPoiPhotoArea');
+                const photoLabel = document.getElementById('addPoiPhotoLabel');
+                if (photoArea) photoArea.classList.add('has-photo');
+                if (photoLabel) photoLabel.innerHTML = '✓ Photo uploaded: ' + file.name;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function validateAddPoiForm() {
+            const btn = document.getElementById('addPoiSubmitBtn');
+            if (!btn) return;
+            const hasCategory = !!addPoiSelectedCat;
+            const hasLocation = !!document.getElementById('addPoiLat').value;
+            const hasName = (document.getElementById('addPoiName')?.value || '').trim().length > 0;
+            btn.disabled = !(hasCategory && hasLocation);
+        }
+
+        // Attach input listener for name
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('addPoiName');
+            if (nameInput) nameInput.addEventListener('input', validateAddPoiForm);
+        });
+
+        function submitAddPoi() {
+            if (!addPoiSelectedCat || !addPoiPendingLatLng || !tripDetailMap) return;
+            const name = (document.getElementById('addPoiName')?.value || '').trim() || (addPoiSelectedCat.charAt(0).toUpperCase() + addPoiSelectedCat.slice(1));
+            const tip = (document.getElementById('addPoiTip')?.value || '').trim();
+            const lat = addPoiPendingLatLng[0];
+            const lng = addPoiPendingLatLng[1];
+            const cat = addPoiSelectedCat;
+
+            // Create marker with full V2 popup
+            const poiData = { lat, lng, name, tip, region: 'User Added', country: '' };
+            const popupHtml = createPoiPopup(poiData, cat);
+            const cfg = POI_CONFIG[cat] || { icon: '📍', class: 'viewpoint' };
+            const marker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: 'poi-marker detail-poi',
+                    html: '<div class="poi-marker-icon ' + cfg.class + '">' + cfg.icon + '</div>',
+                    iconSize: [26, 26], iconAnchor: [13, 13]
+                }),
+                draggable: true
+            }).addTo(tripDetailMap).bindPopup(popupHtml, { maxWidth: 300 });
+
+            userPlacedPois.push({ type: cat, lat, lng, name, tip, marker, photo: addPoiPhotoData });
+
+            // Save to localStorage for persistence
+            const saved = JSON.parse(localStorage.getItem('dym_user_pois') || '[]');
+            saved.push({ type: cat, lat, lng, name, tip });
+            localStorage.setItem('dym_user_pois', JSON.stringify(saved));
+
+            closeAddPoiModal();
+            marker.openPopup();
         }
 
         // ==================== NIGHT MODE FOR MAP ====================
