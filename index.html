@@ -2053,10 +2053,13 @@
             position: relative;
             min-height: 260px;
             background: linear-gradient(135deg, var(--srndipity-olive-dark) 0%, var(--srndipity-olive) 35%, var(--srndipity-orange) 100%);
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: flex-end;
             padding: 32px 48px;
             overflow: hidden;
+            transition: background-image 0.3s ease;
         }
 
         .trip-hero-overlay {
@@ -14173,9 +14176,180 @@
             Australia: 'Oceania', 'New Zealand': 'Oceania', Fiji: 'Oceania', 'Papua New Guinea': 'Oceania', 'New Caledonia': 'Oceania', Samoa: 'Oceania', Tonga: 'Oceania', Vanuatu: 'Oceania', 'Solomon Islands': 'Oceania',
             Multi: 'all'
         };
+        const tripCategoryMap = {
+            namibia_highlights: 'desert', route66: 'desert', panamerican: 'mountain',
+            wildatlantic: 'coast', nc500: 'coast', greatocean: 'coast',
+            transfagarasan: 'mountain', amalfi_coast: 'coast', trollstigen: 'mountain',
+            romantic_road: 'urban', grossglockner: 'mountain', stelvio_pass: 'mountain',
+            costa_brava: 'coast', balkan_adventure: 'coast', portugal_atlantic: 'coast',
+            swiss_alpine: 'mountain', scottish_highlands: 'mountain', garden_route: 'coast',
+            ring_road: 'mountain', karakoram: 'mountain', hai_van: 'coast',
+            hokkaido: 'mountain', golden_triangle: 'mountain', silk_road: 'desert',
+            rajasthan: 'desert', korea_coastal: 'coast', morocco_atlas: 'desert',
+            cape_town_kruger: 'coast', ethiopia_historic: 'mountain', tanzania_circuit: 'desert',
+            senegal_dakar: 'coast', madagascar_rn7: 'mountain', nc500_scotland: 'coast',
+            swiss_alps_tour: 'mountain', dolomites_circuit: 'mountain',
+            romantic_road_germany: 'urban', andalusia_spain: 'urban',
+            pacific_coast_highway: 'coast', grand_circle_utah: 'desert',
+            icefields_parkway: 'mountain', cabot_trail: 'coast', baja_california: 'desert',
+            ruta_40_argentina: 'mountain', seven_lakes_argentina: 'mountain',
+            botswana_safari: 'desert', morocco_sahara: 'desert', japan_sanin: 'coast',
+            taiwan_taroko: 'mountain', sri_lanka_hill: 'mountain',
+            jordan_kings_highway: 'desert', oman_coastal: 'desert',
+            tasmania_circuit: 'coast', sea_to_sky_canada: 'mountain',
+            blue_ridge_parkway: 'mountain', going_to_the_sun: 'mountain',
+            overseas_highway: 'coast', natchez_trace: 'mountain',
+            texas_hill_country: 'desert', oregon_coast: 'coast',
+            cascade_loop: 'mountain', alaska_highway: 'mountain',
+            maine_coast: 'coast', great_river_road: 'coast',
+            sedona_monument: 'desert', yellowstone_grand_teton: 'mountain',
+            vancouver_island: 'coast', dempster_highway: 'mountain',
+            yucatan_loop: 'coast', oaxaca_coast: 'coast',
+            carretera_austral: 'mountain', ruta_40_full: 'mountain',
+            salar_uyuni: 'desert', colombia_coffee: 'mountain',
+            ecuador_avenue: 'mountain', causeway_coastal: 'coast',
+            ring_of_kerry: 'coast', isle_of_skyee: 'mountain',
+            lake_district: 'mountain', cotswolds: 'urban',
+            wales_coastal: 'coast', cornwall_coast: 'coast',
+            dolomites_loop: 'mountain', tuscany_rolling: 'urban',
+            sicily_coast: 'coast', provence_lavender: 'urban',
+            brittany_coast: 'coast', loire_valley: 'urban',
+            black_forest: 'mountain', croatia_dalmatian: 'coast',
+            montenegro_coast: 'coast', albania_riviera: 'coast',
+            slovenia_lakes: 'mountain', greece_peloponnese: 'coast',
+            norway_atlantic: 'coast', iceland_westfjords: 'coast',
+            faroe_islands: 'coast', mae_hong_son: 'mountain',
+            ha_giang_loop: 'mountain', kerala_backwaters: 'coast',
+            ladakh_leh: 'mountain', sri_lanka_central: 'mountain',
+            jordan_wadi_rum: 'desert', oman_mountains: 'desert',
+            kyrgyzstan_pamir: 'mountain',
+            georgia_military: 'mountain', kenya_safari: 'desert',
+            uganda_gorillas: 'mountain', tunisia_sahara: 'desert',
+            lesotho_sani: 'mountain', red_centre: 'desert',
+            kimberley: 'desert', new_zealand_central: 'mountain',
+            blue_ridge_parkway: 'mountain', pch_california: 'coast',
+            florida_keys: 'coast', columbia_river_gorge: 'mountain',
+            san_juan_skyway: 'mountain', highway_61_usa: 'urban',
+            utah_mighty_five: 'desert', oregon_coast: 'coast',
+            alaska_highway: 'mountain', going_to_the_sun: 'mountain',
+            cabot_trail: 'coast', dempster_highway: 'mountain',
+            icefields_parkway: 'mountain', sea_to_sky: 'mountain',
+            baja_california: 'desert', yucatan_loop: 'coast',
+            copper_canyon: 'mountain', ruta_40_argentina: 'mountain',
+            trans_andean_chile_argentina: 'mountain',
+            death_road_bolivia: 'mountain', salar_uyuni: 'desert',
+            carretera_austral_chile: 'mountain',
+            patagonia_argentina_chile: 'mountain',
+            ecuador_avenue_volcanoes: 'mountain',
+            peru_coast_north: 'coast', colombia_coffee_axis: 'mountain',
+            brasilia_amazon_access: 'mountain',
+            grossglockner_austria: 'mountain',
+            atlantic_highway_england: 'coast',
+            basque_circuit_spain: 'coast', paris_berlin: 'urban',
+            london_edinburgh: 'urban', germany_alpine_road: 'mountain',
+            norway_bergen_trondheim: 'mountain',
+            romania_transfagarasan: 'mountain',
+            costa_brava_spain: 'coast', poland_baltic_coast: 'coast',
+            switzerland_gotthard: 'mountain',
+            portugal_atlantic_full: 'coast',
+            karakoram_highway: 'mountain',
+            golden_road_samarkand: 'desert', oman_circle: 'desert',
+            gobi_desert_mongolia: 'desert', japan_alps: 'mountain',
+            taiwan_round_island: 'coast',
+            cambodia_angkor_siem_reap: 'urban',
+            laos_bolaven: 'mountain',
+            malaysia_cameron_highlands: 'mountain',
+            indonesia_bali_east: 'coast',
+            turkey_cappadocia_coast: 'desert', iran_classic: 'desert',
+            garden_route_south_africa: 'coast',
+            avenue_baobabs_madagascar: 'desert',
+            egypt_nile_upper: 'desert',
+            tanzania_northern_circuit: 'desert',
+            morocco_south_circuit: 'desert',
+            ethiopia_historic: 'mountain',
+            rwanda_uganda_gorillas: 'mountain',
+            tasmania_circuit: 'coast',
+            new_zealand_south_island: 'mountain',
+            powder_highway_canada: 'mountain',
+            trans_canada_ontario: 'urban',
+            usa_pacific_northwest: 'coast',
+            usa_smoky_mountains: 'mountain',
+            usa_badlands_black_hills: 'desert',
+            usa_bluegrass_kentucky: 'urban',
+            usa_route_12_utah: 'desert',
+            usa_going_to_sun_glacier: 'mountain',
+            iceland_ring_road: 'mountain', scotland_nc500: 'coast',
+            ireland_wild_atlantic: 'coast', norway_lofoten: 'coast',
+            sweden_kiruna_abisko: 'mountain',
+            estonia_latvia_lithuania: 'urban',
+            cyprus_coastal: 'coast', malta_gozo: 'coast',
+            bulgaria_black_sea: 'coast',
+            bosnia_herzegovina: 'mountain',
+            north_macedonia_lake_ohrid: 'mountain',
+            serbia_belgrade_novi_sad: 'urban',
+            china_silk_road_gansu: 'desert',
+            philippines_palawan: 'coast',
+            myanmar_mandalay_bagan: 'desert',
+            bhutan_paro_thimphu: 'mountain',
+            nepal_kathmandu_pokhara: 'mountain',
+            pakistan_swat_valley: 'mountain',
+            azerbaijan_baku_gobustan: 'desert',
+            armenia_yerevan_gyumri: 'mountain',
+            chile_atacama: 'desert', brazil_rio_santos: 'coast',
+            usa_denali_highway: 'mountain',
+            usa_beartooth_highway: 'mountain',
+            usa_shenandoah_skyline: 'mountain',
+            canada_gaspésie: 'coast', usa_outer_banks: 'coast',
+            usa_route_1_maine: 'coast',
+            usa_highway_12_idaho: 'mountain',
+            usa_trail_ridge_road: 'mountain',
+            canada_newfoundland: 'coast',
+            spain_picos_europa: 'mountain',
+            iceland_golden_circle: 'mountain',
+            australia_gibb_river: 'desert',
+            new_zealand_coromandel: 'coast',
+            panamerican_mexico_central: 'desert',
+            india_rajasthan_golden: 'desert',
+            overseas_highway: 'coast', natchez_trace: 'mountain',
+            texas_hill_country: 'desert', cascade_loop: 'mountain',
+            maine_coast: 'coast', great_river_road: 'coast',
+            sedona_monument: 'desert',
+            yellowstone_grand_teton: 'mountain',
+            vancouver_island: 'coast',
+            carretera_austral: 'mountain', ruta_40_full: 'mountain',
+            colombia_coffee: 'mountain', ecuador_avenue: 'mountain',
+            causeway_coastal: 'coast', ring_of_kerry: 'coast',
+            isle_of_skyee: 'mountain', lake_district: 'mountain',
+            cotswolds: 'urban', wales_coastal: 'coast',
+            cornwall_coast: 'coast', dolomites_loop: 'mountain',
+            tuscany_rolling: 'urban', sicily_coast: 'coast',
+            provence_lavender: 'urban', brittany_coast: 'coast',
+            loire_valley: 'urban', black_forest: 'mountain',
+            croatia_dalmatian: 'coast', montenegro_coast: 'coast',
+            albania_riviera: 'coast', slovenia_lakes: 'mountain',
+            greece_peloponnese: 'coast', norway_atlantic: 'coast',
+            iceland_westfjords: 'coast', faroe_islands: 'coast',
+            mae_hong_son: 'mountain', ha_giang_loop: 'mountain',
+            kerala_backwaters: 'coast', ladakh_leh: 'mountain',
+            sri_lanka_central: 'mountain', jordan_wadi_rum: 'desert',
+            oman_mountains: 'desert', oaxaca_coast: 'coast'
+        };
+
+        const categoryHeroImages = {
+            mountain: 'assets/categories/hero-mountain.png',
+            desert:   'assets/categories/hero-desert.png',
+            coast:    'assets/categories/hero-coast.png',
+            urban:    'assets/categories/hero-urban.png',
+            default:  'assets/categories/hero-default.png'
+        };
+
         function getAllTrips() {
             const all = [...roadTrips, ...userCreatedTrips];
-            return all.map(t => ({ ...t, continent: t.continent || countryToContinent[t.country] || 'Europe' }));
+            return all.map(t => ({
+                ...t,
+                continent: t.continent || countryToContinent[t.country] || 'Europe',
+                category: t.category || tripCategoryMap[t.id] || 'default'
+            }));
         }
 
         function parseDistanceForSort(distanceStr) {
@@ -14508,6 +14682,11 @@
             // Reset to overview tab
             switchTripTab('overview');
             
+            // Set hero background image based on category
+            const heroEl = document.getElementById('tripHero');
+            const heroImg = categoryHeroImages[trip.category] || categoryHeroImages['default'];
+            heroEl.style.backgroundImage = `url('${heroImg}')`;
+
             // Populate Hero Header
             document.getElementById('tripDetailIcon').textContent = trip.icon;
             document.getElementById('tripDetailName').textContent = trip.name;
