@@ -1296,18 +1296,7 @@
 
         /* POI Layer Controls – glassmorphic */
         .poi-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 420px;
-            z-index: 1000;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-radius: 16px;
-            padding: 12px;
-            border: 1px solid var(--glass-border);
-            max-width: 300px;
-            box-shadow: var(--glass-shadow);
+            display: none;
         }
 
         .poi-controls-header {
@@ -4137,61 +4126,518 @@
             gap: 8px;
         }
 
-        /* ==================== ADAPTIVE ITINERARY WIZARD ==================== */
-        .wiz-shell {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 24px;
-            min-height: 600px;
+        /* ==================== IMMERSIVE ITINERARY PLANNER ==================== */
+        /* Focus Mode: full-screen takeover */
+        .trip-fullscreen-modal.prep-active .trip-hero {
+            max-height: 0; min-height: 0; padding: 0; overflow: hidden;
+            opacity: 0; pointer-events: none;
+            transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.25s ease;
         }
-        @media (max-width: 900px) {
-            .wiz-shell { grid-template-columns: 1fr; }
-            .wiz-sidebar { order: 1; }
-        }
+        .trip-fullscreen-modal.prep-active .trip-nav { display: none; }
+        .trip-fullscreen-modal.prep-active .trip-content-container { padding: 0; overflow: hidden; }
+        .trip-fullscreen-modal.prep-active #tab-preparation { display: flex !important; }
 
-        /* --- Sidebar --- */
-        .wiz-sidebar {
+        .itp-canvas {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            height: 100%;
+            min-height: 0;
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
-        .wiz-sidebar-section {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 16px;
-        }
-        .wiz-sidebar-title {
+
+        /* --- Top bar --- */
+        .itp-topbar {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #0f172a;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-bottom: 12px;
+            gap: 16px;
+            padding: 10px 20px;
+            background: #0f172a;
+            color: #fff;
+            flex-shrink: 0;
+            z-index: 10;
         }
-        .wiz-tips { display: flex; flex-direction: column; gap: 8px; }
-        .wiz-tip {
-            padding: 10px 12px;
-            background: #f8fafc;
+        .itp-back-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px;
             border-radius: 8px;
-            font-size: 0.75rem;
-            color: #475569;
-            line-height: 1.45;
-            border-left: 3px solid #6366f1;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.15s;
         }
-        .wiz-label {
+        .itp-back-btn:hover { background: rgba(255,255,255,0.14); }
+        .itp-topbar-title { flex: 1; min-width: 0; }
+        .itp-topbar-label {
             display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .itp-topbar-meta {
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.55);
+        }
+
+        /* Stepper dots in top bar */
+        .itp-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .itp-step-dot {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.68rem;
+            font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .itp-step-dot.active {
+            background: #fff;
+            color: #0f172a;
+            border-color: #fff;
+        }
+        .itp-step-dot.done {
+            background: #22c55e;
+            color: #fff;
+            border-color: #22c55e;
+        }
+        .itp-step-dot:hover:not(.active) { border-color: rgba(255,255,255,0.5); }
+        .itp-step-connector {
+            width: 20px; height: 2px;
+            background: rgba(255,255,255,0.12);
+        }
+        .itp-step-connector.done { background: #22c55e; }
+        .itp-topbar-actions { display: flex; gap: 8px; }
+        .itp-action-pill {
+            display: flex; align-items: center; justify-content: center;
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .itp-action-pill:hover { background: rgba(255,255,255,0.14); }
+
+        /* --- Panels --- */
+        .itp-panel { display: none; flex: 1; min-height: 0; overflow: hidden; }
+        .itp-panel.active { display: flex; animation: itpFadeIn 0.3s ease; }
+        @keyframes itpFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Two-column split */
+        .itp-split {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+        @media (max-width: 900px) {
+            .itp-split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+        }
+
+        .itp-timeline-col, .itp-map-col {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .itp-timeline-col {
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+        }
+        .itp-map-col { background: #f8fafc; }
+
+        .itp-col-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            background: #fff;
+        }
+        .itp-col-header h3 {
+            display: flex; align-items: center; gap: 8px;
+            margin: 0; font-size: 0.82rem; font-weight: 700; color: #0f172a;
+        }
+        .itp-col-header p.itp-col-desc {
+            margin: 0; font-size: 0.72rem; color: #64748b;
+        }
+        .itp-add-day-btn {
+            margin-left: auto;
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: #fff;
+            color: #334155;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .itp-add-day-btn:hover { border-color: #6366f1; color: #6366f1; }
+        .itp-map-hint {
+            margin-left: auto;
+            font-size: 0.65rem;
+            color: #94a3b8;
+        }
+
+        /* Timeline scroll area */
+        .itp-days-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+        .itp-days-scroll::-webkit-scrollbar { width: 4px; }
+        .itp-days-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        .itp-empty-state {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; gap: 12px; color: #94a3b8; font-size: 0.8rem;
+        }
+
+        /* Day blocks */
+        .itp-day {
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            transition: border-color 0.15s;
+        }
+        .itp-day:hover { border-color: #cbd5e1; }
+        .itp-day-head {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .itp-day-num {
+            width: 26px; height: 26px; border-radius: 6px;
+            background: #0f172a; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; flex-shrink: 0;
+        }
+        .itp-day-title {
+            font-size: 0.78rem; font-weight: 600; color: #0f172a;
+        }
+        .itp-day-km {
+            margin-left: auto;
+            font-size: 0.68rem; color: #64748b; font-weight: 500;
+        }
+        .itp-day-remove {
+            background: none; border: none; color: #94a3b8; cursor: pointer;
+            padding: 2px 4px; font-size: 0.7rem;
+        }
+        .itp-day-remove:hover { color: #ef4444; }
+        .itp-day-body { padding: 10px 16px; }
+
+        /* Stop rows */
+        .itp-stop {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f8fafc;
+            position: relative;
+        }
+        .itp-stop:last-child { border-bottom: none; }
+        .itp-stop-marker {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #6366f1;
+            margin-top: 5px;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .itp-stop:not(:last-child) .itp-stop-marker::after {
+            content: '';
+            position: absolute;
+            top: 12px; left: 4px;
+            width: 2px; height: calc(100% + 12px);
+            background: #e2e8f0;
+        }
+        .itp-stop-content { flex: 1; min-width: 0; }
+        .itp-stop-name {
+            font-size: 0.78rem; font-weight: 600; color: #0f172a;
+            margin-bottom: 2px;
+        }
+        .itp-stop-meta {
+            display: flex; gap: 12px;
+            font-size: 0.65rem; color: #94a3b8;
+        }
+        .itp-stop-notes {
+            margin-top: 4px;
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #f1f5f9;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-family: inherit;
+            color: #334155;
+            resize: vertical;
+            min-height: 28px;
+            background: #fafbfc;
+            transition: border-color 0.15s;
+        }
+        .itp-stop-notes:focus { outline: none; border-color: #6366f1; background: #fff; }
+        .itp-stop-notes::placeholder { color: #cbd5e1; }
+        .itp-stop-actions {
+            display: flex; flex-direction: column; gap: 4px;
+            flex-shrink: 0;
+        }
+        .itp-stop-remove {
+            background: none; border: none; color: #cbd5e1;
+            cursor: pointer; padding: 2px; font-size: 0.7rem;
+        }
+        .itp-stop-remove:hover { color: #ef4444; }
+
+        /* Add stop button */
+        .itp-add-stop-btn {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            background: transparent;
+            color: #94a3b8;
             font-size: 0.72rem;
             font-weight: 600;
-            color: #64748b;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            margin-top: 8px;
         }
-        .wiz-select {
+        .itp-add-stop-btn:hover { border-color: #6366f1; color: #6366f1; background: #f0f0ff; }
+
+        /* Map container */
+        .itp-map-wrap {
+            flex: 1;
+            min-height: 300px;
+            position: relative;
+        }
+        .itp-map-wrap .leaflet-container { width: 100%; height: 100%; }
+
+        /* --- Search modal overlay --- */
+        .itp-search-overlay {
+            position: fixed; inset: 0;
+            background: rgba(15,23,42,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: flex; align-items: flex-start; justify-content: center;
+            padding-top: 10vh;
+            animation: itpFadeIn 0.15s ease;
+        }
+        .itp-search-modal {
+            width: 520px;
+            max-width: 94vw;
+            max-height: 75vh;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .itp-search-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .itp-search-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-family: inherit;
+            color: #0f172a;
+            background: #f8fafc;
+        }
+        .itp-search-input:focus { outline: none; border-color: #6366f1; background: #fff; }
+        .itp-search-close {
+            width: 36px; height: 36px;
+            border-radius: 8px; border: none;
+            background: #f1f5f9; color: #64748b;
+            cursor: pointer; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+        }
+        .itp-search-close:hover { background: #e2e8f0; }
+        .itp-search-tabs {
+            display: flex; gap: 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .itp-search-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border: none; background: transparent;
+            font-size: 0.72rem; font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            text-align: center;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .itp-search-tab.active { color: #0f172a; border-bottom-color: #0f172a; }
+        .itp-search-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 20px;
+        }
+        .itp-search-results {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .itp-search-result {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        .itp-search-result:hover { background: #f8fafc; }
+        .itp-search-result-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center;
+            color: #6366f1; flex-shrink: 0;
+        }
+        .itp-search-result-text { flex: 1; min-width: 0; }
+        .itp-search-result-name {
+            font-size: 0.78rem; font-weight: 600; color: #0f172a;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .itp-search-result-desc {
+            font-size: 0.65rem; color: #94a3b8;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .itp-search-empty {
+            text-align: center; padding: 30px 16px;
+            color: #94a3b8; font-size: 0.78rem;
+        }
+        /* GPS input panel */
+        .itp-gps-form {
+            display: flex; flex-direction: column; gap: 12px;
+            padding: 12px 0;
+        }
+        .itp-gps-row { display: flex; gap: 12px; }
+        .itp-gps-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-family: inherit;
+            color: #0f172a;
+        }
+        .itp-gps-input:focus { outline: none; border-color: #6366f1; }
+        .itp-gps-confirm {
+            padding: 10px 24px;
+            background: #0f172a; color: #fff;
+            border: none; border-radius: 10px;
+            font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; font-family: inherit;
+            transition: all 0.15s;
+        }
+        .itp-gps-confirm:hover { background: #1e293b; }
+        /* Map picker panel */
+        .itp-pick-map {
+            width: 100%; height: 260px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .itp-pick-hint {
+            text-align: center;
+            font-size: 0.68rem; color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        /* --- Single-column panels (Step 2 + 4) --- */
+        .itp-single-col {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            background: #fff;
+            padding: 0;
+        }
+        .itp-single-col > .itp-col-header { position: sticky; top: 0; z-index: 2; }
+        .itp-lodging-list {
+            display: flex; flex-direction: column; gap: 10px;
+            padding: 20px 28px;
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .itp-lodging-row {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 12px; align-items: center;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        .itp-lodging-day { font-size: 0.72rem; font-weight: 700; color: #0f172a; }
+        .itp-lodging-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-family: inherit;
+            color: #0f172a;
+            background: #fff;
+        }
+        .itp-lodging-input:focus { outline: none; border-color: #6366f1; }
+        .itp-lodging-toggle { display: flex; align-items: center; gap: 6px; }
+        .itp-toggle-track {
+            position: relative;
+            width: 38px; height: 20px;
+            background: #e2e8f0; border-radius: 10px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .itp-toggle-track.on { background: #22c55e; }
+        .itp-toggle-knob {
+            position: absolute; top: 2px; left: 2px;
+            width: 16px; height: 16px;
+            background: #fff; border-radius: 50%;
+            transition: left 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .itp-toggle-track.on .itp-toggle-knob { left: 20px; }
+        .itp-toggle-label { font-size: 0.65rem; color: #64748b; white-space: nowrap; }
+
+        /* Docs sidebar in Step 3 */
+        .itp-docs-col { background: #fff; }
+        .itp-docs-content {
+            padding: 16px 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .itp-label {
+            display: block;
+            font-size: 0.72rem; font-weight: 600; color: #64748b;
+            margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .itp-select {
             width: 100%;
             padding: 8px 10px;
             border: 1px solid #e2e8f0;
@@ -4202,464 +4648,134 @@
             color: #0f172a;
             margin-bottom: 12px;
         }
-        .wiz-select:focus { outline: none; border-color: #94a3b8; }
-
-        /* Admin cards in sidebar */
-        .wiz-admin-cards { display: flex; flex-direction: column; gap: 8px; }
-        .wiz-admin-card {
-            border: 1px solid #f1f5f9;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .wiz-admin-card-title {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .itp-select:focus { outline: none; border-color: #94a3b8; }
+        .itp-admin-cards { display: flex; flex-direction: column; gap: 8px; }
+        .itp-admin-card { border: 1px solid #f1f5f9; border-radius: 8px; overflow: hidden; }
+        .itp-admin-card-title {
+            display: flex; align-items: center; gap: 5px;
             padding: 8px 10px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: #0f172a;
-            background: #f8fafc;
-            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.72rem; font-weight: 600; color: #0f172a;
+            background: #f8fafc; border-bottom: 1px solid #f1f5f9;
         }
-        .wiz-admin-card-body {
+        .itp-admin-card-body {
             padding: 8px 10px;
-            font-size: 0.72rem;
-            color: #64748b;
-            line-height: 1.5;
+            font-size: 0.72rem; color: #64748b; line-height: 1.5;
         }
-        .wiz-admin-card-body ul { margin: 0; padding-left: 14px; }
-        .wiz-admin-card-body li { margin-bottom: 3px; }
-        .wiz-disclaimer {
-            margin-top: 8px;
-            padding: 8px 10px;
-            background: #fffbeb;
-            border-radius: 6px;
-            font-size: 0.65rem;
-            color: #92400e;
-            line-height: 1.4;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            align-items: flex-start;
+        .itp-admin-card-body ul { margin: 0; padding-left: 14px; }
+        .itp-admin-card-body li { margin-bottom: 3px; }
+        .itp-disclaimer {
+            margin-top: 8px; padding: 8px 10px;
+            background: #fffbeb; border-radius: 6px;
+            font-size: 0.65rem; color: #92400e; line-height: 1.4;
+            display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-start;
         }
         .preparation-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            width: 100%;
-            margin-top: 4px;
+            display: flex; flex-wrap: wrap; gap: 6px; width: 100%; margin-top: 4px;
         }
-        .preparation-links a {
-            color: #6366f1;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.65rem;
-        }
+        .preparation-links a { color: #6366f1; text-decoration: none; font-weight: 600; font-size: 0.65rem; }
         .preparation-links a:hover { text-decoration: underline; }
         .prep-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            margin-bottom: 4px;
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.65rem; font-weight: 700; margin-bottom: 4px;
         }
         .prep-badge.ok { background: #dcfce7; color: #166534; }
         .prep-badge.required { background: #fee2e2; color: #991b1b; }
         .prep-badge.recommended { background: #fef3c7; color: #92400e; }
 
-        /* --- Main wizard --- */
-        .wiz-main {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        /* Stepper */
-        .wiz-stepper {
-            display: flex;
-            align-items: center;
-            gap: 0;
+        /* Checklist scroll area */
+        .itp-checklist-scroll {
+            flex: 1; overflow-y: auto;
             padding: 16px 20px;
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px 12px 0 0;
         }
-        .wiz-step {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .wiz-step-num {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            color: #94a3b8;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.72rem;
-            font-weight: 700;
-            transition: all 0.2s;
-        }
-        .wiz-step-label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #94a3b8;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-        .wiz-step.active .wiz-step-num {
-            background: #0f172a;
-            color: #fff;
-        }
-        .wiz-step.active .wiz-step-label { color: #0f172a; font-weight: 600; }
-        .wiz-step.done .wiz-step-num { background: #22c55e; color: #fff; }
-        .wiz-step.done .wiz-step-label { color: #475569; }
-        .wiz-step-line {
-            flex: 1;
-            height: 2px;
-            background: #e2e8f0;
-            margin: 0 8px;
-            border-radius: 1px;
-            transition: background 0.3s;
-        }
-        .wiz-step-line.done { background: #22c55e; }
-
-        /* Panels */
-        .wiz-panels {
-            background: #fff;
-            border-left: 1px solid #e2e8f0;
-            border-right: 1px solid #e2e8f0;
-            padding: 24px;
-            min-height: 400px;
-        }
-        .wiz-panel { display: none; }
-        .wiz-panel.active { display: block; animation: wizFadeIn 0.25s ease; }
-        @keyframes wizFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        .wiz-panel-header h3 {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0 0 4px;
-            font-size: 1.1rem;
-            color: #0f172a;
-        }
-        .wiz-panel-header p {
-            margin: 0 0 20px;
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
-        /* Step 1: Route timeline + recs */
-        .wiz-route-layout { display: grid; grid-template-columns: 1fr 240px; gap: 20px; }
-        @media (max-width: 768px) { .wiz-route-layout { grid-template-columns: 1fr; } }
-        .wiz-timeline { display: flex; flex-direction: column; gap: 0; }
-        .wiz-day {
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-        .wiz-day-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            background: #f8fafc;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: #0f172a;
-        }
-        .wiz-day-header .wiz-day-km { margin-left: auto; font-weight: 500; color: #64748b; font-size: 0.7rem; }
-        .wiz-day-stops {
-            min-height: 40px;
-            padding: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .wiz-day-stops.drag-over { background: #f0f4ff; }
-        .wiz-stop-pill {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            color: #334155;
-        }
-        .wiz-stop-pill .wiz-stop-icon { color: #6366f1; }
-        .wiz-stop-pill .wiz-stop-remove {
-            margin-left: auto;
-            background: none; border: none;
-            color: #94a3b8; cursor: pointer;
-            font-size: 0.7rem;
-            padding: 0 4px;
-        }
-        .wiz-stop-pill .wiz-stop-remove:hover { color: #ef4444; }
-        .wiz-day-drop-hint {
-            padding: 8px;
-            text-align: center;
-            font-size: 0.68rem;
-            color: #cbd5e1;
-            border: 1px dashed #e2e8f0;
-            border-radius: 6px;
-        }
-        .wiz-recs {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 12px;
-            align-self: start;
-        }
-        .wiz-recs-title {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-        .wiz-recs-list { display: flex; flex-direction: column; gap: 6px; }
-        .wiz-rec-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 0.72rem;
-            color: #334155;
-            cursor: grab;
-            transition: all 0.15s;
-        }
-        .wiz-rec-item:active { cursor: grabbing; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .wiz-rec-item:hover { border-color: #6366f1; }
-        .wiz-rec-icon { color: #f59e0b; font-size: 0.8rem; }
-        .wiz-rec-add {
-            margin-left: auto;
-            background: none; border: none;
-            color: #6366f1; cursor: pointer;
-            font-size: 0.7rem; font-weight: 600;
-        }
-
-        /* Step 2: Lodging */
-        .wiz-lodging-list { display: flex; flex-direction: column; gap: 10px; }
-        .wiz-lodging-row {
-            display: grid;
-            grid-template-columns: 80px 1fr auto;
-            gap: 12px;
-            align-items: center;
-            padding: 12px 14px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-        }
-        .wiz-lodging-day {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-        .wiz-lodging-input {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            font-family: inherit;
-            color: #0f172a;
-            background: #fff;
-        }
-        .wiz-lodging-input:focus { outline: none; border-color: #6366f1; }
-        .wiz-lodging-toggle {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .wiz-toggle-track {
-            position: relative;
-            width: 38px; height: 20px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .wiz-toggle-track.on { background: #22c55e; }
-        .wiz-toggle-knob {
-            position: absolute;
-            top: 2px; left: 2px;
-            width: 16px; height: 16px;
-            background: #fff;
-            border-radius: 50%;
-            transition: left 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .wiz-toggle-track.on .wiz-toggle-knob { left: 20px; }
-        .wiz-toggle-label { font-size: 0.65rem; color: #64748b; white-space: nowrap; }
-
-        /* Step 3: Checklist */
-        .wiz-checklist { display: flex; flex-direction: column; gap: 6px; }
-        .wiz-check-section-title {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #0f172a;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+        .itp-check-section-title {
+            font-size: 0.72rem; font-weight: 700; color: #0f172a;
+            text-transform: uppercase; letter-spacing: 0.03em;
             margin: 12px 0 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: flex; align-items: center; gap: 6px;
         }
-        .wiz-check-section-title:first-child { margin-top: 0; }
-        .wiz-check-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .itp-check-section-title:first-child { margin-top: 0; }
+        .itp-check-item {
+            display: flex; align-items: center; gap: 10px;
             padding: 8px 12px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.15s;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+            cursor: pointer; transition: all 0.15s; margin-bottom: 4px;
         }
-        .wiz-check-item:hover { border-color: #94a3b8; }
-        .wiz-check-item.checked { background: #f0fdf4; border-color: #bbf7d0; }
-        .wiz-check-box {
+        .itp-check-item:hover { border-color: #94a3b8; }
+        .itp-check-item.checked { background: #f0fdf4; border-color: #bbf7d0; }
+        .itp-check-box {
             width: 18px; height: 18px;
-            border: 2px solid #cbd5e1;
-            border-radius: 4px;
+            border: 2px solid #cbd5e1; border-radius: 4px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.55rem;
-            color: transparent;
-            flex-shrink: 0;
+            font-size: 0.55rem; color: transparent; flex-shrink: 0;
             transition: all 0.15s;
         }
-        .wiz-check-item.checked .wiz-check-box {
-            background: #22c55e;
-            border-color: #22c55e;
-            color: #fff;
-        }
-        .wiz-check-label { font-size: 0.78rem; color: #334155; }
-        .wiz-check-item.checked .wiz-check-label { text-decoration: line-through; color: #94a3b8; }
+        .itp-check-item.checked .itp-check-box { background: #22c55e; border-color: #22c55e; color: #fff; }
+        .itp-check-label { font-size: 0.78rem; color: #334155; }
+        .itp-check-item.checked .itp-check-label { text-decoration: line-through; color: #94a3b8; }
 
-        /* Step 4: Booklet */
-        .wiz-booklet-preview {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 32px;
-            min-height: 300px;
-            font-size: 0.82rem;
-            color: #334155;
-            line-height: 1.6;
-        }
-        .wiz-booklet-preview h2 {
-            font-size: 1.3rem;
-            color: #0f172a;
-            margin: 0 0 4px;
-        }
-        .wiz-booklet-preview .wiz-bk-sub {
-            font-size: 0.78rem;
-            color: #64748b;
-            margin-bottom: 20px;
-        }
-        .wiz-booklet-preview h4 {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 18px 0 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-        .wiz-booklet-preview table {
+        /* Booklet */
+        .itp-booklet-preview {
+            padding: 32px 28px;
+            max-width: 800px;
+            margin: 0 auto;
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 16px;
+            font-size: 0.82rem; color: #334155; line-height: 1.6;
         }
-        .wiz-booklet-preview th, .wiz-booklet-preview td {
-            text-align: left;
-            padding: 6px 10px;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.75rem;
+        .itp-booklet-preview h2 { font-size: 1.3rem; color: #0f172a; margin: 0 0 4px; }
+        .itp-booklet-preview .wiz-bk-sub { font-size: 0.78rem; color: #64748b; margin-bottom: 20px; }
+        .itp-booklet-preview h4 {
+            font-size: 0.82rem; font-weight: 700; color: #0f172a;
+            margin: 18px 0 6px; text-transform: uppercase; letter-spacing: 0.03em;
         }
-        .wiz-booklet-preview th {
-            font-weight: 600;
-            color: #64748b;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+        .itp-booklet-preview table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+        .itp-booklet-preview th, .itp-booklet-preview td {
+            text-align: left; padding: 6px 10px;
+            border-bottom: 1px solid #f1f5f9; font-size: 0.75rem;
         }
-        .wiz-booklet-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
+        .itp-booklet-preview th {
+            font-weight: 600; color: #64748b;
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em;
         }
-        .wiz-export-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 20px;
-            background: #0f172a;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
+        .itp-booklet-actions { display: flex; gap: 8px; margin-left: auto; }
+        .itp-export-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; background: #0f172a; color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 0.72rem; font-weight: 600;
+            cursor: pointer; font-family: inherit; transition: all 0.15s;
         }
-        .wiz-export-btn:hover { background: #1e293b; }
-        .wiz-export-btn.wiz-export-secondary {
-            background: #fff;
-            color: #334155;
-            border: 1px solid #e2e8f0;
+        .itp-export-btn:hover { background: #1e293b; }
+        .itp-export-btn.itp-export-secondary {
+            background: #fff; color: #334155; border: 1px solid #e2e8f0;
         }
-        .wiz-export-btn.wiz-export-secondary:hover { background: #f8fafc; }
+        .itp-export-btn.itp-export-secondary:hover { background: #f8fafc; }
 
-        /* Nav */
-        .wiz-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 20px;
+        /* --- Bottom nav bar --- */
+        .itp-bottombar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 20px;
             background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 0 0 12px 12px;
+            border-top: 1px solid #e2e8f0;
+            flex-shrink: 0;
         }
-        .wiz-nav-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
+        .itp-nav-btn {
+            display: inline-flex; align-items: center; gap: 5px;
             padding: 8px 18px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: #fff;
-            color: #334155;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            background: #fff; color: #334155;
+            font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; font-family: inherit; transition: all 0.15s;
         }
-        .wiz-nav-btn:hover:not(:disabled) { border-color: #94a3b8; background: #f8fafc; }
-        .wiz-nav-btn:disabled { opacity: 0.4; cursor: default; }
-        .wiz-nav-btn.wiz-next { background: #0f172a; color: #fff; border-color: #0f172a; }
-        .wiz-nav-btn.wiz-next:hover:not(:disabled) { background: #1e293b; }
-        .wiz-nav-progress { font-size: 0.72rem; color: #94a3b8; }
-        .wiz-empty { text-align: center; padding: 24px; color: #94a3b8; font-size: 0.8rem; }
+        .itp-nav-btn:hover:not(:disabled) { border-color: #94a3b8; background: #f8fafc; }
+        .itp-nav-btn:disabled { opacity: 0.4; cursor: default; }
+        .itp-nav-btn.itp-nav-next { background: #0f172a; color: #fff; border-color: #0f172a; }
+        .itp-nav-btn.itp-nav-next:hover:not(:disabled) { background: #1e293b; }
+        .itp-nav-label { font-size: 0.72rem; color: #94a3b8; }
 
         /* Legacy preparation layout hidden */
         .preparation-layout { display: none; }
         .preparation-selector-card, .preparation-cards, .preparation-disclaimer { display: none; }
+        .wiz-shell { display: none; }
 
         .packing-item {
             display: flex;
@@ -8121,8 +8237,6 @@
             .vintage-stats { display: none; }
             .league-section { display: none; }
 
-            .poi-controls { left: 10px; bottom: 60vh; }
-
             .zoom-controls { bottom: 60vh; right: 10px; }
             .zoom-btn { width: 40px; height: 40px; }
         }
@@ -9592,12 +9706,6 @@
                 </div>
 
                 <div class="section">
-                    <div class="section-title"><i data-lucide="plus-circle" style="width:14px;height:14px;"></i> Create Road Trip</div>
-                    <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Share your own adventure with the community!</p>
-                    <button class="btn btn-serendipity" onclick="openCreateTripModal()">+ Create New Trip</button>
-                </div>
-
-                <div class="section">
                     <div class="section-title"><i data-lucide="compass" style="width:14px;height:14px;"></i> Explore Country Roads</div>
                     <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Click any country on the map to zoom in and see main highways.</p>
                     <div id="countryRoadsInfo" style="display: none;">
@@ -9633,61 +9741,7 @@
             <!-- Leaflet Road Map -->
             <div id="roadMap"></div>
             
-            <!-- POI Layer Controls (shown only in Road Trips mode) -->
-            <div class="poi-controls" id="poiControls" style="display: none;">
-                <div class="poi-controls-header">
-                    <span class="poi-controls-title"><i data-lucide="map-pin" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i> Points of Interest</span>
-                    <button class="poi-controls-toggle" onclick="togglePoiPanel()" title="Collapse">−</button>
-                </div>
-                <div class="poi-toggles" id="poiToggles">
-                    <button class="poi-toggle" onclick="togglePoi('campsiteFree', this)" data-type="campsiteFree">
-                        <span class="poi-icon"><svg class="icon" aria-hidden="true"><use href="#icon-tent"></use></svg></span>
-                        <span>Free Camps</span>
-                        <span class="poi-count" id="countCampsiteFree">0</span>
-                    </button>
-                    <button class="poi-toggle" onclick="togglePoi('campsitePaid', this)" data-type="campsitePaid">
-                        <span class="poi-icon"><i data-lucide="tent" style="width:14px;height:14px;"></i></span>
-                        <span>Paid Camps</span>
-                        <span class="poi-count" id="countCampsitePaid">0</span>
-                    </button>
-                    <button class="poi-toggle" onclick="togglePoi('fuel', this)" data-type="fuel">
-                        <span class="poi-icon"><svg class="icon" aria-hidden="true"><use href="#icon-fuel"></use></svg></span>
-                        <span>Fuel</span>
-                        <span class="poi-count" id="countFuel">0</span>
-                    </button>
-                    <button class="poi-toggle" onclick="togglePoi('grocery', this)" data-type="grocery">
-                        <span class="poi-icon"><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i></span>
-                        <span>Grocery</span>
-                        <span class="poi-count" id="countGrocery">0</span>
-                    </button>
-                    <button class="poi-toggle" onclick="togglePoi('water', this)" data-type="water">
-                        <span class="poi-icon"><i data-lucide="droplets" style="width:14px;height:14px;"></i></span>
-                        <span>Water</span>
-                        <span class="poi-count" id="countWater">0</span>
-                    </button>
-                    <button class="poi-toggle" onclick="togglePoi('viewpoint', this)" data-type="viewpoint">
-                        <span class="poi-icon"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg></span>
-                        <span>Views</span>
-                        <span class="poi-count" id="countViewpoint">0</span>
-                    </button>
-                    <button class="poi-toggle" onclick="togglePoi('restArea', this)" data-type="restArea">
-                        <span class="poi-icon"><i data-lucide="square-parking" style="width:14px;height:14px;"></i></span>
-                        <span>Rest</span>
-                        <span class="poi-count" id="countRestArea">0</span>
-                    </button>
-                    <button class="poi-toggle" onclick="togglePoi('mechanic', this)" data-type="mechanic">
-                        <span class="poi-icon"><i data-lucide="wrench" style="width:14px;height:14px;"></i></span>
-                        <span>Service</span>
-                        <span class="poi-count" id="countMechanic">0</span>
-                    </button>
-                </div>
-                <div class="poi-legend">
-                    <strong>On the map:</strong> <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-car"></use></svg> Start • <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-flag"></use></svg> End • 1,2,3… Key stops • Buttons above = <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-fuel"></use></svg> Fuel, <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-tent"></use></svg> Camp, Grocery, etc.
-                </div>
-                <div class="poi-legend" style="margin-top: 4px;">
-                    <i data-lucide="info" style="width:12px;height:12px;vertical-align:-1px;margin-right:2px;"></i> Reference data. Always verify on Google Maps before departure.
-                </div>
-            </div>
+            <!-- POI controls removed: POI filters are now contextual in RouteDetail map view only -->
             
             <!-- Offline Indicator -->
             <div class="offline-indicator" id="offlineIndicator">
@@ -10315,126 +10369,128 @@
                 </div>
             </div>
 
-            <!-- Preparation Tab – Adaptive Itinerary Wizard -->
+            <!-- Preparation Tab – Immersive Itinerary Planning Mode -->
             <div class="trip-tab-content" id="tab-preparation">
-                <div class="wiz-shell">
-                    <!-- Sidebar: Quick Tips + Admin info -->
-                    <aside class="wiz-sidebar">
-                        <div class="wiz-sidebar-section">
-                            <div class="wiz-sidebar-title"><i data-lucide="lightbulb" style="width:14px;height:14px;"></i> Quick Tips</div>
-                            <div class="wiz-tips" id="wizTips">
-                                <div class="wiz-tip">Drag pit stops from recommendations into your daily timeline.</div>
-                                <div class="wiz-tip">Toggle lodging status to track what's booked.</div>
-                            </div>
+                <div class="itp-canvas">
+                    <!-- Top bar: back button + trip info + stepper -->
+                    <header class="itp-topbar">
+                        <button class="itp-back-btn" onclick="exitItineraryFocusMode()" title="Back to trip overview">
+                            <i data-lucide="arrow-left" style="width:18px;height:18px;"></i>
+                        </button>
+                        <div class="itp-topbar-title">
+                            <span class="itp-topbar-label" id="itpTripName">Itinerary Planner</span>
+                            <span class="itp-topbar-meta" id="itpTripMeta"></span>
                         </div>
-                        <!-- Nationality selector (visa/admin) -->
-                        <div class="wiz-sidebar-section">
-                            <div class="wiz-sidebar-title"><i data-lucide="globe" style="width:14px;height:14px;"></i> Travel Documents</div>
-                            <label class="wiz-label" for="preparationNationality">Passport / Nationality</label>
-                            <select id="preparationNationality" class="wiz-select" onchange="updatePreparationContent()">
-                                <option value="EU">EU / EEA / Switzerland</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="US">United States</option>
-                                <option value="CA">Canada</option>
-                                <option value="AU">Australia</option>
-                                <option value="NZ">New Zealand</option>
-                                <option value="OTHER">Other nationality</option>
-                            </select>
-                            <div class="wiz-admin-cards" id="preparationCards">
-                                <div class="wiz-admin-card" id="preparationVisaCard">
-                                    <div class="wiz-admin-card-title"><i data-lucide="file-text" style="width:13px;height:13px;"></i> Visa &amp; Entry</div>
-                                    <div id="preparationVisaContent" class="wiz-admin-card-body">Select a trip to see requirements.</div>
-                                </div>
-                                <div class="wiz-admin-card" id="preparationVaccinesCard">
-                                    <div class="wiz-admin-card-title"><i data-lucide="syringe" style="width:13px;height:13px;"></i> Vaccines</div>
-                                    <div id="preparationVaccinesContent" class="wiz-admin-card-body">Recommendations by destination.</div>
-                                </div>
-                                <div class="wiz-admin-card" id="preparationLegalCard">
-                                    <div class="wiz-admin-card-title"><i data-lucide="scale" style="width:13px;height:13px;"></i> Legal &amp; Practical</div>
-                                    <div id="preparationLegalContent" class="wiz-admin-card-body">License, insurance, customs.</div>
-                                </div>
-                            </div>
-                            <div class="wiz-disclaimer">
-                                <i data-lucide="alert-triangle" style="width:12px;height:12px;color:#f59e0b;"></i>
-                                Informational only. Verify with official sources before departure.
-                                <div class="preparation-links" id="preparationLinks"></div>
-                            </div>
+                        <div class="itp-stepper" id="itpStepper">
+                            <button class="itp-step-dot active" data-step="1" onclick="itpGoStep(1)" title="Itinerary"><span>1</span></button>
+                            <div class="itp-step-connector"></div>
+                            <button class="itp-step-dot" data-step="2" onclick="itpGoStep(2)" title="Basecamp"><span>2</span></button>
+                            <div class="itp-step-connector"></div>
+                            <button class="itp-step-dot" data-step="3" onclick="itpGoStep(3)" title="Gear & Prep"><span>3</span></button>
+                            <div class="itp-step-connector"></div>
+                            <button class="itp-step-dot" data-step="4" onclick="itpGoStep(4)" title="Booklet"><span>4</span></button>
                         </div>
-                    </aside>
-
-                    <!-- Main wizard area -->
-                    <div class="wiz-main">
-                        <!-- Progressive Stepper -->
-                        <div class="wiz-stepper" id="wizStepper">
-                            <div class="wiz-step active" data-step="1"><span class="wiz-step-num">1</span><span class="wiz-step-label">The Route</span></div>
-                            <div class="wiz-step-line"></div>
-                            <div class="wiz-step" data-step="2"><span class="wiz-step-num">2</span><span class="wiz-step-label">Basecamp</span></div>
-                            <div class="wiz-step-line"></div>
-                            <div class="wiz-step" data-step="3"><span class="wiz-step-num">3</span><span class="wiz-step-label">Expedition Prep</span></div>
-                            <div class="wiz-step-line"></div>
-                            <div class="wiz-step" data-step="4"><span class="wiz-step-num">4</span><span class="wiz-step-label">Booklet</span></div>
+                        <div class="itp-topbar-actions">
+                            <button class="itp-action-pill" onclick="exportWizBooklet()" title="Export booklet"><i data-lucide="download" style="width:14px;height:14px;"></i></button>
                         </div>
+                    </header>
 
-                        <!-- Step panels -->
-                        <div class="wiz-panels">
-                            <!-- Step 1: The Skeleton / Route -->
-                            <div class="wiz-panel active" id="wizPanel1">
-                                <div class="wiz-panel-header">
-                                    <h3><i data-lucide="map" style="width:18px;height:18px;"></i> The Route</h3>
-                                    <p>Your daily route overview. Drag recommended pit stops into your timeline.</p>
+                    <!-- Step 1: Itinerary builder (two-panel) -->
+                    <div class="itp-panel active" id="itpPanel1">
+                        <div class="itp-split">
+                            <!-- LEFT: Timeline -->
+                            <div class="itp-timeline-col">
+                                <div class="itp-col-header">
+                                    <h3><i data-lucide="list" style="width:16px;height:16px;"></i> Daily Itinerary</h3>
+                                    <button class="itp-add-day-btn" onclick="itpAddDay()" title="Add a day"><i data-lucide="plus" style="width:14px;height:14px;"></i> Add Day</button>
                                 </div>
-                                <div class="wiz-route-layout">
-                                    <div class="wiz-timeline" id="wizTimeline">
-                                        <div class="wiz-empty">Loading itinerary...</div>
-                                    </div>
-                                    <div class="wiz-recs">
-                                        <div class="wiz-recs-title"><i data-lucide="star" style="width:13px;height:13px;"></i> Recommended Stops</div>
-                                        <div class="wiz-recs-list" id="wizRecsList"></div>
-                                    </div>
+                                <div class="itp-days-scroll" id="itpTimeline">
+                                    <div class="itp-empty-state"><i data-lucide="compass" style="width:32px;height:32px;opacity:0.3;"></i><p>Loading itinerary&hellip;</p></div>
                                 </div>
                             </div>
-
-                            <!-- Step 2: Basecamp / Lodging -->
-                            <div class="wiz-panel" id="wizPanel2">
-                                <div class="wiz-panel-header">
-                                    <h3><i data-lucide="bed" style="width:18px;height:18px;"></i> Basecamp</h3>
-                                    <p>Plan where you'll stay each night. Toggle booking status.</p>
+                            <!-- RIGHT: Map -->
+                            <div class="itp-map-col">
+                                <div class="itp-col-header">
+                                    <h3><i data-lucide="map" style="width:16px;height:16px;"></i> Route Preview</h3>
+                                    <span class="itp-map-hint" id="itpMapHint">Stops update the map in real time</span>
                                 </div>
-                                <div class="wiz-lodging-list" id="wizLodgingList"></div>
+                                <div class="itp-map-wrap" id="itpMapContainer"></div>
                             </div>
-
-                            <!-- Step 3: Expedition Prep (conditional) -->
-                            <div class="wiz-panel" id="wizPanel3">
-                                <div class="wiz-panel-header">
-                                    <h3><i data-lucide="shield" style="width:18px;height:18px;"></i> Expedition Prep</h3>
-                                    <p id="wizPrepDesc">Gear and supplies checklist based on your trip profile.</p>
-                                </div>
-                                <div class="wiz-checklist" id="wizChecklist"></div>
-                            </div>
-
-                            <!-- Step 4: Summary & Export -->
-                            <div class="wiz-panel" id="wizPanel4">
-                                <div class="wiz-panel-header">
-                                    <h3><i data-lucide="book-open" style="width:18px;height:18px;"></i> Adventure Booklet</h3>
-                                    <p>Preview and export your personalized road trip booklet.</p>
-                                </div>
-                                <div class="wiz-booklet" id="wizBooklet">
-                                    <div class="wiz-booklet-preview" id="wizBookletPreview"></div>
-                                    <div class="wiz-booklet-actions">
-                                        <button class="wiz-export-btn" onclick="exportWizBooklet()"><i data-lucide="download" style="width:14px;height:14px;"></i> Export as PDF</button>
-                                        <button class="wiz-export-btn wiz-export-secondary" onclick="copyWizBooklet()"><i data-lucide="copy" style="width:14px;height:14px;"></i> Copy to Clipboard</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Navigation -->
-                        <div class="wiz-nav">
-                            <button class="wiz-nav-btn wiz-prev" id="wizPrevBtn" onclick="wizGo(-1)" disabled><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Back</button>
-                            <span class="wiz-nav-progress" id="wizProgress">Step 1 of 4</span>
-                            <button class="wiz-nav-btn wiz-next" id="wizNextBtn" onclick="wizGo(1)">Next <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>
                         </div>
                     </div>
+
+                    <!-- Step 2: Basecamp -->
+                    <div class="itp-panel" id="itpPanel2">
+                        <div class="itp-single-col">
+                            <div class="itp-col-header"><h3><i data-lucide="bed" style="width:16px;height:16px;"></i> Basecamp &mdash; Nightly Lodging</h3></div>
+                            <div class="itp-lodging-list" id="itpLodgingList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Expedition Prep -->
+                    <div class="itp-panel" id="itpPanel3">
+                        <div class="itp-split">
+                            <div class="itp-timeline-col">
+                                <div class="itp-col-header"><h3><i data-lucide="shield" style="width:16px;height:16px;"></i> Expedition Prep</h3><p class="itp-col-desc" id="itpPrepDesc">Gear and supplies checklist based on your trip profile.</p></div>
+                                <div class="itp-checklist-scroll" id="itpChecklist"></div>
+                            </div>
+                            <div class="itp-map-col itp-docs-col">
+                                <div class="itp-col-header"><h3><i data-lucide="globe" style="width:16px;height:16px;"></i> Travel Documents</h3></div>
+                                <div class="itp-docs-content">
+                                    <label class="itp-label" for="preparationNationality">Passport / Nationality</label>
+                                    <select id="preparationNationality" class="itp-select" onchange="updatePreparationContent()">
+                                        <option value="EU">EU / EEA / Switzerland</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="US">United States</option>
+                                        <option value="CA">Canada</option>
+                                        <option value="AU">Australia</option>
+                                        <option value="NZ">New Zealand</option>
+                                        <option value="OTHER">Other nationality</option>
+                                    </select>
+                                    <div class="itp-admin-cards" id="preparationCards">
+                                        <div class="itp-admin-card">
+                                            <div class="itp-admin-card-title"><i data-lucide="file-text" style="width:13px;height:13px;"></i> Visa &amp; Entry</div>
+                                            <div id="preparationVisaContent" class="itp-admin-card-body">Select a trip to see requirements.</div>
+                                        </div>
+                                        <div class="itp-admin-card">
+                                            <div class="itp-admin-card-title"><i data-lucide="syringe" style="width:13px;height:13px;"></i> Vaccines</div>
+                                            <div id="preparationVaccinesContent" class="itp-admin-card-body">Recommendations by destination.</div>
+                                        </div>
+                                        <div class="itp-admin-card">
+                                            <div class="itp-admin-card-title"><i data-lucide="scale" style="width:13px;height:13px;"></i> Legal &amp; Practical</div>
+                                            <div id="preparationLegalContent" class="itp-admin-card-body">License, insurance, customs.</div>
+                                        </div>
+                                    </div>
+                                    <div class="itp-disclaimer">
+                                        <i data-lucide="alert-triangle" style="width:12px;height:12px;color:#f59e0b;"></i>
+                                        Informational only. Verify with official sources before departure.
+                                        <div class="preparation-links" id="preparationLinks"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Booklet -->
+                    <div class="itp-panel" id="itpPanel4">
+                        <div class="itp-single-col">
+                            <div class="itp-col-header">
+                                <h3><i data-lucide="book-open" style="width:16px;height:16px;"></i> Adventure Booklet</h3>
+                                <div class="itp-booklet-actions">
+                                    <button class="itp-export-btn" onclick="exportWizBooklet()"><i data-lucide="download" style="width:14px;height:14px;"></i> Export as PDF</button>
+                                    <button class="itp-export-btn itp-export-secondary" onclick="copyWizBooklet()"><i data-lucide="copy" style="width:14px;height:14px;"></i> Copy</button>
+                                </div>
+                            </div>
+                            <div class="itp-booklet-preview" id="wizBookletPreview"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom nav -->
+                    <footer class="itp-bottombar">
+                        <button class="itp-nav-btn" id="itpPrevBtn" onclick="itpNav(-1)" disabled><i data-lucide="chevron-left" style="width:16px;height:16px;"></i> Previous</button>
+                        <span class="itp-nav-label" id="itpNavLabel">Step 1 &mdash; Itinerary</span>
+                        <button class="itp-nav-btn itp-nav-next" id="itpNextBtn" onclick="itpNav(1)">Next <i data-lucide="chevron-right" style="width:16px;height:16px;"></i></button>
+                    </footer>
                 </div>
             </div>
 
@@ -14632,7 +14688,8 @@
         function togglePoiPanel() {
             const toggles = document.getElementById('poiToggles');
             const btn = document.querySelector('.poi-controls-toggle');
-            
+            if (!toggles || !btn) return;
+
             if (toggles.style.display === 'none') {
                 toggles.style.display = 'flex';
                 btn.textContent = '−';
@@ -15297,21 +15354,19 @@
 
             // Route fullscreen: collapse hero, map fills 100% viewport
             if (modal) {
+                modal.classList.remove('route-active', 'prep-active');
                 if (tabName === 'route') {
                     modal.classList.add('route-active');
-                } else {
-                    modal.classList.remove('route-active');
                 }
             }
             
             // When Route tab is shown, init map + render variant chips
             if (tabName === 'route' && currentDetailTrip) {
-                currentVariantId = null; // Reset to full route
+                currentVariantId = null;
                 renderVariantChips(currentDetailTrip);
                 renderPendingVariants(currentDetailTrip);
                 setTimeout(function() {
                     initTripDetailMap(currentDetailTrip);
-                    // Force map to recalculate size after layout transition
                     if (tripDetailMap) {
                         setTimeout(function() { tripDetailMap.invalidateSize(); }, 500);
                     }
@@ -15323,7 +15378,7 @@
                 initHubForTrip(currentDetailTrip.id);
             }
 
-            // When Preparation tab is shown, re-init wizard
+            // When Preparation tab is shown, enter Focus Mode
             if (tabName === 'preparation' && currentDetailTrip) {
                 initWizard(currentDetailTrip);
             }
@@ -15531,15 +15586,22 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        // ==================== ADAPTIVE ITINERARY WIZARD ====================
-        let wizStep = 1;
-        let wizTotalSteps = 4;
-        let wizData = { stops: {}, lodging: {}, checklist: {} };
+        // ==================== IMMERSIVE ITINERARY PLANNER ====================
+        let itpStep = 1;
+        const ITP_TOTAL = 4;
+        const ITP_LABELS = ['Itinerary', 'Basecamp', 'Gear & Prep', 'Booklet'];
+        let itpData = { days: [], lodging: {}, checklist: {} };
+        let itpMap = null;
+        let itpPolyline = null;
+        let itpMarkers = [];
+        let itpSearchOverlay = null;
+        let itpSearchDay = null;
+        let itpPickerMap = null;
+        let itpPickerMarker = null;
 
         const REMOTE_CONTINENTS = ['Africa','Asia','South America','Oceania'];
-        const DEVELOPED_CONTINENTS = ['Europe','North America'];
 
-        function getWizRegionType(trip) {
+        function getItpRegionType(trip) {
             if (!trip) return 'developed';
             const c = trip.continent || 'Europe';
             if (REMOTE_CONTINENTS.some(r => c.includes(r))) return 'remote';
@@ -15548,231 +15610,503 @@
             return 'developed';
         }
 
-        function getWizDays(trip) {
-            if (!trip) return 5;
-            const d = parseInt(trip.duration) || 7;
+        function getItpDays(trip) {
+            if (!trip) return 3;
+            const d = parseInt(trip.duration) || 5;
             return Math.max(2, Math.min(d, 30));
         }
 
-        function getWizRecs(trip) {
-            if (!trip || !trip.recommendations) return [];
-            return trip.recommendations.slice(0, 8).map((r, i) => ({
-                id: 'rec_' + i,
-                name: typeof r === 'string' ? r : (r.name || r.title || 'Stop ' + (i+1)),
-                type: typeof r === 'object' ? (r.type || 'sight') : 'sight'
-            }));
+        // --- Haversine distance (km) ---
+        function itpHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         }
 
+        // --- Focus Mode ---
+        function enterItineraryFocusMode() {
+            const modal = document.getElementById('tripDetailModal');
+            if (modal) modal.classList.add('prep-active');
+        }
+
+        function exitItineraryFocusMode() {
+            const modal = document.getElementById('tripDetailModal');
+            if (modal) modal.classList.remove('prep-active');
+            switchTripTab('overview');
+        }
+
+        // --- Init ---
         function initWizard(trip) {
             if (!trip) return;
-            wizStep = 1;
-            wizData = { stops: {}, lodging: {}, checklist: {} };
+            itpStep = 1;
 
-            const stored = localStorage.getItem('wizData_' + trip.id);
+            const stored = localStorage.getItem('itpData_' + trip.id);
             if (stored) {
-                try { wizData = JSON.parse(stored); } catch(e) {}
+                try { itpData = JSON.parse(stored); } catch(e) { itpData = { days: [], lodging: {}, checklist: {} }; }
+            } else {
+                itpData = { days: [], lodging: {}, checklist: {} };
             }
 
-            const regionType = getWizRegionType(trip);
-            wizTotalSteps = 4;
-            updateWizStepper();
-            renderWizStep1(trip);
-            showWizPanel(1);
-            updateWizNav();
-            updateWizTips(trip, regionType);
+            if (!itpData.days || itpData.days.length === 0) {
+                const numDays = getItpDays(trip);
+                const waypoints = trip.waypoints || [];
+                const perDay = Math.max(1, Math.ceil(waypoints.length / numDays));
+                itpData.days = [];
+                for (let d = 0; d < numDays; d++) {
+                    const wpSlice = waypoints.slice(d * perDay, (d + 1) * perDay);
+                    const stops = wpSlice.filter(wp => Array.isArray(wp) && wp.length >= 2).map((wp, i) => ({
+                        id: 'wp_' + d + '_' + i,
+                        name: wp[2] || ('Waypoint ' + (i + 1)),
+                        lat: wp[0],
+                        lng: wp[1],
+                        notes: ''
+                    }));
+                    itpData.days.push({ stops: stops });
+                }
+            }
+
+            const label = document.getElementById('itpTripName');
+            const meta = document.getElementById('itpTripMeta');
+            if (label) label.textContent = trip.name || 'Itinerary Planner';
+            if (meta) meta.textContent = [trip.country, trip.distance, trip.duration].filter(Boolean).join(' · ');
+
+            enterItineraryFocusMode();
+            itpUpdateStepper();
+            itpShowPanel(1);
+            itpUpdateNav();
+            itpRenderStep1();
             updatePreparationContent();
             if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 80);
         }
 
-        function updateWizTips(trip, regionType) {
-            const el = document.getElementById('wizTips');
-            if (!el) return;
-            const tips = [];
-            if (regionType === 'remote') {
-                tips.push('Remote region detected — extra safety & supplies checklist included.');
-                tips.push('Check border crossing hours and permit requirements.');
-                tips.push('Download offline maps before departure.');
-            } else {
-                tips.push('Focus on lodging and dining reservations.');
-                tips.push('Popular stops book out fast in peak season.');
-            }
-            tips.push('Export your booklet as a PDF to share with travel companions.');
-            el.innerHTML = tips.map(t => '<div class="wiz-tip">' + t + '</div>').join('');
-        }
-
-        function updateWizStepper() {
-            document.querySelectorAll('.wiz-step').forEach(s => {
-                const n = parseInt(s.dataset.step);
-                s.classList.remove('active', 'done');
-                if (n === wizStep) s.classList.add('active');
-                else if (n < wizStep) s.classList.add('done');
+        // --- Stepper ---
+        function itpUpdateStepper() {
+            document.querySelectorAll('.itp-step-dot').forEach(dot => {
+                const n = parseInt(dot.dataset.step);
+                dot.classList.remove('active', 'done');
+                if (n === itpStep) dot.classList.add('active');
+                else if (n < itpStep) dot.classList.add('done');
             });
-            document.querySelectorAll('.wiz-step-line').forEach((line, i) => {
-                line.classList.toggle('done', (i + 1) < wizStep);
+            document.querySelectorAll('.itp-step-connector').forEach((c, i) => {
+                c.classList.toggle('done', (i + 1) < itpStep);
             });
         }
 
-        function showWizPanel(n) {
-            document.querySelectorAll('.wiz-panel').forEach(p => p.classList.remove('active'));
-            const panel = document.getElementById('wizPanel' + n);
+        function itpShowPanel(n) {
+            document.querySelectorAll('.itp-panel').forEach(p => p.classList.remove('active'));
+            const panel = document.getElementById('itpPanel' + n);
             if (panel) panel.classList.add('active');
         }
 
-        function updateWizNav() {
-            const prev = document.getElementById('wizPrevBtn');
-            const next = document.getElementById('wizNextBtn');
-            const prog = document.getElementById('wizProgress');
-            if (prev) prev.disabled = wizStep <= 1;
+        function itpUpdateNav() {
+            const prev = document.getElementById('itpPrevBtn');
+            const next = document.getElementById('itpNextBtn');
+            const lbl = document.getElementById('itpNavLabel');
+            if (prev) prev.disabled = itpStep <= 1;
             if (next) {
-                next.innerHTML = wizStep >= wizTotalSteps
+                next.innerHTML = itpStep >= ITP_TOTAL
                     ? '<i data-lucide="check" style="width:14px;height:14px;"></i> Finish'
-                    : 'Next <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>';
+                    : 'Next <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>';
             }
-            if (prog) prog.textContent = 'Step ' + wizStep + ' of ' + wizTotalSteps;
+            if (lbl) lbl.textContent = 'Step ' + itpStep + ' — ' + (ITP_LABELS[itpStep - 1] || '');
             if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 30);
         }
 
-        function wizGo(dir) {
-            const trip = currentDetailTrip;
-            if (!trip) return;
-            saveWizData(trip);
-
-            const newStep = wizStep + dir;
-            if (newStep < 1 || newStep > wizTotalSteps) return;
-            wizStep = newStep;
-
-            updateWizStepper();
-            showWizPanel(wizStep);
-            updateWizNav();
-
-            if (wizStep === 1) renderWizStep1(trip);
-            if (wizStep === 2) renderWizStep2(trip);
-            if (wizStep === 3) renderWizStep3(trip);
-            if (wizStep === 4) renderWizStep4(trip);
-
+        function itpGoStep(n) {
+            if (n < 1 || n > ITP_TOTAL) return;
+            itpSaveCurrentStep();
+            itpStep = n;
+            itpUpdateStepper();
+            itpShowPanel(n);
+            itpUpdateNav();
+            if (n === 1) itpRenderStep1();
+            if (n === 2) itpRenderStep2();
+            if (n === 3) itpRenderStep3();
+            if (n === 4) itpRenderStep4();
             if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 80);
         }
 
-        function saveWizData(trip) {
+        function itpNav(dir) {
+            itpGoStep(itpStep + dir);
+        }
+
+        function itpSaveCurrentStep() {
+            const trip = currentDetailTrip;
             if (!trip) return;
-            if (wizStep === 2) {
-                document.querySelectorAll('.wiz-lodging-row').forEach(row => {
+            if (itpStep === 1) {
+                document.querySelectorAll('.itp-stop-notes').forEach(ta => {
+                    const day = parseInt(ta.dataset.day);
+                    const idx = parseInt(ta.dataset.idx);
+                    if (itpData.days[day] && itpData.days[day].stops[idx]) {
+                        itpData.days[day].stops[idx].notes = ta.value;
+                    }
+                });
+            }
+            if (itpStep === 2) {
+                document.querySelectorAll('.itp-lodging-row').forEach(row => {
                     const day = row.dataset.day;
-                    const input = row.querySelector('.wiz-lodging-input');
-                    const toggle = row.querySelector('.wiz-toggle-track');
+                    const input = row.querySelector('.itp-lodging-input');
+                    const toggle = row.querySelector('.itp-toggle-track');
                     if (day) {
-                        wizData.lodging[day] = {
+                        itpData.lodging[day] = {
                             name: input ? input.value : '',
                             booked: toggle ? toggle.classList.contains('on') : false
                         };
                     }
                 });
             }
-            if (wizStep === 3) {
-                document.querySelectorAll('.wiz-check-item').forEach(item => {
+            if (itpStep === 3) {
+                document.querySelectorAll('.itp-check-item').forEach(item => {
                     const key = item.dataset.key;
-                    if (key) wizData.checklist[key] = item.classList.contains('checked');
+                    if (key) itpData.checklist[key] = item.classList.contains('checked');
                 });
             }
-            try { localStorage.setItem('wizData_' + trip.id, JSON.stringify(wizData)); } catch(e) {}
+            try { localStorage.setItem('itpData_' + trip.id, JSON.stringify(itpData)); } catch(e) {}
         }
 
-        // Step 1: Route Timeline
-        function renderWizStep1(trip) {
-            const days = getWizDays(trip);
-            const timeline = document.getElementById('wizTimeline');
-            const recsList = document.getElementById('wizRecsList');
-            if (!timeline) return;
+        // --- Step 1: Itinerary timeline + map ---
+        function itpRenderStep1() {
+            const container = document.getElementById('itpTimeline');
+            if (!container) return;
 
-            const waypoints = trip.waypoints || [];
-            const perDay = Math.max(1, Math.ceil(waypoints.length / days));
+            if (!itpData.days || itpData.days.length === 0) {
+                container.innerHTML = '<div class="itp-empty-state"><i data-lucide="compass" style="width:32px;height:32px;opacity:0.3;"></i><p>No days yet. Click "Add Day" to start planning.</p></div>';
+                itpInitMap();
+                return;
+            }
+
             let html = '';
-            for (let d = 1; d <= days; d++) {
-                const dayStops = wizData.stops[d] || [];
-                const wpStart = (d - 1) * perDay;
-                const wpSlice = waypoints.slice(wpStart, wpStart + perDay);
-                const wpName = wpSlice.length > 0 && Array.isArray(wpSlice[0]) && wpSlice[0][2] ? wpSlice[0][2] : '';
-                html += '<div class="wiz-day"><div class="wiz-day-header"><i data-lucide="calendar" style="width:13px;height:13px;"></i> Day ' + d + (wpName ? ' — ' + wpName : '') + '<span class="wiz-day-km"></span></div>';
-                html += '<div class="wiz-day-stops" data-day="' + d + '" ondragover="event.preventDefault();this.classList.add(\'drag-over\')" ondragleave="this.classList.remove(\'drag-over\')" ondrop="wizDropStop(event,' + d + ')">';
-                if (dayStops.length > 0) {
-                    dayStops.forEach((s, idx) => {
-                        html += '<div class="wiz-stop-pill"><span class="wiz-stop-icon"><i data-lucide="map-pin" style="width:11px;height:11px;"></i></span> ' + s.name + '<button class="wiz-stop-remove" onclick="wizRemoveStop(' + d + ',' + idx + ')">×</button></div>';
+            itpData.days.forEach((day, dIdx) => {
+                let totalKm = 0;
+                day.stops.forEach((s, sIdx) => {
+                    if (sIdx > 0) {
+                        const prev = day.stops[sIdx - 1];
+                        if (prev.lat && prev.lng && s.lat && s.lng) {
+                            totalKm += itpHaversine(prev.lat, prev.lng, s.lat, s.lng);
+                        }
+                    }
+                });
+
+                html += '<div class="itp-day">';
+                html += '<div class="itp-day-head">';
+                html += '<div class="itp-day-num">' + (dIdx + 1) + '</div>';
+                html += '<span class="itp-day-title">Day ' + (dIdx + 1) + '</span>';
+                if (totalKm > 0) html += '<span class="itp-day-km">' + Math.round(totalKm) + ' km</span>';
+                if (itpData.days.length > 1) html += '<button class="itp-day-remove" onclick="itpRemoveDay(' + dIdx + ')" title="Remove day">✕</button>';
+                html += '</div>';
+                html += '<div class="itp-day-body">';
+
+                if (day.stops.length > 0) {
+                    day.stops.forEach((s, sIdx) => {
+                        let distLabel = '';
+                        if (sIdx > 0) {
+                            const prev = day.stops[sIdx - 1];
+                            if (prev.lat && prev.lng && s.lat && s.lng) {
+                                distLabel = Math.round(itpHaversine(prev.lat, prev.lng, s.lat, s.lng)) + ' km';
+                            }
+                        }
+                        html += '<div class="itp-stop">';
+                        html += '<div class="itp-stop-marker"></div>';
+                        html += '<div class="itp-stop-content">';
+                        html += '<div class="itp-stop-name">' + (s.name || 'Unnamed stop') + '</div>';
+                        html += '<div class="itp-stop-meta">';
+                        if (s.lat && s.lng) html += '<span>' + Number(s.lat).toFixed(4) + ', ' + Number(s.lng).toFixed(4) + '</span>';
+                        if (distLabel) html += '<span>' + distLabel + ' from prev</span>';
+                        html += '</div>';
+                        html += '<textarea class="itp-stop-notes" data-day="' + dIdx + '" data-idx="' + sIdx + '" placeholder="Add a note (e.g. Must try the coffee here)..." rows="1">' + (s.notes || '') + '</textarea>';
+                        html += '</div>';
+                        html += '<div class="itp-stop-actions"><button class="itp-stop-remove" onclick="itpRemoveStop(' + dIdx + ',' + sIdx + ')" title="Remove stop">✕</button></div>';
+                        html += '</div>';
                     });
-                } else {
-                    html += '<div class="wiz-day-drop-hint">Drop a stop here</div>';
                 }
+
+                html += '<button class="itp-add-stop-btn" onclick="itpOpenSearch(' + dIdx + ')"><i data-lucide="plus" style="width:14px;height:14px;"></i> Add Stop</button>';
                 html += '</div></div>';
-            }
-            timeline.innerHTML = html;
+            });
 
-            if (recsList) {
-                const recs = getWizRecs(trip);
-                if (recs.length === 0) {
-                    recsList.innerHTML = '<div class="wiz-empty" style="padding:12px;">No recommendations available for this trip.</div>';
-                } else {
-                    recsList.innerHTML = recs.map(r => '<div class="wiz-rec-item" draggable="true" ondragstart="wizDragStart(event,\'' + r.id + '\',\'' + r.name.replace(/'/g, "\\'") + '\')">' +
-                        '<span class="wiz-rec-icon"><i data-lucide="star" style="width:12px;height:12px;"></i></span> ' + r.name +
-                        '<button class="wiz-rec-add" onclick="wizAddRecToDay(\'' + r.id + '\',\'' + r.name.replace(/'/g, "\\'") + '\')">+ Add</button></div>').join('');
+            container.innerHTML = html;
+            itpInitMap();
+            itpUpdateMap();
+        }
+
+        // --- Map ---
+        function itpInitMap() {
+            const el = document.getElementById('itpMapContainer');
+            if (!el) return;
+
+            if (itpMap) {
+                itpMap.invalidateSize();
+                return;
+            }
+
+            itpMap = L.map(el, {
+                zoomControl: true,
+                attributionControl: false
+            }).setView([48.8566, 2.3522], 5);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19,
+                subdomains: 'abcd'
+            }).addTo(itpMap);
+
+            setTimeout(() => itpMap.invalidateSize(), 200);
+        }
+
+        function itpUpdateMap() {
+            if (!itpMap) return;
+
+            itpMarkers.forEach(m => itpMap.removeLayer(m));
+            itpMarkers = [];
+            if (itpPolyline) { itpMap.removeLayer(itpPolyline); itpPolyline = null; }
+
+            const allCoords = [];
+            const DAY_COLORS = ['#6366f1','#f59e0b','#ef4444','#22c55e','#06b6d4','#8b5cf6','#ec4899','#14b8a6'];
+
+            itpData.days.forEach((day, dIdx) => {
+                const color = DAY_COLORS[dIdx % DAY_COLORS.length];
+                const dayCoords = [];
+                day.stops.forEach((s, sIdx) => {
+                    if (s.lat && s.lng) {
+                        const coord = [s.lat, s.lng];
+                        dayCoords.push(coord);
+                        allCoords.push(coord);
+
+                        const marker = L.circleMarker(coord, {
+                            radius: 7, fillColor: color, color: '#fff',
+                            weight: 2, fillOpacity: 1
+                        }).addTo(itpMap);
+                        marker.bindPopup('<b>Day ' + (dIdx+1) + ' — Stop ' + (sIdx+1) + '</b><br>' + (s.name || 'Stop'));
+                        itpMarkers.push(marker);
+                    }
+                });
+                if (dayCoords.length > 1) {
+                    const line = L.polyline(dayCoords, { color: color, weight: 3, opacity: 0.7, dashArray: '6 4' }).addTo(itpMap);
+                    itpMarkers.push(line);
                 }
+            });
+
+            if (allCoords.length > 0) {
+                itpMap.fitBounds(L.latLngBounds(allCoords).pad(0.15));
             }
         }
 
-        function wizDragStart(e, id, name) {
-            e.dataTransfer.setData('text/plain', JSON.stringify({ id: id, name: name }));
-        }
-
-        function wizDropStop(e, day) {
-            e.preventDefault();
-            e.currentTarget.classList.remove('drag-over');
-            try {
-                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                if (!wizData.stops[day]) wizData.stops[day] = [];
-                wizData.stops[day].push({ id: data.id, name: data.name });
-                renderWizStep1(currentDetailTrip);
-                if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
-            } catch(ex) {}
-        }
-
-        function wizRemoveStop(day, idx) {
-            if (wizData.stops[day]) wizData.stops[day].splice(idx, 1);
-            renderWizStep1(currentDetailTrip);
+        // --- Day management ---
+        function itpAddDay() {
+            itpSaveCurrentStep();
+            itpData.days.push({ stops: [] });
+            itpRenderStep1();
             if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
         }
 
-        function wizAddRecToDay(id, name) {
-            const days = getWizDays(currentDetailTrip);
-            for (let d = 1; d <= days; d++) {
-                if (!wizData.stops[d] || wizData.stops[d].length === 0) {
-                    wizData.stops[d] = [{ id: id, name: name }];
-                    renderWizStep1(currentDetailTrip);
-                    if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+        function itpRemoveDay(dIdx) {
+            itpSaveCurrentStep();
+            itpData.days.splice(dIdx, 1);
+            itpRenderStep1();
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+        }
+
+        function itpRemoveStop(dIdx, sIdx) {
+            itpSaveCurrentStep();
+            if (itpData.days[dIdx]) itpData.days[dIdx].stops.splice(sIdx, 1);
+            itpRenderStep1();
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+        }
+
+        // --- Search modal (Nominatim + GPS + map picker) ---
+        function itpOpenSearch(dayIdx) {
+            itpSaveCurrentStep();
+            itpSearchDay = dayIdx;
+            const ov = document.createElement('div');
+            ov.className = 'itp-search-overlay';
+            ov.id = 'itpSearchOverlay';
+            ov.innerHTML = `
+                <div class="itp-search-modal">
+                    <div class="itp-search-header">
+                        <input class="itp-search-input" id="itpSearchInput" type="text" placeholder="Search address or place name..." autofocus>
+                        <button class="itp-search-close" onclick="itpCloseSearch()">✕</button>
+                    </div>
+                    <div class="itp-search-tabs">
+                        <button class="itp-search-tab active" data-mode="search" onclick="itpSearchMode('search',this)">Search</button>
+                        <button class="itp-search-tab" data-mode="gps" onclick="itpSearchMode('gps',this)">GPS Coordinates</button>
+                        <button class="itp-search-tab" data-mode="map" onclick="itpSearchMode('map',this)">Pin on Map</button>
+                    </div>
+                    <div class="itp-search-body" id="itpSearchBody">
+                        <div class="itp-search-results" id="itpSearchResults">
+                            <div class="itp-search-empty"><i data-lucide="search" style="width:24px;height:24px;opacity:0.3;display:block;margin:0 auto 8px;"></i>Type a location name to search</div>
+                        </div>
+                    </div>
+                </div>`;
+            document.body.appendChild(ov);
+            itpSearchOverlay = ov;
+
+            ov.addEventListener('click', (e) => { if (e.target === ov) itpCloseSearch(); });
+
+            const input = document.getElementById('itpSearchInput');
+            let debounce = null;
+            input.addEventListener('input', () => {
+                clearTimeout(debounce);
+                debounce = setTimeout(() => itpDoSearch(input.value.trim()), 350);
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') itpCloseSearch();
+            });
+
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+        }
+
+        function itpCloseSearch() {
+            const ov = document.getElementById('itpSearchOverlay');
+            if (ov) ov.remove();
+            itpSearchOverlay = null;
+            if (itpPickerMap) { itpPickerMap.remove(); itpPickerMap = null; }
+            itpPickerMarker = null;
+        }
+
+        function itpSearchMode(mode, btn) {
+            document.querySelectorAll('.itp-search-tab').forEach(t => t.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            const body = document.getElementById('itpSearchBody');
+            if (!body) return;
+
+            if (mode === 'search') {
+                body.innerHTML = '<div class="itp-search-results" id="itpSearchResults"><div class="itp-search-empty"><i data-lucide="search" style="width:24px;height:24px;opacity:0.3;display:block;margin:0 auto 8px;"></i>Type a location name to search</div></div>';
+                const input = document.getElementById('itpSearchInput');
+                if (input) { input.style.display = ''; input.focus(); }
+            } else if (mode === 'gps') {
+                const input = document.getElementById('itpSearchInput');
+                if (input) input.style.display = 'none';
+                body.innerHTML = `
+                    <div class="itp-gps-form">
+                        <div style="font-size:0.78rem;font-weight:600;color:#0f172a;margin-bottom:4px;">Enter GPS Coordinates</div>
+                        <div class="itp-gps-row">
+                            <input class="itp-gps-input" id="itpGpsLat" type="number" step="any" placeholder="Latitude (e.g. 48.8566)">
+                            <input class="itp-gps-input" id="itpGpsLng" type="number" step="any" placeholder="Longitude (e.g. 2.3522)">
+                        </div>
+                        <input class="itp-gps-input" id="itpGpsName" type="text" placeholder="Location name (optional)">
+                        <button class="itp-gps-confirm" onclick="itpConfirmGps()">Add Location</button>
+                    </div>`;
+            } else if (mode === 'map') {
+                const input = document.getElementById('itpSearchInput');
+                if (input) input.style.display = 'none';
+                body.innerHTML = `
+                    <div style="font-size:0.78rem;font-weight:600;color:#0f172a;margin-bottom:4px;">Click on the map to pin a location</div>
+                    <div class="itp-pick-map" id="itpPickMapEl"></div>
+                    <div class="itp-pick-hint" id="itpPickHint">Click anywhere on the map, then confirm</div>
+                    <button class="itp-gps-confirm" id="itpPickConfirm" style="margin-top:10px;" onclick="itpConfirmPick()" disabled>Confirm Pin</button>`;
+                setTimeout(() => itpInitPickerMap(), 100);
+            }
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
+        }
+
+        async function itpDoSearch(query) {
+            const results = document.getElementById('itpSearchResults');
+            if (!results) return;
+            if (!query || query.length < 2) {
+                results.innerHTML = '<div class="itp-search-empty">Type at least 2 characters to search</div>';
+                return;
+            }
+            results.innerHTML = '<div class="itp-search-empty" style="opacity:0.5;">Searching...</div>';
+            try {
+                const resp = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=8&q=' + encodeURIComponent(query), {
+                    headers: { 'Accept-Language': 'en' }
+                });
+                const data = await resp.json();
+                if (!data || data.length === 0) {
+                    results.innerHTML = '<div class="itp-search-empty">No results found. Try a different search term.</div>';
                     return;
                 }
+                results.innerHTML = data.map(item => {
+                    const name = item.display_name.split(',')[0];
+                    const desc = item.display_name.split(',').slice(1, 3).join(',').trim();
+                    return '<div class="itp-search-result" onclick="itpSelectSearchResult(' + item.lat + ',' + item.lon + ',\'' + name.replace(/'/g, "\\'") + '\')">' +
+                        '<div class="itp-search-result-icon"><i data-lucide="map-pin" style="width:14px;height:14px;"></i></div>' +
+                        '<div class="itp-search-result-text"><div class="itp-search-result-name">' + name + '</div><div class="itp-search-result-desc">' + desc + '</div></div></div>';
+                }).join('');
+                if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 30);
+            } catch (err) {
+                results.innerHTML = '<div class="itp-search-empty">Search failed. Check your connection and try again.</div>';
             }
-            if (!wizData.stops[1]) wizData.stops[1] = [];
-            wizData.stops[1].push({ id: id, name: name });
-            renderWizStep1(currentDetailTrip);
+        }
+
+        function itpSelectSearchResult(lat, lng, name) {
+            itpAddStopToDay(itpSearchDay, { name: name, lat: lat, lng: lng, notes: '' });
+            itpCloseSearch();
+        }
+
+        function itpConfirmGps() {
+            const lat = parseFloat(document.getElementById('itpGpsLat').value);
+            const lng = parseFloat(document.getElementById('itpGpsLng').value);
+            const name = document.getElementById('itpGpsName').value.trim() || ('GPS ' + lat.toFixed(4) + ', ' + lng.toFixed(4));
+            if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+                showToast('Invalid coordinates. Latitude: -90 to 90, Longitude: -180 to 180.');
+                return;
+            }
+            itpAddStopToDay(itpSearchDay, { name: name, lat: lat, lng: lng, notes: '' });
+            itpCloseSearch();
+        }
+
+        function itpInitPickerMap() {
+            const el = document.getElementById('itpPickMapEl');
+            if (!el) return;
+            let center = [48.8566, 2.3522];
+            if (itpData.days.length > 0) {
+                const allStops = itpData.days.flatMap(d => d.stops).filter(s => s.lat && s.lng);
+                if (allStops.length > 0) center = [allStops[allStops.length - 1].lat, allStops[allStops.length - 1].lng];
+            }
+            itpPickerMap = L.map(el).setView(center, 8);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19, subdomains: 'abcd'
+            }).addTo(itpPickerMap);
+            setTimeout(() => itpPickerMap.invalidateSize(), 150);
+
+            itpPickerMap.on('click', function(e) {
+                if (itpPickerMarker) itpPickerMap.removeLayer(itpPickerMarker);
+                itpPickerMarker = L.marker(e.latlng).addTo(itpPickerMap);
+                const hint = document.getElementById('itpPickHint');
+                if (hint) hint.textContent = e.latlng.lat.toFixed(5) + ', ' + e.latlng.lng.toFixed(5);
+                const btn = document.getElementById('itpPickConfirm');
+                if (btn) btn.disabled = false;
+            });
+        }
+
+        function itpConfirmPick() {
+            if (!itpPickerMarker) return;
+            const ll = itpPickerMarker.getLatLng();
+            itpAddStopToDay(itpSearchDay, { name: 'Pin ' + ll.lat.toFixed(4) + ', ' + ll.lng.toFixed(4), lat: ll.lat, lng: ll.lng, notes: '' });
+            itpCloseSearch();
+        }
+
+        function itpAddStopToDay(dayIdx, stop) {
+            if (!itpData.days[dayIdx]) return;
+            stop.id = 'stop_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+            itpData.days[dayIdx].stops.push(stop);
+            const trip = currentDetailTrip;
+            if (trip) { try { localStorage.setItem('itpData_' + trip.id, JSON.stringify(itpData)); } catch(e) {} }
+            itpRenderStep1();
             if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 50);
         }
 
-        // Step 2: Basecamp / Lodging
-        function renderWizStep2(trip) {
-            const days = getWizDays(trip);
-            const list = document.getElementById('wizLodgingList');
+        // --- Step 2: Basecamp ---
+        function itpRenderStep2() {
+            const list = document.getElementById('itpLodgingList');
             if (!list) return;
+            const numDays = itpData.days.length || 3;
             let html = '';
-            for (let d = 1; d < days; d++) {
-                const ld = wizData.lodging[d] || { name: '', booked: false };
-                html += '<div class="wiz-lodging-row" data-day="' + d + '">' +
-                    '<div class="wiz-lodging-day">Night ' + d + '</div>' +
-                    '<input class="wiz-lodging-input" type="text" placeholder="Lodging name or type..." value="' + (ld.name || '').replace(/"/g, '&quot;') + '">' +
-                    '<div class="wiz-lodging-toggle">' +
-                    '<div class="wiz-toggle-track' + (ld.booked ? ' on' : '') + '" onclick="this.classList.toggle(\'on\')"><div class="wiz-toggle-knob"></div></div>' +
-                    '<span class="wiz-toggle-label">' + (ld.booked ? 'Booked' : 'Need to find') + '</span>' +
+            for (let d = 1; d < numDays; d++) {
+                const ld = itpData.lodging[d] || { name: '', booked: false };
+                html += '<div class="itp-lodging-row" data-day="' + d + '">' +
+                    '<div class="itp-lodging-day">Night ' + d + '</div>' +
+                    '<input class="itp-lodging-input" type="text" placeholder="Lodging name or type..." value="' + (ld.name || '').replace(/"/g, '&quot;') + '">' +
+                    '<div class="itp-lodging-toggle">' +
+                    '<div class="itp-toggle-track' + (ld.booked ? ' on' : '') + '" onclick="this.classList.toggle(\'on\')"><div class="itp-toggle-knob"></div></div>' +
+                    '<span class="itp-toggle-label">' + (ld.booked ? 'Booked' : 'Need to find') + '</span>' +
                     '</div></div>';
             }
+            if (numDays <= 1) html = '<div style="text-align:center;padding:40px;color:#94a3b8;font-size:0.82rem;">Add at least 2 days in the Itinerary step to plan nightly lodging.</div>';
             list.innerHTML = html;
-            list.querySelectorAll('.wiz-toggle-track').forEach(t => {
+            list.querySelectorAll('.itp-toggle-track').forEach(t => {
                 t.addEventListener('click', function() {
                     const lbl = this.nextElementSibling;
                     if (lbl) lbl.textContent = this.classList.contains('on') ? 'Booked' : 'Need to find';
@@ -15780,14 +16114,15 @@
             });
         }
 
-        // Step 3: Expedition Prep (conditional by region)
-        function renderWizStep3(trip) {
-            const checklist = document.getElementById('wizChecklist');
-            const descEl = document.getElementById('wizPrepDesc');
+        // --- Step 3: Expedition Prep ---
+        function itpRenderStep3() {
+            const checklist = document.getElementById('itpChecklist');
+            const descEl = document.getElementById('itpPrepDesc');
             if (!checklist) return;
 
-            const regionType = getWizRegionType(trip);
-            const difficulty = (trip.difficulty || 'moderate').toLowerCase();
+            const trip = currentDetailTrip;
+            const regionType = getItpRegionType(trip);
+            const difficulty = (trip ? trip.difficulty || 'moderate' : 'moderate').toLowerCase();
             let sections = [];
 
             if (regionType === 'remote') {
@@ -15835,38 +16170,38 @@
 
             let html = '';
             sections.forEach(sec => {
-                html += '<div class="wiz-check-section-title"><i data-lucide="' + sec.icon + '" style="width:14px;height:14px;"></i> ' + sec.title + '</div>';
+                html += '<div class="itp-check-section-title"><i data-lucide="' + sec.icon + '" style="width:14px;height:14px;"></i> ' + sec.title + '</div>';
                 sec.items.forEach(item => {
                     const key = sec.title.replace(/\s/g, '_') + '_' + item.replace(/\s/g, '_');
-                    const checked = wizData.checklist[key] ? 'checked' : '';
-                    html += '<div class="wiz-check-item ' + checked + '" data-key="' + key + '" onclick="this.classList.toggle(\'checked\')">' +
-                        '<div class="wiz-check-box">✓</div><span class="wiz-check-label">' + item + '</span></div>';
+                    const checked = itpData.checklist[key] ? 'checked' : '';
+                    html += '<div class="itp-check-item ' + checked + '" data-key="' + key + '" onclick="this.classList.toggle(\'checked\')">' +
+                        '<div class="itp-check-box">✓</div><span class="itp-check-label">' + item + '</span></div>';
                 });
             });
             checklist.innerHTML = html;
         }
 
-        // Step 4: Booklet summary
-        function renderWizStep4(trip) {
-            saveWizData(trip);
+        // --- Step 4: Booklet ---
+        function itpRenderStep4() {
+            itpSaveCurrentStep();
             const preview = document.getElementById('wizBookletPreview');
+            const trip = currentDetailTrip;
             if (!preview || !trip) return;
 
-            const days = getWizDays(trip);
-            const regionType = getWizRegionType(trip);
+            const regionType = getItpRegionType(trip);
             let html = '<h2>' + (trip.name || 'Road Trip') + '</h2>';
-            html += '<div class="wiz-bk-sub">' + (trip.country || '') + ' · ' + (trip.distance || '') + ' · ' + (trip.duration || days + ' days') + ' · ' + (trip.difficulty || 'Moderate') + '</div>';
+            html += '<div class="wiz-bk-sub">' + [trip.country, trip.distance, trip.duration, trip.difficulty || 'Moderate'].filter(Boolean).join(' · ') + '</div>';
             html += '<p>' + (trip.description || '') + '</p>';
 
             html += '<h4>Daily Itinerary</h4><table><thead><tr><th>Day</th><th>Stops</th><th>Lodging</th><th>Status</th></tr></thead><tbody>';
-            for (let d = 1; d <= days; d++) {
-                const stops = (wizData.stops[d] || []).map(s => s.name).join(', ') || '—';
-                const ld = wizData.lodging[d] || {};
-                html += '<tr><td>Day ' + d + '</td><td>' + stops + '</td><td>' + (ld.name || '—') + '</td><td>' + (ld.booked ? '✓ Booked' : '—') + '</td></tr>';
-            }
+            itpData.days.forEach((day, dIdx) => {
+                const stops = day.stops.map(s => s.name).join(', ') || '—';
+                const ld = itpData.lodging[dIdx + 1] || {};
+                html += '<tr><td>Day ' + (dIdx+1) + '</td><td>' + stops + '</td><td>' + (ld.name || '—') + '</td><td>' + (ld.booked ? '✓ Booked' : '—') + '</td></tr>';
+            });
             html += '</tbody></table>';
 
-            const checkedItems = Object.entries(wizData.checklist).filter(([, v]) => v).map(([k]) => k.split('_').slice(1).join(' '));
+            const checkedItems = Object.entries(itpData.checklist).filter(([, v]) => v).map(([k]) => k.split('_').slice(1).join(' '));
             if (checkedItems.length > 0) {
                 html += '<h4>Packed Gear (' + checkedItems.length + ' items)</h4><ul>' + checkedItems.map(i => '<li>' + i + '</li>').join('') + '</ul>';
             }
@@ -15876,11 +16211,11 @@
             }
 
             html += '<h4>Important Notes</h4><p>Always verify current conditions, road closures, and entry requirements before departure. This booklet is a planning aid, not a guarantee of conditions.</p>';
-
             preview.innerHTML = html;
         }
 
         function exportWizBooklet() {
+            if (itpStep !== 4) itpGoStep(4);
             const preview = document.getElementById('wizBookletPreview');
             if (!preview) return;
             const w = window.open('', '_blank');
@@ -15892,13 +16227,18 @@
         function copyWizBooklet() {
             const preview = document.getElementById('wizBookletPreview');
             if (!preview) return;
-            const text = preview.innerText;
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(preview.innerText).then(() => {
                 showToast('Booklet copied to clipboard!');
             }).catch(() => {
                 showToast('Could not copy — try selecting manually.');
             });
         }
+
+        // Legacy compat stubs
+        function wizGo(dir) { itpNav(dir); }
+        function getWizRegionType(t) { return getItpRegionType(t); }
+        function getWizDays(t) { return getItpDays(t); }
+        function saveWizData(t) { itpSaveCurrentStep(); }
 
         function updatePreparationContent() {
             const trip = currentDetailTrip;
@@ -16296,8 +16636,10 @@
                 tripDetailMap = null;
                 tripDetailPoiLayers = {};
             }
-            document.getElementById('tripDetailModal').classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
+            if (itpMap) { itpMap.remove(); itpMap = null; }
+            const modal = document.getElementById('tripDetailModal');
+            modal.classList.remove('active', 'route-active', 'prep-active');
+            document.body.style.overflow = '';
             currentDetailTrip = null;
         }
 
